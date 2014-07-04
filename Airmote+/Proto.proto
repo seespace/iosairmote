@@ -1,0 +1,198 @@
+package inair.airserver.common;
+
+option optimize_for = LITE_RUNTIME;
+
+message Event {
+  extensions 100 to max;
+
+  enum Type {
+    DEVICE = 0;
+    TOUCH = 1;
+    MOTION = 2;
+    KEYPRESS = 3;
+    GESTURE = 4;
+    HAND_MOTION = 5;
+    HAND_GESTURE = 6;
+  }
+
+  required Type type = 1;
+  required int64 timestamp = 2;
+}
+
+// Device events
+
+message Device {
+  enum Vendor {
+    IOS = 0;
+    ANDROID = 1;
+    LEAPMOTION = 2;
+    KINECT = 3;
+    OTHER = 4;
+  }
+
+  required string name = 1;
+  required Vendor vendor = 2;
+  optional int32 version = 3;
+  required string product_id = 4;
+  optional bool has_keyboard = 5;
+}
+
+message DeviceEvent {
+  extend Event {
+    required DeviceEvent event = 100;
+  }
+
+  enum Type {
+    REGISTER = 0;
+    UNREGISTER = 1;
+  }
+
+  // These fields can use the full number range.
+  required Type type = 1;
+  required Device device = 2;
+}
+
+// Touch
+
+enum Phase {
+  BEGAN = 0;
+  MOVED = 1;
+  STATIONARY = 2;
+  ENDED = 3;
+  CANCELLED = 4;
+}
+
+message TouchEvent {
+  extend Event {
+    required TouchEvent event = 101;
+  }
+
+  required float location_x = 1;
+  required float location_y = 2;
+  required float trackarea_width = 3;
+  required float trackarea_height = 4;
+  required Phase phase = 5;
+}
+
+// Motion
+
+message MotionEvent {
+  extend Event {
+    required MotionEvent event = 102;
+  }
+
+  enum Type {
+    SHAKE = 0;
+  }
+
+  required Type type = 1 [default = SHAKE];
+}
+
+// Keypress
+
+message KeypressEvent {
+  extend Event {
+    required KeypressEvent event = 103;
+  }
+
+  enum State {
+    DOWN = 0;
+    UP = 1;
+  }
+
+  required State state = 1 [default = DOWN];
+  required int32 keycode = 2;
+}
+
+// Gestures
+
+message GestureEvent {
+  extend Event {
+    required GestureEvent event = 104;
+  }
+
+  enum Type {
+    TAP = 0;
+    PINCH = 1;
+    PAN = 2;
+    SWIPE = 3;
+    ROTATION = 4;
+    LONGPRESS = 5;
+    CIRCLE = 6;
+    WAVE = 7;
+  }
+
+  enum State {
+    POSSIBLE = 0;
+    BEGAN = 1;
+    CHANGED = 2;
+    ENDED = 3;
+    CANCELLED = 4;
+    FAILED = 5;
+  }
+
+  enum SwipeDirection {
+    RIGHT = 0;
+    LEFT = 1;
+    UP = 2;
+    DOWN = 3;
+    FORWARD = 4;
+    BACKWARD = 5;
+  }
+
+  enum CircleDirection {
+    CLOCKWISE  = 0;
+    COUNTER_CLOCKWISE = 1;
+  }
+
+  required float location_x = 1;
+  required float location_y = 2;
+  required float trackarea_width = 3;
+  required float trackarea_height = 4;
+  required Type type = 5;
+  required State state = 6;
+
+  optional int32 tap_count = 7;
+
+  optional float pinch_scale = 8;
+  optional float pinch_velocity = 9;
+
+  optional float pan_translation_x = 10;
+  optional float pan_translation_y = 11;
+  optional float pan_velocity_x = 12;
+  optional float pan_velocity_y = 13;
+
+  optional SwipeDirection swipe_direction = 14;
+
+  optional float rotation_angle = 15;
+  optional float rotation_velocity = 16;
+
+  optional int64 press_duration = 17;
+
+  optional CircleDirection circle_direction = 18;
+}
+
+// Hand Motion
+
+message HandMotionEvent {
+  extend Event {
+    required HandMotionEvent event = 105;
+  }
+
+  enum State {
+    OPEN = 0;
+    GRAB = 1;
+    PINCH = 2;
+  }
+
+  required float location_x = 1;
+  required float location_y = 2;
+  required float trackarea_width = 3;
+  required float trackarea_height = 4;
+  required State state = 5;
+  required Phase phase = 6;
+  optional float pitch = 7;
+  optional float yaw = 8;
+  optional float roll = 9;
+}
+
