@@ -25,6 +25,5 @@
 
 
 @property (strong, nonatomic) IBOutlet UIView *trackpadView;
-@property (strong, nonatomic) IBOutlet WebViewController *webViewController;
 
 @end

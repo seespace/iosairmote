@@ -144,14 +144,22 @@ BOOL HandMotionEventStateIsValidValue(HandMotionEventState value);
 @interface Event : PBExtendableMessage {
 @private
   BOOL hasTimestamp_:1;
+  BOOL hasTrackingAreaWidth_:1;
+  BOOL hasTrackingAreaHeight_:1;
   BOOL hasType_:1;
   SInt64 timestamp;
+  SInt32 trackingAreaWidth;
+  SInt32 trackingAreaHeight;
   EventType type;
 }
 - (BOOL) hasType;
 - (BOOL) hasTimestamp;
+- (BOOL) hasTrackingAreaWidth;
+- (BOOL) hasTrackingAreaHeight;
 @property (readonly) EventType type;
 @property (readonly) SInt64 timestamp;
+@property (readonly) SInt32 trackingAreaWidth;
+@property (readonly) SInt32 trackingAreaHeight;
 
 + (Event*) defaultInstance;
 - (Event*) defaultInstance;
@@ -197,6 +205,16 @@ BOOL HandMotionEventStateIsValidValue(HandMotionEventState value);
 - (SInt64) timestamp;
 - (EventBuilder*) setTimestamp:(SInt64) value;
 - (EventBuilder*) clearTimestamp;
+
+- (BOOL) hasTrackingAreaWidth;
+- (SInt32) trackingAreaWidth;
+- (EventBuilder*) setTrackingAreaWidth:(SInt32) value;
+- (EventBuilder*) clearTrackingAreaWidth;
+
+- (BOOL) hasTrackingAreaHeight;
+- (SInt32) trackingAreaHeight;
+- (EventBuilder*) setTrackingAreaHeight:(SInt32) value;
+- (EventBuilder*) clearTrackingAreaHeight;
 @end
 
 @interface Device : PBGeneratedMessage {
@@ -349,24 +367,16 @@ BOOL HandMotionEventStateIsValidValue(HandMotionEventState value);
 @private
   BOOL hasLocationX_:1;
   BOOL hasLocationY_:1;
-  BOOL hasTrackareaWidth_:1;
-  BOOL hasTrackareaHeight_:1;
   BOOL hasPhase_:1;
   Float32 locationX;
   Float32 locationY;
-  Float32 trackareaWidth;
-  Float32 trackareaHeight;
   Phase phase;
 }
 - (BOOL) hasLocationX;
 - (BOOL) hasLocationY;
-- (BOOL) hasTrackareaWidth;
-- (BOOL) hasTrackareaHeight;
 - (BOOL) hasPhase;
 @property (readonly) Float32 locationX;
 @property (readonly) Float32 locationY;
-@property (readonly) Float32 trackareaWidth;
-@property (readonly) Float32 trackareaHeight;
 @property (readonly) Phase phase;
 
 + (TouchEvent*) defaultInstance;
@@ -414,16 +424,6 @@ BOOL HandMotionEventStateIsValidValue(HandMotionEventState value);
 - (Float32) locationY;
 - (TouchEventBuilder*) setLocationY:(Float32) value;
 - (TouchEventBuilder*) clearLocationY;
-
-- (BOOL) hasTrackareaWidth;
-- (Float32) trackareaWidth;
-- (TouchEventBuilder*) setTrackareaWidth:(Float32) value;
-- (TouchEventBuilder*) clearTrackareaWidth;
-
-- (BOOL) hasTrackareaHeight;
-- (Float32) trackareaHeight;
-- (TouchEventBuilder*) setTrackareaHeight:(Float32) value;
-- (TouchEventBuilder*) clearTrackareaHeight;
 
 - (BOOL) hasPhase;
 - (Phase) phase;
@@ -544,8 +544,6 @@ BOOL HandMotionEventStateIsValidValue(HandMotionEventState value);
 @private
   BOOL hasLocationX_:1;
   BOOL hasLocationY_:1;
-  BOOL hasTrackareaWidth_:1;
-  BOOL hasTrackareaHeight_:1;
   BOOL hasPinchScale_:1;
   BOOL hasPinchVelocity_:1;
   BOOL hasPanTranslationX_:1;
@@ -562,8 +560,6 @@ BOOL HandMotionEventStateIsValidValue(HandMotionEventState value);
   BOOL hasCircleDirection_:1;
   Float32 locationX;
   Float32 locationY;
-  Float32 trackareaWidth;
-  Float32 trackareaHeight;
   Float32 pinchScale;
   Float32 pinchVelocity;
   Float32 panTranslationX;
@@ -581,8 +577,6 @@ BOOL HandMotionEventStateIsValidValue(HandMotionEventState value);
 }
 - (BOOL) hasLocationX;
 - (BOOL) hasLocationY;
-- (BOOL) hasTrackareaWidth;
-- (BOOL) hasTrackareaHeight;
 - (BOOL) hasType;
 - (BOOL) hasState;
 - (BOOL) hasTapCount;
@@ -599,8 +593,6 @@ BOOL HandMotionEventStateIsValidValue(HandMotionEventState value);
 - (BOOL) hasCircleDirection;
 @property (readonly) Float32 locationX;
 @property (readonly) Float32 locationY;
-@property (readonly) Float32 trackareaWidth;
-@property (readonly) Float32 trackareaHeight;
 @property (readonly) GestureEventType type;
 @property (readonly) GestureEventState state;
 @property (readonly) SInt32 tapCount;
@@ -661,16 +653,6 @@ BOOL HandMotionEventStateIsValidValue(HandMotionEventState value);
 - (Float32) locationY;
 - (GestureEventBuilder*) setLocationY:(Float32) value;
 - (GestureEventBuilder*) clearLocationY;
-
-- (BOOL) hasTrackareaWidth;
-- (Float32) trackareaWidth;
-- (GestureEventBuilder*) setTrackareaWidth:(Float32) value;
-- (GestureEventBuilder*) clearTrackareaWidth;
-
-- (BOOL) hasTrackareaHeight;
-- (Float32) trackareaHeight;
-- (GestureEventBuilder*) setTrackareaHeight:(Float32) value;
-- (GestureEventBuilder*) clearTrackareaHeight;
 
 - (BOOL) hasType;
 - (GestureEventType) type;
@@ -747,8 +729,6 @@ BOOL HandMotionEventStateIsValidValue(HandMotionEventState value);
 @private
   BOOL hasLocationX_:1;
   BOOL hasLocationY_:1;
-  BOOL hasTrackareaWidth_:1;
-  BOOL hasTrackareaHeight_:1;
   BOOL hasPitch_:1;
   BOOL hasYaw_:1;
   BOOL hasRoll_:1;
@@ -756,8 +736,6 @@ BOOL HandMotionEventStateIsValidValue(HandMotionEventState value);
   BOOL hasPhase_:1;
   Float32 locationX;
   Float32 locationY;
-  Float32 trackareaWidth;
-  Float32 trackareaHeight;
   Float32 pitch;
   Float32 yaw;
   Float32 roll;
@@ -766,8 +744,6 @@ BOOL HandMotionEventStateIsValidValue(HandMotionEventState value);
 }
 - (BOOL) hasLocationX;
 - (BOOL) hasLocationY;
-- (BOOL) hasTrackareaWidth;
-- (BOOL) hasTrackareaHeight;
 - (BOOL) hasState;
 - (BOOL) hasPhase;
 - (BOOL) hasPitch;
@@ -775,8 +751,6 @@ BOOL HandMotionEventStateIsValidValue(HandMotionEventState value);
 - (BOOL) hasRoll;
 @property (readonly) Float32 locationX;
 @property (readonly) Float32 locationY;
-@property (readonly) Float32 trackareaWidth;
-@property (readonly) Float32 trackareaHeight;
 @property (readonly) HandMotionEventState state;
 @property (readonly) Phase phase;
 @property (readonly) Float32 pitch;
@@ -828,16 +802,6 @@ BOOL HandMotionEventStateIsValidValue(HandMotionEventState value);
 - (Float32) locationY;
 - (HandMotionEventBuilder*) setLocationY:(Float32) value;
 - (HandMotionEventBuilder*) clearLocationY;
-
-- (BOOL) hasTrackareaWidth;
-- (Float32) trackareaWidth;
-- (HandMotionEventBuilder*) setTrackareaWidth:(Float32) value;
-- (HandMotionEventBuilder*) clearTrackareaWidth;
-
-- (BOOL) hasTrackareaHeight;
-- (Float32) trackareaHeight;
-- (HandMotionEventBuilder*) setTrackareaHeight:(Float32) value;
-- (HandMotionEventBuilder*) clearTrackareaHeight;
 
 - (BOOL) hasState;
 - (HandMotionEventState) state;

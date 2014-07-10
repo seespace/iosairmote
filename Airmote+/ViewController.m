@@ -26,8 +26,8 @@
 @implementation ViewController
 
 #define kServiceType @"_rsse._tcp."
-#define kHostIP @"192.168.1.131"
-//#define kHostIP @"127.0.0.1"
+//#define kHostIP @"192.168.1.152"
+#define kHostIP @"127.0.0.1"
 static const int kServicePort = 8989;
 
 static const uint8_t kTouchBeganTag = 2;
@@ -47,7 +47,6 @@ static const uint8_t kGestureStateChanged = 11;
 @synthesize hostIP = _hostIP;
 @synthesize hostPort = _hostPort;
 @synthesize trackpadView = _trackpadView;
-@synthesize webViewController = _webViewController;
 
 - (void)viewDidLoad
 {
@@ -108,9 +107,6 @@ static const uint8_t kGestureStateChanged = 11;
     [pan requireGestureRecognizerToFail:longPressGesture];
     
     pan.delegate = tapGesture.delegate = doubleTapGesture.delegate = swipeDown.delegate = swipeUp.delegate = swipeUp.delegate = swipeDown.delegate = pan.delegate = self;
-    
-    _webViewController = [[WebViewController alloc] init];
-    [self.navigationController setNavigationBarHidden:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

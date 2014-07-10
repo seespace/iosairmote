@@ -1,4 +1,4 @@
-package inair.airserver.common;
+package inair.eventcenter.proto;
 
 option optimize_for = LITE_RUNTIME;
 
@@ -17,6 +17,8 @@ message Event {
 
   required Type type = 1;
   required int64 timestamp = 2;
+  required int32 tracking_area_width = 3 [default = 0];
+  required int32 tracking_area_height = 4 [default = 0];
 }
 
 // Device events
@@ -69,9 +71,7 @@ message TouchEvent {
 
   required float location_x = 1;
   required float location_y = 2;
-  required float trackarea_width = 3;
-  required float trackarea_height = 4;
-  required Phase phase = 5;
+  required Phase phase = 3;
 }
 
 // Motion
@@ -147,29 +147,27 @@ message GestureEvent {
 
   required float location_x = 1;
   required float location_y = 2;
-  required float trackarea_width = 3;
-  required float trackarea_height = 4;
-  required Type type = 5;
-  required State state = 6;
+  required Type type = 3;
+  required State state = 4;
 
-  optional int32 tap_count = 7;
+  optional int32 tap_count = 5;
 
-  optional float pinch_scale = 8;
-  optional float pinch_velocity = 9;
+  optional float pinch_scale = 6;
+  optional float pinch_velocity = 7;
 
-  optional float pan_translation_x = 10;
-  optional float pan_translation_y = 11;
-  optional float pan_velocity_x = 12;
-  optional float pan_velocity_y = 13;
+  optional float pan_translation_x = 8;
+  optional float pan_translation_y = 9;
+  optional float pan_velocity_x = 10;
+  optional float pan_velocity_y = 11;
 
-  optional SwipeDirection swipe_direction = 14;
+  optional SwipeDirection swipe_direction = 12;
 
-  optional float rotation_angle = 15;
-  optional float rotation_velocity = 16;
+  optional float rotation_angle = 13;
+  optional float rotation_velocity = 14;
 
-  optional int64 press_duration = 17;
+  optional int64 press_duration = 15;
 
-  optional CircleDirection circle_direction = 18;
+  optional CircleDirection circle_direction = 16;
 }
 
 // Hand Motion
@@ -187,12 +185,10 @@ message HandMotionEvent {
 
   required float location_x = 1;
   required float location_y = 2;
-  required float trackarea_width = 3;
-  required float trackarea_height = 4;
-  required State state = 5;
-  required Phase phase = 6;
-  optional float pitch = 7;
-  optional float yaw = 8;
-  optional float roll = 9;
+  required State state = 3;
+  required Phase phase = 4;
+  optional float pitch = 5;
+  optional float yaw = 6;
+  optional float roll = 7;
 }
 

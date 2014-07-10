@@ -101,6 +101,8 @@ BOOL PhaseIsValidValue(Phase value) {
 @interface Event ()
 @property EventType type;
 @property SInt64 timestamp;
+@property SInt32 trackingAreaWidth;
+@property SInt32 trackingAreaHeight;
 @end
 
 @implementation Event
@@ -119,12 +121,28 @@ BOOL PhaseIsValidValue(Phase value) {
   hasTimestamp_ = !!value_;
 }
 @synthesize timestamp;
+- (BOOL) hasTrackingAreaWidth {
+  return !!hasTrackingAreaWidth_;
+}
+- (void) setHasTrackingAreaWidth:(BOOL) value_ {
+  hasTrackingAreaWidth_ = !!value_;
+}
+@synthesize trackingAreaWidth;
+- (BOOL) hasTrackingAreaHeight {
+  return !!hasTrackingAreaHeight_;
+}
+- (void) setHasTrackingAreaHeight:(BOOL) value_ {
+  hasTrackingAreaHeight_ = !!value_;
+}
+@synthesize trackingAreaHeight;
 - (void) dealloc {
 }
 - (id) init {
   if ((self = [super init])) {
     self.type = EventTypeDevice;
     self.timestamp = 0L;
+    self.trackingAreaWidth = 0;
+    self.trackingAreaHeight = 0;
   }
   return self;
 }
@@ -147,6 +165,12 @@ static Event* defaultEventInstance = nil;
   if (!self.hasTimestamp) {
     return NO;
   }
+  if (!self.hasTrackingAreaWidth) {
+    return NO;
+  }
+  if (!self.hasTrackingAreaHeight) {
+    return NO;
+  }
   if (!self.extensionsAreInitialized) {
     return NO;
   }
@@ -158,6 +182,12 @@ static Event* defaultEventInstance = nil;
   }
   if (self.hasTimestamp) {
     [output writeInt64:2 value:self.timestamp];
+  }
+  if (self.hasTrackingAreaWidth) {
+    [output writeInt32:3 value:self.trackingAreaWidth];
+  }
+  if (self.hasTrackingAreaHeight) {
+    [output writeInt32:4 value:self.trackingAreaHeight];
   }
   [self writeExtensionsToCodedOutputStream:output
                                       from:100
@@ -176,6 +206,12 @@ static Event* defaultEventInstance = nil;
   }
   if (self.hasTimestamp) {
     size_ += computeInt64Size(2, self.timestamp);
+  }
+  if (self.hasTrackingAreaWidth) {
+    size_ += computeInt32Size(3, self.trackingAreaWidth);
+  }
+  if (self.hasTrackingAreaHeight) {
+    size_ += computeInt32Size(4, self.trackingAreaHeight);
   }
   size_ += [self extensionsSerializedSize];
   size_ += self.unknownFields.serializedSize;
@@ -219,6 +255,12 @@ static Event* defaultEventInstance = nil;
   if (self.hasTimestamp) {
     [output appendFormat:@"%@%@: %@\n", indent, @"timestamp", [NSNumber numberWithLongLong:self.timestamp]];
   }
+  if (self.hasTrackingAreaWidth) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"trackingAreaWidth", [NSNumber numberWithInteger:self.trackingAreaWidth]];
+  }
+  if (self.hasTrackingAreaHeight) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"trackingAreaHeight", [NSNumber numberWithInteger:self.trackingAreaHeight]];
+  }
   [self writeExtensionDescriptionToMutableString:(NSMutableString*)output
                                             from:100
                                               to:536870912
@@ -238,6 +280,10 @@ static Event* defaultEventInstance = nil;
       (!self.hasType || self.type == otherMessage.type) &&
       self.hasTimestamp == otherMessage.hasTimestamp &&
       (!self.hasTimestamp || self.timestamp == otherMessage.timestamp) &&
+      self.hasTrackingAreaWidth == otherMessage.hasTrackingAreaWidth &&
+      (!self.hasTrackingAreaWidth || self.trackingAreaWidth == otherMessage.trackingAreaWidth) &&
+      self.hasTrackingAreaHeight == otherMessage.hasTrackingAreaHeight &&
+      (!self.hasTrackingAreaHeight || self.trackingAreaHeight == otherMessage.trackingAreaHeight) &&
       [self isEqualExtensionsInOther:otherMessage from:100 to:536870912] &&
 
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
@@ -249,6 +295,12 @@ static Event* defaultEventInstance = nil;
   }
   if (self.hasTimestamp) {
     hashCode = hashCode * 31 + [[NSNumber numberWithLongLong:self.timestamp] hash];
+  }
+  if (self.hasTrackingAreaWidth) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInteger:self.trackingAreaWidth] hash];
+  }
+  if (self.hasTrackingAreaHeight) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInteger:self.trackingAreaHeight] hash];
   }
   hashCode = hashCode * 31 + [self hashExtensionsFrom:100 to:536870912];
   hashCode = hashCode * 31 + [self.unknownFields hash];
@@ -317,6 +369,12 @@ BOOL EventTypeIsValidValue(EventType value) {
   if (other.hasTimestamp) {
     [self setTimestamp:other.timestamp];
   }
+  if (other.hasTrackingAreaWidth) {
+    [self setTrackingAreaWidth:other.trackingAreaWidth];
+  }
+  if (other.hasTrackingAreaHeight) {
+    [self setTrackingAreaHeight:other.trackingAreaHeight];
+  }
   [self mergeExtensionFields:other];
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -352,6 +410,14 @@ BOOL EventTypeIsValidValue(EventType value) {
         [self setTimestamp:[input readInt64]];
         break;
       }
+      case 24: {
+        [self setTrackingAreaWidth:[input readInt32]];
+        break;
+      }
+      case 32: {
+        [self setTrackingAreaHeight:[input readInt32]];
+        break;
+      }
     }
   }
 }
@@ -385,6 +451,38 @@ BOOL EventTypeIsValidValue(EventType value) {
 - (EventBuilder*) clearTimestamp {
   result.hasTimestamp = NO;
   result.timestamp = 0L;
+  return self;
+}
+- (BOOL) hasTrackingAreaWidth {
+  return result.hasTrackingAreaWidth;
+}
+- (SInt32) trackingAreaWidth {
+  return result.trackingAreaWidth;
+}
+- (EventBuilder*) setTrackingAreaWidth:(SInt32) value {
+  result.hasTrackingAreaWidth = YES;
+  result.trackingAreaWidth = value;
+  return self;
+}
+- (EventBuilder*) clearTrackingAreaWidth {
+  result.hasTrackingAreaWidth = NO;
+  result.trackingAreaWidth = 0;
+  return self;
+}
+- (BOOL) hasTrackingAreaHeight {
+  return result.hasTrackingAreaHeight;
+}
+- (SInt32) trackingAreaHeight {
+  return result.trackingAreaHeight;
+}
+- (EventBuilder*) setTrackingAreaHeight:(SInt32) value {
+  result.hasTrackingAreaHeight = YES;
+  result.trackingAreaHeight = value;
+  return self;
+}
+- (EventBuilder*) clearTrackingAreaHeight {
+  result.hasTrackingAreaHeight = NO;
+  result.trackingAreaHeight = 0;
   return self;
 }
 @end
@@ -1114,8 +1212,6 @@ BOOL DeviceEventTypeIsValidValue(DeviceEventType value) {
 @interface TouchEvent ()
 @property Float32 locationX;
 @property Float32 locationY;
-@property Float32 trackareaWidth;
-@property Float32 trackareaHeight;
 @property Phase phase;
 @end
 
@@ -1135,20 +1231,6 @@ BOOL DeviceEventTypeIsValidValue(DeviceEventType value) {
   hasLocationY_ = !!value_;
 }
 @synthesize locationY;
-- (BOOL) hasTrackareaWidth {
-  return !!hasTrackareaWidth_;
-}
-- (void) setHasTrackareaWidth:(BOOL) value_ {
-  hasTrackareaWidth_ = !!value_;
-}
-@synthesize trackareaWidth;
-- (BOOL) hasTrackareaHeight {
-  return !!hasTrackareaHeight_;
-}
-- (void) setHasTrackareaHeight:(BOOL) value_ {
-  hasTrackareaHeight_ = !!value_;
-}
-@synthesize trackareaHeight;
 - (BOOL) hasPhase {
   return !!hasPhase_;
 }
@@ -1162,8 +1244,6 @@ BOOL DeviceEventTypeIsValidValue(DeviceEventType value) {
   if ((self = [super init])) {
     self.locationX = 0;
     self.locationY = 0;
-    self.trackareaWidth = 0;
-    self.trackareaHeight = 0;
     self.phase = PhaseBegan;
   }
   return self;
@@ -1190,12 +1270,6 @@ static TouchEvent* defaultTouchEventInstance = nil;
   if (!self.hasLocationY) {
     return NO;
   }
-  if (!self.hasTrackareaWidth) {
-    return NO;
-  }
-  if (!self.hasTrackareaHeight) {
-    return NO;
-  }
   if (!self.hasPhase) {
     return NO;
   }
@@ -1208,14 +1282,8 @@ static TouchEvent* defaultTouchEventInstance = nil;
   if (self.hasLocationY) {
     [output writeFloat:2 value:self.locationY];
   }
-  if (self.hasTrackareaWidth) {
-    [output writeFloat:3 value:self.trackareaWidth];
-  }
-  if (self.hasTrackareaHeight) {
-    [output writeFloat:4 value:self.trackareaHeight];
-  }
   if (self.hasPhase) {
-    [output writeEnum:5 value:self.phase];
+    [output writeEnum:3 value:self.phase];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -1232,14 +1300,8 @@ static TouchEvent* defaultTouchEventInstance = nil;
   if (self.hasLocationY) {
     size_ += computeFloatSize(2, self.locationY);
   }
-  if (self.hasTrackareaWidth) {
-    size_ += computeFloatSize(3, self.trackareaWidth);
-  }
-  if (self.hasTrackareaHeight) {
-    size_ += computeFloatSize(4, self.trackareaHeight);
-  }
   if (self.hasPhase) {
-    size_ += computeEnumSize(5, self.phase);
+    size_ += computeEnumSize(3, self.phase);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -1282,12 +1344,6 @@ static TouchEvent* defaultTouchEventInstance = nil;
   if (self.hasLocationY) {
     [output appendFormat:@"%@%@: %@\n", indent, @"locationY", [NSNumber numberWithFloat:self.locationY]];
   }
-  if (self.hasTrackareaWidth) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"trackareaWidth", [NSNumber numberWithFloat:self.trackareaWidth]];
-  }
-  if (self.hasTrackareaHeight) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"trackareaHeight", [NSNumber numberWithFloat:self.trackareaHeight]];
-  }
   if (self.hasPhase) {
     [output appendFormat:@"%@%@: %d\n", indent, @"phase", self.phase];
   }
@@ -1306,10 +1362,6 @@ static TouchEvent* defaultTouchEventInstance = nil;
       (!self.hasLocationX || self.locationX == otherMessage.locationX) &&
       self.hasLocationY == otherMessage.hasLocationY &&
       (!self.hasLocationY || self.locationY == otherMessage.locationY) &&
-      self.hasTrackareaWidth == otherMessage.hasTrackareaWidth &&
-      (!self.hasTrackareaWidth || self.trackareaWidth == otherMessage.trackareaWidth) &&
-      self.hasTrackareaHeight == otherMessage.hasTrackareaHeight &&
-      (!self.hasTrackareaHeight || self.trackareaHeight == otherMessage.trackareaHeight) &&
       self.hasPhase == otherMessage.hasPhase &&
       (!self.hasPhase || self.phase == otherMessage.phase) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
@@ -1321,12 +1373,6 @@ static TouchEvent* defaultTouchEventInstance = nil;
   }
   if (self.hasLocationY) {
     hashCode = hashCode * 31 + [[NSNumber numberWithFloat:self.locationY] hash];
-  }
-  if (self.hasTrackareaWidth) {
-    hashCode = hashCode * 31 + [[NSNumber numberWithFloat:self.trackareaWidth] hash];
-  }
-  if (self.hasTrackareaHeight) {
-    hashCode = hashCode * 31 + [[NSNumber numberWithFloat:self.trackareaHeight] hash];
   }
   if (self.hasPhase) {
     hashCode = hashCode * 31 + self.phase;
@@ -1383,12 +1429,6 @@ static TouchEvent* defaultTouchEventInstance = nil;
   if (other.hasLocationY) {
     [self setLocationY:other.locationY];
   }
-  if (other.hasTrackareaWidth) {
-    [self setTrackareaWidth:other.trackareaWidth];
-  }
-  if (other.hasTrackareaHeight) {
-    [self setTrackareaHeight:other.trackareaHeight];
-  }
   if (other.hasPhase) {
     [self setPhase:other.phase];
   }
@@ -1421,20 +1461,12 @@ static TouchEvent* defaultTouchEventInstance = nil;
         [self setLocationY:[input readFloat]];
         break;
       }
-      case 29: {
-        [self setTrackareaWidth:[input readFloat]];
-        break;
-      }
-      case 37: {
-        [self setTrackareaHeight:[input readFloat]];
-        break;
-      }
-      case 40: {
+      case 24: {
         Phase value = (Phase)[input readEnum];
         if (PhaseIsValidValue(value)) {
           [self setPhase:value];
         } else {
-          [unknownFields mergeVarintField:5 value:value];
+          [unknownFields mergeVarintField:3 value:value];
         }
         break;
       }
@@ -1471,38 +1503,6 @@ static TouchEvent* defaultTouchEventInstance = nil;
 - (TouchEventBuilder*) clearLocationY {
   result.hasLocationY = NO;
   result.locationY = 0;
-  return self;
-}
-- (BOOL) hasTrackareaWidth {
-  return result.hasTrackareaWidth;
-}
-- (Float32) trackareaWidth {
-  return result.trackareaWidth;
-}
-- (TouchEventBuilder*) setTrackareaWidth:(Float32) value {
-  result.hasTrackareaWidth = YES;
-  result.trackareaWidth = value;
-  return self;
-}
-- (TouchEventBuilder*) clearTrackareaWidth {
-  result.hasTrackareaWidth = NO;
-  result.trackareaWidth = 0;
-  return self;
-}
-- (BOOL) hasTrackareaHeight {
-  return result.hasTrackareaHeight;
-}
-- (Float32) trackareaHeight {
-  return result.trackareaHeight;
-}
-- (TouchEventBuilder*) setTrackareaHeight:(Float32) value {
-  result.hasTrackareaHeight = YES;
-  result.trackareaHeight = value;
-  return self;
-}
-- (TouchEventBuilder*) clearTrackareaHeight {
-  result.hasTrackareaHeight = NO;
-  result.trackareaHeight = 0;
   return self;
 }
 - (BOOL) hasPhase {
@@ -2024,8 +2024,6 @@ BOOL KeypressEventStateIsValidValue(KeypressEventState value) {
 @interface GestureEvent ()
 @property Float32 locationX;
 @property Float32 locationY;
-@property Float32 trackareaWidth;
-@property Float32 trackareaHeight;
 @property GestureEventType type;
 @property GestureEventState state;
 @property SInt32 tapCount;
@@ -2058,20 +2056,6 @@ BOOL KeypressEventStateIsValidValue(KeypressEventState value) {
   hasLocationY_ = !!value_;
 }
 @synthesize locationY;
-- (BOOL) hasTrackareaWidth {
-  return !!hasTrackareaWidth_;
-}
-- (void) setHasTrackareaWidth:(BOOL) value_ {
-  hasTrackareaWidth_ = !!value_;
-}
-@synthesize trackareaWidth;
-- (BOOL) hasTrackareaHeight {
-  return !!hasTrackareaHeight_;
-}
-- (void) setHasTrackareaHeight:(BOOL) value_ {
-  hasTrackareaHeight_ = !!value_;
-}
-@synthesize trackareaHeight;
 - (BOOL) hasType {
   return !!hasType_;
 }
@@ -2176,8 +2160,6 @@ BOOL KeypressEventStateIsValidValue(KeypressEventState value) {
   if ((self = [super init])) {
     self.locationX = 0;
     self.locationY = 0;
-    self.trackareaWidth = 0;
-    self.trackareaHeight = 0;
     self.type = GestureEventTypeTap;
     self.state = GestureEventStatePossible;
     self.tapCount = 0;
@@ -2217,12 +2199,6 @@ static GestureEvent* defaultGestureEventInstance = nil;
   if (!self.hasLocationY) {
     return NO;
   }
-  if (!self.hasTrackareaWidth) {
-    return NO;
-  }
-  if (!self.hasTrackareaHeight) {
-    return NO;
-  }
   if (!self.hasType) {
     return NO;
   }
@@ -2238,53 +2214,47 @@ static GestureEvent* defaultGestureEventInstance = nil;
   if (self.hasLocationY) {
     [output writeFloat:2 value:self.locationY];
   }
-  if (self.hasTrackareaWidth) {
-    [output writeFloat:3 value:self.trackareaWidth];
-  }
-  if (self.hasTrackareaHeight) {
-    [output writeFloat:4 value:self.trackareaHeight];
-  }
   if (self.hasType) {
-    [output writeEnum:5 value:self.type];
+    [output writeEnum:3 value:self.type];
   }
   if (self.hasState) {
-    [output writeEnum:6 value:self.state];
+    [output writeEnum:4 value:self.state];
   }
   if (self.hasTapCount) {
-    [output writeInt32:7 value:self.tapCount];
+    [output writeInt32:5 value:self.tapCount];
   }
   if (self.hasPinchScale) {
-    [output writeFloat:8 value:self.pinchScale];
+    [output writeFloat:6 value:self.pinchScale];
   }
   if (self.hasPinchVelocity) {
-    [output writeFloat:9 value:self.pinchVelocity];
+    [output writeFloat:7 value:self.pinchVelocity];
   }
   if (self.hasPanTranslationX) {
-    [output writeFloat:10 value:self.panTranslationX];
+    [output writeFloat:8 value:self.panTranslationX];
   }
   if (self.hasPanTranslationY) {
-    [output writeFloat:11 value:self.panTranslationY];
+    [output writeFloat:9 value:self.panTranslationY];
   }
   if (self.hasPanVelocityX) {
-    [output writeFloat:12 value:self.panVelocityX];
+    [output writeFloat:10 value:self.panVelocityX];
   }
   if (self.hasPanVelocityY) {
-    [output writeFloat:13 value:self.panVelocityY];
+    [output writeFloat:11 value:self.panVelocityY];
   }
   if (self.hasSwipeDirection) {
-    [output writeEnum:14 value:self.swipeDirection];
+    [output writeEnum:12 value:self.swipeDirection];
   }
   if (self.hasRotationAngle) {
-    [output writeFloat:15 value:self.rotationAngle];
+    [output writeFloat:13 value:self.rotationAngle];
   }
   if (self.hasRotationVelocity) {
-    [output writeFloat:16 value:self.rotationVelocity];
+    [output writeFloat:14 value:self.rotationVelocity];
   }
   if (self.hasPressDuration) {
-    [output writeInt64:17 value:self.pressDuration];
+    [output writeInt64:15 value:self.pressDuration];
   }
   if (self.hasCircleDirection) {
-    [output writeEnum:18 value:self.circleDirection];
+    [output writeEnum:16 value:self.circleDirection];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -2301,53 +2271,47 @@ static GestureEvent* defaultGestureEventInstance = nil;
   if (self.hasLocationY) {
     size_ += computeFloatSize(2, self.locationY);
   }
-  if (self.hasTrackareaWidth) {
-    size_ += computeFloatSize(3, self.trackareaWidth);
-  }
-  if (self.hasTrackareaHeight) {
-    size_ += computeFloatSize(4, self.trackareaHeight);
-  }
   if (self.hasType) {
-    size_ += computeEnumSize(5, self.type);
+    size_ += computeEnumSize(3, self.type);
   }
   if (self.hasState) {
-    size_ += computeEnumSize(6, self.state);
+    size_ += computeEnumSize(4, self.state);
   }
   if (self.hasTapCount) {
-    size_ += computeInt32Size(7, self.tapCount);
+    size_ += computeInt32Size(5, self.tapCount);
   }
   if (self.hasPinchScale) {
-    size_ += computeFloatSize(8, self.pinchScale);
+    size_ += computeFloatSize(6, self.pinchScale);
   }
   if (self.hasPinchVelocity) {
-    size_ += computeFloatSize(9, self.pinchVelocity);
+    size_ += computeFloatSize(7, self.pinchVelocity);
   }
   if (self.hasPanTranslationX) {
-    size_ += computeFloatSize(10, self.panTranslationX);
+    size_ += computeFloatSize(8, self.panTranslationX);
   }
   if (self.hasPanTranslationY) {
-    size_ += computeFloatSize(11, self.panTranslationY);
+    size_ += computeFloatSize(9, self.panTranslationY);
   }
   if (self.hasPanVelocityX) {
-    size_ += computeFloatSize(12, self.panVelocityX);
+    size_ += computeFloatSize(10, self.panVelocityX);
   }
   if (self.hasPanVelocityY) {
-    size_ += computeFloatSize(13, self.panVelocityY);
+    size_ += computeFloatSize(11, self.panVelocityY);
   }
   if (self.hasSwipeDirection) {
-    size_ += computeEnumSize(14, self.swipeDirection);
+    size_ += computeEnumSize(12, self.swipeDirection);
   }
   if (self.hasRotationAngle) {
-    size_ += computeFloatSize(15, self.rotationAngle);
+    size_ += computeFloatSize(13, self.rotationAngle);
   }
   if (self.hasRotationVelocity) {
-    size_ += computeFloatSize(16, self.rotationVelocity);
+    size_ += computeFloatSize(14, self.rotationVelocity);
   }
   if (self.hasPressDuration) {
-    size_ += computeInt64Size(17, self.pressDuration);
+    size_ += computeInt64Size(15, self.pressDuration);
   }
   if (self.hasCircleDirection) {
-    size_ += computeEnumSize(18, self.circleDirection);
+    size_ += computeEnumSize(16, self.circleDirection);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -2389,12 +2353,6 @@ static GestureEvent* defaultGestureEventInstance = nil;
   }
   if (self.hasLocationY) {
     [output appendFormat:@"%@%@: %@\n", indent, @"locationY", [NSNumber numberWithFloat:self.locationY]];
-  }
-  if (self.hasTrackareaWidth) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"trackareaWidth", [NSNumber numberWithFloat:self.trackareaWidth]];
-  }
-  if (self.hasTrackareaHeight) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"trackareaHeight", [NSNumber numberWithFloat:self.trackareaHeight]];
   }
   if (self.hasType) {
     [output appendFormat:@"%@%@: %d\n", indent, @"type", self.type];
@@ -2453,10 +2411,6 @@ static GestureEvent* defaultGestureEventInstance = nil;
       (!self.hasLocationX || self.locationX == otherMessage.locationX) &&
       self.hasLocationY == otherMessage.hasLocationY &&
       (!self.hasLocationY || self.locationY == otherMessage.locationY) &&
-      self.hasTrackareaWidth == otherMessage.hasTrackareaWidth &&
-      (!self.hasTrackareaWidth || self.trackareaWidth == otherMessage.trackareaWidth) &&
-      self.hasTrackareaHeight == otherMessage.hasTrackareaHeight &&
-      (!self.hasTrackareaHeight || self.trackareaHeight == otherMessage.trackareaHeight) &&
       self.hasType == otherMessage.hasType &&
       (!self.hasType || self.type == otherMessage.type) &&
       self.hasState == otherMessage.hasState &&
@@ -2494,12 +2448,6 @@ static GestureEvent* defaultGestureEventInstance = nil;
   }
   if (self.hasLocationY) {
     hashCode = hashCode * 31 + [[NSNumber numberWithFloat:self.locationY] hash];
-  }
-  if (self.hasTrackareaWidth) {
-    hashCode = hashCode * 31 + [[NSNumber numberWithFloat:self.trackareaWidth] hash];
-  }
-  if (self.hasTrackareaHeight) {
-    hashCode = hashCode * 31 + [[NSNumber numberWithFloat:self.trackareaHeight] hash];
   }
   if (self.hasType) {
     hashCode = hashCode * 31 + self.type;
@@ -2645,12 +2593,6 @@ BOOL GestureEventCircleDirectionIsValidValue(GestureEventCircleDirection value) 
   if (other.hasLocationY) {
     [self setLocationY:other.locationY];
   }
-  if (other.hasTrackareaWidth) {
-    [self setTrackareaWidth:other.trackareaWidth];
-  }
-  if (other.hasTrackareaHeight) {
-    [self setTrackareaHeight:other.trackareaHeight];
-  }
   if (other.hasType) {
     [self setType:other.type];
   }
@@ -2722,87 +2664,79 @@ BOOL GestureEventCircleDirectionIsValidValue(GestureEventCircleDirection value) 
         [self setLocationY:[input readFloat]];
         break;
       }
-      case 29: {
-        [self setTrackareaWidth:[input readFloat]];
-        break;
-      }
-      case 37: {
-        [self setTrackareaHeight:[input readFloat]];
-        break;
-      }
-      case 40: {
+      case 24: {
         GestureEventType value = (GestureEventType)[input readEnum];
         if (GestureEventTypeIsValidValue(value)) {
           [self setType:value];
         } else {
-          [unknownFields mergeVarintField:5 value:value];
+          [unknownFields mergeVarintField:3 value:value];
         }
         break;
       }
-      case 48: {
+      case 32: {
         GestureEventState value = (GestureEventState)[input readEnum];
         if (GestureEventStateIsValidValue(value)) {
           [self setState:value];
         } else {
-          [unknownFields mergeVarintField:6 value:value];
+          [unknownFields mergeVarintField:4 value:value];
         }
         break;
       }
-      case 56: {
+      case 40: {
         [self setTapCount:[input readInt32]];
         break;
       }
-      case 69: {
+      case 53: {
         [self setPinchScale:[input readFloat]];
         break;
       }
-      case 77: {
+      case 61: {
         [self setPinchVelocity:[input readFloat]];
         break;
       }
-      case 85: {
+      case 69: {
         [self setPanTranslationX:[input readFloat]];
         break;
       }
-      case 93: {
+      case 77: {
         [self setPanTranslationY:[input readFloat]];
         break;
       }
-      case 101: {
+      case 85: {
         [self setPanVelocityX:[input readFloat]];
         break;
       }
-      case 109: {
+      case 93: {
         [self setPanVelocityY:[input readFloat]];
         break;
       }
-      case 112: {
+      case 96: {
         GestureEventSwipeDirection value = (GestureEventSwipeDirection)[input readEnum];
         if (GestureEventSwipeDirectionIsValidValue(value)) {
           [self setSwipeDirection:value];
         } else {
-          [unknownFields mergeVarintField:14 value:value];
+          [unknownFields mergeVarintField:12 value:value];
         }
         break;
       }
-      case 125: {
+      case 109: {
         [self setRotationAngle:[input readFloat]];
         break;
       }
-      case 133: {
+      case 117: {
         [self setRotationVelocity:[input readFloat]];
         break;
       }
-      case 136: {
+      case 120: {
         [self setPressDuration:[input readInt64]];
         break;
       }
-      case 144: {
+      case 128: {
         GestureEventCircleDirection value = (GestureEventCircleDirection)[input readEnum];
         if (GestureEventCircleDirectionIsValidValue(value)) {
           [self setCircleDirection:value];
         } else {
-          [unknownFields mergeVarintField:18 value:value];
+          [unknownFields mergeVarintField:16 value:value];
         }
         break;
       }
@@ -2839,38 +2773,6 @@ BOOL GestureEventCircleDirectionIsValidValue(GestureEventCircleDirection value) 
 - (GestureEventBuilder*) clearLocationY {
   result.hasLocationY = NO;
   result.locationY = 0;
-  return self;
-}
-- (BOOL) hasTrackareaWidth {
-  return result.hasTrackareaWidth;
-}
-- (Float32) trackareaWidth {
-  return result.trackareaWidth;
-}
-- (GestureEventBuilder*) setTrackareaWidth:(Float32) value {
-  result.hasTrackareaWidth = YES;
-  result.trackareaWidth = value;
-  return self;
-}
-- (GestureEventBuilder*) clearTrackareaWidth {
-  result.hasTrackareaWidth = NO;
-  result.trackareaWidth = 0;
-  return self;
-}
-- (BOOL) hasTrackareaHeight {
-  return result.hasTrackareaHeight;
-}
-- (Float32) trackareaHeight {
-  return result.trackareaHeight;
-}
-- (GestureEventBuilder*) setTrackareaHeight:(Float32) value {
-  result.hasTrackareaHeight = YES;
-  result.trackareaHeight = value;
-  return self;
-}
-- (GestureEventBuilder*) clearTrackareaHeight {
-  result.hasTrackareaHeight = NO;
-  result.trackareaHeight = 0;
   return self;
 }
 - (BOOL) hasType {
@@ -3102,8 +3004,6 @@ BOOL GestureEventCircleDirectionIsValidValue(GestureEventCircleDirection value) 
 @interface HandMotionEvent ()
 @property Float32 locationX;
 @property Float32 locationY;
-@property Float32 trackareaWidth;
-@property Float32 trackareaHeight;
 @property HandMotionEventState state;
 @property Phase phase;
 @property Float32 pitch;
@@ -3127,20 +3027,6 @@ BOOL GestureEventCircleDirectionIsValidValue(GestureEventCircleDirection value) 
   hasLocationY_ = !!value_;
 }
 @synthesize locationY;
-- (BOOL) hasTrackareaWidth {
-  return !!hasTrackareaWidth_;
-}
-- (void) setHasTrackareaWidth:(BOOL) value_ {
-  hasTrackareaWidth_ = !!value_;
-}
-@synthesize trackareaWidth;
-- (BOOL) hasTrackareaHeight {
-  return !!hasTrackareaHeight_;
-}
-- (void) setHasTrackareaHeight:(BOOL) value_ {
-  hasTrackareaHeight_ = !!value_;
-}
-@synthesize trackareaHeight;
 - (BOOL) hasState {
   return !!hasState_;
 }
@@ -3182,8 +3068,6 @@ BOOL GestureEventCircleDirectionIsValidValue(GestureEventCircleDirection value) 
   if ((self = [super init])) {
     self.locationX = 0;
     self.locationY = 0;
-    self.trackareaWidth = 0;
-    self.trackareaHeight = 0;
     self.state = HandMotionEventStateOpen;
     self.phase = PhaseBegan;
     self.pitch = 0;
@@ -3214,12 +3098,6 @@ static HandMotionEvent* defaultHandMotionEventInstance = nil;
   if (!self.hasLocationY) {
     return NO;
   }
-  if (!self.hasTrackareaWidth) {
-    return NO;
-  }
-  if (!self.hasTrackareaHeight) {
-    return NO;
-  }
   if (!self.hasState) {
     return NO;
   }
@@ -3235,26 +3113,20 @@ static HandMotionEvent* defaultHandMotionEventInstance = nil;
   if (self.hasLocationY) {
     [output writeFloat:2 value:self.locationY];
   }
-  if (self.hasTrackareaWidth) {
-    [output writeFloat:3 value:self.trackareaWidth];
-  }
-  if (self.hasTrackareaHeight) {
-    [output writeFloat:4 value:self.trackareaHeight];
-  }
   if (self.hasState) {
-    [output writeEnum:5 value:self.state];
+    [output writeEnum:3 value:self.state];
   }
   if (self.hasPhase) {
-    [output writeEnum:6 value:self.phase];
+    [output writeEnum:4 value:self.phase];
   }
   if (self.hasPitch) {
-    [output writeFloat:7 value:self.pitch];
+    [output writeFloat:5 value:self.pitch];
   }
   if (self.hasYaw) {
-    [output writeFloat:8 value:self.yaw];
+    [output writeFloat:6 value:self.yaw];
   }
   if (self.hasRoll) {
-    [output writeFloat:9 value:self.roll];
+    [output writeFloat:7 value:self.roll];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -3271,26 +3143,20 @@ static HandMotionEvent* defaultHandMotionEventInstance = nil;
   if (self.hasLocationY) {
     size_ += computeFloatSize(2, self.locationY);
   }
-  if (self.hasTrackareaWidth) {
-    size_ += computeFloatSize(3, self.trackareaWidth);
-  }
-  if (self.hasTrackareaHeight) {
-    size_ += computeFloatSize(4, self.trackareaHeight);
-  }
   if (self.hasState) {
-    size_ += computeEnumSize(5, self.state);
+    size_ += computeEnumSize(3, self.state);
   }
   if (self.hasPhase) {
-    size_ += computeEnumSize(6, self.phase);
+    size_ += computeEnumSize(4, self.phase);
   }
   if (self.hasPitch) {
-    size_ += computeFloatSize(7, self.pitch);
+    size_ += computeFloatSize(5, self.pitch);
   }
   if (self.hasYaw) {
-    size_ += computeFloatSize(8, self.yaw);
+    size_ += computeFloatSize(6, self.yaw);
   }
   if (self.hasRoll) {
-    size_ += computeFloatSize(9, self.roll);
+    size_ += computeFloatSize(7, self.roll);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -3333,12 +3199,6 @@ static HandMotionEvent* defaultHandMotionEventInstance = nil;
   if (self.hasLocationY) {
     [output appendFormat:@"%@%@: %@\n", indent, @"locationY", [NSNumber numberWithFloat:self.locationY]];
   }
-  if (self.hasTrackareaWidth) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"trackareaWidth", [NSNumber numberWithFloat:self.trackareaWidth]];
-  }
-  if (self.hasTrackareaHeight) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"trackareaHeight", [NSNumber numberWithFloat:self.trackareaHeight]];
-  }
   if (self.hasState) {
     [output appendFormat:@"%@%@: %d\n", indent, @"state", self.state];
   }
@@ -3369,10 +3229,6 @@ static HandMotionEvent* defaultHandMotionEventInstance = nil;
       (!self.hasLocationX || self.locationX == otherMessage.locationX) &&
       self.hasLocationY == otherMessage.hasLocationY &&
       (!self.hasLocationY || self.locationY == otherMessage.locationY) &&
-      self.hasTrackareaWidth == otherMessage.hasTrackareaWidth &&
-      (!self.hasTrackareaWidth || self.trackareaWidth == otherMessage.trackareaWidth) &&
-      self.hasTrackareaHeight == otherMessage.hasTrackareaHeight &&
-      (!self.hasTrackareaHeight || self.trackareaHeight == otherMessage.trackareaHeight) &&
       self.hasState == otherMessage.hasState &&
       (!self.hasState || self.state == otherMessage.state) &&
       self.hasPhase == otherMessage.hasPhase &&
@@ -3392,12 +3248,6 @@ static HandMotionEvent* defaultHandMotionEventInstance = nil;
   }
   if (self.hasLocationY) {
     hashCode = hashCode * 31 + [[NSNumber numberWithFloat:self.locationY] hash];
-  }
-  if (self.hasTrackareaWidth) {
-    hashCode = hashCode * 31 + [[NSNumber numberWithFloat:self.trackareaWidth] hash];
-  }
-  if (self.hasTrackareaHeight) {
-    hashCode = hashCode * 31 + [[NSNumber numberWithFloat:self.trackareaHeight] hash];
   }
   if (self.hasState) {
     hashCode = hashCode * 31 + self.state;
@@ -3476,12 +3326,6 @@ BOOL HandMotionEventStateIsValidValue(HandMotionEventState value) {
   if (other.hasLocationY) {
     [self setLocationY:other.locationY];
   }
-  if (other.hasTrackareaWidth) {
-    [self setTrackareaWidth:other.trackareaWidth];
-  }
-  if (other.hasTrackareaHeight) {
-    [self setTrackareaHeight:other.trackareaHeight];
-  }
   if (other.hasState) {
     [self setState:other.state];
   }
@@ -3526,41 +3370,33 @@ BOOL HandMotionEventStateIsValidValue(HandMotionEventState value) {
         [self setLocationY:[input readFloat]];
         break;
       }
-      case 29: {
-        [self setTrackareaWidth:[input readFloat]];
-        break;
-      }
-      case 37: {
-        [self setTrackareaHeight:[input readFloat]];
-        break;
-      }
-      case 40: {
+      case 24: {
         HandMotionEventState value = (HandMotionEventState)[input readEnum];
         if (HandMotionEventStateIsValidValue(value)) {
           [self setState:value];
         } else {
-          [unknownFields mergeVarintField:5 value:value];
+          [unknownFields mergeVarintField:3 value:value];
         }
         break;
       }
-      case 48: {
+      case 32: {
         Phase value = (Phase)[input readEnum];
         if (PhaseIsValidValue(value)) {
           [self setPhase:value];
         } else {
-          [unknownFields mergeVarintField:6 value:value];
+          [unknownFields mergeVarintField:4 value:value];
         }
         break;
       }
-      case 61: {
+      case 45: {
         [self setPitch:[input readFloat]];
         break;
       }
-      case 69: {
+      case 53: {
         [self setYaw:[input readFloat]];
         break;
       }
-      case 77: {
+      case 61: {
         [self setRoll:[input readFloat]];
         break;
       }
@@ -3597,38 +3433,6 @@ BOOL HandMotionEventStateIsValidValue(HandMotionEventState value) {
 - (HandMotionEventBuilder*) clearLocationY {
   result.hasLocationY = NO;
   result.locationY = 0;
-  return self;
-}
-- (BOOL) hasTrackareaWidth {
-  return result.hasTrackareaWidth;
-}
-- (Float32) trackareaWidth {
-  return result.trackareaWidth;
-}
-- (HandMotionEventBuilder*) setTrackareaWidth:(Float32) value {
-  result.hasTrackareaWidth = YES;
-  result.trackareaWidth = value;
-  return self;
-}
-- (HandMotionEventBuilder*) clearTrackareaWidth {
-  result.hasTrackareaWidth = NO;
-  result.trackareaWidth = 0;
-  return self;
-}
-- (BOOL) hasTrackareaHeight {
-  return result.hasTrackareaHeight;
-}
-- (Float32) trackareaHeight {
-  return result.trackareaHeight;
-}
-- (HandMotionEventBuilder*) setTrackareaHeight:(Float32) value {
-  result.hasTrackareaHeight = YES;
-  result.trackareaHeight = value;
-  return self;
-}
-- (HandMotionEventBuilder*) clearTrackareaHeight {
-  result.hasTrackareaHeight = NO;
-  result.trackareaHeight = 0;
   return self;
 }
 - (BOOL) hasState {
