@@ -26,8 +26,8 @@
 @implementation ViewController
 
 #define kServiceType @"_rsse._tcp."
-//#define kHostIP @"192.168.1.152"
-#define kHostIP @"127.0.0.1"
+//#define kHostIP @"192.168.1.186"
+//#define kHostIP @"127.0.0.1"
 static const int kServicePort = 8989;
 
 static const uint8_t kTouchBeganTag = 2;
@@ -58,7 +58,7 @@ static const uint8_t kGestureStateChanged = 11;
     _browser = [[NSNetServiceBrowser alloc] init];
     _browser.delegate = self;
 //    [_browser searchForServicesOfType:kServiceType inDomain:@""];
-    _hostIP = kHostIP;
+//    _hostIP = kHostIP;
   
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:@"applicationDidBecomeActive" object:nil];
     
@@ -275,6 +275,8 @@ static const uint8_t kGestureStateChanged = 11;
 {
     [SVProgressHUD showErrorWithStatus:[error localizedDescription]];
     NSLog(@"Error: %@. Code: %ld", [error localizedDescription], (long)[error code]);
+  
+    [self chooseServerWithMessage:@"Enter InAir IP Address"];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
