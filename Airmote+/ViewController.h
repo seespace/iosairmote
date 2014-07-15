@@ -9,9 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "GCDAsyncSocket.h"
 #import "GCDAsyncUdpSocket.h"
-#import "WebViewController.h"
 
-@interface ViewController : UIViewController <GCDAsyncSocketDelegate, NSNetServiceBrowserDelegate, NSNetServiceDelegate, UIActionSheetDelegate, UIGestureRecognizerDelegate, UIWebViewDelegate>
+@interface ViewController : UIViewController <GCDAsyncSocketDelegate, NSNetServiceBrowserDelegate, NSNetServiceDelegate, UIActionSheetDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) GCDAsyncSocket *socket;
 @property (nonatomic, strong) NSString *hostName;
