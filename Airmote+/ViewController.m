@@ -13,12 +13,15 @@
 #import "ViewController.h"
 #import <SVProgressHUD/SVProgressHUD.h>
 #import "ProtoHelper.h"
+#import "DDURLParser.h"
 
 @interface ViewController () {
     struct {
         BOOL connected;
         BOOL serverSelectorDisplayed;
     } _flag;
+    
+    Event *_oauthEvent;
 }
 
 @end
@@ -42,11 +45,14 @@ static const uint8_t kSessionStartTag = 9;
 
 static const uint8_t kGestureStateChanged = 11;
 
+static const uint8_t kOAuthTag = 12;
+
 @synthesize socket = _socket;
 @synthesize hostName = _hostName;
 @synthesize hostIP = _hostIP;
 @synthesize hostPort = _hostPort;
 @synthesize trackpadView = _trackpadView;
+@synthesize webViewController = _webViewController;
 
 - (void)viewDidLoad
 {
@@ -61,6 +67,10 @@ static const uint8_t kGestureStateChanged = 11;
 //    _hostIP = kHostIP;
   
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:@"applicationDidBecomeActive" object:nil];
+    
+    // Webview
+    _webViewController = [[WebViewController alloc] init];
+    [self.navigationController setNavigationBarHidden:YES];
     
     // Gesture
     
@@ -206,6 +216,10 @@ static const uint8_t kGestureStateChanged = 11;
             UITextField * alertTextField = [alertView textFieldAtIndex:0];
             [self connectToHost:alertTextField.text];
         }
+    } else if ([alertView.title isEqualToString:@"OAuth"]) {
+        if (buttonIndex != alertView.cancelButtonIndex) {
+            [self processOAuthRequest];
+        }
     }
 }
 
@@ -241,6 +255,22 @@ static const uint8_t kGestureStateChanged = 11;
 - (void)socket:(GCDAsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag
 {
     NSLog(@"Did read data");
+    
+    NSData *msg = [data subdataWithRange:NSMakeRange(4, data.length - 4)];
+    
+    Event* event = [ProtoHelper parseFromData:msg];
+    
+    NSLog(@"%@", event);
+    
+    // process events
+    switch (event.type) {
+        case EventTypeOauthRequest:
+            [self processOAuthRequest:event];
+            break;
+            
+        default:
+            break;
+    }
     
     [_socket readDataWithTimeout:-1 tag:0];
 }
@@ -418,6 +448,60 @@ static const uint8_t kGestureStateChanged = 11;
   
   NSData *data = [self dataFromEvent:ev];
   [_socket writeData:data withTimeout:0 tag:kGestureStateChanged];
+}
+
+#pragma mark -
+#pragma mark OAuth
+
+- (void)processOAuthRequest:(Event* )event {
+    _oauthEvent = event;
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"OAuth" message:@"InAir would like to open webview for OAuth authentication." delegate:self cancelButtonTitle:@"Don't Allow" otherButtonTitles:@"OK", nil];
+    [alertView show];
+}
+
+- (void)processOAuthRequest {
+    if (_oauthEvent == nil) {
+        return;
+    }
+    
+    OAuthRequestEvent *event = [_oauthEvent getExtension:[OAuthRequestEvent event]];
+    _webViewController.URL = [NSURL URLWithString:event.authUrl];
+    _webViewController.delegate = self;
+    [_webViewController load];
+    
+    if (_webViewController.navigationController == nil) {
+        [self.navigationController pushViewController:_webViewController animated:YES];
+    }
+}
+
+- (void)processOAuthResponse:(NSString *)code {
+    Event *ev = [ProtoHelper oauthResponseWithCode:code target:_oauthEvent.replyTo];
+    
+    NSData *data = [self dataFromEvent:ev];
+    [_socket writeData:data withTimeout:0 tag:kOAuthTag];
+    
+    _oauthEvent = nil;
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+
+}
+
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    if ([request.URL.host isEqualToString:@"localhost"]) {
+        [self.navigationController popViewControllerAnimated:YES];
+        DDURLParser *parser = [[DDURLParser alloc] initWithURLString:request.URL.absoluteString];
+        NSString *code = [parser valueForVariable:@"code"];
+        [self processOAuthResponse:code];
+        return NO;
+    }
+    
+    return YES;
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+    NSLog(@"%@", error);
+    _oauthEvent = nil;
 }
 
 #pragma mark -

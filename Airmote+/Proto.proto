@@ -13,12 +13,16 @@ message Event {
     GESTURE = 4;
     HAND_MOTION = 5;
     HAND_GESTURE = 6;
+    OAUTH_REQUEST = 7;
+    OAUTH_RESPONSE = 8;
   }
 
   required Type type = 1;
   required int64 timestamp = 2;
-  required int32 tracking_area_width = 3 [default = 0];
-  required int32 tracking_area_height = 4 [default = 0];
+  required int32 tracking_area_width = 3;
+  required int32 tracking_area_height = 4;
+  optional string target = 5;
+  optional string reply_to = 6;
 }
 
 // Device events
@@ -191,4 +195,23 @@ message HandMotionEvent {
   optional float yaw = 6;
   optional float roll = 7;
 }
+
+// OAuth
+
+message OAuthRequestEvent {
+  extend Event {
+    required OAuthRequestEvent event = 106;
+  }
+
+  required string auth_url = 1;
+}
+
+message OAuthResponseEvent {
+  extend Event {
+    required OAuthResponseEvent event = 107;
+  }
+
+  optional string auth_code = 1;
+}
+
 

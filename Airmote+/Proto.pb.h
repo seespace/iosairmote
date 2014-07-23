@@ -18,6 +18,10 @@
 @class KeypressEventBuilder;
 @class MotionEvent;
 @class MotionEventBuilder;
+@class OAuthRequestEvent;
+@class OAuthRequestEventBuilder;
+@class OAuthResponseEvent;
+@class OAuthResponseEventBuilder;
 @class TouchEvent;
 @class TouchEventBuilder;
 #ifndef __has_feature
@@ -50,6 +54,8 @@ typedef enum {
   EventTypeGesture = 4,
   EventTypeHandMotion = 5,
   EventTypeHandGesture = 6,
+  EventTypeOauthRequest = 7,
+  EventTypeOauthResponse = 8,
 } EventType;
 
 BOOL EventTypeIsValidValue(EventType value);
@@ -146,20 +152,28 @@ BOOL HandMotionEventStateIsValidValue(HandMotionEventState value);
   BOOL hasTimestamp_:1;
   BOOL hasTrackingAreaWidth_:1;
   BOOL hasTrackingAreaHeight_:1;
+  BOOL hasTarget_:1;
+  BOOL hasReplyTo_:1;
   BOOL hasType_:1;
   SInt64 timestamp;
   SInt32 trackingAreaWidth;
   SInt32 trackingAreaHeight;
+  NSString* target;
+  NSString* replyTo;
   EventType type;
 }
 - (BOOL) hasType;
 - (BOOL) hasTimestamp;
 - (BOOL) hasTrackingAreaWidth;
 - (BOOL) hasTrackingAreaHeight;
+- (BOOL) hasTarget;
+- (BOOL) hasReplyTo;
 @property (readonly) EventType type;
 @property (readonly) SInt64 timestamp;
 @property (readonly) SInt32 trackingAreaWidth;
 @property (readonly) SInt32 trackingAreaHeight;
+@property (readonly, strong) NSString* target;
+@property (readonly, strong) NSString* replyTo;
 
 + (Event*) defaultInstance;
 - (Event*) defaultInstance;
@@ -215,6 +229,16 @@ BOOL HandMotionEventStateIsValidValue(HandMotionEventState value);
 - (SInt32) trackingAreaHeight;
 - (EventBuilder*) setTrackingAreaHeight:(SInt32) value;
 - (EventBuilder*) clearTrackingAreaHeight;
+
+- (BOOL) hasTarget;
+- (NSString*) target;
+- (EventBuilder*) setTarget:(NSString*) value;
+- (EventBuilder*) clearTarget;
+
+- (BOOL) hasReplyTo;
+- (NSString*) replyTo;
+- (EventBuilder*) setReplyTo:(NSString*) value;
+- (EventBuilder*) clearReplyTo;
 @end
 
 @interface Device : PBGeneratedMessage {
@@ -827,6 +851,106 @@ BOOL HandMotionEventStateIsValidValue(HandMotionEventState value);
 - (Float32) roll;
 - (HandMotionEventBuilder*) setRoll:(Float32) value;
 - (HandMotionEventBuilder*) clearRoll;
+@end
+
+@interface OAuthRequestEvent : PBGeneratedMessage {
+@private
+  BOOL hasAuthUrl_:1;
+  NSString* authUrl;
+}
+- (BOOL) hasAuthUrl;
+@property (readonly, strong) NSString* authUrl;
+
++ (OAuthRequestEvent*) defaultInstance;
+- (OAuthRequestEvent*) defaultInstance;
+
++ (id<PBExtensionField>) event;
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (OAuthRequestEventBuilder*) builder;
++ (OAuthRequestEventBuilder*) builder;
++ (OAuthRequestEventBuilder*) builderWithPrototype:(OAuthRequestEvent*) prototype;
+- (OAuthRequestEventBuilder*) toBuilder;
+
++ (OAuthRequestEvent*) parseFromData:(NSData*) data;
++ (OAuthRequestEvent*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (OAuthRequestEvent*) parseFromInputStream:(NSInputStream*) input;
++ (OAuthRequestEvent*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (OAuthRequestEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (OAuthRequestEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface OAuthRequestEventBuilder : PBGeneratedMessageBuilder {
+@private
+  OAuthRequestEvent* result;
+}
+
+- (OAuthRequestEvent*) defaultInstance;
+
+- (OAuthRequestEventBuilder*) clear;
+- (OAuthRequestEventBuilder*) clone;
+
+- (OAuthRequestEvent*) build;
+- (OAuthRequestEvent*) buildPartial;
+
+- (OAuthRequestEventBuilder*) mergeFrom:(OAuthRequestEvent*) other;
+- (OAuthRequestEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (OAuthRequestEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasAuthUrl;
+- (NSString*) authUrl;
+- (OAuthRequestEventBuilder*) setAuthUrl:(NSString*) value;
+- (OAuthRequestEventBuilder*) clearAuthUrl;
+@end
+
+@interface OAuthResponseEvent : PBGeneratedMessage {
+@private
+  BOOL hasAuthCode_:1;
+  NSString* authCode;
+}
+- (BOOL) hasAuthCode;
+@property (readonly, strong) NSString* authCode;
+
++ (OAuthResponseEvent*) defaultInstance;
+- (OAuthResponseEvent*) defaultInstance;
+
++ (id<PBExtensionField>) event;
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (OAuthResponseEventBuilder*) builder;
++ (OAuthResponseEventBuilder*) builder;
++ (OAuthResponseEventBuilder*) builderWithPrototype:(OAuthResponseEvent*) prototype;
+- (OAuthResponseEventBuilder*) toBuilder;
+
++ (OAuthResponseEvent*) parseFromData:(NSData*) data;
++ (OAuthResponseEvent*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (OAuthResponseEvent*) parseFromInputStream:(NSInputStream*) input;
++ (OAuthResponseEvent*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (OAuthResponseEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (OAuthResponseEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface OAuthResponseEventBuilder : PBGeneratedMessageBuilder {
+@private
+  OAuthResponseEvent* result;
+}
+
+- (OAuthResponseEvent*) defaultInstance;
+
+- (OAuthResponseEventBuilder*) clear;
+- (OAuthResponseEventBuilder*) clone;
+
+- (OAuthResponseEvent*) build;
+- (OAuthResponseEvent*) buildPartial;
+
+- (OAuthResponseEventBuilder*) mergeFrom:(OAuthResponseEvent*) other;
+- (OAuthResponseEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (OAuthResponseEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasAuthCode;
+- (NSString*) authCode;
+- (OAuthResponseEventBuilder*) setAuthCode:(NSString*) value;
+- (OAuthResponseEventBuilder*) clearAuthCode;
 @end
 
 

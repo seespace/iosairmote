@@ -39,6 +39,10 @@ static ProtoHelper *instance;
   return instance;
 }
 
++ (Event *)parseFromData:(NSData *)data {
+    return [Event parseFromData:data extensionRegistry:instance.registry];
+}
+
 + (SInt64)now {
   return (SInt64)[[NSDate date] timeIntervalSince1970] * 1000;
 }
@@ -329,6 +333,24 @@ static ProtoHelper *instance;
   [builder setExtension:[GestureEvent event] value:event];
 
   return [builder build];
+}
+
++ (Event *)oauthResponseWithCode:(NSString *)code
+                          target:(NSString *)target {
+    [self ensureInitialized];
+    
+    OAuthResponseEvent *event = [[[[OAuthResponseEventBuilder alloc] init] setAuthCode:code] build];
+    
+    // Build actual event
+    EventBuilder *builder = [[EventBuilder alloc] init];
+    builder.target = target;
+    builder.timestamp = 0;
+    builder.trackingAreaWidth = 0;
+    builder.trackingAreaHeight = 0;
+    builder.type = EventTypeOauthResponse;
+    [builder setExtension:[OAuthResponseEvent event] value:event];
+    
+    return [builder build];
 }
 
 @end

@@ -18,6 +18,8 @@
 
 + (SInt64)now;
 
++ (Event *)parseFromData:(NSData *)data;
+
 + (Device *)currentDevice;
 
 + (Phase)phaseFromUITouchPhase:(UITouchPhase)phase;
@@ -82,4 +84,6 @@
                                    state:(GestureEventState)state
                                 duration:(SInt64)duration;
 
++ (Event *)oauthResponseWithCode:(NSString *)code
+                          target:(NSString *)target;
 @end

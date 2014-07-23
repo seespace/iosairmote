@@ -10,6 +10,8 @@ static id<PBExtensionField> MotionEvent_event = nil;
 static id<PBExtensionField> KeypressEvent_event = nil;
 static id<PBExtensionField> GestureEvent_event = nil;
 static id<PBExtensionField> HandMotionEvent_event = nil;
+static id<PBExtensionField> OAuthRequestEvent_event = nil;
+static id<PBExtensionField> OAuthResponseEvent_event = nil;
 static PBExtensionRegistry* extensionRegistry = nil;
 + (PBExtensionRegistry*) extensionRegistry {
   return extensionRegistry;
@@ -71,6 +73,24 @@ static PBExtensionRegistry* extensionRegistry = nil;
                                         isRepeated:NO
                                           isPacked:NO
                             isMessageSetWireFormat:NO];
+    OAuthRequestEvent_event =
+      [PBConcreteExtensionField extensionWithType:PBExtensionTypeMessage
+                                     extendedClass:[Event class]
+                                       fieldNumber:106
+                                      defaultValue:[OAuthRequestEvent defaultInstance]
+                               messageOrGroupClass:[OAuthRequestEvent class]
+                                        isRepeated:NO
+                                          isPacked:NO
+                            isMessageSetWireFormat:NO];
+    OAuthResponseEvent_event =
+      [PBConcreteExtensionField extensionWithType:PBExtensionTypeMessage
+                                     extendedClass:[Event class]
+                                       fieldNumber:107
+                                      defaultValue:[OAuthResponseEvent defaultInstance]
+                               messageOrGroupClass:[OAuthResponseEvent class]
+                                        isRepeated:NO
+                                          isPacked:NO
+                            isMessageSetWireFormat:NO];
     PBMutableExtensionRegistry* registry = [PBMutableExtensionRegistry registry];
     [self registerAllExtensions:registry];
     extensionRegistry = registry;
@@ -83,6 +103,8 @@ static PBExtensionRegistry* extensionRegistry = nil;
   [registry addExtension:KeypressEvent_event];
   [registry addExtension:GestureEvent_event];
   [registry addExtension:HandMotionEvent_event];
+  [registry addExtension:OAuthRequestEvent_event];
+  [registry addExtension:OAuthResponseEvent_event];
 }
 @end
 
@@ -103,6 +125,8 @@ BOOL PhaseIsValidValue(Phase value) {
 @property SInt64 timestamp;
 @property SInt32 trackingAreaWidth;
 @property SInt32 trackingAreaHeight;
+@property (strong) NSString* target;
+@property (strong) NSString* replyTo;
 @end
 
 @implementation Event
@@ -135,7 +159,23 @@ BOOL PhaseIsValidValue(Phase value) {
   hasTrackingAreaHeight_ = !!value_;
 }
 @synthesize trackingAreaHeight;
+- (BOOL) hasTarget {
+  return !!hasTarget_;
+}
+- (void) setHasTarget:(BOOL) value_ {
+  hasTarget_ = !!value_;
+}
+@synthesize target;
+- (BOOL) hasReplyTo {
+  return !!hasReplyTo_;
+}
+- (void) setHasReplyTo:(BOOL) value_ {
+  hasReplyTo_ = !!value_;
+}
+@synthesize replyTo;
 - (void) dealloc {
+  self.target = nil;
+  self.replyTo = nil;
 }
 - (id) init {
   if ((self = [super init])) {
@@ -143,6 +183,8 @@ BOOL PhaseIsValidValue(Phase value) {
     self.timestamp = 0L;
     self.trackingAreaWidth = 0;
     self.trackingAreaHeight = 0;
+    self.target = @"";
+    self.replyTo = @"";
   }
   return self;
 }
@@ -189,6 +231,12 @@ static Event* defaultEventInstance = nil;
   if (self.hasTrackingAreaHeight) {
     [output writeInt32:4 value:self.trackingAreaHeight];
   }
+  if (self.hasTarget) {
+    [output writeString:5 value:self.target];
+  }
+  if (self.hasReplyTo) {
+    [output writeString:6 value:self.replyTo];
+  }
   [self writeExtensionsToCodedOutputStream:output
                                       from:100
                                         to:536870912];
@@ -212,6 +260,12 @@ static Event* defaultEventInstance = nil;
   }
   if (self.hasTrackingAreaHeight) {
     size_ += computeInt32Size(4, self.trackingAreaHeight);
+  }
+  if (self.hasTarget) {
+    size_ += computeStringSize(5, self.target);
+  }
+  if (self.hasReplyTo) {
+    size_ += computeStringSize(6, self.replyTo);
   }
   size_ += [self extensionsSerializedSize];
   size_ += self.unknownFields.serializedSize;
@@ -261,6 +315,12 @@ static Event* defaultEventInstance = nil;
   if (self.hasTrackingAreaHeight) {
     [output appendFormat:@"%@%@: %@\n", indent, @"trackingAreaHeight", [NSNumber numberWithInteger:self.trackingAreaHeight]];
   }
+  if (self.hasTarget) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"target", self.target];
+  }
+  if (self.hasReplyTo) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"replyTo", self.replyTo];
+  }
   [self writeExtensionDescriptionToMutableString:(NSMutableString*)output
                                             from:100
                                               to:536870912
@@ -284,6 +344,10 @@ static Event* defaultEventInstance = nil;
       (!self.hasTrackingAreaWidth || self.trackingAreaWidth == otherMessage.trackingAreaWidth) &&
       self.hasTrackingAreaHeight == otherMessage.hasTrackingAreaHeight &&
       (!self.hasTrackingAreaHeight || self.trackingAreaHeight == otherMessage.trackingAreaHeight) &&
+      self.hasTarget == otherMessage.hasTarget &&
+      (!self.hasTarget || [self.target isEqual:otherMessage.target]) &&
+      self.hasReplyTo == otherMessage.hasReplyTo &&
+      (!self.hasReplyTo || [self.replyTo isEqual:otherMessage.replyTo]) &&
       [self isEqualExtensionsInOther:otherMessage from:100 to:536870912] &&
 
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
@@ -302,6 +366,12 @@ static Event* defaultEventInstance = nil;
   if (self.hasTrackingAreaHeight) {
     hashCode = hashCode * 31 + [[NSNumber numberWithInteger:self.trackingAreaHeight] hash];
   }
+  if (self.hasTarget) {
+    hashCode = hashCode * 31 + [self.target hash];
+  }
+  if (self.hasReplyTo) {
+    hashCode = hashCode * 31 + [self.replyTo hash];
+  }
   hashCode = hashCode * 31 + [self hashExtensionsFrom:100 to:536870912];
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -317,6 +387,8 @@ BOOL EventTypeIsValidValue(EventType value) {
     case EventTypeGesture:
     case EventTypeHandMotion:
     case EventTypeHandGesture:
+    case EventTypeOauthRequest:
+    case EventTypeOauthResponse:
       return YES;
     default:
       return NO;
@@ -375,6 +447,12 @@ BOOL EventTypeIsValidValue(EventType value) {
   if (other.hasTrackingAreaHeight) {
     [self setTrackingAreaHeight:other.trackingAreaHeight];
   }
+  if (other.hasTarget) {
+    [self setTarget:other.target];
+  }
+  if (other.hasReplyTo) {
+    [self setReplyTo:other.replyTo];
+  }
   [self mergeExtensionFields:other];
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -416,6 +494,14 @@ BOOL EventTypeIsValidValue(EventType value) {
       }
       case 32: {
         [self setTrackingAreaHeight:[input readInt32]];
+        break;
+      }
+      case 42: {
+        [self setTarget:[input readString]];
+        break;
+      }
+      case 50: {
+        [self setReplyTo:[input readString]];
         break;
       }
     }
@@ -483,6 +569,38 @@ BOOL EventTypeIsValidValue(EventType value) {
 - (EventBuilder*) clearTrackingAreaHeight {
   result.hasTrackingAreaHeight = NO;
   result.trackingAreaHeight = 0;
+  return self;
+}
+- (BOOL) hasTarget {
+  return result.hasTarget;
+}
+- (NSString*) target {
+  return result.target;
+}
+- (EventBuilder*) setTarget:(NSString*) value {
+  result.hasTarget = YES;
+  result.target = value;
+  return self;
+}
+- (EventBuilder*) clearTarget {
+  result.hasTarget = NO;
+  result.target = @"";
+  return self;
+}
+- (BOOL) hasReplyTo {
+  return result.hasReplyTo;
+}
+- (NSString*) replyTo {
+  return result.replyTo;
+}
+- (EventBuilder*) setReplyTo:(NSString*) value {
+  result.hasReplyTo = YES;
+  result.replyTo = value;
+  return self;
+}
+- (EventBuilder*) clearReplyTo {
+  result.hasReplyTo = NO;
+  result.replyTo = @"";
   return self;
 }
 @end
@@ -3513,6 +3631,427 @@ BOOL HandMotionEventStateIsValidValue(HandMotionEventState value) {
 - (HandMotionEventBuilder*) clearRoll {
   result.hasRoll = NO;
   result.roll = 0;
+  return self;
+}
+@end
+
+@interface OAuthRequestEvent ()
+@property (strong) NSString* authUrl;
+@end
+
+@implementation OAuthRequestEvent
+
+- (BOOL) hasAuthUrl {
+  return !!hasAuthUrl_;
+}
+- (void) setHasAuthUrl:(BOOL) value_ {
+  hasAuthUrl_ = !!value_;
+}
+@synthesize authUrl;
+- (void) dealloc {
+  self.authUrl = nil;
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.authUrl = @"";
+  }
+  return self;
+}
++ (id<PBExtensionField>) event {
+  return OAuthRequestEvent_event;
+}
+static OAuthRequestEvent* defaultOAuthRequestEventInstance = nil;
++ (void) initialize {
+  if (self == [OAuthRequestEvent class]) {
+    defaultOAuthRequestEventInstance = [[OAuthRequestEvent alloc] init];
+  }
+}
++ (OAuthRequestEvent*) defaultInstance {
+  return defaultOAuthRequestEventInstance;
+}
+- (OAuthRequestEvent*) defaultInstance {
+  return defaultOAuthRequestEventInstance;
+}
+- (BOOL) isInitialized {
+  if (!self.hasAuthUrl) {
+    return NO;
+  }
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasAuthUrl) {
+    [output writeString:1 value:self.authUrl];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (SInt32) serializedSize {
+  __block SInt32 size_ = memoizedSerializedSize;
+  if (size_ != -1) {
+    return size_;
+  }
+
+  size_ = 0;
+  if (self.hasAuthUrl) {
+    size_ += computeStringSize(1, self.authUrl);
+  }
+  size_ += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size_;
+  return size_;
+}
++ (OAuthRequestEvent*) parseFromData:(NSData*) data {
+  return (OAuthRequestEvent*)[[[OAuthRequestEvent builder] mergeFromData:data] build];
+}
++ (OAuthRequestEvent*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (OAuthRequestEvent*)[[[OAuthRequestEvent builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (OAuthRequestEvent*) parseFromInputStream:(NSInputStream*) input {
+  return (OAuthRequestEvent*)[[[OAuthRequestEvent builder] mergeFromInputStream:input] build];
+}
++ (OAuthRequestEvent*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (OAuthRequestEvent*)[[[OAuthRequestEvent builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (OAuthRequestEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (OAuthRequestEvent*)[[[OAuthRequestEvent builder] mergeFromCodedInputStream:input] build];
+}
++ (OAuthRequestEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (OAuthRequestEvent*)[[[OAuthRequestEvent builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (OAuthRequestEventBuilder*) builder {
+  return [[OAuthRequestEventBuilder alloc] init];
+}
++ (OAuthRequestEventBuilder*) builderWithPrototype:(OAuthRequestEvent*) prototype {
+  return [[OAuthRequestEvent builder] mergeFrom:prototype];
+}
+- (OAuthRequestEventBuilder*) builder {
+  return [OAuthRequestEvent builder];
+}
+- (OAuthRequestEventBuilder*) toBuilder {
+  return [OAuthRequestEvent builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasAuthUrl) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"authUrl", self.authUrl];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[OAuthRequestEvent class]]) {
+    return NO;
+  }
+  OAuthRequestEvent *otherMessage = other;
+  return
+      self.hasAuthUrl == otherMessage.hasAuthUrl &&
+      (!self.hasAuthUrl || [self.authUrl isEqual:otherMessage.authUrl]) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  __block NSUInteger hashCode = 7;
+  if (self.hasAuthUrl) {
+    hashCode = hashCode * 31 + [self.authUrl hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+@interface OAuthRequestEventBuilder()
+@property (strong) OAuthRequestEvent* result;
+@end
+
+@implementation OAuthRequestEventBuilder
+@synthesize result;
+- (void) dealloc {
+  self.result = nil;
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.result = [[OAuthRequestEvent alloc] init];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return result;
+}
+- (OAuthRequestEventBuilder*) clear {
+  self.result = [[OAuthRequestEvent alloc] init];
+  return self;
+}
+- (OAuthRequestEventBuilder*) clone {
+  return [OAuthRequestEvent builderWithPrototype:result];
+}
+- (OAuthRequestEvent*) defaultInstance {
+  return [OAuthRequestEvent defaultInstance];
+}
+- (OAuthRequestEvent*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (OAuthRequestEvent*) buildPartial {
+  OAuthRequestEvent* returnMe = result;
+  self.result = nil;
+  return returnMe;
+}
+- (OAuthRequestEventBuilder*) mergeFrom:(OAuthRequestEvent*) other {
+  if (other == [OAuthRequestEvent defaultInstance]) {
+    return self;
+  }
+  if (other.hasAuthUrl) {
+    [self setAuthUrl:other.authUrl];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (OAuthRequestEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (OAuthRequestEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    SInt32 tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 10: {
+        [self setAuthUrl:[input readString]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasAuthUrl {
+  return result.hasAuthUrl;
+}
+- (NSString*) authUrl {
+  return result.authUrl;
+}
+- (OAuthRequestEventBuilder*) setAuthUrl:(NSString*) value {
+  result.hasAuthUrl = YES;
+  result.authUrl = value;
+  return self;
+}
+- (OAuthRequestEventBuilder*) clearAuthUrl {
+  result.hasAuthUrl = NO;
+  result.authUrl = @"";
+  return self;
+}
+@end
+
+@interface OAuthResponseEvent ()
+@property (strong) NSString* authCode;
+@end
+
+@implementation OAuthResponseEvent
+
+- (BOOL) hasAuthCode {
+  return !!hasAuthCode_;
+}
+- (void) setHasAuthCode:(BOOL) value_ {
+  hasAuthCode_ = !!value_;
+}
+@synthesize authCode;
+- (void) dealloc {
+  self.authCode = nil;
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.authCode = @"";
+  }
+  return self;
+}
++ (id<PBExtensionField>) event {
+  return OAuthResponseEvent_event;
+}
+static OAuthResponseEvent* defaultOAuthResponseEventInstance = nil;
++ (void) initialize {
+  if (self == [OAuthResponseEvent class]) {
+    defaultOAuthResponseEventInstance = [[OAuthResponseEvent alloc] init];
+  }
+}
++ (OAuthResponseEvent*) defaultInstance {
+  return defaultOAuthResponseEventInstance;
+}
+- (OAuthResponseEvent*) defaultInstance {
+  return defaultOAuthResponseEventInstance;
+}
+- (BOOL) isInitialized {
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasAuthCode) {
+    [output writeString:1 value:self.authCode];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (SInt32) serializedSize {
+  __block SInt32 size_ = memoizedSerializedSize;
+  if (size_ != -1) {
+    return size_;
+  }
+
+  size_ = 0;
+  if (self.hasAuthCode) {
+    size_ += computeStringSize(1, self.authCode);
+  }
+  size_ += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size_;
+  return size_;
+}
++ (OAuthResponseEvent*) parseFromData:(NSData*) data {
+  return (OAuthResponseEvent*)[[[OAuthResponseEvent builder] mergeFromData:data] build];
+}
++ (OAuthResponseEvent*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (OAuthResponseEvent*)[[[OAuthResponseEvent builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (OAuthResponseEvent*) parseFromInputStream:(NSInputStream*) input {
+  return (OAuthResponseEvent*)[[[OAuthResponseEvent builder] mergeFromInputStream:input] build];
+}
++ (OAuthResponseEvent*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (OAuthResponseEvent*)[[[OAuthResponseEvent builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (OAuthResponseEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (OAuthResponseEvent*)[[[OAuthResponseEvent builder] mergeFromCodedInputStream:input] build];
+}
++ (OAuthResponseEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (OAuthResponseEvent*)[[[OAuthResponseEvent builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (OAuthResponseEventBuilder*) builder {
+  return [[OAuthResponseEventBuilder alloc] init];
+}
++ (OAuthResponseEventBuilder*) builderWithPrototype:(OAuthResponseEvent*) prototype {
+  return [[OAuthResponseEvent builder] mergeFrom:prototype];
+}
+- (OAuthResponseEventBuilder*) builder {
+  return [OAuthResponseEvent builder];
+}
+- (OAuthResponseEventBuilder*) toBuilder {
+  return [OAuthResponseEvent builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasAuthCode) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"authCode", self.authCode];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[OAuthResponseEvent class]]) {
+    return NO;
+  }
+  OAuthResponseEvent *otherMessage = other;
+  return
+      self.hasAuthCode == otherMessage.hasAuthCode &&
+      (!self.hasAuthCode || [self.authCode isEqual:otherMessage.authCode]) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  __block NSUInteger hashCode = 7;
+  if (self.hasAuthCode) {
+    hashCode = hashCode * 31 + [self.authCode hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+@interface OAuthResponseEventBuilder()
+@property (strong) OAuthResponseEvent* result;
+@end
+
+@implementation OAuthResponseEventBuilder
+@synthesize result;
+- (void) dealloc {
+  self.result = nil;
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.result = [[OAuthResponseEvent alloc] init];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return result;
+}
+- (OAuthResponseEventBuilder*) clear {
+  self.result = [[OAuthResponseEvent alloc] init];
+  return self;
+}
+- (OAuthResponseEventBuilder*) clone {
+  return [OAuthResponseEvent builderWithPrototype:result];
+}
+- (OAuthResponseEvent*) defaultInstance {
+  return [OAuthResponseEvent defaultInstance];
+}
+- (OAuthResponseEvent*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (OAuthResponseEvent*) buildPartial {
+  OAuthResponseEvent* returnMe = result;
+  self.result = nil;
+  return returnMe;
+}
+- (OAuthResponseEventBuilder*) mergeFrom:(OAuthResponseEvent*) other {
+  if (other == [OAuthResponseEvent defaultInstance]) {
+    return self;
+  }
+  if (other.hasAuthCode) {
+    [self setAuthCode:other.authCode];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (OAuthResponseEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (OAuthResponseEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    SInt32 tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 10: {
+        [self setAuthCode:[input readString]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasAuthCode {
+  return result.hasAuthCode;
+}
+- (NSString*) authCode {
+  return result.authCode;
+}
+- (OAuthResponseEventBuilder*) setAuthCode:(NSString*) value {
+  result.hasAuthCode = YES;
+  result.authCode = value;
+  return self;
+}
+- (OAuthResponseEventBuilder*) clearAuthCode {
+  result.hasAuthCode = NO;
+  result.authCode = @"";
   return self;
 }
 @end

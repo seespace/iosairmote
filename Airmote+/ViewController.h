@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "GCDAsyncSocket.h"
 #import "GCDAsyncUdpSocket.h"
+#import "WebViewController.h"
 
-@interface ViewController : UIViewController <GCDAsyncSocketDelegate, NSNetServiceBrowserDelegate, NSNetServiceDelegate, UIActionSheetDelegate, UIGestureRecognizerDelegate>
+@interface ViewController : UIViewController <GCDAsyncSocketDelegate, NSNetServiceBrowserDelegate, NSNetServiceDelegate, UIActionSheetDelegate, UIGestureRecognizerDelegate, UIWebViewDelegate>
 
 @property (nonatomic, strong) GCDAsyncSocket *socket;
 @property (nonatomic, strong) NSString *hostName;
@@ -24,5 +25,6 @@
 
 
 @property (strong, nonatomic) IBOutlet UIView *trackpadView;
+@property (strong, nonatomic) IBOutlet WebViewController *webViewController;
 
 @end

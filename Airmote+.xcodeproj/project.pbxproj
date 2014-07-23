@@ -31,6 +31,8 @@
 		01A9023B182A3CBF00D85971 /* Airmote_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 01A9023A182A3CBF00D85971 /* Airmote_Tests.m */; };
 		01A90609182A49A100D85971 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 01A90607182A49A100D85971 /* AppDelegate.m */; };
 		01A9060A182A49A100D85971 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01A90608182A49A100D85971 /* ViewController.m */; };
+		01C1BE98197D09E90035F0B2 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C1BE97197D09E90035F0B2 /* WebViewController.m */; };
+		01E250BF197D212700547955 /* DDURLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E250BE197D212700547955 /* DDURLParser.m */; };
 		01F415611871DA4300029AFE /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 01F415601871DA4300029AFE /* Settings.bundle */; };
 		01FDFCBA182B515400543B52 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01FDFCB9182B515400543B52 /* ViewController.xib */; };
 		37347075505D4DBDB2B7D0D4 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B16347417AEC44FE911F15C2 /* libPods.a */; };
@@ -92,6 +94,10 @@
 		01A9023A182A3CBF00D85971 /* Airmote_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Airmote_Tests.m; sourceTree = "<group>"; };
 		01A90607182A49A100D85971 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		01A90608182A49A100D85971 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		01C1BE96197D09E90035F0B2 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
+		01C1BE97197D09E90035F0B2 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
+		01E250BD197D212700547955 /* DDURLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDURLParser.h; sourceTree = "<group>"; };
+		01E250BE197D212700547955 /* DDURLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDURLParser.m; sourceTree = "<group>"; };
 		01F415601871DA4300029AFE /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		01FDFCB9182B515400543B52 /* ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
 		B16347417AEC44FE911F15C2 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -187,6 +193,8 @@
 		01A90215182A3CBE00D85971 /* Airmote+ */ = {
 			isa = PBXGroup;
 			children = (
+				01E250BC197D211C00547955 /* Helpers */,
+				01C1BE95197D09DA0035F0B2 /* Web View */,
 				0141DB0A196586760067BFCA /* Proto */,
 				01A9021E182A3CBE00D85971 /* AppDelegate.h */,
 				01A90607182A49A100D85971 /* AppDelegate.m */,
@@ -227,6 +235,24 @@
 				01A90237182A3CBF00D85971 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		01C1BE95197D09DA0035F0B2 /* Web View */ = {
+			isa = PBXGroup;
+			children = (
+				01C1BE96197D09E90035F0B2 /* WebViewController.h */,
+				01C1BE97197D09E90035F0B2 /* WebViewController.m */,
+			);
+			name = "Web View";
+			sourceTree = "<group>";
+		};
+		01E250BC197D211C00547955 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				01E250BD197D212700547955 /* DDURLParser.h */,
+				01E250BE197D212700547955 /* DDURLParser.m */,
+			);
+			name = Helpers;
 			sourceTree = "<group>";
 		};
 		01FDFCB8182B512B00543B52 /* Main View */ = {
@@ -389,6 +415,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				0141DB0D196586850067BFCA /* Proto.pb.m in Sources */,
+				01E250BF197D212700547955 /* DDURLParser.m in Sources */,
+				01C1BE98197D09E90035F0B2 /* WebViewController.m in Sources */,
 				01A90609182A49A100D85971 /* AppDelegate.m in Sources */,
 				0141DB101965880A0067BFCA /* ProtoHelper.m in Sources */,
 				01A9021C182A3CBE00D85971 /* main.m in Sources */,
