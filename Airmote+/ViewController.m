@@ -492,7 +492,14 @@ static const uint8_t kOAuthTag = 12;
         [self.navigationController popViewControllerAnimated:YES];
         DDURLParser *parser = [[DDURLParser alloc] initWithURLString:request.URL.absoluteString];
         NSString *code = [parser valueForVariable:@"code"];
-        [self processOAuthResponse:code];
+        NSString *verifier = [parser valueForVariable:@"oauth_verifier"];
+        
+        if (![verifier isEqualToString:@""]) {
+          [self processOAuthResponse:verifier];
+        } else {
+          [self processOAuthResponse:code];
+        }
+        
         return NO;
     }
     
