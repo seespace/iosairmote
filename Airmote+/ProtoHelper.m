@@ -267,7 +267,8 @@ static ProtoHelper *instance;
   EventBuilder *builder = [[EventBuilder alloc] init];
   builder.timestamp = timestamp;
   builder.type = EventTypeGesture;
-  builder.trackingAreaWidth = builder.trackingAreaHeight = 0;
+  builder.trackingAreaWidth = width;
+  builder.trackingAreaHeight = height;
   [builder setExtension:[GestureEvent event] value:event];
 
   return [builder build];
