@@ -494,7 +494,7 @@ static const uint8_t kOAuthTag = 12;
         NSString *code = [parser valueForVariable:@"code"];
         NSString *verifier = [parser valueForVariable:@"oauth_verifier"];
         
-        if (![verifier isEqualToString:@""]) {
+        if (verifier != nil) {
           [self processOAuthResponse:verifier];
         } else {
           [self processOAuthResponse:code];
