@@ -60,6 +60,7 @@ static const uint8_t kOAuthTag = 12;
     
     _hosts = [[NSMutableArray alloc] init];
     _services = [[NSMutableArray alloc] init];
+  _oauthEvent = nil;
     
     _browser = [[NSNetServiceBrowser alloc] init];
     _browser.delegate = self;
@@ -454,9 +455,11 @@ static const uint8_t kOAuthTag = 12;
 #pragma mark OAuth
 
 - (void)processOAuthRequest:(Event* )event {
+  if  (_oauthEvent == nil) {
     _oauthEvent = event;
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"OAuth" message:@"InAir would like to open webview for OAuth authentication." delegate:self cancelButtonTitle:@"Don't Allow" otherButtonTitles:@"OK", nil];
     [alertView show];
+  }
 }
 
 - (void)processOAuthRequest {
@@ -481,6 +484,7 @@ static const uint8_t kOAuthTag = 12;
     [_socket writeData:data withTimeout:0 tag:kOAuthTag];
     
     _oauthEvent = nil;
+  [_webViewController clear];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
