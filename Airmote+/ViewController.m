@@ -54,9 +54,20 @@ static const uint8_t kOAuthTag = 12;
 @synthesize trackpadView = _trackpadView;
 @synthesize webViewController = _webViewController;
 
+- (void)clearCookies {
+  NSHTTPCookie *cookie;
+  NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+  for (cookie in [storage cookies]) {
+    [storage deleteCookie:cookie];
+  }
+  [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+  
+    [self clearCookies];
     
     _hosts = [[NSMutableArray alloc] init];
     _services = [[NSMutableArray alloc] init];
