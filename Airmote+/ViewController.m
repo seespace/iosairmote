@@ -28,7 +28,7 @@
 
 @implementation ViewController
 
-#define kServiceType @"_rsse._tcp."
+#define kServiceType @"_irpc._tcp."
 //#define kHostIP @"192.168.1.186"
 //#define kHostIP @"127.0.0.1"
 static const int kServicePort = 8989;
@@ -71,11 +71,11 @@ static const uint8_t kOAuthTag = 12;
     
     _hosts = [[NSMutableArray alloc] init];
     _services = [[NSMutableArray alloc] init];
-  _oauthEvent = nil;
+    _oauthEvent = nil;
     
     _browser = [[NSNetServiceBrowser alloc] init];
     _browser.delegate = self;
-//    [_browser searchForServicesOfType:kServiceType inDomain:@""];
+    [_browser searchForServicesOfType:kServiceType inDomain:@""];
 //    _hostIP = kHostIP;
   
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:@"applicationDidBecomeActive" object:nil];
@@ -134,34 +134,34 @@ static const uint8_t kOAuthTag = 12;
 - (void)viewWillAppear:(BOOL)animated {
     [self.navigationController setNavigationBarHidden:YES];
     
-    if (!_hostIP) {
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        _hostIP = [defaults objectForKey:@"host"];
-        if (_hostIP) {
-            [self connectToHost:_hostIP];
-        } else {
-            [self chooseServerWithMessage:@""];
-        }
-    }
+//    if (!_hostIP) {
+//        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+//        _hostIP = [defaults objectForKey:@"host"];
+//        if (_hostIP) {
+//            [self connectToHost:_hostIP];
+//        } else {
+//            [self chooseServerWithMessage:@""];
+//        }
+//    }
 }
 
 #pragma mark -
 #pragma mark Auto reconnect when become active
 
 - (void)applicationDidBecomeActive {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if (!_socket.isConnected) {
-        if (!_hostIP) {
-            _hostIP = [defaults objectForKey:@"host"];
-            if (_hostIP) {
-                [self connectToHost:_hostIP];
-            } else {
-                [self chooseServerWithMessage:@""];
-            }
-        } else {
-            [self connectToHost:_hostIP];
-        }
-    }
+//    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+//    if (!_socket.isConnected) {
+//        if (!_hostIP) {
+//            _hostIP = [defaults objectForKey:@"host"];
+//            if (_hostIP) {
+//                [self connectToHost:_hostIP];
+//            } else {
+//                [self chooseServerWithMessage:@""];
+//            }
+//        } else {
+//            [self connectToHost:_hostIP];
+//        }
+//    }
 }
 
 #pragma mark -
@@ -181,11 +181,11 @@ static const uint8_t kOAuthTag = 12;
 
 -(void)netServiceDidResolveAddress:(NSNetService *)aService {
     NSLog(@"Found %@", [aService hostName]);
-    if (![aService.hostName isEqualToString:@""] && ![_hosts containsObject:aService.hostName]) {
+    if (![aService.hostName isEqualToString:@""]) {
         [_hosts addObject:aService.hostName];
     }
     if (_hosts.count == _services.count && !_flag.serverSelectorDisplayed) {
-        [self chooseServerWithMessage:@"Choose a server"];
+        [self chooseServerWithMessage:@"Choose a device"];
     }
     
     //    if (_browserCount == 0 && !_selectorDisplayed) {
@@ -201,7 +201,7 @@ static const uint8_t kOAuthTag = 12;
         [_actionSheet setTitle:message];
         
         for (NSNetService *service in _services) {
-            NSString *title = [service.hostName stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@".%@", service.domain] withString:@""];
+            NSString *title = service.name;
             [_actionSheet addButtonWithTitle:title];
         }
         
@@ -214,7 +214,11 @@ static const uint8_t kOAuthTag = 12;
         NSNetService *service = (NSNetService *) [_services objectAtIndex:0];
         [self connectToHost:service.hostName];
     } else {
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"AirServer" message:message delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Connect", nil];
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"AirServer"
+                                                         message:message
+                                                        delegate:self
+                                               cancelButtonTitle:@"Cancel"
+                                               otherButtonTitles:@"Connect", nil];
         alert.alertViewStyle = UIAlertViewStylePlainTextInput;
         UITextField * alertTextField = [alert textFieldAtIndex:0];
         alertTextField.placeholder = @"inair.local or 127.0.0.1";
