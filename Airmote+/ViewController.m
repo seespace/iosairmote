@@ -9,6 +9,7 @@
 #import <netinet/tcp.h>
 #import <netinet/in.h>
 #import <unistd.h>
+#import <arpa/inet.h>
 
 #import "ViewController.h"
 #import <SVProgressHUD/SVProgressHUD.h>
@@ -16,10 +17,7 @@
 #import "DDURLParser.h"
 
 @interface ViewController () {
-    struct {
-        BOOL connected;
-        BOOL serverSelectorDisplayed;
-    } _flag;
+    BOOL _serverSelectorDisplayed;
     
     Event *_oauthEvent;
 }
@@ -149,19 +147,9 @@ static const uint8_t kOAuthTag = 12;
 #pragma mark Auto reconnect when become active
 
 - (void)applicationDidBecomeActive {
-//    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-//    if (!_socket.isConnected) {
-//        if (!_hostIP) {
-//            _hostIP = [defaults objectForKey:@"host"];
-//            if (_hostIP) {
-//                [self connectToHost:_hostIP];
-//            } else {
-//                [self chooseServerWithMessage:@""];
-//            }
-//        } else {
-//            [self connectToHost:_hostIP];
-//        }
-//    }
+    if (((_socket != nil && !_socket.isConnected) || (_socket == nil)) && !_serverSelectorDisplayed) {
+        [self chooseServerWithMessage:@"Choose a device"];
+    }
 }
 
 #pragma mark -
@@ -173,6 +161,10 @@ static const uint8_t kOAuthTag = 12;
     NSNetService *remoteService = aService;
     remoteService.delegate = self;
     [remoteService resolveWithTimeout:10];
+    
+    if (!more && !_serverSelectorDisplayed) {
+        [self chooseServerWithMessage:@"Choose a device"];
+    }
 }
 
 -(void)netServiceBrowser:(NSNetServiceBrowser *)aBrowser didRemoveService:(NSNetService *)aService moreComing:(BOOL)more {
@@ -184,7 +176,7 @@ static const uint8_t kOAuthTag = 12;
     if (![aService.hostName isEqualToString:@""]) {
         [_hosts addObject:aService.hostName];
     }
-    if (_hosts.count == _services.count && !_flag.serverSelectorDisplayed) {
+    if (_hosts.count == _services.count && !_serverSelectorDisplayed) {
         [self chooseServerWithMessage:@"Choose a device"];
     }
     
@@ -209,7 +201,7 @@ static const uint8_t kOAuthTag = 12;
         _actionSheet.cancelButtonIndex = _services.count;
         
         [_actionSheet showInView:self.view];
-        _flag.serverSelectorDisplayed = YES;
+        _serverSelectorDisplayed = YES;
     } else if (_services.count == 1) {
         NSNetService *service = (NSNetService *) [_services objectAtIndex:0];
         [self connectToHost:service.hostName];
@@ -242,8 +234,21 @@ static const uint8_t kOAuthTag = 12;
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex != actionSheet.cancelButtonIndex) {
         NSNetService *service = (NSNetService *) [_services objectAtIndex:buttonIndex];
-        [self connectToHost:service.hostName];
+        if (service.addresses.count > 0) {
+            NSString *address = [self getStringFromAddressData:[service.addresses objectAtIndex:0]];
+            [self connectToHost:address];
+        }
     }
+}
+
+- (NSString *)getStringFromAddressData:(NSData *)dataIn {
+    struct sockaddr_in  *socketAddress = nil;
+    NSString            *ipString = nil;
+    
+    socketAddress = (struct sockaddr_in *)[dataIn bytes];
+    ipString = [NSString stringWithFormat: @"%s",
+                inet_ntoa(socketAddress->sin_addr)];
+    return ipString;
 }
 
 - (void)connectToHost:(NSString *)hostname {
