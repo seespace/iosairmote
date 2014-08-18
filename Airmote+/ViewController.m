@@ -204,7 +204,10 @@ static const uint8_t kOAuthTag = 12;
         _serverSelectorDisplayed = YES;
     } else if (_services.count == 1) {
         NSNetService *service = (NSNetService *) [_services objectAtIndex:0];
-        [self connectToHost:service.hostName];
+        if (service.addresses.count > 0) {
+            NSString *address = [self getStringFromAddressData:[service.addresses objectAtIndex:0]];
+            [self connectToHost:address];
+        }
     } else {
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"AirServer"
                                                          message:message
@@ -326,8 +329,6 @@ static const uint8_t kOAuthTag = 12;
 {
     [SVProgressHUD showErrorWithStatus:[error localizedDescription]];
     NSLog(@"Error: %@. Code: %ld", [error localizedDescription], (long)[error code]);
-  
-    [self chooseServerWithMessage:@"Enter InAir IP Address"];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
