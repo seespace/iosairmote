@@ -13,7 +13,6 @@
 		0141DB09196585D00067BFCA /* Proto.proto in Resources */ = {isa = PBXBuildFile; fileRef = 0141DB08196585D00067BFCA /* Proto.proto */; };
 		0141DB0D196586850067BFCA /* Proto.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 0141DB0C196586850067BFCA /* Proto.pb.m */; };
 		0141DB101965880A0067BFCA /* ProtoHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0141DB0F1965880A0067BFCA /* ProtoHelper.m */; };
-		018BB543182ECAE80046EA59 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 018BB542182ECAE80046EA59 /* libz.dylib */; };
 		01A2464218373556004B45FB /* background_tile.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A2463E18373556004B45FB /* background_tile.png */; };
 		01A2464318373556004B45FB /* background_tile@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A2463F18373556004B45FB /* background_tile@2x.png */; };
 		01A2464418373556004B45FB /* ic_navigation_menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 01A2464018373556004B45FB /* ic_navigation_menu.png */; };
@@ -30,12 +29,13 @@
 		01A90239182A3CBF00D85971 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 01A90237182A3CBF00D85971 /* InfoPlist.strings */; };
 		01A9023B182A3CBF00D85971 /* Airmote_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 01A9023A182A3CBF00D85971 /* Airmote_Tests.m */; };
 		01A90609182A49A100D85971 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 01A90607182A49A100D85971 /* AppDelegate.m */; };
-		01A9060A182A49A100D85971 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01A90608182A49A100D85971 /* ViewController.m */; };
-		01C1BE98197D09E90035F0B2 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C1BE97197D09E90035F0B2 /* WebViewController.m */; };
 		01E250BF197D212700547955 /* DDURLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E250BE197D212700547955 /* DDURLParser.m */; };
 		01F415611871DA4300029AFE /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 01F415601871DA4300029AFE /* Settings.bundle */; };
-		01FDFCBA182B515400543B52 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01FDFCB9182B515400543B52 /* ViewController.xib */; };
 		37347075505D4DBDB2B7D0D4 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B16347417AEC44FE911F15C2 /* libPods.a */; };
+		B4B87A8119A20A5400E2BDD0 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B4B87A8019A20A5400E2BDD0 /* libz.dylib */; };
+		C584401A066D1F1903B6A015 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5844ED89441B78E5ED9D931 /* ViewController.m */; };
+		C5844045E9501BBBDD32072C /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C584421B3AFAC90EE9EFDA78 /* ViewController.xib */; };
+		C584443CEB09A26106DE0C2E /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C584485FF4326A8E9B08B3A4 /* WebViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,7 +85,6 @@
 		01A9021B182A3CBE00D85971 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		01A9021D182A3CBE00D85971 /* Airmote+-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Airmote+-Prefix.pch"; sourceTree = "<group>"; };
 		01A9021E182A3CBE00D85971 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		01A90224182A3CBE00D85971 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		01A90227182A3CBE00D85971 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		01A9022D182A3CBF00D85971 /* Airmote+Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Airmote+Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		01A9022E182A3CBF00D85971 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -93,14 +92,16 @@
 		01A90238182A3CBF00D85971 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		01A9023A182A3CBF00D85971 /* Airmote_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Airmote_Tests.m; sourceTree = "<group>"; };
 		01A90607182A49A100D85971 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		01A90608182A49A100D85971 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		01C1BE96197D09E90035F0B2 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
-		01C1BE97197D09E90035F0B2 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		01E250BD197D212700547955 /* DDURLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDURLParser.h; sourceTree = "<group>"; };
 		01E250BE197D212700547955 /* DDURLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDURLParser.m; sourceTree = "<group>"; };
 		01F415601871DA4300029AFE /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
-		01FDFCB9182B515400543B52 /* ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
 		B16347417AEC44FE911F15C2 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		B4B87A8019A20A5400E2BDD0 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		C584421B3AFAC90EE9EFDA78 /* ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
+		C584435BDD4471829B24E14F /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		C584485FF4326A8E9B08B3A4 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
+		C5844E2561A6F310A6AB2A6E /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
+		C5844ED89441B78E5ED9D931 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		E95074B5BA314146817E932C /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -109,10 +110,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B4B87A8119A20A5400E2BDD0 /* libz.dylib in Frameworks */,
 				013F0581186983AC0029A23E /* Security.framework in Frameworks */,
 				013F057F186983A50029A23E /* CFNetwork.framework in Frameworks */,
 				01A90212182A3CBE00D85971 /* CoreGraphics.framework in Frameworks */,
-				018BB543182ECAE80046EA59 /* libz.dylib in Frameworks */,
 				01A90214182A3CBE00D85971 /* UIKit.framework in Frameworks */,
 				01A90210182A3CBE00D85971 /* Foundation.framework in Frameworks */,
 				37347075505D4DBDB2B7D0D4 /* libPods.a in Frameworks */,
@@ -178,6 +179,7 @@
 		01A9020E182A3CBE00D85971 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B4B87A8019A20A5400E2BDD0 /* libz.dylib */,
 				013F0580186983AC0029A23E /* Security.framework */,
 				013F057E186983A50029A23E /* CFNetwork.framework */,
 				018BB542182ECAE80046EA59 /* libz.dylib */,
@@ -194,13 +196,12 @@
 			isa = PBXGroup;
 			children = (
 				01E250BC197D211C00547955 /* Helpers */,
-				01C1BE95197D09DA0035F0B2 /* Web View */,
 				0141DB0A196586760067BFCA /* Proto */,
 				01A9021E182A3CBE00D85971 /* AppDelegate.h */,
 				01A90607182A49A100D85971 /* AppDelegate.m */,
-				01FDFCB8182B512B00543B52 /* Main View */,
 				01A90216182A3CBE00D85971 /* Supporting Files */,
 				01A2464618373565004B45FB /* Resources */,
+				C58448E1ADE49C610D8758EA /* ViewControllers */,
 			);
 			path = "Airmote+";
 			sourceTree = "<group>";
@@ -237,15 +238,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		01C1BE95197D09DA0035F0B2 /* Web View */ = {
-			isa = PBXGroup;
-			children = (
-				01C1BE96197D09E90035F0B2 /* WebViewController.h */,
-				01C1BE97197D09E90035F0B2 /* WebViewController.m */,
-			);
-			name = "Web View";
-			sourceTree = "<group>";
-		};
 		01E250BC197D211C00547955 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -255,14 +247,16 @@
 			name = Helpers;
 			sourceTree = "<group>";
 		};
-		01FDFCB8182B512B00543B52 /* Main View */ = {
+		C58448E1ADE49C610D8758EA /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				01A90224182A3CBE00D85971 /* ViewController.h */,
-				01A90608182A49A100D85971 /* ViewController.m */,
-				01FDFCB9182B515400543B52 /* ViewController.xib */,
+				C5844ED89441B78E5ED9D931 /* ViewController.m */,
+				C584435BDD4471829B24E14F /* ViewController.h */,
+				C584421B3AFAC90EE9EFDA78 /* ViewController.xib */,
+				C584485FF4326A8E9B08B3A4 /* WebViewController.m */,
+				C5844E2561A6F310A6AB2A6E /* WebViewController.h */,
 			);
-			name = "Main View";
+			path = ViewControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -359,10 +353,10 @@
 				01F415611871DA4300029AFE /* Settings.bundle in Resources */,
 				01A90228182A3CBE00D85971 /* Images.xcassets in Resources */,
 				01A2464318373556004B45FB /* background_tile@2x.png in Resources */,
-				01FDFCBA182B515400543B52 /* ViewController.xib in Resources */,
 				010887CD182CCE6E008BDD22 /* Podfile in Resources */,
 				01A9021A182A3CBE00D85971 /* InfoPlist.strings in Resources */,
 				01A2464218373556004B45FB /* background_tile.png in Resources */,
+				C5844045E9501BBBDD32072C /* ViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -416,11 +410,11 @@
 			files = (
 				0141DB0D196586850067BFCA /* Proto.pb.m in Sources */,
 				01E250BF197D212700547955 /* DDURLParser.m in Sources */,
-				01C1BE98197D09E90035F0B2 /* WebViewController.m in Sources */,
 				01A90609182A49A100D85971 /* AppDelegate.m in Sources */,
 				0141DB101965880A0067BFCA /* ProtoHelper.m in Sources */,
 				01A9021C182A3CBE00D85971 /* main.m in Sources */,
-				01A9060A182A49A100D85971 /* ViewController.m in Sources */,
+				C584401A066D1F1903B6A015 /* ViewController.m in Sources */,
+				C584443CEB09A26106DE0C2E /* WebViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -553,8 +547,8 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Nhan Dang (UF35BNRQU9)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Cao Manh Tuan (23TPXVM8G4)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Cao Manh Tuan (23TPXVM8G4)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Airmote+-bnterijyewazbxeoxmsfsvinvpuz/Build/Products",
@@ -574,7 +568,7 @@
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Airmote+-bnterijyewazbxeoxmsfsvinvpuz/Build/Products/Debug-iphoneos",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "2E53A49C-86E2-43B3-B21B-C0E66252DD0B";
+				PROVISIONING_PROFILE = "5DADE342-5659-459B-BD03-077F1FE603F3";
 				SDKROOT = iphoneos;
 				WRAPPER_EXTENSION = app;
 			};
@@ -587,8 +581,8 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Nhan Dang (UF35BNRQU9)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Cao Manh Tuan (23TPXVM8G4)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Cao Manh Tuan (23TPXVM8G4)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Airmote+-bnterijyewazbxeoxmsfsvinvpuz/Build/Products",
@@ -608,7 +602,7 @@
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Airmote+-bnterijyewazbxeoxmsfsvinvpuz/Build/Products/Debug-iphoneos",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "2E53A49C-86E2-43B3-B21B-C0E66252DD0B";
+				PROVISIONING_PROFILE = "5DADE342-5659-459B-BD03-077F1FE603F3";
 				SDKROOT = iphoneos;
 				WRAPPER_EXTENSION = app;
 			};
