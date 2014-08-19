@@ -15,6 +15,7 @@
 #import <SVProgressHUD/SVProgressHUD.h>
 #import "ProtoHelper.h"
 #import "DDURLParser.h"
+#import "InstructionViewController.h"
 
 @interface ViewController () {
     BOOL _serverSelectorDisplayed;
@@ -66,7 +67,19 @@ static const uint8_t kOAuthTag = 12;
     [super viewDidLoad];
   
     [self clearCookies];
-    
+    BOOL connectedToInAirWifi = NO;
+    if (! connectedToInAirWifi)
+    {
+        InstructionViewController *instructionViewController = [[InstructionViewController alloc] init];
+        [self.navigationController presentViewController:instructionViewController animated:NO completion:NULL];
+        return;
+    }
+    else
+    {
+
+    }
+
+
     _hosts = [[NSMutableArray alloc] init];
     _services = [[NSMutableArray alloc] init];
     _oauthEvent = nil;

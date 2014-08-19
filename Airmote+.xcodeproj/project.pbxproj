@@ -32,7 +32,10 @@
 		01E250BF197D212700547955 /* DDURLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E250BE197D212700547955 /* DDURLParser.m */; };
 		01F415611871DA4300029AFE /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 01F415601871DA4300029AFE /* Settings.bundle */; };
 		37347075505D4DBDB2B7D0D4 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B16347417AEC44FE911F15C2 /* libPods.a */; };
+		B47E87C019A35FDB00328A96 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B47E87BF19A35FDB00328A96 /* Images.xcassets */; };
 		B4B87A8119A20A5400E2BDD0 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B4B87A8019A20A5400E2BDD0 /* libz.dylib */; };
+		B4BBD95319A3661500156A92 /* InstructionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BBD95119A3661500156A92 /* InstructionViewController.m */; };
+		B4BBD95419A3661500156A92 /* InstructionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4BBD95219A3661500156A92 /* InstructionViewController.xib */; };
 		C584401A066D1F1903B6A015 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5844ED89441B78E5ED9D931 /* ViewController.m */; };
 		C5844045E9501BBBDD32072C /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C584421B3AFAC90EE9EFDA78 /* ViewController.xib */; };
 		C584443CEB09A26106DE0C2E /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C584485FF4326A8E9B08B3A4 /* WebViewController.m */; };
@@ -96,7 +99,11 @@
 		01E250BE197D212700547955 /* DDURLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDURLParser.m; sourceTree = "<group>"; };
 		01F415601871DA4300029AFE /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		B16347417AEC44FE911F15C2 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		B47E87BF19A35FDB00328A96 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		B4B87A8019A20A5400E2BDD0 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		B4BBD95019A3661500156A92 /* InstructionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstructionViewController.h; sourceTree = "<group>"; };
+		B4BBD95119A3661500156A92 /* InstructionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstructionViewController.m; sourceTree = "<group>"; };
+		B4BBD95219A3661500156A92 /* InstructionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InstructionViewController.xib; sourceTree = "<group>"; };
 		C584421B3AFAC90EE9EFDA78 /* ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
 		C584435BDD4471829B24E14F /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		C584485FF4326A8E9B08B3A4 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
@@ -159,6 +166,7 @@
 		01A90203182A3CBE00D85971 = {
 			isa = PBXGroup;
 			children = (
+				B47E87BF19A35FDB00328A96 /* Images.xcassets */,
 				01A90215182A3CBE00D85971 /* Airmote+ */,
 				01A90234182A3CBF00D85971 /* Airmote+Tests */,
 				01A9020E182A3CBE00D85971 /* Frameworks */,
@@ -255,8 +263,19 @@
 				C584421B3AFAC90EE9EFDA78 /* ViewController.xib */,
 				C584485FF4326A8E9B08B3A4 /* WebViewController.m */,
 				C5844E2561A6F310A6AB2A6E /* WebViewController.h */,
+				C5844CAC08888A7C40594B7D /* Wifi */,
 			);
 			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		C5844CAC08888A7C40594B7D /* Wifi */ = {
+			isa = PBXGroup;
+			children = (
+				B4BBD95019A3661500156A92 /* InstructionViewController.h */,
+				B4BBD95119A3661500156A92 /* InstructionViewController.m */,
+				B4BBD95219A3661500156A92 /* InstructionViewController.xib */,
+			);
+			path = Wifi;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -355,8 +374,10 @@
 				01A2464318373556004B45FB /* background_tile@2x.png in Resources */,
 				010887CD182CCE6E008BDD22 /* Podfile in Resources */,
 				01A9021A182A3CBE00D85971 /* InfoPlist.strings in Resources */,
+				B47E87C019A35FDB00328A96 /* Images.xcassets in Resources */,
 				01A2464218373556004B45FB /* background_tile.png in Resources */,
 				C5844045E9501BBBDD32072C /* ViewController.xib in Resources */,
+				B4BBD95419A3661500156A92 /* InstructionViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -415,6 +436,7 @@
 				01A9021C182A3CBE00D85971 /* main.m in Sources */,
 				C584401A066D1F1903B6A015 /* ViewController.m in Sources */,
 				C584443CEB09A26106DE0C2E /* WebViewController.m in Sources */,
+				B4BBD95319A3661500156A92 /* InstructionViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
