@@ -15,7 +15,9 @@
 #import <SVProgressHUD/SVProgressHUD.h>
 #import "ProtoHelper.h"
 #import "DDURLParser.h"
-#import "InstructionViewController.h"
+
+#import "Event+Extension.h"
+#import "BonjourManager.h"
 
 @interface ViewController () {
     BOOL _serverSelectorDisplayed;
@@ -26,10 +28,10 @@
 @end
 
 @implementation ViewController
-
-#define kServiceType @"_irpc._tcp."
-//#define kHostIP @"192.168.1.186"
-//#define kHostIP @"127.0.0.1"
+{
+    NSArray *_services;
+    BonjourManager *_bonjourManager;
+}
 static const int kServicePort = 8989;
 
 static const uint8_t kTouchBeganTag = 2;
@@ -67,25 +69,14 @@ static const uint8_t kOAuthTag = 12;
     [super viewDidLoad];
   
     [self clearCookies];
-    BOOL connectedToInAirWifi = NO;
-    if (! connectedToInAirWifi)
-    {
-
-        return;
-    }
-    else
-    {
-
-    }
 
 
-    _hosts = [[NSMutableArray alloc] init];
-    _services = [[NSMutableArray alloc] init];
+
     _oauthEvent = nil;
-    
-    _browser = [[NSNetServiceBrowser alloc] init];
-    _browser.delegate = self;
-    [_browser searchForServicesOfType:kServiceType inDomain:@""];
+
+    _bonjourManager = [[BonjourManager alloc] init];
+    _bonjourManager.delegate = self;
+    [_bonjourManager start];
 //    _hostIP = kHostIP;
   
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:@"applicationDidBecomeActive" object:nil];
@@ -167,34 +158,22 @@ static const uint8_t kOAuthTag = 12;
 #pragma mark -
 #pragma mark Bonjour Bonjour ;)
 
--(void)netServiceBrowser:(NSNetServiceBrowser *)aBrowser didFindService:(NSNetService *)aService moreComing:(BOOL)more {
-    [_services addObject:aService];
-    
-    NSNetService *remoteService = aService;
-    remoteService.delegate = self;
-    [remoteService resolveWithTimeout:10];
-    
-    if (!more && !_serverSelectorDisplayed) {
+
+
+- (void)bonjourManagerDidResolveHostNames:(NSArray *)hosts
+{
+    if (!_serverSelectorDisplayed) {
         [self chooseServerWithMessage:@"Choose a device"];
     }
 }
 
--(void)netServiceBrowser:(NSNetServiceBrowser *)aBrowser didRemoveService:(NSNetService *)aService moreComing:(BOOL)more {
-    [_services removeObject:aService];
-}
-
--(void)netServiceDidResolveAddress:(NSNetService *)aService {
-    NSLog(@"Found %@", [aService hostName]);
-    if (![aService.hostName isEqualToString:@""]) {
-        [_hosts addObject:aService.hostName];
-    }
-    if (_hosts.count == _services.count && !_serverSelectorDisplayed) {
+- (void)bonjourManagerDidFoundServices:(NSArray *)services
+{
+    _services = services;
+    if (!_serverSelectorDisplayed) {
         [self chooseServerWithMessage:@"Choose a device"];
     }
-    
-    //    if (_browserCount == 0 && !_selectorDisplayed) {
-    //        [self chooseServerWithMessage:@"Choose one server"];
-    //    }
+
 }
 
 -(void)chooseServerWithMessage:(NSString* )message {
@@ -347,21 +326,12 @@ static const uint8_t kOAuthTag = 12;
     
 }
 
-- (NSData *)dataFromEvent:(Event *)event {
-  SInt32 length = (SInt32) htonl(event.data.length);
-  
-  NSMutableData *data = [NSMutableData dataWithBytes:&length length: sizeof(length)];
-  [data appendData:event.data];
-  
-  return data;
-}
-
 #pragma mark -
 #pragma mark Handshake
 
 - (void)registerDevice {
   Event *ev = [ProtoHelper deviceEventWithTimestamp:[ProtoHelper now] type:DeviceEventTypeRegister];
-  NSData *data = [self dataFromEvent:ev];
+  NSData *data = [Event dataFromEvent:ev];
   [_socket writeData:data withTimeout:0 tag:kSessionStartTag];
 }
 
@@ -372,7 +342,7 @@ static const uint8_t kOAuthTag = 12;
   if (motion == UIEventSubtypeMotionShake) {
     Event *ev = [ProtoHelper motionEventWithTimestamp:event.timestamp * 1000
                                                  type:MotionEventTypeShake];
-    NSData *data = [self dataFromEvent:ev];
+    NSData *data = [Event dataFromEvent:ev];
     [_socket writeData:data withTimeout:0 tag:kMotionShakeTag];
   }
 }
@@ -390,7 +360,7 @@ static const uint8_t kOAuthTag = 12;
                                       trackareaHeight:self.view.frame.size.height
                                                 phase:[ProtoHelper phaseFromUITouchPhase:touch.phase]];
   
-  NSData *data = [self dataFromEvent:ev];
+  NSData *data = [Event dataFromEvent:ev];
   [_socket writeData:data withTimeout:0 tag:tag];
 }
 
@@ -433,7 +403,7 @@ static const uint8_t kOAuthTag = 12;
                                              state:[ProtoHelper stateFromUIGestureRecognizerState:sender.state]
                                              count:(int)sender.numberOfTapsRequired];
   
-  NSData *data = [self dataFromEvent:ev];
+  NSData *data = [Event dataFromEvent:ev];
   [_socket writeData:data withTimeout:0 tag:kGestureStateChanged];
 }
 
@@ -452,7 +422,7 @@ static const uint8_t kOAuthTag = 12;
                                          velocityX:velocity.x
                                          velocityY:velocity.y];
   
-  NSData *data = [self dataFromEvent:ev];
+  NSData *data = [Event dataFromEvent:ev];
   [_socket writeData:data withTimeout:0 tag:kGestureStateChanged];
 }
 
@@ -466,7 +436,7 @@ static const uint8_t kOAuthTag = 12;
                                                state:[ProtoHelper stateFromUIGestureRecognizerState:sender.state]
                                            direction:[ProtoHelper directionFromUISwipeGestureRecognizerDirection:sender.direction]];
   
-  NSData *data = [self dataFromEvent:ev];
+  NSData *data = [Event dataFromEvent:ev];
   [_socket writeData:data withTimeout:0 tag:kGestureStateChanged];
 }
 
@@ -480,7 +450,7 @@ static const uint8_t kOAuthTag = 12;
                                                    state:[ProtoHelper stateFromUIGestureRecognizerState:sender.state]
                                                 duration:0];
   
-  NSData *data = [self dataFromEvent:ev];
+  NSData *data = [Event dataFromEvent:ev];
   [_socket writeData:data withTimeout:0 tag:kGestureStateChanged];
 }
 
@@ -513,7 +483,7 @@ static const uint8_t kOAuthTag = 12;
 - (void)processOAuthResponse:(NSString *)code {
     Event *ev = [ProtoHelper oauthResponseWithCode:code target:_oauthEvent.replyTo];
     
-    NSData *data = [self dataFromEvent:ev];
+    NSData *data = [Event dataFromEvent:ev];
     [_socket writeData:data withTimeout:0 tag:kOAuthTag];
     
     _oauthEvent = nil;
