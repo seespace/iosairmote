@@ -15,11 +15,11 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <rect key="frame" x="0.0" y="64" width="320" height="504"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView appearanceType="aqua" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="inAirLogo" translatesAutoresizingMaskIntoConstraints="NO" id="flz-qw-bZE">
-                    <rect key="frame" x="68" y="160" width="57" height="44"/>
+                    <rect key="frame" x="68" y="116" width="57" height="44"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="N7K-ri-3dy"/>
@@ -27,7 +27,7 @@
                     </constraints>
                 </imageView>
                 <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HJT-Gw-s4t" userLabel="ConnectedContainer">
-                    <rect key="frame" x="0.0" y="228" width="320" height="257"/>
+                    <rect key="frame" x="0.0" y="184" width="320" height="257"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <label appearanceType="aqua" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mw1-JL-xic">
@@ -92,7 +92,7 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                 </view>
                 <label appearanceType="aqua" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="760" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="8" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="185" translatesAutoresizingMaskIntoConstraints="NO" id="y5X-h1-M8l">
-                    <rect key="frame" x="68" y="234" width="185" height="111"/>
+                    <rect key="frame" x="68" y="190" width="185" height="111"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="185" id="n7u-7C-TmJ"/>
@@ -118,16 +118,17 @@
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
-            <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="y5X-h1-M8l" firstAttribute="top" secondItem="flz-qw-bZE" secondAttribute="bottom" constant="30" id="7CP-f2-eao"/>
                 <constraint firstItem="HJT-Gw-s4t" firstAttribute="top" secondItem="flz-qw-bZE" secondAttribute="bottom" constant="24" id="8WQ-x3-cIN"/>
                 <constraint firstItem="flz-qw-bZE" firstAttribute="leading" secondItem="y5X-h1-M8l" secondAttribute="leading" id="Fr7-1U-0Ys"/>
                 <constraint firstAttribute="centerX" secondItem="y5X-h1-M8l" secondAttribute="centerX" id="NJh-Ri-dMh"/>
-                <constraint firstItem="flz-qw-bZE" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="160" id="bWh-iM-ppA"/>
+                <constraint firstItem="flz-qw-bZE" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="116" id="bWh-iM-ppA"/>
                 <constraint firstItem="HJT-Gw-s4t" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="cWX-v8-qYS"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+            <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
     </objects>

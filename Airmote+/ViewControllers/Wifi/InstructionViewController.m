@@ -7,7 +7,8 @@
 //
 
 #import "InstructionViewController.h"
-
+#import "WiFiListViewController.h"
+#import "VerifyInAiRViewController.h"
 @interface InstructionViewController ()
 
 @end
@@ -30,15 +31,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    self.title = @"Setup InAiR";
     
-    [UIView animateWithDuration:0.5 delay:0.2 options:0 animations:^{
-        instructionLabel.alpha = 0.0;
-    } completion:^(BOOL finished) {
-        [UIView animateWithDuration:0.5 delay:0 options:0 animations:^{
-            connectedContainerView.alpha = 1.0;
-        } completion:NULL];
-    }];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(nextButtonPressed:)];
+}
+
+-(void)nextButtonPressed:(id) sender
+{
+    VerifyInAiRViewController *verifyVC = [[VerifyInAiRViewController alloc] init];
+    [self.navigationController pushViewController:verifyVC animated:YES];
 }
 
 - (void)didReceiveMemoryWarning

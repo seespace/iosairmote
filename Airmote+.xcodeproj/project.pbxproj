@@ -36,6 +36,16 @@
 		B4B87A8119A20A5400E2BDD0 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B4B87A8019A20A5400E2BDD0 /* libz.dylib */; };
 		B4BBD95319A3661500156A92 /* InstructionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BBD95119A3661500156A92 /* InstructionViewController.m */; };
 		B4BBD95419A3661500156A92 /* InstructionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4BBD95219A3661500156A92 /* InstructionViewController.xib */; };
+		B4F9933719A487EA006FC9C2 /* WiFiListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F9933519A487EA006FC9C2 /* WiFiListViewController.m */; };
+		B4F9933819A487EA006FC9C2 /* WiFiListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4F9933619A487EA006FC9C2 /* WiFiListViewController.xib */; };
+		B4F9933B19A497F1006FC9C2 /* WifiCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F9933A19A497F1006FC9C2 /* WifiCell.m */; };
+		B4F9933D19A498C2006FC9C2 /* WifiCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4F9933C19A498C2006FC9C2 /* WifiCell.xib */; };
+		B4F9934119A4DE77006FC9C2 /* VerifyInAiRViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F9933F19A4DE77006FC9C2 /* VerifyInAiRViewController.m */; };
+		B4F9934219A4DE77006FC9C2 /* VerifyInAiRViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4F9934019A4DE77006FC9C2 /* VerifyInAiRViewController.xib */; };
+		B4F9934619A4E097006FC9C2 /* ChangeNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F9934419A4E097006FC9C2 /* ChangeNameViewController.m */; };
+		B4F9934719A4E097006FC9C2 /* ChangeNameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4F9934519A4E097006FC9C2 /* ChangeNameViewController.xib */; };
+		B4F9934B19A4E925006FC9C2 /* EnterPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F9934919A4E925006FC9C2 /* EnterPasswordViewController.m */; };
+		B4F9934C19A4E925006FC9C2 /* EnterPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4F9934A19A4E925006FC9C2 /* EnterPasswordViewController.xib */; };
 		C584401A066D1F1903B6A015 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5844ED89441B78E5ED9D931 /* ViewController.m */; };
 		C5844045E9501BBBDD32072C /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C584421B3AFAC90EE9EFDA78 /* ViewController.xib */; };
 		C584443CEB09A26106DE0C2E /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C584485FF4326A8E9B08B3A4 /* WebViewController.m */; };
@@ -104,6 +114,21 @@
 		B4BBD95019A3661500156A92 /* InstructionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstructionViewController.h; sourceTree = "<group>"; };
 		B4BBD95119A3661500156A92 /* InstructionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstructionViewController.m; sourceTree = "<group>"; };
 		B4BBD95219A3661500156A92 /* InstructionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InstructionViewController.xib; sourceTree = "<group>"; };
+		B4F9933419A487EA006FC9C2 /* WiFiListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WiFiListViewController.h; sourceTree = "<group>"; };
+		B4F9933519A487EA006FC9C2 /* WiFiListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WiFiListViewController.m; sourceTree = "<group>"; };
+		B4F9933619A487EA006FC9C2 /* WiFiListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WiFiListViewController.xib; sourceTree = "<group>"; };
+		B4F9933919A497F1006FC9C2 /* WifiCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WifiCell.h; sourceTree = "<group>"; };
+		B4F9933A19A497F1006FC9C2 /* WifiCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WifiCell.m; sourceTree = "<group>"; };
+		B4F9933C19A498C2006FC9C2 /* WifiCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WifiCell.xib; sourceTree = "<group>"; };
+		B4F9933E19A4DE77006FC9C2 /* VerifyInAiRViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerifyInAiRViewController.h; sourceTree = "<group>"; };
+		B4F9933F19A4DE77006FC9C2 /* VerifyInAiRViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerifyInAiRViewController.m; sourceTree = "<group>"; };
+		B4F9934019A4DE77006FC9C2 /* VerifyInAiRViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VerifyInAiRViewController.xib; sourceTree = "<group>"; };
+		B4F9934319A4E097006FC9C2 /* ChangeNameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangeNameViewController.h; sourceTree = "<group>"; };
+		B4F9934419A4E097006FC9C2 /* ChangeNameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangeNameViewController.m; sourceTree = "<group>"; };
+		B4F9934519A4E097006FC9C2 /* ChangeNameViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChangeNameViewController.xib; sourceTree = "<group>"; };
+		B4F9934819A4E925006FC9C2 /* EnterPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnterPasswordViewController.h; sourceTree = "<group>"; };
+		B4F9934919A4E925006FC9C2 /* EnterPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnterPasswordViewController.m; sourceTree = "<group>"; };
+		B4F9934A19A4E925006FC9C2 /* EnterPasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EnterPasswordViewController.xib; sourceTree = "<group>"; };
 		C584421B3AFAC90EE9EFDA78 /* ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
 		C584435BDD4471829B24E14F /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		C584485FF4326A8E9B08B3A4 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
@@ -274,6 +299,21 @@
 				B4BBD95019A3661500156A92 /* InstructionViewController.h */,
 				B4BBD95119A3661500156A92 /* InstructionViewController.m */,
 				B4BBD95219A3661500156A92 /* InstructionViewController.xib */,
+				B4F9933419A487EA006FC9C2 /* WiFiListViewController.h */,
+				B4F9933519A487EA006FC9C2 /* WiFiListViewController.m */,
+				B4F9933619A487EA006FC9C2 /* WiFiListViewController.xib */,
+				B4F9933919A497F1006FC9C2 /* WifiCell.h */,
+				B4F9933A19A497F1006FC9C2 /* WifiCell.m */,
+				B4F9933C19A498C2006FC9C2 /* WifiCell.xib */,
+				B4F9933E19A4DE77006FC9C2 /* VerifyInAiRViewController.h */,
+				B4F9933F19A4DE77006FC9C2 /* VerifyInAiRViewController.m */,
+				B4F9934019A4DE77006FC9C2 /* VerifyInAiRViewController.xib */,
+				B4F9934319A4E097006FC9C2 /* ChangeNameViewController.h */,
+				B4F9934419A4E097006FC9C2 /* ChangeNameViewController.m */,
+				B4F9934519A4E097006FC9C2 /* ChangeNameViewController.xib */,
+				B4F9934819A4E925006FC9C2 /* EnterPasswordViewController.h */,
+				B4F9934919A4E925006FC9C2 /* EnterPasswordViewController.m */,
+				B4F9934A19A4E925006FC9C2 /* EnterPasswordViewController.xib */,
 			);
 			path = Wifi;
 			sourceTree = "<group>";
@@ -369,14 +409,19 @@
 				01A2464518373556004B45FB /* ic_navigation_menu@2x.png in Resources */,
 				0141DB09196585D00067BFCA /* Proto.proto in Resources */,
 				01A2464418373556004B45FB /* ic_navigation_menu.png in Resources */,
+				B4F9934719A4E097006FC9C2 /* ChangeNameViewController.xib in Resources */,
 				01F415611871DA4300029AFE /* Settings.bundle in Resources */,
+				B4F9933D19A498C2006FC9C2 /* WifiCell.xib in Resources */,
 				01A90228182A3CBE00D85971 /* Images.xcassets in Resources */,
+				B4F9934C19A4E925006FC9C2 /* EnterPasswordViewController.xib in Resources */,
 				01A2464318373556004B45FB /* background_tile@2x.png in Resources */,
 				010887CD182CCE6E008BDD22 /* Podfile in Resources */,
 				01A9021A182A3CBE00D85971 /* InfoPlist.strings in Resources */,
 				B47E87C019A35FDB00328A96 /* Images.xcassets in Resources */,
 				01A2464218373556004B45FB /* background_tile.png in Resources */,
 				C5844045E9501BBBDD32072C /* ViewController.xib in Resources */,
+				B4F9934219A4DE77006FC9C2 /* VerifyInAiRViewController.xib in Resources */,
+				B4F9933819A487EA006FC9C2 /* WiFiListViewController.xib in Resources */,
 				B4BBD95419A3661500156A92 /* InstructionViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -432,8 +477,13 @@
 				0141DB0D196586850067BFCA /* Proto.pb.m in Sources */,
 				01E250BF197D212700547955 /* DDURLParser.m in Sources */,
 				01A90609182A49A100D85971 /* AppDelegate.m in Sources */,
+				B4F9934119A4DE77006FC9C2 /* VerifyInAiRViewController.m in Sources */,
+				B4F9933719A487EA006FC9C2 /* WiFiListViewController.m in Sources */,
 				0141DB101965880A0067BFCA /* ProtoHelper.m in Sources */,
 				01A9021C182A3CBE00D85971 /* main.m in Sources */,
+				B4F9934619A4E097006FC9C2 /* ChangeNameViewController.m in Sources */,
+				B4F9933B19A497F1006FC9C2 /* WifiCell.m in Sources */,
+				B4F9934B19A4E925006FC9C2 /* EnterPasswordViewController.m in Sources */,
 				C584401A066D1F1903B6A015 /* ViewController.m in Sources */,
 				C584443CEB09A26106DE0C2E /* WebViewController.m in Sources */,
 				B4BBD95319A3661500156A92 /* InstructionViewController.m in Sources */,
