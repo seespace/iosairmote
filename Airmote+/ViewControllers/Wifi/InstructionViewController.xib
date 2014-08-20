@@ -7,6 +7,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="InstructionViewController">
             <connections>
+                <outlet property="confirmationCodeLabel" destination="mw1-JL-xic" id="sey-nx-WN7"/>
+                <outlet property="connectedContainerView" destination="HJT-Gw-s4t" id="JKF-qK-NAR"/>
+                <outlet property="instructionLabel" destination="y5X-h1-M8l" id="4Sb-lW-DxT"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -23,6 +26,71 @@
                         <constraint firstAttribute="width" constant="57" id="s3d-X8-hSN"/>
                     </constraints>
                 </imageView>
+                <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HJT-Gw-s4t" userLabel="ConnectedContainer">
+                    <rect key="frame" x="0.0" y="228" width="320" height="257"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <label appearanceType="aqua" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mw1-JL-xic">
+                            <rect key="frame" x="68" y="0.0" width="206" height="46"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="206" id="RF5-Vq-Ho0"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="40"/>
+                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label appearanceType="aqua" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Connected" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EbQ-iy-fRZ">
+                            <rect key="frame" x="68" y="41" width="179" height="20"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="179" id="xMa-ZL-6YC"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="17"/>
+                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label appearanceType="aqua" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Make sure the TV screen is displaying the same name as above" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="203" translatesAutoresizingMaskIntoConstraints="NO" id="DSU-DP-2dQ">
+                            <rect key="frame" x="68" y="64" width="203" height="49"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="203" id="qiX-b3-qzZ"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="14"/>
+                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button appearanceType="aqua" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3wP-mS-OYY">
+                            <rect key="frame" x="68" y="196" width="185" height="53"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="185" id="lXH-fs-G2k"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="32"/>
+                            <state key="normal" title="SETUP NOW">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <state key="highlighted" title="SETUP NOW">
+                                <color key="titleColor" red="1" green="0.3058823645" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
+                            </state>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="mw1-JL-xic" firstAttribute="leading" secondItem="HJT-Gw-s4t" secondAttribute="leading" constant="68" id="9St-V7-ztv"/>
+                        <constraint firstItem="EbQ-iy-fRZ" firstAttribute="top" secondItem="mw1-JL-xic" secondAttribute="bottom" constant="-5" id="Ey8-4l-dlb"/>
+                        <constraint firstAttribute="centerX" secondItem="3wP-mS-OYY" secondAttribute="centerX" id="Ru3-YA-HIM"/>
+                        <constraint firstItem="DSU-DP-2dQ" firstAttribute="leading" secondItem="EbQ-iy-fRZ" secondAttribute="leading" id="SBk-Ko-Twm"/>
+                        <constraint firstItem="mw1-JL-xic" firstAttribute="leading" secondItem="EbQ-iy-fRZ" secondAttribute="leading" id="T4Q-MP-uoa"/>
+                        <constraint firstAttribute="bottom" secondItem="3wP-mS-OYY" secondAttribute="bottom" constant="8" id="Vep-G8-pAW"/>
+                        <constraint firstAttribute="height" constant="257" id="cDV-ef-DbY"/>
+                        <constraint firstAttribute="width" constant="320" id="cpc-2T-Q7S"/>
+                        <constraint firstItem="3wP-mS-OYY" firstAttribute="top" secondItem="DSU-DP-2dQ" secondAttribute="bottom" constant="83" id="hx3-kX-4Fq"/>
+                        <constraint firstItem="DSU-DP-2dQ" firstAttribute="top" secondItem="EbQ-iy-fRZ" secondAttribute="bottom" constant="3" id="qNm-AP-4M5"/>
+                        <constraint firstItem="mw1-JL-xic" firstAttribute="top" secondItem="HJT-Gw-s4t" secondAttribute="top" id="ycg-jI-jMx"/>
+                    </constraints>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                </view>
                 <label appearanceType="aqua" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="760" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="8" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="185" translatesAutoresizingMaskIntoConstraints="NO" id="y5X-h1-M8l">
                     <rect key="frame" x="68" y="234" width="185" height="111"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -53,9 +121,11 @@
             <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
             <constraints>
                 <constraint firstItem="y5X-h1-M8l" firstAttribute="top" secondItem="flz-qw-bZE" secondAttribute="bottom" constant="30" id="7CP-f2-eao"/>
+                <constraint firstItem="HJT-Gw-s4t" firstAttribute="top" secondItem="flz-qw-bZE" secondAttribute="bottom" constant="24" id="8WQ-x3-cIN"/>
                 <constraint firstItem="flz-qw-bZE" firstAttribute="leading" secondItem="y5X-h1-M8l" secondAttribute="leading" id="Fr7-1U-0Ys"/>
                 <constraint firstAttribute="centerX" secondItem="y5X-h1-M8l" secondAttribute="centerX" id="NJh-Ri-dMh"/>
                 <constraint firstItem="flz-qw-bZE" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="160" id="bWh-iM-ppA"/>
+                <constraint firstItem="HJT-Gw-s4t" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="cWX-v8-qYS"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
