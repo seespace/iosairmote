@@ -48,7 +48,9 @@
 		B4F9934C19A4E925006FC9C2 /* EnterPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4F9934A19A4E925006FC9C2 /* EnterPasswordViewController.xib */; };
 		C584401A066D1F1903B6A015 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5844ED89441B78E5ED9D931 /* ViewController.m */; };
 		C5844045E9501BBBDD32072C /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C584421B3AFAC90EE9EFDA78 /* ViewController.xib */; };
+		C58441B46815767B70AA5966 /* BonjourManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C584416A29484E52858F86F6 /* BonjourManager.m */; };
 		C584443CEB09A26106DE0C2E /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C584485FF4326A8E9B08B3A4 /* WebViewController.m */; };
+		C584471B49D0CE130B025D7F /* Event+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = C584418E08FB8FB0F1DDF896 /* Event+Extension.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -129,9 +131,13 @@
 		B4F9934819A4E925006FC9C2 /* EnterPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnterPasswordViewController.h; sourceTree = "<group>"; };
 		B4F9934919A4E925006FC9C2 /* EnterPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnterPasswordViewController.m; sourceTree = "<group>"; };
 		B4F9934A19A4E925006FC9C2 /* EnterPasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EnterPasswordViewController.xib; sourceTree = "<group>"; };
+		C584416A29484E52858F86F6 /* BonjourManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BonjourManager.m; sourceTree = "<group>"; };
+		C584418E08FB8FB0F1DDF896 /* Event+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Event+Extension.m"; sourceTree = "<group>"; };
 		C584421B3AFAC90EE9EFDA78 /* ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
 		C584435BDD4471829B24E14F /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		C58447673E7AFDD47F95408F /* BonjourManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BonjourManager.h; sourceTree = "<group>"; };
 		C584485FF4326A8E9B08B3A4 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
+		C58448D5F1B330194444A5F2 /* Event+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Event+Extension.h"; sourceTree = "<group>"; };
 		C5844E2561A6F310A6AB2A6E /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		C5844ED89441B78E5ED9D931 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		E95074B5BA314146817E932C /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
@@ -235,6 +241,8 @@
 				01A90216182A3CBE00D85971 /* Supporting Files */,
 				01A2464618373565004B45FB /* Resources */,
 				C58448E1ADE49C610D8758EA /* ViewControllers */,
+				C5844155D2C1820D6F594B0B /* Categories */,
+				C5844F6ADDED29C7F925909D /* Data */,
 			);
 			path = "Airmote+";
 			sourceTree = "<group>";
@@ -280,6 +288,15 @@
 			name = Helpers;
 			sourceTree = "<group>";
 		};
+		C5844155D2C1820D6F594B0B /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				C584418E08FB8FB0F1DDF896 /* Event+Extension.m */,
+				C58448D5F1B330194444A5F2 /* Event+Extension.h */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
 		C58448E1ADE49C610D8758EA /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -316,6 +333,15 @@
 				B4F9934A19A4E925006FC9C2 /* EnterPasswordViewController.xib */,
 			);
 			path = Wifi;
+			sourceTree = "<group>";
+		};
+		C5844F6ADDED29C7F925909D /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				C584416A29484E52858F86F6 /* BonjourManager.m */,
+				C58447673E7AFDD47F95408F /* BonjourManager.h */,
+			);
+			path = Data;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -487,6 +513,8 @@
 				C584401A066D1F1903B6A015 /* ViewController.m in Sources */,
 				C584443CEB09A26106DE0C2E /* WebViewController.m in Sources */,
 				B4BBD95319A3661500156A92 /* InstructionViewController.m in Sources */,
+				C584471B49D0CE130B025D7F /* Event+Extension.m in Sources */,
+				C58441B46815767B70AA5966 /* BonjourManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -642,6 +670,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "5DADE342-5659-459B-BD03-077F1FE603F3";
 				SDKROOT = iphoneos;
+				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/Pods\"/**";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -676,6 +705,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "5DADE342-5659-459B-BD03-077F1FE603F3";
 				SDKROOT = iphoneos;
+				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/Pods\"/**";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

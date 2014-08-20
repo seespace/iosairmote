@@ -10,8 +10,9 @@
 #import "GCDAsyncSocket.h"
 #import "GCDAsyncUdpSocket.h"
 #import "WebViewController.h"
+#import "BonjourManager.h"
 
-@interface ViewController : UIViewController <GCDAsyncSocketDelegate, NSNetServiceBrowserDelegate, NSNetServiceDelegate, UIActionSheetDelegate, UIGestureRecognizerDelegate, UIWebViewDelegate>
+@interface ViewController : UIViewController <GCDAsyncSocketDelegate, NSNetServiceBrowserDelegate, NSNetServiceDelegate, UIActionSheetDelegate, UIGestureRecognizerDelegate, UIWebViewDelegate, BonjourManagerDelegate>
 
 @property (nonatomic, strong) GCDAsyncSocket *socket;
 @property (nonatomic, strong) NSString *hostName;
@@ -19,9 +20,6 @@
 @property (nonatomic) NSInteger hostPort;
 
 @property (nonatomic, strong) UIActionSheet *actionSheet;
-@property (readwrite, retain) NSNetServiceBrowser *browser;
-@property (readwrite, retain) NSMutableArray *services;
-@property (readwrite, retain) NSMutableArray *hosts;
 
 
 @property (strong, nonatomic) IBOutlet UIView *trackpadView;
