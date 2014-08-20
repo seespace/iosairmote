@@ -70,8 +70,7 @@ static const uint8_t kOAuthTag = 12;
     BOOL connectedToInAirWifi = NO;
     if (! connectedToInAirWifi)
     {
-        InstructionViewController *instructionViewController = [[InstructionViewController alloc] init];
-        [self.navigationController presentViewController:instructionViewController animated:NO completion:NULL];
+
         return;
     }
     else

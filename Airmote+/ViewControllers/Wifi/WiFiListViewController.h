@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WiFiListViewController : UIViewController
+@interface WiFiListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 @end

@@ -7,7 +7,7 @@
 //
 
 #import "VerifyInAiRViewController.h"
-
+#import "ChangeNameViewController.h"
 @interface VerifyInAiRViewController ()
 
 @end
@@ -26,7 +26,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    self.title = @"Verify InAiR";
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(nextButtonPressed:)];
+    if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+
+}
+
+-(void)nextButtonPressed:(id) sender
+{
+    ChangeNameViewController *changeNameVC = [[ChangeNameViewController alloc] init];
+    [self.navigationController pushViewController:changeNameVC animated:YES];
 }
 
 - (void)didReceiveMemoryWarning

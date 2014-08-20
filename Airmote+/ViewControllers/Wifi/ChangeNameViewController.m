@@ -7,7 +7,7 @@
 //
 
 #import "ChangeNameViewController.h"
-
+#import "WiFiListViewController.h"
 @interface ChangeNameViewController ()
 
 @end
@@ -26,8 +26,18 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    self.title = @"InAiR Name";
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(nextButtonPressed:)];
+    if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
+        self.edgesForExtendedLayout = UIRectEdgeNone;
 }
+
+-(void)nextButtonPressed:(id) sender
+{
+    WiFiListViewController *wifiListVC = [[WiFiListViewController alloc] init];
+    [self.navigationController pushViewController:wifiListVC animated:YES];
+}
+
 
 - (void)didReceiveMemoryWarning
 {
