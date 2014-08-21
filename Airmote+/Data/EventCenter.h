@@ -10,8 +10,7 @@
 @class Event;
 
 @protocol EventCenterDelegate <NSObject>
-
-@required
+@optional
 - (void)eventCenterDidConnect;
 
 - (void)eventCenterDidDisconnectWithError:(NSError *)error;
@@ -22,6 +21,8 @@
 @interface EventCenter : NSObject
 @property(nonatomic, strong) GCDAsyncSocket *socket;
 @property(nonatomic, weak) id <EventCenterDelegate> delegate;
+
++ (EventCenter *)defaultCenter;
 
 - (BOOL)isActive;
 

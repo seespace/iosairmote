@@ -51,6 +51,7 @@
 		C5844336C46484FF8281DEA2 /* TrackPadView.m in Sources */ = {isa = PBXBuildFile; fileRef = C58449F556AFB3C52D6C7D28 /* TrackPadView.m */; };
 		C584443CEB09A26106DE0C2E /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C584485FF4326A8E9B08B3A4 /* WebViewController.m */; };
 		C584471B49D0CE130B025D7F /* Event+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = C584418E08FB8FB0F1DDF896 /* Event+Extension.m */; };
+		C5844A0B86EA15AA83BB1977 /* NSData+NetService.m in Sources */ = {isa = PBXBuildFile; fileRef = C5844A3ABF93BE55E57B1EB8 /* NSData+NetService.m */; };
 		C5844F87624D1E90C002C719 /* EventCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = C58442F85EC1ECBA64716687 /* EventCenter.m */; };
 /* End PBXBuildFile section */
 
@@ -131,6 +132,7 @@
 		B4F9934819A4E925006FC9C2 /* EnterPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnterPasswordViewController.h; sourceTree = "<group>"; };
 		B4F9934919A4E925006FC9C2 /* EnterPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnterPasswordViewController.m; sourceTree = "<group>"; };
 		B4F9934A19A4E925006FC9C2 /* EnterPasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EnterPasswordViewController.xib; sourceTree = "<group>"; };
+		C584404E51B140564D994D4F /* NSData+NetService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+NetService.h"; sourceTree = "<group>"; };
 		C584416A29484E52858F86F6 /* BonjourManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BonjourManager.m; sourceTree = "<group>"; };
 		C584418E08FB8FB0F1DDF896 /* Event+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Event+Extension.m"; sourceTree = "<group>"; };
 		C584421B3AFAC90EE9EFDA78 /* ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 		C584485FF4326A8E9B08B3A4 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		C58448D5F1B330194444A5F2 /* Event+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Event+Extension.h"; sourceTree = "<group>"; };
 		C58449F556AFB3C52D6C7D28 /* TrackPadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrackPadView.m; sourceTree = "<group>"; };
+		C5844A3ABF93BE55E57B1EB8 /* NSData+NetService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+NetService.m"; sourceTree = "<group>"; };
 		C5844B7432A538FEF82462D1 /* TrackPadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackPadView.h; sourceTree = "<group>"; };
 		C5844D3A171D285B6A5A09D2 /* EventCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventCenter.h; sourceTree = "<group>"; };
 		C5844E2561A6F310A6AB2A6E /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
@@ -297,6 +300,8 @@
 			children = (
 				C584418E08FB8FB0F1DDF896 /* Event+Extension.m */,
 				C58448D5F1B330194444A5F2 /* Event+Extension.h */,
+				C5844A3ABF93BE55E57B1EB8 /* NSData+NetService.m */,
+				C584404E51B140564D994D4F /* NSData+NetService.h */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -531,6 +536,7 @@
 				C58441B46815767B70AA5966 /* BonjourManager.m in Sources */,
 				C5844F87624D1E90C002C719 /* EventCenter.m in Sources */,
 				C5844336C46484FF8281DEA2 /* TrackPadView.m in Sources */,
+				C5844A0B86EA15AA83BB1977 /* NSData+NetService.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
