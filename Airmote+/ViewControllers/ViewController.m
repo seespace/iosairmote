@@ -6,9 +6,7 @@
 //  Copyright (c) 2013 Long Nguyen. All rights reserved.
 //
 
-#import <netinet/tcp.h>
 #import <netinet/in.h>
-#import <unistd.h>
 #import <arpa/inet.h>
 
 #import "ViewController.h"
@@ -16,13 +14,12 @@
 #import "ProtoHelper.h"
 #import "DDURLParser.h"
 
-#import "Event+Extension.h"
-#import "BonjourManager.h"
 
 @interface ViewController () {
     BOOL _serverSelectorDisplayed;
-    
+
     Event *_oauthEvent;
+    EventCenter *_eventCenter;
 }
 
 @end
@@ -32,7 +29,6 @@
     NSArray *_services;
     BonjourManager *_bonjourManager;
 }
-static const int kServicePort = 8989;
 
 static const uint8_t kTouchBeganTag = 2;
 static const uint8_t kTouchMovedTag = 3;
@@ -41,17 +37,11 @@ static const uint8_t kTouchCancelledTag = 5;
 
 static const uint8_t kMotionShakeTag = 6;
 
-static const uint8_t kSessionStartTag = 9;
-//static const uint8_t kSessionEndTag = 10;
 
 static const uint8_t kGestureStateChanged = 11;
 
 static const uint8_t kOAuthTag = 12;
 
-@synthesize socket = _socket;
-@synthesize hostName = _hostName;
-@synthesize hostIP = _hostIP;
-@synthesize hostPort = _hostPort;
 @synthesize trackpadView = _trackpadView;
 @synthesize webViewController = _webViewController;
 
@@ -67,90 +57,77 @@ static const uint8_t kOAuthTag = 12;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-  
+
     [self clearCookies];
-
-
 
     _oauthEvent = nil;
 
     _bonjourManager = [[BonjourManager alloc] init];
     _bonjourManager.delegate = self;
     [_bonjourManager start];
-//    _hostIP = kHostIP;
-  
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:@"applicationDidBecomeActive" object:nil];
-    
+
     // Webview
     _webViewController = [[WebViewController alloc] init];
     [self.navigationController setNavigationBarHidden:YES];
-    
+
     // Gesture
-    
+
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHandle:)];
     tapGesture.numberOfTapsRequired = 1;
     tapGesture.cancelsTouchesInView = NO;
     [_trackpadView addGestureRecognizer:tapGesture];
-    
+
     UITapGestureRecognizer *doubleTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHandle:)];
     doubleTapGesture.numberOfTapsRequired = 2;
     doubleTapGesture.cancelsTouchesInView = NO;
     [_trackpadView addGestureRecognizer:doubleTapGesture];
-    
+
     [tapGesture requireGestureRecognizerToFail:doubleTapGesture];
-    
+
     UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressHandle:)];
     [_trackpadView addGestureRecognizer:longPressGesture];
-    
+
     UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeHandle:)];
     swipeLeft.direction = UISwipeGestureRecognizerDirectionLeft;
     swipeLeft.cancelsTouchesInView = NO;
     [_trackpadView addGestureRecognizer:swipeLeft];
-    
+
     UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeHandle:)];
     swipeRight.direction = UISwipeGestureRecognizerDirectionRight;
     swipeRight.cancelsTouchesInView = NO;
     [_trackpadView addGestureRecognizer:swipeRight];
-    
+
     UISwipeGestureRecognizer *swipeDown = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeHandle:)];
     swipeDown.direction = UISwipeGestureRecognizerDirectionDown;
     swipeDown.cancelsTouchesInView = NO;
     [_trackpadView addGestureRecognizer:swipeDown];
-    
+
     UISwipeGestureRecognizer *swipeUp = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeHandle:)];
     swipeUp.direction = UISwipeGestureRecognizerDirectionUp;
     swipeUp.cancelsTouchesInView = NO;
     [_trackpadView addGestureRecognizer:swipeUp];
-    
+
     UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panHandle:)];
     pan.maximumNumberOfTouches = 1;
     pan.cancelsTouchesInView = NO;
     [_trackpadView addGestureRecognizer:pan];
-    
+
     [pan requireGestureRecognizerToFail:longPressGesture];
-    
+
     pan.delegate = tapGesture.delegate = doubleTapGesture.delegate = swipeDown.delegate = swipeUp.delegate = swipeUp.delegate = swipeDown.delegate = pan.delegate = self;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [self.navigationController setNavigationBarHidden:YES];
-    
-//    if (!_hostIP) {
-//        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-//        _hostIP = [defaults objectForKey:@"host"];
-//        if (_hostIP) {
-//            [self connectToHost:_hostIP];
-//        } else {
-//            [self chooseServerWithMessage:@""];
-//        }
-//    }
 }
 
 #pragma mark -
 #pragma mark Auto reconnect when become active
 
 - (void)applicationDidBecomeActive {
-    if (((_socket != nil && !_socket.isConnected) || (_socket == nil)) && !_serverSelectorDisplayed) {
+    if (! _eventCenter.isActive && ! _serverSelectorDisplayed) {
         [self chooseServerWithMessage:@"Choose a device"];
     }
 }
@@ -180,17 +157,17 @@ static const uint8_t kOAuthTag = 12;
     if (_services.count > 1) {
         _actionSheet = [[UIActionSheet alloc] init];
         [_actionSheet setDelegate:self];
-        
+
         [_actionSheet setTitle:message];
-        
+
         for (NSNetService *service in _services) {
             NSString *title = service.name;
             [_actionSheet addButtonWithTitle:title];
         }
-        
+
         [_actionSheet addButtonWithTitle:@"Cancel"];
         _actionSheet.cancelButtonIndex = _services.count;
-        
+
         [_actionSheet showInView:self.view];
         _serverSelectorDisplayed = YES;
     } else if (_services.count == 1) {
@@ -238,7 +215,7 @@ static const uint8_t kOAuthTag = 12;
 - (NSString *)getStringFromAddressData:(NSData *)dataIn {
     struct sockaddr_in  *socketAddress = nil;
     NSString            *ipString = nil;
-    
+
     socketAddress = (struct sockaddr_in *)[dataIn bytes];
     ipString = [NSString stringWithFormat: @"%s",
                 inet_ntoa(socketAddress->sin_addr)];
@@ -246,93 +223,43 @@ static const uint8_t kOAuthTag = 12;
 }
 
 - (void)connectToHost:(NSString *)hostname {
-    _hostName = hostname;
 
-    _socket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
-    
-    [SVProgressHUD showWithStatus:@"Connecting" maskType:SVProgressHUDMaskTypeBlack];
+    _eventCenter.delegate = nil;
 
-    NSError *err = nil;
-
-    if (![_socket connectToHost:_hostName onPort:kServicePort withTimeout:3 error:&err]) {
-       NSLog(@"Could not connect to %@. Error: %@", _hostName, err);
+    _eventCenter = [[EventCenter alloc] init];
+    _eventCenter.delegate = self;
+    BOOL canStartConnection = [_eventCenter connectToHost:hostname];
+    if (canStartConnection)
+    {
+        [SVProgressHUD showWithStatus:@"Connecting" maskType:SVProgressHUDMaskTypeBlack];
     }
 }
 
-#pragma mark -
-#pragma mark Socket methods
 
-- (void)socket:(GCDAsyncSocket *)sock didAcceptNewSocket:(GCDAsyncSocket *)newSocket {
-    NSLog(@"New socket %@", newSocket);
-    [newSocket readDataWithTimeout:-1 tag:0];
-}
-
-- (void)socket:(GCDAsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag
+- (void)eventCenter:(EventCenter *)eventCenter receivedEvent:(Event *)event
 {
-    NSLog(@"Did read data");
-    
-    NSData *msg = [data subdataWithRange:NSMakeRange(4, data.length - 4)];
-    
-    Event* event = [ProtoHelper parseFromData:msg];
-    
     NSLog(@"%@", event);
-    
+
     // process events
     switch (event.type) {
         case EventTypeOauthRequest:
             [self processOAuthRequest:event];
             break;
-            
+
         default:
             break;
     }
-    
-    [_socket readDataWithTimeout:-1 tag:0];
 }
 
-- (void)socket:(GCDAsyncSocket *)sock didConnectToHost:(NSString *)host port:(UInt16)port
+- (void)eventCenterDidConnect
 {
-    NSLog(@"Connected to %@", host);
     [SVProgressHUD showSuccessWithStatus:@"Connected"];
-    // TCP_NODELAY
-    [_socket performBlock:^{
-        int fd = [_socket socketFD];
-        int on = 1;
-        if (setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, (char*)&on, sizeof(on)) == -1) {
-            NSLog(@"Could not set sock opt TCP_NODELAY: %s", strerror(errno));
-        }
-    }];
-  
-    _hostIP = host;
-    
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:host forKey:@"host"];
-    [defaults setInteger:port forKey:@"port"];
-  
-    // Register this device
-    [self registerDevice];
-    
-    [_socket readDataWithTimeout:-1 tag:0];
 }
 
-
-- (void)socketDidDisconnect:(GCDAsyncSocket *)sock withError:(NSError *)error
+- (void)eventCenterDidDisconnectWithError:(NSError *)error
 {
     [SVProgressHUD showErrorWithStatus:[error localizedDescription]];
     NSLog(@"Error: %@. Code: %ld", [error localizedDescription], (long)[error code]);
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    
-}
-
-#pragma mark -
-#pragma mark Handshake
-
-- (void)registerDevice {
-  Event *ev = [ProtoHelper deviceEventWithTimestamp:[ProtoHelper now] type:DeviceEventTypeRegister];
-  NSData *data = [Event dataFromEvent:ev];
-  [_socket writeData:data withTimeout:0 tag:kSessionStartTag];
 }
 
 #pragma mark -
@@ -342,8 +269,7 @@ static const uint8_t kOAuthTag = 12;
   if (motion == UIEventSubtypeMotionShake) {
     Event *ev = [ProtoHelper motionEventWithTimestamp:event.timestamp * 1000
                                                  type:MotionEventTypeShake];
-    NSData *data = [Event dataFromEvent:ev];
-    [_socket writeData:data withTimeout:0 tag:kMotionShakeTag];
+      [_eventCenter sendEvent:ev withTag:kMotionShakeTag];
   }
 }
 
@@ -359,17 +285,16 @@ static const uint8_t kOAuthTag = 12;
                                        trackareaWidth:self.view.frame.size.width
                                       trackareaHeight:self.view.frame.size.height
                                                 phase:[ProtoHelper phaseFromUITouchPhase:touch.phase]];
-  
-  NSData *data = [Event dataFromEvent:ev];
-  [_socket writeData:data withTimeout:0 tag:tag];
+
+    [_eventCenter sendEvent:ev withTag:tag];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    if (![_socket isConnected]) {
+    if (![_eventCenter isActive]) {
         [self applicationDidBecomeActive];
         return;
     }
-    
+
     [self sendTouch:[touches anyObject] withEvent:event tag:kTouchBeganTag];
 }
 
@@ -402,9 +327,8 @@ static const uint8_t kOAuthTag = 12;
                                    trackareaHeight:sender.view.frame.size.height
                                              state:[ProtoHelper stateFromUIGestureRecognizerState:sender.state]
                                              count:(int)sender.numberOfTapsRequired];
-  
-  NSData *data = [Event dataFromEvent:ev];
-  [_socket writeData:data withTimeout:0 tag:kGestureStateChanged];
+
+    [_eventCenter sendEvent:ev withTag:kGestureStateChanged];
 }
 
 - (void)panHandle:(UIPanGestureRecognizer *)sender {
@@ -421,9 +345,8 @@ static const uint8_t kOAuthTag = 12;
                                       translationY:translation.y
                                          velocityX:velocity.x
                                          velocityY:velocity.y];
-  
-  NSData *data = [Event dataFromEvent:ev];
-  [_socket writeData:data withTimeout:0 tag:kGestureStateChanged];
+
+    [_eventCenter sendEvent:ev withTag:kGestureStateChanged];
 }
 
 - (void)swipeHandle:(UISwipeGestureRecognizer *)sender {
@@ -435,9 +358,8 @@ static const uint8_t kOAuthTag = 12;
                                      trackareaHeight:sender.view.frame.size.height
                                                state:[ProtoHelper stateFromUIGestureRecognizerState:sender.state]
                                            direction:[ProtoHelper directionFromUISwipeGestureRecognizerDirection:sender.direction]];
-  
-  NSData *data = [Event dataFromEvent:ev];
-  [_socket writeData:data withTimeout:0 tag:kGestureStateChanged];
+
+    [_eventCenter sendEvent:ev withTag:kGestureStateChanged];
 }
 
 - (void)longPressHandle:(UILongPressGestureRecognizer *)sender {
@@ -449,9 +371,8 @@ static const uint8_t kOAuthTag = 12;
                                          trackareaHeight:sender.view.frame.size.height
                                                    state:[ProtoHelper stateFromUIGestureRecognizerState:sender.state]
                                                 duration:0];
-  
-  NSData *data = [Event dataFromEvent:ev];
-  [_socket writeData:data withTimeout:0 tag:kGestureStateChanged];
+
+    [_eventCenter sendEvent:ev withTag:kGestureStateChanged];
 }
 
 #pragma mark -
@@ -469,12 +390,12 @@ static const uint8_t kOAuthTag = 12;
     if (_oauthEvent == nil) {
         return;
     }
-    
+
     OAuthRequestEvent *event = [_oauthEvent getExtension:[OAuthRequestEvent event]];
     _webViewController.URL = [NSURL URLWithString:event.authUrl];
     _webViewController.delegate = self;
     [_webViewController load];
-    
+
     if (_webViewController.navigationController == nil) {
         [self.navigationController pushViewController:_webViewController animated:YES];
     }
@@ -482,10 +403,8 @@ static const uint8_t kOAuthTag = 12;
 
 - (void)processOAuthResponse:(NSString *)code {
     Event *ev = [ProtoHelper oauthResponseWithCode:code target:_oauthEvent.replyTo];
-    
-    NSData *data = [Event dataFromEvent:ev];
-    [_socket writeData:data withTimeout:0 tag:kOAuthTag];
-    
+
+    [_eventCenter sendEvent:ev withTag:kOAuthTag];
     _oauthEvent = nil;
   [_webViewController clear];
 }
@@ -500,16 +419,16 @@ static const uint8_t kOAuthTag = 12;
         DDURLParser *parser = [[DDURLParser alloc] initWithURLString:request.URL.absoluteString];
         NSString *code = [parser valueForVariable:@"code"];
         NSString *verifier = [parser valueForVariable:@"oauth_verifier"];
-        
+
         if (verifier != nil) {
           [self processOAuthResponse:verifier];
         } else {
           [self processOAuthResponse:code];
         }
-        
+
         return NO;
     }
-    
+
     return YES;
 }
 
