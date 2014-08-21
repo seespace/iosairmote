@@ -56,15 +56,6 @@ static const uint8_t kMotionShakeTag = 6;
 
 }
 
-- (WebViewController *)webViewController
-{
-    if (_webViewController == nil)
-    {
-        _webViewController = [[WebViewController alloc] init];
-    }
-
-    return _webViewController;
-}
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -96,8 +87,8 @@ static const uint8_t kMotionShakeTag = 6;
     }
 }
 
-#pragma mark -
-#pragma mark Bonjour Bonjour ;)
+#pragma mark - BonjourManagerDelegate
+
 
 - (void)bonjourManagerServiceNotFound
 {
@@ -117,7 +108,7 @@ static const uint8_t kMotionShakeTag = 6;
 }
 
 
-#pragma mark - Show action sheets
+#pragma mark - Action sheets
 - (void)chooseServerWithMessage:(NSString *)message
 {
     if (_services.count > 1)
@@ -171,17 +162,20 @@ static const uint8_t kMotionShakeTag = 6;
 }
 
 
-- (void)netService:(NSNetService *)sender didNotResolve:(NSDictionary *)errorDict
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    NSLog(@"Service is denied");
+    if (buttonIndex != actionSheet.cancelButtonIndex)
+    {
+        NSNetService *service = (NSNetService *) _services[buttonIndex];
+        [self connectToService:service];
+    }
+    else
+    {
+        _serverSelectorDisplayed = NO;
+    }
 }
 
-
-- (void)netServiceDidResolveAddress:(NSNetService *)service
-{
-    NSString *address = [self getStringFromAddressData:[service.addresses objectAtIndex:0]];
-    [self connectToHost:address];
-}
+#pragma mark - AlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -201,46 +195,7 @@ static const uint8_t kMotionShakeTag = 6;
     }
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex != actionSheet.cancelButtonIndex)
-    {
-        NSNetService *service = (NSNetService *) _services[buttonIndex];
-        [self connectToService:service];
-    }
-    else
-    {
-        _serverSelectorDisplayed = NO;
-    }
-}
 
-#pragma mark - Privates
-
-- (NSString *)getStringFromAddressData:(NSData *)dataIn
-{
-    struct sockaddr_in *socketAddress = nil;
-    NSString *ipString = nil;
-
-    socketAddress = (struct sockaddr_in *) [dataIn bytes];
-    ipString = [NSString stringWithFormat:@"%s",
-                                          inet_ntoa(socketAddress->sin_addr)];
-    return ipString;
-}
-
-- (void)connectToHost:(NSString *)hostname
-{
-
-    _eventCenter.delegate = nil;
-
-    _eventCenter = [[EventCenter alloc] init];
-    _trackpadView.eventCenter = _eventCenter;
-    _eventCenter.delegate = self;
-    BOOL canStartConnection = [_eventCenter connectToHost:hostname];
-    if (canStartConnection)
-    {
-        [SVProgressHUD showWithStatus:@"Connecting" maskType:SVProgressHUDMaskTypeBlack];
-    }
-}
 
 #pragma mark - EventCenterDelegate
 
@@ -269,6 +224,20 @@ static const uint8_t kMotionShakeTag = 6;
 {
     [SVProgressHUD showErrorWithStatus:[error localizedDescription]];
     NSLog(@"Error: %@. Code: %ld", [error localizedDescription], (long) [error code]);
+}
+
+#pragma mark - NetServiceDelegate
+
+- (void)netService:(NSNetService *)sender didNotResolve:(NSDictionary *)errorDict
+{
+    NSLog(@"Service is denied");
+}
+
+
+- (void)netServiceDidResolveAddress:(NSNetService *)service
+{
+    NSString *address = [self getStringFromAddressData:[service.addresses objectAtIndex:0]];
+    [self connectToHost:address];
 }
 
 #pragma mark -
@@ -326,6 +295,46 @@ static const uint8_t kMotionShakeTag = 6;
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+
+#pragma mark - Privates
+
+- (NSString *)getStringFromAddressData:(NSData *)dataIn
+{
+    struct sockaddr_in *socketAddress = nil;
+    NSString *ipString = nil;
+    
+    socketAddress = (struct sockaddr_in *) [dataIn bytes];
+    ipString = [NSString stringWithFormat:@"%s",
+                inet_ntoa(socketAddress->sin_addr)];
+    return ipString;
+}
+
+- (void)connectToHost:(NSString *)hostname
+{
+    
+    _eventCenter.delegate = nil;
+    
+    _eventCenter = [[EventCenter alloc] init];
+    _trackpadView.eventCenter = _eventCenter;
+    _eventCenter.delegate = self;
+    BOOL canStartConnection = [_eventCenter connectToHost:hostname];
+    if (canStartConnection)
+    {
+        [SVProgressHUD showWithStatus:@"Connecting" maskType:SVProgressHUDMaskTypeBlack];
+    }
+}
+
+
+- (WebViewController *)webViewController
+{
+    if (_webViewController == nil)
+    {
+        _webViewController = [[WebViewController alloc] init];
+    }
+    
+    return _webViewController;
 }
 
 @end
