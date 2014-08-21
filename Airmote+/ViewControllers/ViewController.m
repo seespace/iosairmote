@@ -29,6 +29,7 @@
 {
     NSArray *_services;
     BonjourManager *_bonjourManager;
+    BOOL isResolvingServiceAddress;
 }
 
 static const uint8_t kTouchBeganTag = 2;
@@ -68,7 +69,8 @@ static const uint8_t kOAuthTag = 12;
     _bonjourManager = [[BonjourManager alloc] init];
     _bonjourManager.delegate = self;
     [_bonjourManager start];
-
+    [SVProgressHUD showWithStatus:@"Scanning..." maskType:SVProgressHUDMaskTypeBlack];
+    isResolvingServiceAddress = YES;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:@"applicationDidBecomeActive" object:nil];
 
     // Webview
@@ -132,26 +134,35 @@ static const uint8_t kOAuthTag = 12;
 
 - (void)applicationDidBecomeActive
 {
-    if (!_eventCenter.isActive && !_serverSelectorDisplayed)
+    if (!isResolvingServiceAddress && !_eventCenter.isActive && !_serverSelectorDisplayed)
     {
-        [self chooseServerWithMessage:@"Choose a device"];
+        if ([_services count])
+        {
+            [self chooseServerWithMessage:@"Choose a device"];
+        }
+        else
+        {
+            [_bonjourManager start];
+            [SVProgressHUD showWithStatus:@"Scanning..." maskType:SVProgressHUDMaskTypeBlack];
+            isResolvingServiceAddress = YES;
+        }
     }
 }
 
 #pragma mark -
 #pragma mark Bonjour Bonjour ;)
 
-
-- (void)bonjourManagerDidResolveHostNames:(NSArray *)hosts
+- (void)bonjourManagerServiceNotFound
 {
-    if (!_serverSelectorDisplayed)
-    {
-        [self chooseServerWithMessage:@"Choose a device"];
-    }
+    [SVProgressHUD showErrorWithStatus:@"Service not found"];
+    isResolvingServiceAddress = NO;
 }
 
-- (void)bonjourManagerDidFoundServices:(NSArray *)services
+
+- (void)bonjourManagerDidFoundAndResolveServices:(NSArray *)services
 {
+    [SVProgressHUD dismiss];
+    isResolvingServiceAddress = NO;
     _services = services;
     if (!_serverSelectorDisplayed)
     {
@@ -160,6 +171,7 @@ static const uint8_t kOAuthTag = 12;
 
 }
 
+#pragma mark - Show action sheets
 - (void)chooseServerWithMessage:(NSString *)message
 {
     if (_services.count > 1)
@@ -231,7 +243,13 @@ static const uint8_t kOAuthTag = 12;
             [self connectToHost:address];
         }
     }
+    else
+    {
+        _serverSelectorDisplayed = NO;
+    }
 }
+
+#pragma mark - Privates
 
 - (NSString *)getStringFromAddressData:(NSData *)dataIn
 {
@@ -258,6 +276,7 @@ static const uint8_t kOAuthTag = 12;
     }
 }
 
+#pragma mark - EventCenterDelegate
 
 - (void)eventCenter:(EventCenter *)eventCenter receivedEvent:(Event *)event
 {
