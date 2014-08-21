@@ -158,8 +158,7 @@ static const uint8_t kOAuthTag = 12;
     isResolvingServiceAddress = NO;
 }
 
-
-- (void)bonjourManagerDidFoundAndResolveServices:(NSArray *)services
+- (void)bonjourManagerFinishedDiscoveringServices:(NSArray *)services
 {
     [SVProgressHUD dismiss];
     isResolvingServiceAddress = NO;
@@ -168,6 +167,10 @@ static const uint8_t kOAuthTag = 12;
     {
         [self chooseServerWithMessage:@"Choose a device"];
     }
+}
+
+- (void)bonjourManagerDidFoundAndResolveServices:(NSArray *)services
+{
 
 }
 
@@ -195,11 +198,7 @@ static const uint8_t kOAuthTag = 12;
     } else if (_services.count == 1)
     {
         NSNetService *service = (NSNetService *) [_services objectAtIndex:0];
-        if (service.addresses.count > 0)
-        {
-            NSString *address = [self getStringFromAddressData:[service.addresses objectAtIndex:0]];
-            [self connectToHost:address];
-        }
+        [self connectToService:service];
     } else
     {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"AirServer"
@@ -212,6 +211,33 @@ static const uint8_t kOAuthTag = 12;
         alertTextField.placeholder = @"inair.local or 127.0.0.1";
         [alert show];
     }
+}
+
+- (void)connectToService:(NSNetService *)service
+{
+    if (service.addresses.count > 0)
+    {
+        NSString *address = [self getStringFromAddressData:[service.addresses objectAtIndex:0]];
+        [self connectToHost:address];
+    }
+    else
+    {
+        service.delegate = self;
+        [service resolveWithTimeout:10];
+    }
+}
+
+
+- (void)netService:(NSNetService *)sender didNotResolve:(NSDictionary *)errorDict
+{
+
+}
+
+
+- (void)netServiceDidResolveAddress:(NSNetService *)service
+{
+    NSString *address = [self getStringFromAddressData:[service.addresses objectAtIndex:0]];
+    [self connectToHost:address];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -236,12 +262,8 @@ static const uint8_t kOAuthTag = 12;
 {
     if (buttonIndex != actionSheet.cancelButtonIndex)
     {
-        NSNetService *service = (NSNetService *) [_services objectAtIndex:buttonIndex];
-        if (service.addresses.count > 0)
-        {
-            NSString *address = [self getStringFromAddressData:[service.addresses objectAtIndex:0]];
-            [self connectToHost:address];
-        }
+        NSNetService *service = (NSNetService *) _services[buttonIndex];
+        [self connectToService:service];
     }
     else
     {

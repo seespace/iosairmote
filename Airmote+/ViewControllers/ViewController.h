@@ -13,7 +13,7 @@
 #import "BonjourManager.h"
 #import "EventCenter.h"
 
-@interface ViewController : UIViewController <UIActionSheetDelegate, UIGestureRecognizerDelegate, UIWebViewDelegate, BonjourManagerDelegate, EventCenterDelegate>
+@interface ViewController : UIViewController <UIActionSheetDelegate, UIGestureRecognizerDelegate, UIWebViewDelegate, BonjourManagerDelegate, EventCenterDelegate, NSNetServiceDelegate>
 
 @property(nonatomic, strong) UIActionSheet *actionSheet;
 
