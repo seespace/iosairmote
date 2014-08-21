@@ -51,6 +51,7 @@
 		C58441B46815767B70AA5966 /* BonjourManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C584416A29484E52858F86F6 /* BonjourManager.m */; };
 		C584443CEB09A26106DE0C2E /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C584485FF4326A8E9B08B3A4 /* WebViewController.m */; };
 		C584471B49D0CE130B025D7F /* Event+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = C584418E08FB8FB0F1DDF896 /* Event+Extension.m */; };
+		C5844F87624D1E90C002C719 /* EventCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = C58442F85EC1ECBA64716687 /* EventCenter.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -134,10 +135,12 @@
 		C584416A29484E52858F86F6 /* BonjourManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BonjourManager.m; sourceTree = "<group>"; };
 		C584418E08FB8FB0F1DDF896 /* Event+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Event+Extension.m"; sourceTree = "<group>"; };
 		C584421B3AFAC90EE9EFDA78 /* ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
+		C58442F85EC1ECBA64716687 /* EventCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventCenter.m; sourceTree = "<group>"; };
 		C584435BDD4471829B24E14F /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		C58447673E7AFDD47F95408F /* BonjourManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BonjourManager.h; sourceTree = "<group>"; };
 		C584485FF4326A8E9B08B3A4 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		C58448D5F1B330194444A5F2 /* Event+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Event+Extension.h"; sourceTree = "<group>"; };
+		C5844D3A171D285B6A5A09D2 /* EventCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventCenter.h; sourceTree = "<group>"; };
 		C5844E2561A6F310A6AB2A6E /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		C5844ED89441B78E5ED9D931 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		E95074B5BA314146817E932C /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
@@ -340,6 +343,8 @@
 			children = (
 				C584416A29484E52858F86F6 /* BonjourManager.m */,
 				C58447673E7AFDD47F95408F /* BonjourManager.h */,
+				C58442F85EC1ECBA64716687 /* EventCenter.m */,
+				C5844D3A171D285B6A5A09D2 /* EventCenter.h */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -515,6 +520,7 @@
 				B4BBD95319A3661500156A92 /* InstructionViewController.m in Sources */,
 				C584471B49D0CE130B025D7F /* Event+Extension.m in Sources */,
 				C58441B46815767B70AA5966 /* BonjourManager.m in Sources */,
+				C5844F87624D1E90C002C719 /* EventCenter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
