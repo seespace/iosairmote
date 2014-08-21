@@ -15,9 +15,9 @@
 
 @interface ViewController : UIViewController <UIActionSheetDelegate, UIGestureRecognizerDelegate, UIWebViewDelegate, BonjourManagerDelegate, EventCenterDelegate>
 
-@property (nonatomic, strong) UIActionSheet *actionSheet;
+@property(nonatomic, strong) UIActionSheet *actionSheet;
 
-@property (strong, nonatomic) IBOutlet UIView *trackpadView;
-@property (strong, nonatomic) IBOutlet WebViewController *webViewController;
+@property(strong, nonatomic) IBOutlet UIView *trackpadView;
+@property(strong, nonatomic) IBOutlet WebViewController *webViewController;
 
 @end

@@ -12,8 +12,8 @@
 
 
 @interface BonjourManager () <NSNetServiceBrowserDelegate>
-@property (nonatomic, strong) NSMutableArray *services;
-@property (nonatomic, strong) NSMutableArray *hosts;
+@property(nonatomic, strong) NSMutableArray *services;
+@property(nonatomic, strong) NSMutableArray *hosts;
 @end
 
 @implementation BonjourManager
@@ -22,7 +22,7 @@
 
 }
 
--(id)init
+- (id)init
 {
     self = [super init];
     if (self)
@@ -35,32 +35,39 @@
     return self;
 }
 
--(void)netServiceBrowser:(NSNetServiceBrowser *)aBrowser didFindService:(NSNetService *)aService moreComing:(BOOL)more {
+- (void)netServiceBrowser:(NSNetServiceBrowser *)aBrowser didFindService:(NSNetService *)aService moreComing:(BOOL)more
+{
     [_services addObject:aService];
 
     NSNetService *remoteService = aService;
     remoteService.delegate = self;
     [remoteService resolveWithTimeout:10];
 
-    if (!more && self.delegate && [self.delegate respondsToSelector:@selector(bonjourManagerDidFoundServices:)]) {
+    if (!more && self.delegate && [self.delegate respondsToSelector:@selector(bonjourManagerDidFoundServices:)])
+    {
         [self.delegate bonjourManagerDidFoundServices:_services];
     }
 }
 
--(void)netServiceBrowser:(NSNetServiceBrowser *)aBrowser didRemoveService:(NSNetService *)aService moreComing:(BOOL)more {
+- (void)netServiceBrowser:(NSNetServiceBrowser *)aBrowser didRemoveService:(NSNetService *)aService moreComing:(BOOL)more
+{
     [_services removeObject:aService];
 }
 
--(void)netServiceDidResolveAddress:(NSNetService *)aService {
+- (void)netServiceDidResolveAddress:(NSNetService *)aService
+{
     NSLog(@"Found %@", [aService hostName]);
-    if (![aService.hostName isEqualToString:@""]) {
+    if (![aService.hostName isEqualToString:@""])
+    {
         [_hosts addObject:aService.hostName];
     }
-    if (_hosts.count == _services.count && self.delegate && [self.delegate respondsToSelector:@selector(bonjourManagerDidResolveHostNames:)]) {
+    if (_hosts.count == _services.count && self.delegate && [self.delegate respondsToSelector:@selector(bonjourManagerDidResolveHostNames:)])
+    {
         [self.delegate bonjourManagerDidResolveHostNames:_hosts];
     }
 
 }
+
 - (void)start
 {
     [_browser searchForServicesOfType:kServiceType inDomain:@""];
