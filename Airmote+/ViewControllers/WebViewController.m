@@ -7,6 +7,11 @@
 //
 
 #import "WebViewController.h"
+#import "EventCenter.h"
+#import "ProtoHelper.h"
+#import "DDURLParser.h"
+
+static const uint8_t kOAuthTag = 12;
 
 @interface WebViewController ()
 
@@ -25,9 +30,22 @@
     return self;
 }
 
+- (void)clearCookies
+{
+    NSHTTPCookie *cookie;
+    NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    for (cookie in [storage cookies])
+    {
+        [storage deleteCookie:cookie];
+    }
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self clearCookies];
 	// Do any additional setup after loading the view.
 }
 
@@ -46,32 +64,51 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)webViewDidStartLoad:(UIWebView *)webView
+
+
+
+- (void)processOAuthResponse:(NSString *)code
 {
-    [super webViewDidStartLoad:webView];
-    if ([_delegate respondsToSelector:@selector(webViewDidStartLoad:)]) {
-        [_delegate webViewDidStartLoad:webView];
-    }
+    Event *ev = [ProtoHelper oauthResponseWithCode:code target:_oauthEvent.replyTo];
+
+    [_eventCenter sendEvent:ev withTag:kOAuthTag];
+    _oauthEvent = nil;
+    [self clear];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
     [super webViewDidFinishLoad:webView];
-    if ([_delegate respondsToSelector:@selector(webViewDidFinishLoad:)]) {
-        [_delegate webViewDidFinishLoad:webView];
+
+}
+
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+    if ([request.URL.host isEqualToString:@"localhost"])
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+        DDURLParser *parser = [[DDURLParser alloc] initWithURLString:request.URL.absoluteString];
+        NSString *code = [parser valueForVariable:@"code"];
+        NSString *verifier = [parser valueForVariable:@"oauth_verifier"];
+
+        if (verifier != nil)
+        {
+            [self processOAuthResponse:verifier];
+        } else
+        {
+            [self processOAuthResponse:code];
+        }
+
+        return NO;
     }
+
+    return YES;
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
     [super webView:webView didFailLoadWithError:error];
-    if ([_delegate respondsToSelector:@selector(didFailLoadWithError:)]) {
-        [_delegate webView:webView didFailLoadWithError:error];
-    }
+    NSLog(@"%@", error);
+    _oauthEvent = nil;
 }
-
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    return [_delegate webView:webView shouldStartLoadWithRequest:request navigationType:navigationType];
-}
-
 @end
