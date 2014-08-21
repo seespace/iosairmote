@@ -31,6 +31,8 @@
     if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
         self.edgesForExtendedLayout = UIRectEdgeNone;
 
+
+
 }
 
 -(void)nextButtonPressed:(id) sender
