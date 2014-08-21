@@ -10,14 +10,15 @@
 @protocol BonjourManagerDelegate <NSObject>
 
 @required
-- (void)bonjourManagerDidFoundServices:(NSArray *)services;
-
+- (void)bonjourManagerFinishedDiscoveringServices:(NSArray *)services;
+- (void)bonjourManagerDidFoundAndResolveServices:(NSArray *)services;
+- (void)bonjourManagerServiceNotFound;
 @optional
 - (void)bonjourManagerDidResolveHostNames:(NSArray *)hosts;
 
 @end
 
-@interface BonjourManager : NSObject <NSNetServiceDelegate>
+@interface BonjourManager : NSObject
 
 @property(nonatomic, weak) id <BonjourManagerDelegate> delegate;
 
