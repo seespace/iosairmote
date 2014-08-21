@@ -13,6 +13,7 @@
 #import <SVProgressHUD/SVProgressHUD.h>
 #import "ProtoHelper.h"
 #import "TrackPadView.h"
+#import "NSData+NetService.h"
 
 
 @interface ViewController ()
@@ -151,7 +152,7 @@ static const uint8_t kMotionShakeTag = 6;
 {
     if (service.addresses.count > 0)
     {
-        NSString *address = [self getStringFromAddressData:[service.addresses objectAtIndex:0]];
+        NSString *address = [[service.addresses objectAtIndex:0] socketAddress];
         [self connectToHost:address];
     }
     else
@@ -236,7 +237,7 @@ static const uint8_t kMotionShakeTag = 6;
 
 - (void)netServiceDidResolveAddress:(NSNetService *)service
 {
-    NSString *address = [self getStringFromAddressData:[service.addresses objectAtIndex:0]];
+    NSString *address = [[service.addresses objectAtIndex:0] socketAddress];
     [self connectToHost:address];
 }
 
@@ -300,23 +301,13 @@ static const uint8_t kMotionShakeTag = 6;
 
 #pragma mark - Privates
 
-- (NSString *)getStringFromAddressData:(NSData *)dataIn
-{
-    struct sockaddr_in *socketAddress = nil;
-    NSString *ipString = nil;
-    
-    socketAddress = (struct sockaddr_in *) [dataIn bytes];
-    ipString = [NSString stringWithFormat:@"%s",
-                inet_ntoa(socketAddress->sin_addr)];
-    return ipString;
-}
 
 - (void)connectToHost:(NSString *)hostname
 {
     
     _eventCenter.delegate = nil;
     
-    _eventCenter = [[EventCenter alloc] init];
+    _eventCenter = [EventCenter defaultCenter];
     _trackpadView.eventCenter = _eventCenter;
     _eventCenter.delegate = self;
     BOOL canStartConnection = [_eventCenter connectToHost:hostname];

@@ -31,6 +31,21 @@ static const uint8_t kSessionStartTag = 9;
     return self;
 }
 
++ (EventCenter *)defaultCenter
+{
+    static EventCenter *_defaultCenter = nil;
+
+    @synchronized (self)
+    {
+        if (_defaultCenter == nil)
+        {
+            _defaultCenter = [[self alloc] init];
+        }
+    }
+
+    return _defaultCenter;
+}
+
 
 - (BOOL)isActive
 {

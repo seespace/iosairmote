@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BonjourManager.h"
+#import "EventCenter.h"
 
-@interface InstructionViewController : UIViewController
+@class EventCenter;
 
+@interface InstructionViewController : UIViewController <BonjourManagerDelegate, NSNetServiceDelegate, EventCenterDelegate>
 @end
