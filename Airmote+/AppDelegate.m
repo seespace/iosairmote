@@ -16,8 +16,8 @@
 - (BOOL)application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+//    ViewController *viewController  = [[ViewController alloc] init];
     InstructionViewController *viewController  = [[InstructionViewController alloc] init];
-    
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
     self.window.rootViewController = navigationController;
     
