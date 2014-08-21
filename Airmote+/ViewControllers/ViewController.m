@@ -12,7 +12,6 @@
 #import "ViewController.h"
 #import <SVProgressHUD/SVProgressHUD.h>
 #import "ProtoHelper.h"
-#import "DDURLParser.h"
 #import "TrackPadView.h"
 
 
@@ -36,31 +35,12 @@
 
 static const uint8_t kMotionShakeTag = 6;
 
-
-
-static const uint8_t kOAuthTag = 12;
-
 @synthesize trackpadView = _trackpadView;
 @synthesize webViewController = _webViewController;
-
-- (void)clearCookies
-{
-    NSHTTPCookie *cookie;
-    NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-    for (cookie in [storage cookies])
-    {
-        [storage deleteCookie:cookie];
-    }
-    [[NSUserDefaults standardUserDefaults] synchronize];
-}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    [self clearCookies];
-
-    _oauthEvent = nil;
 
     _bonjourManager = [[BonjourManager alloc] init];
     _bonjourManager.delegate = self;
@@ -70,11 +50,20 @@ static const uint8_t kOAuthTag = 12;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:@"applicationDidBecomeActive" object:nil];
 
     // Webview
-    _webViewController = [[WebViewController alloc] init];
     [self.navigationController setNavigationBarHidden:YES];
 
     _trackpadView.viewController = self;
 
+}
+
+- (WebViewController *)webViewController
+{
+    if (_webViewController == nil)
+    {
+        _webViewController = [[WebViewController alloc] init];
+    }
+
+    return _webViewController;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -316,59 +305,19 @@ static const uint8_t kOAuthTag = 12;
         return;
     }
 
-    OAuthRequestEvent *event = [_oauthEvent getExtension:[OAuthRequestEvent event]];
-    _webViewController.URL = [NSURL URLWithString:event.authUrl];
-    _webViewController.delegate = self;
-    [_webViewController load];
-
-    if (_webViewController.navigationController == nil)
+    if (self.navigationController.topViewController != self.webViewController)
     {
-        [self.navigationController pushViewController:_webViewController animated:YES];
+        OAuthRequestEvent *event = [_oauthEvent getExtension:[OAuthRequestEvent event]];
+        self.webViewController.URL = [NSURL URLWithString:event.authUrl];
+        self.webViewController.delegate = self;
+        self.webViewController.eventCenter = _eventCenter;
+        self.webViewController.oauthEvent = _oauthEvent;
+        [self.webViewController load];
+
+        [self.navigationController pushViewController:self.webViewController animated:YES];
     }
 }
 
-- (void)processOAuthResponse:(NSString *)code
-{
-    Event *ev = [ProtoHelper oauthResponseWithCode:code target:_oauthEvent.replyTo];
-
-    [_eventCenter sendEvent:ev withTag:kOAuthTag];
-    _oauthEvent = nil;
-    [_webViewController clear];
-}
-
-- (void)webViewDidFinishLoad:(UIWebView *)webView
-{
-
-}
-
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
-{
-    if ([request.URL.host isEqualToString:@"localhost"])
-    {
-        [self.navigationController popViewControllerAnimated:YES];
-        DDURLParser *parser = [[DDURLParser alloc] initWithURLString:request.URL.absoluteString];
-        NSString *code = [parser valueForVariable:@"code"];
-        NSString *verifier = [parser valueForVariable:@"oauth_verifier"];
-
-        if (verifier != nil)
-        {
-            [self processOAuthResponse:verifier];
-        } else
-        {
-            [self processOAuthResponse:code];
-        }
-
-        return NO;
-    }
-
-    return YES;
-}
-
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
-{
-    NSLog(@"%@", error);
-    _oauthEvent = nil;
-}
 
 #pragma mark -
 #pragma mark Others
