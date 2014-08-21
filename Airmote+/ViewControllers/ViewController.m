@@ -15,7 +15,8 @@
 #import "DDURLParser.h"
 
 
-@interface ViewController () {
+@interface ViewController ()
+{
     BOOL _serverSelectorDisplayed;
 
     Event *_oauthEvent;
@@ -45,13 +46,15 @@ static const uint8_t kOAuthTag = 12;
 @synthesize trackpadView = _trackpadView;
 @synthesize webViewController = _webViewController;
 
-- (void)clearCookies {
-  NSHTTPCookie *cookie;
-  NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-  for (cookie in [storage cookies]) {
-    [storage deleteCookie:cookie];
-  }
-  [[NSUserDefaults standardUserDefaults] synchronize];
+- (void)clearCookies
+{
+    NSHTTPCookie *cookie;
+    NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    for (cookie in [storage cookies])
+    {
+        [storage deleteCookie:cookie];
+    }
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)viewDidLoad
@@ -119,15 +122,18 @@ static const uint8_t kOAuthTag = 12;
     pan.delegate = tapGesture.delegate = doubleTapGesture.delegate = swipeDown.delegate = swipeUp.delegate = swipeUp.delegate = swipeDown.delegate = pan.delegate = self;
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [self.navigationController setNavigationBarHidden:YES];
 }
 
 #pragma mark -
 #pragma mark Auto reconnect when become active
 
-- (void)applicationDidBecomeActive {
-    if (! _eventCenter.isActive && ! _serverSelectorDisplayed) {
+- (void)applicationDidBecomeActive
+{
+    if (!_eventCenter.isActive && !_serverSelectorDisplayed)
+    {
         [self chooseServerWithMessage:@"Choose a device"];
     }
 }
@@ -136,10 +142,10 @@ static const uint8_t kOAuthTag = 12;
 #pragma mark Bonjour Bonjour ;)
 
 
-
 - (void)bonjourManagerDidResolveHostNames:(NSArray *)hosts
 {
-    if (!_serverSelectorDisplayed) {
+    if (!_serverSelectorDisplayed)
+    {
         [self chooseServerWithMessage:@"Choose a device"];
     }
 }
@@ -147,20 +153,24 @@ static const uint8_t kOAuthTag = 12;
 - (void)bonjourManagerDidFoundServices:(NSArray *)services
 {
     _services = services;
-    if (!_serverSelectorDisplayed) {
+    if (!_serverSelectorDisplayed)
+    {
         [self chooseServerWithMessage:@"Choose a device"];
     }
 
 }
 
--(void)chooseServerWithMessage:(NSString* )message {
-    if (_services.count > 1) {
+- (void)chooseServerWithMessage:(NSString *)message
+{
+    if (_services.count > 1)
+    {
         _actionSheet = [[UIActionSheet alloc] init];
         [_actionSheet setDelegate:self];
 
         [_actionSheet setTitle:message];
 
-        for (NSNetService *service in _services) {
+        for (NSNetService *service in _services)
+        {
             NSString *title = service.name;
             [_actionSheet addButtonWithTitle:title];
         }
@@ -170,59 +180,72 @@ static const uint8_t kOAuthTag = 12;
 
         [_actionSheet showInView:self.view];
         _serverSelectorDisplayed = YES;
-    } else if (_services.count == 1) {
+    } else if (_services.count == 1)
+    {
         NSNetService *service = (NSNetService *) [_services objectAtIndex:0];
-        if (service.addresses.count > 0) {
+        if (service.addresses.count > 0)
+        {
             NSString *address = [self getStringFromAddressData:[service.addresses objectAtIndex:0]];
             [self connectToHost:address];
         }
-    } else {
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"AirServer"
-                                                         message:message
-                                                        delegate:self
-                                               cancelButtonTitle:@"Cancel"
-                                               otherButtonTitles:@"Connect", nil];
+    } else
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"AirServer"
+                                                        message:message
+                                                       delegate:self
+                                              cancelButtonTitle:@"Cancel"
+                                              otherButtonTitles:@"Connect", nil];
         alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-        UITextField * alertTextField = [alert textFieldAtIndex:0];
+        UITextField *alertTextField = [alert textFieldAtIndex:0];
         alertTextField.placeholder = @"inair.local or 127.0.0.1";
         [alert show];
     }
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if ([alertView.title isEqualToString:@"AirServer"]) {
-        if (buttonIndex != alertView.cancelButtonIndex) {
-            UITextField * alertTextField = [alertView textFieldAtIndex:0];
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if ([alertView.title isEqualToString:@"AirServer"])
+    {
+        if (buttonIndex != alertView.cancelButtonIndex)
+        {
+            UITextField *alertTextField = [alertView textFieldAtIndex:0];
             [self connectToHost:alertTextField.text];
         }
-    } else if ([alertView.title isEqualToString:@"OAuth"]) {
-        if (buttonIndex != alertView.cancelButtonIndex) {
+    } else if ([alertView.title isEqualToString:@"OAuth"])
+    {
+        if (buttonIndex != alertView.cancelButtonIndex)
+        {
             [self processOAuthRequest];
         }
     }
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex != actionSheet.cancelButtonIndex) {
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex != actionSheet.cancelButtonIndex)
+    {
         NSNetService *service = (NSNetService *) [_services objectAtIndex:buttonIndex];
-        if (service.addresses.count > 0) {
+        if (service.addresses.count > 0)
+        {
             NSString *address = [self getStringFromAddressData:[service.addresses objectAtIndex:0]];
             [self connectToHost:address];
         }
     }
 }
 
-- (NSString *)getStringFromAddressData:(NSData *)dataIn {
-    struct sockaddr_in  *socketAddress = nil;
-    NSString            *ipString = nil;
+- (NSString *)getStringFromAddressData:(NSData *)dataIn
+{
+    struct sockaddr_in *socketAddress = nil;
+    NSString *ipString = nil;
 
-    socketAddress = (struct sockaddr_in *)[dataIn bytes];
-    ipString = [NSString stringWithFormat: @"%s",
-                inet_ntoa(socketAddress->sin_addr)];
+    socketAddress = (struct sockaddr_in *) [dataIn bytes];
+    ipString = [NSString stringWithFormat:@"%s",
+                                          inet_ntoa(socketAddress->sin_addr)];
     return ipString;
 }
 
-- (void)connectToHost:(NSString *)hostname {
+- (void)connectToHost:(NSString *)hostname
+{
 
     _eventCenter.delegate = nil;
 
@@ -241,7 +264,8 @@ static const uint8_t kOAuthTag = 12;
     NSLog(@"%@", event);
 
     // process events
-    switch (event.type) {
+    switch (event.type)
+    {
         case EventTypeOauthRequest:
             [self processOAuthRequest:event];
             break;
@@ -259,38 +283,43 @@ static const uint8_t kOAuthTag = 12;
 - (void)eventCenterDidDisconnectWithError:(NSError *)error
 {
     [SVProgressHUD showErrorWithStatus:[error localizedDescription]];
-    NSLog(@"Error: %@. Code: %ld", [error localizedDescription], (long)[error code]);
+    NSLog(@"Error: %@. Code: %ld", [error localizedDescription], (long) [error code]);
 }
 
 #pragma mark -
 #pragma mark Motion
 
-- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
-  if (motion == UIEventSubtypeMotionShake) {
-    Event *ev = [ProtoHelper motionEventWithTimestamp:event.timestamp * 1000
-                                                 type:MotionEventTypeShake];
-      [_eventCenter sendEvent:ev withTag:kMotionShakeTag];
-  }
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event
+{
+    if (motion == UIEventSubtypeMotionShake)
+    {
+        Event *ev = [ProtoHelper motionEventWithTimestamp:event.timestamp * 1000
+                                                     type:MotionEventTypeShake];
+        [_eventCenter sendEvent:ev withTag:kMotionShakeTag];
+    }
 }
 
 #pragma mark -
 #pragma mark Touches
 
 
-- (void)sendTouch:(UITouch *)touch withEvent:(UIEvent *)event tag:(uint8_t)tag {
-  CGPoint location = [touch locationInView:self.view];
-  Event *ev = [ProtoHelper touchEventWithTimestamp:event.timestamp * 1000
-                                            locationX:location.x
-                                            locationY:location.y
-                                       trackareaWidth:self.view.frame.size.width
-                                      trackareaHeight:self.view.frame.size.height
-                                                phase:[ProtoHelper phaseFromUITouchPhase:touch.phase]];
+- (void)sendTouch:(UITouch *)touch withEvent:(UIEvent *)event tag:(uint8_t)tag
+{
+    CGPoint location = [touch locationInView:self.view];
+    Event *ev = [ProtoHelper touchEventWithTimestamp:event.timestamp * 1000
+                                           locationX:location.x
+                                           locationY:location.y
+                                      trackareaWidth:self.view.frame.size.width
+                                     trackareaHeight:self.view.frame.size.height
+                                               phase:[ProtoHelper phaseFromUITouchPhase:touch.phase]];
 
     [_eventCenter sendEvent:ev withTag:tag];
 }
 
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    if (![_eventCenter isActive]) {
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    if (![_eventCenter isActive])
+    {
         [self applicationDidBecomeActive];
         return;
     }
@@ -298,15 +327,18 @@ static const uint8_t kOAuthTag = 12;
     [self sendTouch:[touches anyObject] withEvent:event tag:kTouchBeganTag];
 }
 
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+{
     [self sendTouch:[touches anyObject] withEvent:event tag:kTouchMovedTag];
 }
 
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
     [self sendTouch:[touches anyObject] withEvent:event tag:kTouchEndedTag];
 }
 
-- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+{
     [self sendTouch:[touches anyObject] withEvent:event tag:kTouchCancelledTag];
 }
 
@@ -314,63 +346,68 @@ static const uint8_t kOAuthTag = 12;
 #pragma mark -
 #pragma mark - Gesture Handlers
 
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
     return YES;
 }
 
-- (void)tapHandle:(UITapGestureRecognizer *)sender {
-  CGPoint location = [sender locationInView:sender.view];
-  Event *ev = [ProtoHelper tapGestureWithTimestamp:[ProtoHelper now]
-                                         locationX:location.x
-                                         locationY:location.y
-                                    trackareaWidth:sender.view.frame.size.width
-                                   trackareaHeight:sender.view.frame.size.height
-                                             state:[ProtoHelper stateFromUIGestureRecognizerState:sender.state]
-                                             count:(int)sender.numberOfTapsRequired];
-
-    [_eventCenter sendEvent:ev withTag:kGestureStateChanged];
-}
-
-- (void)panHandle:(UIPanGestureRecognizer *)sender {
-  CGPoint location = [sender locationInView:sender.view];
-  CGPoint translation = [sender translationInView:sender.view];
-  CGPoint velocity = [sender velocityInView:sender.view];
-  Event *ev = [ProtoHelper panGestureWithTimestamp:[ProtoHelper now]
-                                         locationX:location.x
-                                         locationY:location.y
-                                    trackareaWidth:sender.view.frame.size.width
-                                   trackareaHeight:sender.view.frame.size.height
-                                             state:[ProtoHelper stateFromUIGestureRecognizerState:sender.state]
-                                      translationX:translation.x
-                                      translationY:translation.y
-                                         velocityX:velocity.x
-                                         velocityY:velocity.y];
-
-    [_eventCenter sendEvent:ev withTag:kGestureStateChanged];
-}
-
-- (void)swipeHandle:(UISwipeGestureRecognizer *)sender {
-  CGPoint location = [sender locationInView:sender.view];
-  Event *ev = [ProtoHelper swipeGestureWithTimestamp:[ProtoHelper now]
+- (void)tapHandle:(UITapGestureRecognizer *)sender
+{
+    CGPoint location = [sender locationInView:sender.view];
+    Event *ev = [ProtoHelper tapGestureWithTimestamp:[ProtoHelper now]
                                            locationX:location.x
                                            locationY:location.y
                                       trackareaWidth:sender.view.frame.size.width
                                      trackareaHeight:sender.view.frame.size.height
                                                state:[ProtoHelper stateFromUIGestureRecognizerState:sender.state]
-                                           direction:[ProtoHelper directionFromUISwipeGestureRecognizerDirection:sender.direction]];
+                                               count:(int) sender.numberOfTapsRequired];
 
     [_eventCenter sendEvent:ev withTag:kGestureStateChanged];
 }
 
-- (void)longPressHandle:(UILongPressGestureRecognizer *)sender {
-  CGPoint location = [sender locationInView:sender.view];
-  Event *ev = [ProtoHelper longpressGestureWithTimestamp:[ProtoHelper now]
-                                               locationX:location.x
-                                               locationY:location.y
-                                          trackareaWidth:sender.view.frame.size.width
-                                         trackareaHeight:sender.view.frame.size.height
-                                                   state:[ProtoHelper stateFromUIGestureRecognizerState:sender.state]
-                                                duration:0];
+- (void)panHandle:(UIPanGestureRecognizer *)sender
+{
+    CGPoint location = [sender locationInView:sender.view];
+    CGPoint translation = [sender translationInView:sender.view];
+    CGPoint velocity = [sender velocityInView:sender.view];
+    Event *ev = [ProtoHelper panGestureWithTimestamp:[ProtoHelper now]
+                                           locationX:location.x
+                                           locationY:location.y
+                                      trackareaWidth:sender.view.frame.size.width
+                                     trackareaHeight:sender.view.frame.size.height
+                                               state:[ProtoHelper stateFromUIGestureRecognizerState:sender.state]
+                                        translationX:translation.x
+                                        translationY:translation.y
+                                           velocityX:velocity.x
+                                           velocityY:velocity.y];
+
+    [_eventCenter sendEvent:ev withTag:kGestureStateChanged];
+}
+
+- (void)swipeHandle:(UISwipeGestureRecognizer *)sender
+{
+    CGPoint location = [sender locationInView:sender.view];
+    Event *ev = [ProtoHelper swipeGestureWithTimestamp:[ProtoHelper now]
+                                             locationX:location.x
+                                             locationY:location.y
+                                        trackareaWidth:sender.view.frame.size.width
+                                       trackareaHeight:sender.view.frame.size.height
+                                                 state:[ProtoHelper stateFromUIGestureRecognizerState:sender.state]
+                                             direction:[ProtoHelper directionFromUISwipeGestureRecognizerDirection:sender.direction]];
+
+    [_eventCenter sendEvent:ev withTag:kGestureStateChanged];
+}
+
+- (void)longPressHandle:(UILongPressGestureRecognizer *)sender
+{
+    CGPoint location = [sender locationInView:sender.view];
+    Event *ev = [ProtoHelper longpressGestureWithTimestamp:[ProtoHelper now]
+                                                 locationX:location.x
+                                                 locationY:location.y
+                                            trackareaWidth:sender.view.frame.size.width
+                                           trackareaHeight:sender.view.frame.size.height
+                                                     state:[ProtoHelper stateFromUIGestureRecognizerState:sender.state]
+                                                  duration:0];
 
     [_eventCenter sendEvent:ev withTag:kGestureStateChanged];
 }
@@ -378,16 +415,20 @@ static const uint8_t kOAuthTag = 12;
 #pragma mark -
 #pragma mark OAuth
 
-- (void)processOAuthRequest:(Event* )event {
-  if  (_oauthEvent == nil) {
-    _oauthEvent = event;
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"OAuth" message:@"InAir would like to open webview for OAuth authentication." delegate:self cancelButtonTitle:@"Don't Allow" otherButtonTitles:@"OK", nil];
-    [alertView show];
-  }
+- (void)processOAuthRequest:(Event *)event
+{
+    if (_oauthEvent == nil)
+    {
+        _oauthEvent = event;
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"OAuth" message:@"InAir would like to open webview for OAuth authentication." delegate:self cancelButtonTitle:@"Don't Allow" otherButtonTitles:@"OK", nil];
+        [alertView show];
+    }
 }
 
-- (void)processOAuthRequest {
-    if (_oauthEvent == nil) {
+- (void)processOAuthRequest
+{
+    if (_oauthEvent == nil)
+    {
         return;
     }
 
@@ -396,34 +437,41 @@ static const uint8_t kOAuthTag = 12;
     _webViewController.delegate = self;
     [_webViewController load];
 
-    if (_webViewController.navigationController == nil) {
+    if (_webViewController.navigationController == nil)
+    {
         [self.navigationController pushViewController:_webViewController animated:YES];
     }
 }
 
-- (void)processOAuthResponse:(NSString *)code {
+- (void)processOAuthResponse:(NSString *)code
+{
     Event *ev = [ProtoHelper oauthResponseWithCode:code target:_oauthEvent.replyTo];
 
     [_eventCenter sendEvent:ev withTag:kOAuthTag];
     _oauthEvent = nil;
-  [_webViewController clear];
+    [_webViewController clear];
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView {
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
 
 }
 
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    if ([request.URL.host isEqualToString:@"localhost"]) {
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+    if ([request.URL.host isEqualToString:@"localhost"])
+    {
         [self.navigationController popViewControllerAnimated:YES];
         DDURLParser *parser = [[DDURLParser alloc] initWithURLString:request.URL.absoluteString];
         NSString *code = [parser valueForVariable:@"code"];
         NSString *verifier = [parser valueForVariable:@"oauth_verifier"];
 
-        if (verifier != nil) {
-          [self processOAuthResponse:verifier];
-        } else {
-          [self processOAuthResponse:code];
+        if (verifier != nil)
+        {
+            [self processOAuthResponse:verifier];
+        } else
+        {
+            [self processOAuthResponse:code];
         }
 
         return NO;
@@ -432,7 +480,8 @@ static const uint8_t kOAuthTag = 12;
     return YES;
 }
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
     NSLog(@"%@", error);
     _oauthEvent = nil;
 }

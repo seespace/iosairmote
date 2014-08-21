@@ -6,19 +6,20 @@
 #import <Foundation/Foundation.h>
 
 @class BonjourManager;
+
 @protocol BonjourManagerDelegate <NSObject>
 
 @required
--(void) bonjourManagerDidFoundServices:(NSArray *) services;
+- (void)bonjourManagerDidFoundServices:(NSArray *)services;
 
 @optional
--(void) bonjourManagerDidResolveHostNames:(NSArray *) hosts;
+- (void)bonjourManagerDidResolveHostNames:(NSArray *)hosts;
 
 @end
 
 @interface BonjourManager : NSObject <NSNetServiceDelegate>
 
-@property (nonatomic, weak) id <BonjourManagerDelegate> delegate;
+@property(nonatomic, weak) id <BonjourManagerDelegate> delegate;
 
--(void) start;
+- (void)start;
 @end

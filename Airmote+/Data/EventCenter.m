@@ -34,14 +34,15 @@ static const uint8_t kSessionStartTag = 9;
 
 - (BOOL)isActive
 {
-    return (_socket != nil && _socket.isConnected) ;
+    return (_socket != nil && _socket.isConnected);
 }
 
 - (BOOL)connectToHost:(NSString *)hostname
 {
     NSError *err = nil;
 
-    if (![_socket connectToHost:hostname onPort:kServicePort withTimeout:3 error:&err]) {
+    if (![_socket connectToHost:hostname onPort:kServicePort withTimeout:3 error:&err])
+    {
         NSLog(@"Could not connect to %@. Error: %@", hostname, err);
         return NO;
     }
@@ -59,7 +60,8 @@ static const uint8_t kSessionStartTag = 9;
 #pragma mark -
 #pragma mark Socket methods
 
-- (void)socket:(GCDAsyncSocket *)sock didAcceptNewSocket:(GCDAsyncSocket *)newSocket {
+- (void)socket:(GCDAsyncSocket *)sock didAcceptNewSocket:(GCDAsyncSocket *)newSocket
+{
     NSLog(@"New socket %@", newSocket);
     [newSocket readDataWithTimeout:-1 tag:0];
 }
@@ -70,7 +72,7 @@ static const uint8_t kSessionStartTag = 9;
 
     NSData *msg = [data subdataWithRange:NSMakeRange(4, data.length - 4)];
 
-    Event* event = [ProtoHelper parseFromData:msg];
+    Event *event = [ProtoHelper parseFromData:msg];
 
     if (self.delegate && [self.delegate respondsToSelector:@selector(eventCenter:receivedEvent:)])
     {
@@ -87,7 +89,8 @@ static const uint8_t kSessionStartTag = 9;
     [_socket performBlock:^{
         int fd = [_socket socketFD];
         int on = 1;
-        if (setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, (char*)&on, sizeof(on)) == -1) {
+        if (setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, (char *) &on, sizeof(on)) == -1)
+        {
             NSLog(@"Could not set sock opt TCP_NODELAY: %s", strerror(errno));
         }
     }];
@@ -117,10 +120,11 @@ static const uint8_t kSessionStartTag = 9;
 
 #pragma mark - Handshake
 
-- (void)registerDevice {
-  Event *ev = [ProtoHelper deviceEventWithTimestamp:[ProtoHelper now] type:DeviceEventTypeRegister];
-  NSData *data = [Event dataFromEvent:ev];
-  [_socket writeData:data withTimeout:0 tag:kSessionStartTag];
+- (void)registerDevice
+{
+    Event *ev = [ProtoHelper deviceEventWithTimestamp:[ProtoHelper now] type:DeviceEventTypeRegister];
+    NSData *data = [Event dataFromEvent:ev];
+    [_socket writeData:data withTimeout:0 tag:kSessionStartTag];
 }
 
 @end
