@@ -130,6 +130,7 @@
 
 - (void)eventCenterDidConnect
 {
+    [SVProgressHUD dismiss];
     isConnecting = NO;
     [self requestConfirmationCode];
 }
@@ -141,6 +142,7 @@
 
 - (void)eventCenterDidDisconnectWithError:(NSError *)error
 {
+    [SVProgressHUD dismiss];
     //TODO show retry button??
     isConnecting = NO;
 }
