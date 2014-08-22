@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="14A314h" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1552" identifier="iOS"/>
+        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
@@ -60,32 +60,15 @@
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button appearanceType="aqua" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3wP-mS-OYY">
-                            <rect key="frame" x="68" y="196" width="185" height="53"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="185" id="lXH-fs-G2k"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="32"/>
-                            <state key="normal" title="SETUP NOW">
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <state key="highlighted" title="SETUP NOW">
-                                <color key="titleColor" red="1" green="0.3058823645" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
-                            </state>
-                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="mw1-JL-xic" firstAttribute="leading" secondItem="HJT-Gw-s4t" secondAttribute="leading" constant="68" id="9St-V7-ztv"/>
                         <constraint firstItem="EbQ-iy-fRZ" firstAttribute="top" secondItem="mw1-JL-xic" secondAttribute="bottom" constant="-5" id="Ey8-4l-dlb"/>
-                        <constraint firstAttribute="centerX" secondItem="3wP-mS-OYY" secondAttribute="centerX" id="Ru3-YA-HIM"/>
                         <constraint firstItem="DSU-DP-2dQ" firstAttribute="leading" secondItem="EbQ-iy-fRZ" secondAttribute="leading" id="SBk-Ko-Twm"/>
                         <constraint firstItem="mw1-JL-xic" firstAttribute="leading" secondItem="EbQ-iy-fRZ" secondAttribute="leading" id="T4Q-MP-uoa"/>
-                        <constraint firstAttribute="bottom" secondItem="3wP-mS-OYY" secondAttribute="bottom" constant="8" id="Vep-G8-pAW"/>
                         <constraint firstAttribute="height" constant="257" id="cDV-ef-DbY"/>
                         <constraint firstAttribute="width" constant="320" id="cpc-2T-Q7S"/>
-                        <constraint firstItem="3wP-mS-OYY" firstAttribute="top" secondItem="DSU-DP-2dQ" secondAttribute="bottom" constant="83" id="hx3-kX-4Fq"/>
                         <constraint firstItem="DSU-DP-2dQ" firstAttribute="top" secondItem="EbQ-iy-fRZ" secondAttribute="bottom" constant="3" id="qNm-AP-4M5"/>
                         <constraint firstItem="mw1-JL-xic" firstAttribute="top" secondItem="HJT-Gw-s4t" secondAttribute="top" id="ycg-jI-jMx"/>
                     </constraints>

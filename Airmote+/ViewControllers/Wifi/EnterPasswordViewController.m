@@ -51,7 +51,7 @@
 
 -(void)nextButtonPressed:(id) sender
 {
-    //TODO send event to InAiR to login to wifi    
+    //TODO send event to InAiR to login to wifi
 }
 
 @end
