@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "EventCenter.h"
 
-@interface EnterPasswordViewController : UIViewController
+@interface EnterPasswordViewController : UIViewController <EventCenterDelegate>
 
+@property(nonatomic, copy) NSString *networkSDID;
 @end

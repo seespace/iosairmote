@@ -7,6 +7,7 @@
 //
 
 #import "EnterPasswordViewController.h"
+#import "EventCenter.h"
 
 @interface EnterPasswordViewController ()
 
@@ -29,7 +30,15 @@
     if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
         self.edgesForExtendedLayout = UIRectEdgeNone;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(nextButtonPressed:)];
+}
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [EventCenter defaultCenter].delegate = self;
+}
+
+- (void)eventCenter:(EventCenter *)eventCenter receivedEvent:(Event *)event
+{
 
 }
 
@@ -42,6 +51,7 @@
 
 -(void)nextButtonPressed:(id) sender
 {
+    //TODO send event to InAiR to login to wifi    
 }
 
 @end

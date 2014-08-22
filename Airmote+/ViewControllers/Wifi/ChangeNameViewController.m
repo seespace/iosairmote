@@ -8,12 +8,18 @@
 
 #import "ChangeNameViewController.h"
 #import "WiFiListViewController.h"
+#import "EventCenter.h"
+#import "Proto.pb.h"
+
 @interface ChangeNameViewController ()
 
 @end
 
 @implementation ChangeNameViewController
-
+{
+    __weak IBOutlet UITextField *textField;
+    
+}
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -32,8 +38,15 @@
         self.edgesForExtendedLayout = UIRectEdgeNone;
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [EventCenter defaultCenter].delegate = self;
+}
+
+
 -(void)nextButtonPressed:(id) sender
 {
+    [self sendRenameRequestWithName:textField.text];
     WiFiListViewController *wifiListVC = [[WiFiListViewController alloc] init];
     [self.navigationController pushViewController:wifiListVC animated:YES];
 }
@@ -43,6 +56,26 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)eventCenter:(EventCenter *)eventCenter receivedEvent:(Event *)event
+{
+    // TODO if success goto next screen
+}
+
+
+- (BOOL)textFieldShouldReturn:(UITextField *)aTextField
+{
+    [self sendRenameRequestWithName:textField.text];
+    return YES;
+}
+
+- (void)sendRenameRequestWithName:(NSString *)name
+{
+    if ([name length] > 0)
+    {
+        //TODO send a change name request to server using EventCenter
+    }
 }
 
 @end
