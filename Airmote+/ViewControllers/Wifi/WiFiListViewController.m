@@ -9,6 +9,7 @@
 #import "WiFiListViewController.h"
 #import "WifiCell.h"
 #import "EnterPasswordViewController.h"
+#import "EventCenter.h"
 
 #define kWifiCellHeight 30
 #define kNumberOfWifiNetworks 100
@@ -20,6 +21,7 @@
 {
     
     __weak IBOutlet UITableView *tableView;
+    NSArray *wifiNetworks;
 }
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -35,6 +37,19 @@
     [super viewDidLoad];
     if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
         self.edgesForExtendedLayout = UIRectEdgeNone;
+
+    //TODO send request to retrieve list of wifi network
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [EventCenter defaultCenter].delegate = self;
+}
+
+
+- (void)eventCenter:(EventCenter *)eventCenter receivedEvent:(Event *)event
+{
+    // TODO reload tableview
 }
 
 - (void)didReceiveMemoryWarning
@@ -44,7 +59,7 @@
 }
 
 
--(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)aTableView
 {
     return 1;
 }
@@ -56,11 +71,12 @@
 
 - (NSInteger)tableView:(UITableView *)tableView1 numberOfRowsInSection:(NSInteger)section
 {
-    return kNumberOfWifiNetworks;
+    return [wifiNetworks count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView1 cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    //TODO use real data in here
     static NSString *wifiCellIdentifier = @"WifiCellIdentifier";
     
     WifiCell *cell = [tableView1 dequeueReusableCellWithIdentifier:wifiCellIdentifier];
@@ -76,6 +92,7 @@
 - (void)tableView:(UITableView *)tableView1 didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     EnterPasswordViewController *enterPasswordVC = [[EnterPasswordViewController alloc] init];
+    enterPasswordVC.networkSDID = @"Something"; //TODO use real data
     [self.navigationController pushViewController:enterPasswordVC animated:YES];
 }
 

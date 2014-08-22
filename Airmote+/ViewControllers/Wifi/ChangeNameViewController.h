@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "EventCenter.h"
 
-@interface ChangeNameViewController : UIViewController
+@interface ChangeNameViewController : UIViewController <EventCenterDelegate, UITextFieldDelegate>
 
 @end

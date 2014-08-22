@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "EventCenter.h"
 
-@interface WiFiListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface WiFiListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, EventCenterDelegate>
 
 @end
