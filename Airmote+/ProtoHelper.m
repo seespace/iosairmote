@@ -40,74 +40,74 @@ static ProtoHelper *instance;
 }
 
 + (Event *)parseFromData:(NSData *)data {
-    return [Event parseFromData:data extensionRegistry:instance.registry];
+  return [Event parseFromData:data extensionRegistry:instance.registry];
 }
 
 + (SInt64)now {
-  return (SInt64)[[NSDate date] timeIntervalSince1970] * 1000;
+  return (SInt64) [[NSDate date] timeIntervalSince1970] * 1000;
 }
 
 + (Phase)phaseFromUITouchPhase:(UITouchPhase)phase {
   switch (phase) {
-  case UITouchPhaseBegan:
-    return PhaseBegan;
-    break;
-  case UITouchPhaseMoved:
-    return PhaseMoved;
-    break;
-  case UITouchPhaseStationary:
-    return PhaseStationary;
-    break;
-  case UITouchPhaseCancelled:
-    return PhaseCancelled;
-  case UITouchPhaseEnded:
-  default:
-    return PhaseEnded;
-    break;
+    case UITouchPhaseBegan:
+      return PhaseBegan;
+      break;
+    case UITouchPhaseMoved:
+      return PhaseMoved;
+      break;
+    case UITouchPhaseStationary:
+      return PhaseStationary;
+      break;
+    case UITouchPhaseCancelled:
+      return PhaseCancelled;
+    case UITouchPhaseEnded:
+    default:
+      return PhaseEnded;
+      break;
   }
 }
 
 + (GestureEventState)stateFromUIGestureRecognizerState:
-                         (UIGestureRecognizerState)state {
+    (UIGestureRecognizerState)state {
   switch (state) {
-  case UIGestureRecognizerStateBegan:
-    return GestureEventStateBegan;
-    break;
-  case UIGestureRecognizerStatePossible:
-    return GestureEventStatePossible;
-    break;
-  case UIGestureRecognizerStateChanged:
-    return GestureEventStateChanged;
-    break;
-  case UIGestureRecognizerStateCancelled:
-    return GestureEventStateCancelled;
-    break;
-  case UIGestureRecognizerStateFailed:
-    return GestureEventStateFailed;
-    break;
-  case UIGestureRecognizerStateEnded:
-  default:
-    return GestureEventStateEnded;
-    break;
+    case UIGestureRecognizerStateBegan:
+      return GestureEventStateBegan;
+      break;
+    case UIGestureRecognizerStatePossible:
+      return GestureEventStatePossible;
+      break;
+    case UIGestureRecognizerStateChanged:
+      return GestureEventStateChanged;
+      break;
+    case UIGestureRecognizerStateCancelled:
+      return GestureEventStateCancelled;
+      break;
+    case UIGestureRecognizerStateFailed:
+      return GestureEventStateFailed;
+      break;
+    case UIGestureRecognizerStateEnded:
+    default:
+      return GestureEventStateEnded;
+      break;
   }
 }
 
 + (GestureEventSwipeDirection)directionFromUISwipeGestureRecognizerDirection:
-                                  (UISwipeGestureRecognizerDirection)direction {
+    (UISwipeGestureRecognizerDirection)direction {
   [self ensureInitialized];
 
   switch (direction) {
-  case UISwipeGestureRecognizerDirectionDown:
-    return GestureEventSwipeDirectionDown;
-    break;
-  case UISwipeGestureRecognizerDirectionLeft:
-    return GestureEventSwipeDirectionLeft;
-  case UISwipeGestureRecognizerDirectionRight:
-    return GestureEventSwipeDirectionRight;
-  case UISwipeGestureRecognizerDirectionUp:
-  default:
-    return GestureEventSwipeDirectionUp;
-    break;
+    case UISwipeGestureRecognizerDirectionDown:
+      return GestureEventSwipeDirectionDown;
+      break;
+    case UISwipeGestureRecognizerDirectionLeft:
+      return GestureEventSwipeDirectionLeft;
+    case UISwipeGestureRecognizerDirectionRight:
+      return GestureEventSwipeDirectionRight;
+    case UISwipeGestureRecognizerDirectionUp:
+    default:
+      return GestureEventSwipeDirectionUp;
+      break;
   }
 }
 
@@ -117,7 +117,7 @@ static ProtoHelper *instance;
   builder.vendor = DeviceVendorIos;
   builder.productId = [NSString
       stringWithFormat:@"%@", [[UIDevice currentDevice] identifierForVendor]];
-  builder.version = (SInt32)[[[[NSBundle mainBundle] infoDictionary]
+  builder.version = (SInt32) [[[[NSBundle mainBundle] infoDictionary]
       objectForKey:@"CFBundleVersion"] intValue];
   builder.hasKeyboard = YES;
 
@@ -338,20 +338,89 @@ static ProtoHelper *instance;
 
 + (Event *)oauthResponseWithCode:(NSString *)code
                           target:(NSString *)target {
-    [self ensureInitialized];
-    
-    OAuthResponseEvent *event = [[[[OAuthResponseEventBuilder alloc] init] setAuthCode:code] build];
-    
-    // Build actual event
-    EventBuilder *builder = [[EventBuilder alloc] init];
-    builder.target = target;
-    builder.timestamp = 0;
-    builder.trackingAreaWidth = 0;
-    builder.trackingAreaHeight = 0;
-    builder.type = EventTypeOauthResponse;
-    [builder setExtension:[OAuthResponseEvent event] value:event];
-    
-    return [builder build];
+  [self ensureInitialized];
+
+  OAuthResponseEvent *event = [[[[OAuthResponseEventBuilder alloc] init] setAuthCode:code] build];
+
+  // Build actual event
+  EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.target = target;
+  builder.timestamp = 0;
+  builder.trackingAreaWidth = 0;
+  builder.trackingAreaHeight = 0;
+  builder.type = EventTypeOauthResponse;
+  [builder setExtension:[OAuthResponseEvent event] value:event];
+
+  return [builder build];
+}
+
++ (Event *)setupCodeRequest {
+  [self ensureInitialized];
+
+  SetupRequestEvent *event = [[[[SetupRequestEventBuilder alloc] init] setPhase:SetupPhaseRequestCode] build];
+
+  // Build actual event
+  EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.timestamp = 0;
+  builder.trackingAreaWidth = 0;
+  builder.trackingAreaHeight = 0;
+  builder.type = EventTypeSetupRequest;
+  [builder setExtension:[SetupRequestEvent event] value:event];
+
+  return [builder build];
+}
+
++ (Event *)setupRenameRequestWithName:(NSString *)name {
+  [self ensureInitialized];
+
+  SetupRequestEvent *event = [[[[[SetupRequestEventBuilder alloc] init] setPhase:SetupPhaseRequestRename] setName:name] build];
+
+  // Build actual event
+  EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.timestamp = 0;
+  builder.trackingAreaWidth = 0;
+  builder.trackingAreaHeight = 0;
+  builder.type = EventTypeSetupRequest;
+  [builder setExtension:[SetupRequestEvent event] value:event];
+
+  return [builder build];
+}
+
++ (Event *)setupWifiScanRequest {
+  [self ensureInitialized];
+
+  SetupRequestEvent *event = [[[[SetupRequestEventBuilder alloc] init] setPhase:SetupPhaseRequestWifiScan] build];
+
+  // Build actual event
+  EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.timestamp = 0;
+  builder.trackingAreaWidth = 0;
+  builder.trackingAreaHeight = 0;
+  builder.type = EventTypeSetupRequest;
+  [builder setExtension:[SetupRequestEvent event] value:event];
+
+  return [builder build];
+}
+
++ (Event *)setupWifiConnectRequestWithSSID:(NSString *)ssid
+                                  password:(NSString *)password {
+  [self ensureInitialized];
+
+  SetupRequestEvent *event = [[[[[[SetupRequestEventBuilder alloc] init]
+      setPhase:SetupPhaseRequestWifiConnect]
+      setSsid:ssid]
+      setPassword:password]
+      build];
+
+  // Build actual event
+  EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.timestamp = 0;
+  builder.trackingAreaWidth = 0;
+  builder.trackingAreaHeight = 0;
+  builder.type = EventTypeSetupRequest;
+  [builder setExtension:[SetupRequestEvent event] value:event];
+
+  return [builder build];
 }
 
 @end

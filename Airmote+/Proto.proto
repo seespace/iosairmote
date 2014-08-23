@@ -15,6 +15,9 @@ message Event {
     HAND_GESTURE = 6;
     OAUTH_REQUEST = 7;
     OAUTH_RESPONSE = 8;
+
+    SETUP_REQUEST = 9;
+    SETUP_RESPONSE = 10;
   }
 
   required Type type = 1;
@@ -214,4 +217,49 @@ message OAuthResponseEvent {
   optional string auth_code = 1;
 }
 
+// Setup
 
+enum SetupPhase {
+  REQUEST_CODE = 0;
+  REQUEST_RENAME = 1;
+  REQUEST_WIFI_SCAN = 2;
+  REQUEST_WIFI_CONNECT = 3;
+}
+
+message WifiNetwork {
+  required string ssid = 1;
+  optional int32 strength = 2;
+  optional string bssid = 3;
+}
+
+message SetupRequestEvent {
+  extend Event {
+    required SetupRequestEvent event = 108;
+  }
+
+  required SetupPhase phase = 1;
+
+  // rename
+  optional string name = 2;
+
+  // wifi
+  optional string ssid = 3;
+  optional string password = 4;
+}
+
+message SetupResponseEvent {
+  extend Event {
+    required SetupResponseEvent event = 109;
+  }
+
+  required SetupPhase phase = 1;
+
+  required bool error = 2;
+  optional string error_message = 3;
+
+  // generate and confirm code
+  optional string code = 4;
+
+  // wifi list
+  repeated WifiNetwork wifi_networks = 5;
+}

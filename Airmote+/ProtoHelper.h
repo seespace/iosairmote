@@ -25,10 +25,10 @@
 + (Phase)phaseFromUITouchPhase:(UITouchPhase)phase;
 
 + (GestureEventState)stateFromUIGestureRecognizerState:
-        (UIGestureRecognizerState)state;
+    (UIGestureRecognizerState)state;
 
 + (GestureEventSwipeDirection)directionFromUISwipeGestureRecognizerDirection:
-        (UISwipeGestureRecognizerDirection)direction;
+    (UISwipeGestureRecognizerDirection)direction;
 
 // Event Generator
 
@@ -86,4 +86,14 @@
 
 + (Event *)oauthResponseWithCode:(NSString *)code
                           target:(NSString *)target;
+
++ (Event *)setupCodeRequest;
+
++ (Event *)setupRenameRequestWithName:(NSString *)name;
+
++ (Event *)setupWifiScanRequest;
+
++ (Event *)setupWifiConnectRequestWithSSID:(NSString *)ssid
+                                  password:(NSString *)password;
+
 @end

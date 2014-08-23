@@ -12,6 +12,8 @@ static id<PBExtensionField> GestureEvent_event = nil;
 static id<PBExtensionField> HandMotionEvent_event = nil;
 static id<PBExtensionField> OAuthRequestEvent_event = nil;
 static id<PBExtensionField> OAuthResponseEvent_event = nil;
+static id<PBExtensionField> SetupRequestEvent_event = nil;
+static id<PBExtensionField> SetupResponseEvent_event = nil;
 static PBExtensionRegistry* extensionRegistry = nil;
 + (PBExtensionRegistry*) extensionRegistry {
   return extensionRegistry;
@@ -91,6 +93,24 @@ static PBExtensionRegistry* extensionRegistry = nil;
                                         isRepeated:NO
                                           isPacked:NO
                             isMessageSetWireFormat:NO];
+    SetupRequestEvent_event =
+      [PBConcreteExtensionField extensionWithType:PBExtensionTypeMessage
+                                     extendedClass:[Event class]
+                                       fieldNumber:108
+                                      defaultValue:[SetupRequestEvent defaultInstance]
+                               messageOrGroupClass:[SetupRequestEvent class]
+                                        isRepeated:NO
+                                          isPacked:NO
+                            isMessageSetWireFormat:NO];
+    SetupResponseEvent_event =
+      [PBConcreteExtensionField extensionWithType:PBExtensionTypeMessage
+                                     extendedClass:[Event class]
+                                       fieldNumber:109
+                                      defaultValue:[SetupResponseEvent defaultInstance]
+                               messageOrGroupClass:[SetupResponseEvent class]
+                                        isRepeated:NO
+                                          isPacked:NO
+                            isMessageSetWireFormat:NO];
     PBMutableExtensionRegistry* registry = [PBMutableExtensionRegistry registry];
     [self registerAllExtensions:registry];
     extensionRegistry = registry;
@@ -105,6 +125,8 @@ static PBExtensionRegistry* extensionRegistry = nil;
   [registry addExtension:HandMotionEvent_event];
   [registry addExtension:OAuthRequestEvent_event];
   [registry addExtension:OAuthResponseEvent_event];
+  [registry addExtension:SetupRequestEvent_event];
+  [registry addExtension:SetupResponseEvent_event];
 }
 @end
 
@@ -115,6 +137,17 @@ BOOL PhaseIsValidValue(Phase value) {
     case PhaseStationary:
     case PhaseEnded:
     case PhaseCancelled:
+      return YES;
+    default:
+      return NO;
+  }
+}
+BOOL SetupPhaseIsValidValue(SetupPhase value) {
+  switch (value) {
+    case SetupPhaseRequestCode:
+    case SetupPhaseRequestRename:
+    case SetupPhaseRequestWifiScan:
+    case SetupPhaseRequestWifiConnect:
       return YES;
     default:
       return NO;
@@ -389,6 +422,8 @@ BOOL EventTypeIsValidValue(EventType value) {
     case EventTypeHandGesture:
     case EventTypeOauthRequest:
     case EventTypeOauthResponse:
+    case EventTypeSetupRequest:
+    case EventTypeSetupResponse:
       return YES;
     default:
       return NO;
@@ -4052,6 +4087,1097 @@ static OAuthResponseEvent* defaultOAuthResponseEventInstance = nil;
 - (OAuthResponseEventBuilder*) clearAuthCode {
   result.hasAuthCode = NO;
   result.authCode = @"";
+  return self;
+}
+@end
+
+@interface WifiNetwork ()
+@property (strong) NSString* ssid;
+@property SInt32 strength;
+@property (strong) NSString* bssid;
+@end
+
+@implementation WifiNetwork
+
+- (BOOL) hasSsid {
+  return !!hasSsid_;
+}
+- (void) setHasSsid:(BOOL) value_ {
+  hasSsid_ = !!value_;
+}
+@synthesize ssid;
+- (BOOL) hasStrength {
+  return !!hasStrength_;
+}
+- (void) setHasStrength:(BOOL) value_ {
+  hasStrength_ = !!value_;
+}
+@synthesize strength;
+- (BOOL) hasBssid {
+  return !!hasBssid_;
+}
+- (void) setHasBssid:(BOOL) value_ {
+  hasBssid_ = !!value_;
+}
+@synthesize bssid;
+- (void) dealloc {
+  self.ssid = nil;
+  self.bssid = nil;
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.ssid = @"";
+    self.strength = 0;
+    self.bssid = @"";
+  }
+  return self;
+}
+static WifiNetwork* defaultWifiNetworkInstance = nil;
++ (void) initialize {
+  if (self == [WifiNetwork class]) {
+    defaultWifiNetworkInstance = [[WifiNetwork alloc] init];
+  }
+}
++ (WifiNetwork*) defaultInstance {
+  return defaultWifiNetworkInstance;
+}
+- (WifiNetwork*) defaultInstance {
+  return defaultWifiNetworkInstance;
+}
+- (BOOL) isInitialized {
+  if (!self.hasSsid) {
+    return NO;
+  }
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasSsid) {
+    [output writeString:1 value:self.ssid];
+  }
+  if (self.hasStrength) {
+    [output writeInt32:2 value:self.strength];
+  }
+  if (self.hasBssid) {
+    [output writeString:3 value:self.bssid];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (SInt32) serializedSize {
+  __block SInt32 size_ = memoizedSerializedSize;
+  if (size_ != -1) {
+    return size_;
+  }
+
+  size_ = 0;
+  if (self.hasSsid) {
+    size_ += computeStringSize(1, self.ssid);
+  }
+  if (self.hasStrength) {
+    size_ += computeInt32Size(2, self.strength);
+  }
+  if (self.hasBssid) {
+    size_ += computeStringSize(3, self.bssid);
+  }
+  size_ += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size_;
+  return size_;
+}
++ (WifiNetwork*) parseFromData:(NSData*) data {
+  return (WifiNetwork*)[[[WifiNetwork builder] mergeFromData:data] build];
+}
++ (WifiNetwork*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (WifiNetwork*)[[[WifiNetwork builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (WifiNetwork*) parseFromInputStream:(NSInputStream*) input {
+  return (WifiNetwork*)[[[WifiNetwork builder] mergeFromInputStream:input] build];
+}
++ (WifiNetwork*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (WifiNetwork*)[[[WifiNetwork builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (WifiNetwork*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (WifiNetwork*)[[[WifiNetwork builder] mergeFromCodedInputStream:input] build];
+}
++ (WifiNetwork*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (WifiNetwork*)[[[WifiNetwork builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (WifiNetworkBuilder*) builder {
+  return [[WifiNetworkBuilder alloc] init];
+}
++ (WifiNetworkBuilder*) builderWithPrototype:(WifiNetwork*) prototype {
+  return [[WifiNetwork builder] mergeFrom:prototype];
+}
+- (WifiNetworkBuilder*) builder {
+  return [WifiNetwork builder];
+}
+- (WifiNetworkBuilder*) toBuilder {
+  return [WifiNetwork builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasSsid) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"ssid", self.ssid];
+  }
+  if (self.hasStrength) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"strength", [NSNumber numberWithInteger:self.strength]];
+  }
+  if (self.hasBssid) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"bssid", self.bssid];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[WifiNetwork class]]) {
+    return NO;
+  }
+  WifiNetwork *otherMessage = other;
+  return
+      self.hasSsid == otherMessage.hasSsid &&
+      (!self.hasSsid || [self.ssid isEqual:otherMessage.ssid]) &&
+      self.hasStrength == otherMessage.hasStrength &&
+      (!self.hasStrength || self.strength == otherMessage.strength) &&
+      self.hasBssid == otherMessage.hasBssid &&
+      (!self.hasBssid || [self.bssid isEqual:otherMessage.bssid]) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  __block NSUInteger hashCode = 7;
+  if (self.hasSsid) {
+    hashCode = hashCode * 31 + [self.ssid hash];
+  }
+  if (self.hasStrength) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInteger:self.strength] hash];
+  }
+  if (self.hasBssid) {
+    hashCode = hashCode * 31 + [self.bssid hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+@interface WifiNetworkBuilder()
+@property (strong) WifiNetwork* result;
+@end
+
+@implementation WifiNetworkBuilder
+@synthesize result;
+- (void) dealloc {
+  self.result = nil;
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.result = [[WifiNetwork alloc] init];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return result;
+}
+- (WifiNetworkBuilder*) clear {
+  self.result = [[WifiNetwork alloc] init];
+  return self;
+}
+- (WifiNetworkBuilder*) clone {
+  return [WifiNetwork builderWithPrototype:result];
+}
+- (WifiNetwork*) defaultInstance {
+  return [WifiNetwork defaultInstance];
+}
+- (WifiNetwork*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (WifiNetwork*) buildPartial {
+  WifiNetwork* returnMe = result;
+  self.result = nil;
+  return returnMe;
+}
+- (WifiNetworkBuilder*) mergeFrom:(WifiNetwork*) other {
+  if (other == [WifiNetwork defaultInstance]) {
+    return self;
+  }
+  if (other.hasSsid) {
+    [self setSsid:other.ssid];
+  }
+  if (other.hasStrength) {
+    [self setStrength:other.strength];
+  }
+  if (other.hasBssid) {
+    [self setBssid:other.bssid];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (WifiNetworkBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (WifiNetworkBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    SInt32 tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 10: {
+        [self setSsid:[input readString]];
+        break;
+      }
+      case 16: {
+        [self setStrength:[input readInt32]];
+        break;
+      }
+      case 26: {
+        [self setBssid:[input readString]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasSsid {
+  return result.hasSsid;
+}
+- (NSString*) ssid {
+  return result.ssid;
+}
+- (WifiNetworkBuilder*) setSsid:(NSString*) value {
+  result.hasSsid = YES;
+  result.ssid = value;
+  return self;
+}
+- (WifiNetworkBuilder*) clearSsid {
+  result.hasSsid = NO;
+  result.ssid = @"";
+  return self;
+}
+- (BOOL) hasStrength {
+  return result.hasStrength;
+}
+- (SInt32) strength {
+  return result.strength;
+}
+- (WifiNetworkBuilder*) setStrength:(SInt32) value {
+  result.hasStrength = YES;
+  result.strength = value;
+  return self;
+}
+- (WifiNetworkBuilder*) clearStrength {
+  result.hasStrength = NO;
+  result.strength = 0;
+  return self;
+}
+- (BOOL) hasBssid {
+  return result.hasBssid;
+}
+- (NSString*) bssid {
+  return result.bssid;
+}
+- (WifiNetworkBuilder*) setBssid:(NSString*) value {
+  result.hasBssid = YES;
+  result.bssid = value;
+  return self;
+}
+- (WifiNetworkBuilder*) clearBssid {
+  result.hasBssid = NO;
+  result.bssid = @"";
+  return self;
+}
+@end
+
+@interface SetupRequestEvent ()
+@property SetupPhase phase;
+@property (strong) NSString* name;
+@property (strong) NSString* ssid;
+@property (strong) NSString* password;
+@end
+
+@implementation SetupRequestEvent
+
+- (BOOL) hasPhase {
+  return !!hasPhase_;
+}
+- (void) setHasPhase:(BOOL) value_ {
+  hasPhase_ = !!value_;
+}
+@synthesize phase;
+- (BOOL) hasName {
+  return !!hasName_;
+}
+- (void) setHasName:(BOOL) value_ {
+  hasName_ = !!value_;
+}
+@synthesize name;
+- (BOOL) hasSsid {
+  return !!hasSsid_;
+}
+- (void) setHasSsid:(BOOL) value_ {
+  hasSsid_ = !!value_;
+}
+@synthesize ssid;
+- (BOOL) hasPassword {
+  return !!hasPassword_;
+}
+- (void) setHasPassword:(BOOL) value_ {
+  hasPassword_ = !!value_;
+}
+@synthesize password;
+- (void) dealloc {
+  self.name = nil;
+  self.ssid = nil;
+  self.password = nil;
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.phase = SetupPhaseRequestCode;
+    self.name = @"";
+    self.ssid = @"";
+    self.password = @"";
+  }
+  return self;
+}
++ (id<PBExtensionField>) event {
+  return SetupRequestEvent_event;
+}
+static SetupRequestEvent* defaultSetupRequestEventInstance = nil;
++ (void) initialize {
+  if (self == [SetupRequestEvent class]) {
+    defaultSetupRequestEventInstance = [[SetupRequestEvent alloc] init];
+  }
+}
++ (SetupRequestEvent*) defaultInstance {
+  return defaultSetupRequestEventInstance;
+}
+- (SetupRequestEvent*) defaultInstance {
+  return defaultSetupRequestEventInstance;
+}
+- (BOOL) isInitialized {
+  if (!self.hasPhase) {
+    return NO;
+  }
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasPhase) {
+    [output writeEnum:1 value:self.phase];
+  }
+  if (self.hasName) {
+    [output writeString:2 value:self.name];
+  }
+  if (self.hasSsid) {
+    [output writeString:3 value:self.ssid];
+  }
+  if (self.hasPassword) {
+    [output writeString:4 value:self.password];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (SInt32) serializedSize {
+  __block SInt32 size_ = memoizedSerializedSize;
+  if (size_ != -1) {
+    return size_;
+  }
+
+  size_ = 0;
+  if (self.hasPhase) {
+    size_ += computeEnumSize(1, self.phase);
+  }
+  if (self.hasName) {
+    size_ += computeStringSize(2, self.name);
+  }
+  if (self.hasSsid) {
+    size_ += computeStringSize(3, self.ssid);
+  }
+  if (self.hasPassword) {
+    size_ += computeStringSize(4, self.password);
+  }
+  size_ += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size_;
+  return size_;
+}
++ (SetupRequestEvent*) parseFromData:(NSData*) data {
+  return (SetupRequestEvent*)[[[SetupRequestEvent builder] mergeFromData:data] build];
+}
++ (SetupRequestEvent*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (SetupRequestEvent*)[[[SetupRequestEvent builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (SetupRequestEvent*) parseFromInputStream:(NSInputStream*) input {
+  return (SetupRequestEvent*)[[[SetupRequestEvent builder] mergeFromInputStream:input] build];
+}
++ (SetupRequestEvent*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (SetupRequestEvent*)[[[SetupRequestEvent builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (SetupRequestEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (SetupRequestEvent*)[[[SetupRequestEvent builder] mergeFromCodedInputStream:input] build];
+}
++ (SetupRequestEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (SetupRequestEvent*)[[[SetupRequestEvent builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (SetupRequestEventBuilder*) builder {
+  return [[SetupRequestEventBuilder alloc] init];
+}
++ (SetupRequestEventBuilder*) builderWithPrototype:(SetupRequestEvent*) prototype {
+  return [[SetupRequestEvent builder] mergeFrom:prototype];
+}
+- (SetupRequestEventBuilder*) builder {
+  return [SetupRequestEvent builder];
+}
+- (SetupRequestEventBuilder*) toBuilder {
+  return [SetupRequestEvent builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasPhase) {
+    [output appendFormat:@"%@%@: %d\n", indent, @"phase", self.phase];
+  }
+  if (self.hasName) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"name", self.name];
+  }
+  if (self.hasSsid) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"ssid", self.ssid];
+  }
+  if (self.hasPassword) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"password", self.password];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[SetupRequestEvent class]]) {
+    return NO;
+  }
+  SetupRequestEvent *otherMessage = other;
+  return
+      self.hasPhase == otherMessage.hasPhase &&
+      (!self.hasPhase || self.phase == otherMessage.phase) &&
+      self.hasName == otherMessage.hasName &&
+      (!self.hasName || [self.name isEqual:otherMessage.name]) &&
+      self.hasSsid == otherMessage.hasSsid &&
+      (!self.hasSsid || [self.ssid isEqual:otherMessage.ssid]) &&
+      self.hasPassword == otherMessage.hasPassword &&
+      (!self.hasPassword || [self.password isEqual:otherMessage.password]) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  __block NSUInteger hashCode = 7;
+  if (self.hasPhase) {
+    hashCode = hashCode * 31 + self.phase;
+  }
+  if (self.hasName) {
+    hashCode = hashCode * 31 + [self.name hash];
+  }
+  if (self.hasSsid) {
+    hashCode = hashCode * 31 + [self.ssid hash];
+  }
+  if (self.hasPassword) {
+    hashCode = hashCode * 31 + [self.password hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+@interface SetupRequestEventBuilder()
+@property (strong) SetupRequestEvent* result;
+@end
+
+@implementation SetupRequestEventBuilder
+@synthesize result;
+- (void) dealloc {
+  self.result = nil;
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.result = [[SetupRequestEvent alloc] init];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return result;
+}
+- (SetupRequestEventBuilder*) clear {
+  self.result = [[SetupRequestEvent alloc] init];
+  return self;
+}
+- (SetupRequestEventBuilder*) clone {
+  return [SetupRequestEvent builderWithPrototype:result];
+}
+- (SetupRequestEvent*) defaultInstance {
+  return [SetupRequestEvent defaultInstance];
+}
+- (SetupRequestEvent*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (SetupRequestEvent*) buildPartial {
+  SetupRequestEvent* returnMe = result;
+  self.result = nil;
+  return returnMe;
+}
+- (SetupRequestEventBuilder*) mergeFrom:(SetupRequestEvent*) other {
+  if (other == [SetupRequestEvent defaultInstance]) {
+    return self;
+  }
+  if (other.hasPhase) {
+    [self setPhase:other.phase];
+  }
+  if (other.hasName) {
+    [self setName:other.name];
+  }
+  if (other.hasSsid) {
+    [self setSsid:other.ssid];
+  }
+  if (other.hasPassword) {
+    [self setPassword:other.password];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (SetupRequestEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (SetupRequestEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    SInt32 tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 8: {
+        SetupPhase value = (SetupPhase)[input readEnum];
+        if (SetupPhaseIsValidValue(value)) {
+          [self setPhase:value];
+        } else {
+          [unknownFields mergeVarintField:1 value:value];
+        }
+        break;
+      }
+      case 18: {
+        [self setName:[input readString]];
+        break;
+      }
+      case 26: {
+        [self setSsid:[input readString]];
+        break;
+      }
+      case 34: {
+        [self setPassword:[input readString]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasPhase {
+  return result.hasPhase;
+}
+- (SetupPhase) phase {
+  return result.phase;
+}
+- (SetupRequestEventBuilder*) setPhase:(SetupPhase) value {
+  result.hasPhase = YES;
+  result.phase = value;
+  return self;
+}
+- (SetupRequestEventBuilder*) clearPhase {
+  result.hasPhase = NO;
+  result.phase = SetupPhaseRequestCode;
+  return self;
+}
+- (BOOL) hasName {
+  return result.hasName;
+}
+- (NSString*) name {
+  return result.name;
+}
+- (SetupRequestEventBuilder*) setName:(NSString*) value {
+  result.hasName = YES;
+  result.name = value;
+  return self;
+}
+- (SetupRequestEventBuilder*) clearName {
+  result.hasName = NO;
+  result.name = @"";
+  return self;
+}
+- (BOOL) hasSsid {
+  return result.hasSsid;
+}
+- (NSString*) ssid {
+  return result.ssid;
+}
+- (SetupRequestEventBuilder*) setSsid:(NSString*) value {
+  result.hasSsid = YES;
+  result.ssid = value;
+  return self;
+}
+- (SetupRequestEventBuilder*) clearSsid {
+  result.hasSsid = NO;
+  result.ssid = @"";
+  return self;
+}
+- (BOOL) hasPassword {
+  return result.hasPassword;
+}
+- (NSString*) password {
+  return result.password;
+}
+- (SetupRequestEventBuilder*) setPassword:(NSString*) value {
+  result.hasPassword = YES;
+  result.password = value;
+  return self;
+}
+- (SetupRequestEventBuilder*) clearPassword {
+  result.hasPassword = NO;
+  result.password = @"";
+  return self;
+}
+@end
+
+@interface SetupResponseEvent ()
+@property SetupPhase phase;
+@property BOOL error;
+@property (strong) NSString* errorMessage;
+@property (strong) NSString* code;
+@property (strong) NSMutableArray * wifiNetworksArray;
+@end
+
+@implementation SetupResponseEvent
+
+- (BOOL) hasPhase {
+  return !!hasPhase_;
+}
+- (void) setHasPhase:(BOOL) value_ {
+  hasPhase_ = !!value_;
+}
+@synthesize phase;
+- (BOOL) hasError {
+  return !!hasError_;
+}
+- (void) setHasError:(BOOL) value_ {
+  hasError_ = !!value_;
+}
+- (BOOL) error {
+  return !!error_;
+}
+- (void) setError:(BOOL) value_ {
+  error_ = !!value_;
+}
+- (BOOL) hasErrorMessage {
+  return !!hasErrorMessage_;
+}
+- (void) setHasErrorMessage:(BOOL) value_ {
+  hasErrorMessage_ = !!value_;
+}
+@synthesize errorMessage;
+- (BOOL) hasCode {
+  return !!hasCode_;
+}
+- (void) setHasCode:(BOOL) value_ {
+  hasCode_ = !!value_;
+}
+@synthesize code;
+@synthesize wifiNetworksArray;
+@dynamic wifiNetworks;
+- (void) dealloc {
+  self.errorMessage = nil;
+  self.code = nil;
+  self.wifiNetworksArray = nil;
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.phase = SetupPhaseRequestCode;
+    self.error = NO;
+    self.errorMessage = @"";
+    self.code = @"";
+  }
+  return self;
+}
++ (id<PBExtensionField>) event {
+  return SetupResponseEvent_event;
+}
+static SetupResponseEvent* defaultSetupResponseEventInstance = nil;
++ (void) initialize {
+  if (self == [SetupResponseEvent class]) {
+    defaultSetupResponseEventInstance = [[SetupResponseEvent alloc] init];
+  }
+}
++ (SetupResponseEvent*) defaultInstance {
+  return defaultSetupResponseEventInstance;
+}
+- (SetupResponseEvent*) defaultInstance {
+  return defaultSetupResponseEventInstance;
+}
+- (NSArray *)wifiNetworks {
+  return wifiNetworksArray;
+}
+- (WifiNetwork*)wifiNetworksAtIndex:(NSUInteger)index {
+  return [wifiNetworksArray objectAtIndex:index];
+}
+- (BOOL) isInitialized {
+  if (!self.hasPhase) {
+    return NO;
+  }
+  if (!self.hasError) {
+    return NO;
+  }
+  __block BOOL isInitwifiNetworks = YES;
+   [self.wifiNetworks enumerateObjectsUsingBlock:^(WifiNetwork *element, NSUInteger idx, BOOL *stop) {
+    if (!element.isInitialized) {
+      isInitwifiNetworks = NO;
+      *stop = YES;
+    }
+  }];
+  if (!isInitwifiNetworks) return isInitwifiNetworks;
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasPhase) {
+    [output writeEnum:1 value:self.phase];
+  }
+  if (self.hasError) {
+    [output writeBool:2 value:self.error];
+  }
+  if (self.hasErrorMessage) {
+    [output writeString:3 value:self.errorMessage];
+  }
+  if (self.hasCode) {
+    [output writeString:4 value:self.code];
+  }
+  [self.wifiNetworksArray enumerateObjectsUsingBlock:^(WifiNetwork *element, NSUInteger idx, BOOL *stop) {
+    [output writeMessage:5 value:element];
+  }];
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (SInt32) serializedSize {
+  __block SInt32 size_ = memoizedSerializedSize;
+  if (size_ != -1) {
+    return size_;
+  }
+
+  size_ = 0;
+  if (self.hasPhase) {
+    size_ += computeEnumSize(1, self.phase);
+  }
+  if (self.hasError) {
+    size_ += computeBoolSize(2, self.error);
+  }
+  if (self.hasErrorMessage) {
+    size_ += computeStringSize(3, self.errorMessage);
+  }
+  if (self.hasCode) {
+    size_ += computeStringSize(4, self.code);
+  }
+  [self.wifiNetworksArray enumerateObjectsUsingBlock:^(WifiNetwork *element, NSUInteger idx, BOOL *stop) {
+    size_ += computeMessageSize(5, element);
+  }];
+  size_ += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size_;
+  return size_;
+}
++ (SetupResponseEvent*) parseFromData:(NSData*) data {
+  return (SetupResponseEvent*)[[[SetupResponseEvent builder] mergeFromData:data] build];
+}
++ (SetupResponseEvent*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (SetupResponseEvent*)[[[SetupResponseEvent builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (SetupResponseEvent*) parseFromInputStream:(NSInputStream*) input {
+  return (SetupResponseEvent*)[[[SetupResponseEvent builder] mergeFromInputStream:input] build];
+}
++ (SetupResponseEvent*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (SetupResponseEvent*)[[[SetupResponseEvent builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (SetupResponseEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (SetupResponseEvent*)[[[SetupResponseEvent builder] mergeFromCodedInputStream:input] build];
+}
++ (SetupResponseEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (SetupResponseEvent*)[[[SetupResponseEvent builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (SetupResponseEventBuilder*) builder {
+  return [[SetupResponseEventBuilder alloc] init];
+}
++ (SetupResponseEventBuilder*) builderWithPrototype:(SetupResponseEvent*) prototype {
+  return [[SetupResponseEvent builder] mergeFrom:prototype];
+}
+- (SetupResponseEventBuilder*) builder {
+  return [SetupResponseEvent builder];
+}
+- (SetupResponseEventBuilder*) toBuilder {
+  return [SetupResponseEvent builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasPhase) {
+    [output appendFormat:@"%@%@: %d\n", indent, @"phase", self.phase];
+  }
+  if (self.hasError) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"error", [NSNumber numberWithBool:self.error]];
+  }
+  if (self.hasErrorMessage) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"errorMessage", self.errorMessage];
+  }
+  if (self.hasCode) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"code", self.code];
+  }
+  [self.wifiNetworksArray enumerateObjectsUsingBlock:^(WifiNetwork *element, NSUInteger idx, BOOL *stop) {
+    [output appendFormat:@"%@%@ {\n", indent, @"wifiNetworks"];
+    [element writeDescriptionTo:output
+                     withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }];
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[SetupResponseEvent class]]) {
+    return NO;
+  }
+  SetupResponseEvent *otherMessage = other;
+  return
+      self.hasPhase == otherMessage.hasPhase &&
+      (!self.hasPhase || self.phase == otherMessage.phase) &&
+      self.hasError == otherMessage.hasError &&
+      (!self.hasError || self.error == otherMessage.error) &&
+      self.hasErrorMessage == otherMessage.hasErrorMessage &&
+      (!self.hasErrorMessage || [self.errorMessage isEqual:otherMessage.errorMessage]) &&
+      self.hasCode == otherMessage.hasCode &&
+      (!self.hasCode || [self.code isEqual:otherMessage.code]) &&
+      [self.wifiNetworksArray isEqualToArray:otherMessage.wifiNetworksArray] &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  __block NSUInteger hashCode = 7;
+  if (self.hasPhase) {
+    hashCode = hashCode * 31 + self.phase;
+  }
+  if (self.hasError) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.error] hash];
+  }
+  if (self.hasErrorMessage) {
+    hashCode = hashCode * 31 + [self.errorMessage hash];
+  }
+  if (self.hasCode) {
+    hashCode = hashCode * 31 + [self.code hash];
+  }
+  [self.wifiNetworksArray enumerateObjectsUsingBlock:^(WifiNetwork *element, NSUInteger idx, BOOL *stop) {
+    hashCode = hashCode * 31 + [element hash];
+  }];
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+@interface SetupResponseEventBuilder()
+@property (strong) SetupResponseEvent* result;
+@end
+
+@implementation SetupResponseEventBuilder
+@synthesize result;
+- (void) dealloc {
+  self.result = nil;
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.result = [[SetupResponseEvent alloc] init];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return result;
+}
+- (SetupResponseEventBuilder*) clear {
+  self.result = [[SetupResponseEvent alloc] init];
+  return self;
+}
+- (SetupResponseEventBuilder*) clone {
+  return [SetupResponseEvent builderWithPrototype:result];
+}
+- (SetupResponseEvent*) defaultInstance {
+  return [SetupResponseEvent defaultInstance];
+}
+- (SetupResponseEvent*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (SetupResponseEvent*) buildPartial {
+  SetupResponseEvent* returnMe = result;
+  self.result = nil;
+  return returnMe;
+}
+- (SetupResponseEventBuilder*) mergeFrom:(SetupResponseEvent*) other {
+  if (other == [SetupResponseEvent defaultInstance]) {
+    return self;
+  }
+  if (other.hasPhase) {
+    [self setPhase:other.phase];
+  }
+  if (other.hasError) {
+    [self setError:other.error];
+  }
+  if (other.hasErrorMessage) {
+    [self setErrorMessage:other.errorMessage];
+  }
+  if (other.hasCode) {
+    [self setCode:other.code];
+  }
+  if (other.wifiNetworksArray.count > 0) {
+    if (result.wifiNetworksArray == nil) {
+      result.wifiNetworksArray = [[NSMutableArray alloc] initWithArray:other.wifiNetworksArray];
+    } else {
+      [result.wifiNetworksArray addObjectsFromArray:other.wifiNetworksArray];
+    }
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (SetupResponseEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (SetupResponseEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    SInt32 tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 8: {
+        SetupPhase value = (SetupPhase)[input readEnum];
+        if (SetupPhaseIsValidValue(value)) {
+          [self setPhase:value];
+        } else {
+          [unknownFields mergeVarintField:1 value:value];
+        }
+        break;
+      }
+      case 16: {
+        [self setError:[input readBool]];
+        break;
+      }
+      case 26: {
+        [self setErrorMessage:[input readString]];
+        break;
+      }
+      case 34: {
+        [self setCode:[input readString]];
+        break;
+      }
+      case 42: {
+        WifiNetworkBuilder* subBuilder = [WifiNetwork builder];
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self addWifiNetworks:[subBuilder buildPartial]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasPhase {
+  return result.hasPhase;
+}
+- (SetupPhase) phase {
+  return result.phase;
+}
+- (SetupResponseEventBuilder*) setPhase:(SetupPhase) value {
+  result.hasPhase = YES;
+  result.phase = value;
+  return self;
+}
+- (SetupResponseEventBuilder*) clearPhase {
+  result.hasPhase = NO;
+  result.phase = SetupPhaseRequestCode;
+  return self;
+}
+- (BOOL) hasError {
+  return result.hasError;
+}
+- (BOOL) error {
+  return result.error;
+}
+- (SetupResponseEventBuilder*) setError:(BOOL) value {
+  result.hasError = YES;
+  result.error = value;
+  return self;
+}
+- (SetupResponseEventBuilder*) clearError {
+  result.hasError = NO;
+  result.error = NO;
+  return self;
+}
+- (BOOL) hasErrorMessage {
+  return result.hasErrorMessage;
+}
+- (NSString*) errorMessage {
+  return result.errorMessage;
+}
+- (SetupResponseEventBuilder*) setErrorMessage:(NSString*) value {
+  result.hasErrorMessage = YES;
+  result.errorMessage = value;
+  return self;
+}
+- (SetupResponseEventBuilder*) clearErrorMessage {
+  result.hasErrorMessage = NO;
+  result.errorMessage = @"";
+  return self;
+}
+- (BOOL) hasCode {
+  return result.hasCode;
+}
+- (NSString*) code {
+  return result.code;
+}
+- (SetupResponseEventBuilder*) setCode:(NSString*) value {
+  result.hasCode = YES;
+  result.code = value;
+  return self;
+}
+- (SetupResponseEventBuilder*) clearCode {
+  result.hasCode = NO;
+  result.code = @"";
+  return self;
+}
+- (NSMutableArray *)wifiNetworks {
+  return result.wifiNetworksArray;
+}
+- (WifiNetwork*)wifiNetworksAtIndex:(NSUInteger)index {
+  return [result wifiNetworksAtIndex:index];
+}
+- (SetupResponseEventBuilder *)addWifiNetworks:(WifiNetwork*)value {
+  if (result.wifiNetworksArray == nil) {
+    result.wifiNetworksArray = [[NSMutableArray alloc]init];
+  }
+  [result.wifiNetworksArray addObject:value];
+  return self;
+}
+- (SetupResponseEventBuilder *)setWifiNetworksArray:(NSArray *)array {
+  result.wifiNetworksArray = [[NSMutableArray alloc]initWithArray:array];
+  return self;
+}
+- (SetupResponseEventBuilder *)clearWifiNetworks {
+  result.wifiNetworksArray = nil;
   return self;
 }
 @end

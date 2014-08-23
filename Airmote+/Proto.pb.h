@@ -22,8 +22,14 @@
 @class OAuthRequestEventBuilder;
 @class OAuthResponseEvent;
 @class OAuthResponseEventBuilder;
+@class SetupRequestEvent;
+@class SetupRequestEventBuilder;
+@class SetupResponseEvent;
+@class SetupResponseEventBuilder;
 @class TouchEvent;
 @class TouchEventBuilder;
+@class WifiNetwork;
+@class WifiNetworkBuilder;
 #ifndef __has_feature
   #define __has_feature(x) 0 // Compatibility with non-clang compilers.
 #endif // __has_feature
@@ -47,6 +53,15 @@ typedef enum {
 BOOL PhaseIsValidValue(Phase value);
 
 typedef enum {
+  SetupPhaseRequestCode = 0,
+  SetupPhaseRequestRename = 1,
+  SetupPhaseRequestWifiScan = 2,
+  SetupPhaseRequestWifiConnect = 3,
+} SetupPhase;
+
+BOOL SetupPhaseIsValidValue(SetupPhase value);
+
+typedef enum {
   EventTypeDevice = 0,
   EventTypeTouch = 1,
   EventTypeMotion = 2,
@@ -56,6 +71,8 @@ typedef enum {
   EventTypeHandGesture = 6,
   EventTypeOauthRequest = 7,
   EventTypeOauthResponse = 8,
+  EventTypeSetupRequest = 9,
+  EventTypeSetupResponse = 10,
 } EventType;
 
 BOOL EventTypeIsValidValue(EventType value);
@@ -951,6 +968,236 @@ BOOL HandMotionEventStateIsValidValue(HandMotionEventState value);
 - (NSString*) authCode;
 - (OAuthResponseEventBuilder*) setAuthCode:(NSString*) value;
 - (OAuthResponseEventBuilder*) clearAuthCode;
+@end
+
+@interface WifiNetwork : PBGeneratedMessage {
+@private
+  BOOL hasStrength_:1;
+  BOOL hasSsid_:1;
+  BOOL hasBssid_:1;
+  SInt32 strength;
+  NSString* ssid;
+  NSString* bssid;
+}
+- (BOOL) hasSsid;
+- (BOOL) hasStrength;
+- (BOOL) hasBssid;
+@property (readonly, strong) NSString* ssid;
+@property (readonly) SInt32 strength;
+@property (readonly, strong) NSString* bssid;
+
++ (WifiNetwork*) defaultInstance;
+- (WifiNetwork*) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (WifiNetworkBuilder*) builder;
++ (WifiNetworkBuilder*) builder;
++ (WifiNetworkBuilder*) builderWithPrototype:(WifiNetwork*) prototype;
+- (WifiNetworkBuilder*) toBuilder;
+
++ (WifiNetwork*) parseFromData:(NSData*) data;
++ (WifiNetwork*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (WifiNetwork*) parseFromInputStream:(NSInputStream*) input;
++ (WifiNetwork*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (WifiNetwork*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (WifiNetwork*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface WifiNetworkBuilder : PBGeneratedMessageBuilder {
+@private
+  WifiNetwork* result;
+}
+
+- (WifiNetwork*) defaultInstance;
+
+- (WifiNetworkBuilder*) clear;
+- (WifiNetworkBuilder*) clone;
+
+- (WifiNetwork*) build;
+- (WifiNetwork*) buildPartial;
+
+- (WifiNetworkBuilder*) mergeFrom:(WifiNetwork*) other;
+- (WifiNetworkBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (WifiNetworkBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasSsid;
+- (NSString*) ssid;
+- (WifiNetworkBuilder*) setSsid:(NSString*) value;
+- (WifiNetworkBuilder*) clearSsid;
+
+- (BOOL) hasStrength;
+- (SInt32) strength;
+- (WifiNetworkBuilder*) setStrength:(SInt32) value;
+- (WifiNetworkBuilder*) clearStrength;
+
+- (BOOL) hasBssid;
+- (NSString*) bssid;
+- (WifiNetworkBuilder*) setBssid:(NSString*) value;
+- (WifiNetworkBuilder*) clearBssid;
+@end
+
+@interface SetupRequestEvent : PBGeneratedMessage {
+@private
+  BOOL hasName_:1;
+  BOOL hasSsid_:1;
+  BOOL hasPassword_:1;
+  BOOL hasPhase_:1;
+  NSString* name;
+  NSString* ssid;
+  NSString* password;
+  SetupPhase phase;
+}
+- (BOOL) hasPhase;
+- (BOOL) hasName;
+- (BOOL) hasSsid;
+- (BOOL) hasPassword;
+@property (readonly) SetupPhase phase;
+@property (readonly, strong) NSString* name;
+@property (readonly, strong) NSString* ssid;
+@property (readonly, strong) NSString* password;
+
++ (SetupRequestEvent*) defaultInstance;
+- (SetupRequestEvent*) defaultInstance;
+
++ (id<PBExtensionField>) event;
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (SetupRequestEventBuilder*) builder;
++ (SetupRequestEventBuilder*) builder;
++ (SetupRequestEventBuilder*) builderWithPrototype:(SetupRequestEvent*) prototype;
+- (SetupRequestEventBuilder*) toBuilder;
+
++ (SetupRequestEvent*) parseFromData:(NSData*) data;
++ (SetupRequestEvent*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (SetupRequestEvent*) parseFromInputStream:(NSInputStream*) input;
++ (SetupRequestEvent*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (SetupRequestEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (SetupRequestEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface SetupRequestEventBuilder : PBGeneratedMessageBuilder {
+@private
+  SetupRequestEvent* result;
+}
+
+- (SetupRequestEvent*) defaultInstance;
+
+- (SetupRequestEventBuilder*) clear;
+- (SetupRequestEventBuilder*) clone;
+
+- (SetupRequestEvent*) build;
+- (SetupRequestEvent*) buildPartial;
+
+- (SetupRequestEventBuilder*) mergeFrom:(SetupRequestEvent*) other;
+- (SetupRequestEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (SetupRequestEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasPhase;
+- (SetupPhase) phase;
+- (SetupRequestEventBuilder*) setPhase:(SetupPhase) value;
+- (SetupRequestEventBuilder*) clearPhase;
+
+- (BOOL) hasName;
+- (NSString*) name;
+- (SetupRequestEventBuilder*) setName:(NSString*) value;
+- (SetupRequestEventBuilder*) clearName;
+
+- (BOOL) hasSsid;
+- (NSString*) ssid;
+- (SetupRequestEventBuilder*) setSsid:(NSString*) value;
+- (SetupRequestEventBuilder*) clearSsid;
+
+- (BOOL) hasPassword;
+- (NSString*) password;
+- (SetupRequestEventBuilder*) setPassword:(NSString*) value;
+- (SetupRequestEventBuilder*) clearPassword;
+@end
+
+@interface SetupResponseEvent : PBGeneratedMessage {
+@private
+  BOOL hasError_:1;
+  BOOL hasErrorMessage_:1;
+  BOOL hasCode_:1;
+  BOOL hasPhase_:1;
+  BOOL error_:1;
+  NSString* errorMessage;
+  NSString* code;
+  SetupPhase phase;
+  NSMutableArray * wifiNetworksArray;
+}
+- (BOOL) hasPhase;
+- (BOOL) hasError;
+- (BOOL) hasErrorMessage;
+- (BOOL) hasCode;
+@property (readonly) SetupPhase phase;
+- (BOOL) error;
+@property (readonly, strong) NSString* errorMessage;
+@property (readonly, strong) NSString* code;
+@property (readonly, strong) NSArray * wifiNetworks;
+- (WifiNetwork*)wifiNetworksAtIndex:(NSUInteger)index;
+
++ (SetupResponseEvent*) defaultInstance;
+- (SetupResponseEvent*) defaultInstance;
+
++ (id<PBExtensionField>) event;
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (SetupResponseEventBuilder*) builder;
++ (SetupResponseEventBuilder*) builder;
++ (SetupResponseEventBuilder*) builderWithPrototype:(SetupResponseEvent*) prototype;
+- (SetupResponseEventBuilder*) toBuilder;
+
++ (SetupResponseEvent*) parseFromData:(NSData*) data;
++ (SetupResponseEvent*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (SetupResponseEvent*) parseFromInputStream:(NSInputStream*) input;
++ (SetupResponseEvent*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (SetupResponseEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (SetupResponseEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface SetupResponseEventBuilder : PBGeneratedMessageBuilder {
+@private
+  SetupResponseEvent* result;
+}
+
+- (SetupResponseEvent*) defaultInstance;
+
+- (SetupResponseEventBuilder*) clear;
+- (SetupResponseEventBuilder*) clone;
+
+- (SetupResponseEvent*) build;
+- (SetupResponseEvent*) buildPartial;
+
+- (SetupResponseEventBuilder*) mergeFrom:(SetupResponseEvent*) other;
+- (SetupResponseEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (SetupResponseEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasPhase;
+- (SetupPhase) phase;
+- (SetupResponseEventBuilder*) setPhase:(SetupPhase) value;
+- (SetupResponseEventBuilder*) clearPhase;
+
+- (BOOL) hasError;
+- (BOOL) error;
+- (SetupResponseEventBuilder*) setError:(BOOL) value;
+- (SetupResponseEventBuilder*) clearError;
+
+- (BOOL) hasErrorMessage;
+- (NSString*) errorMessage;
+- (SetupResponseEventBuilder*) setErrorMessage:(NSString*) value;
+- (SetupResponseEventBuilder*) clearErrorMessage;
+
+- (BOOL) hasCode;
+- (NSString*) code;
+- (SetupResponseEventBuilder*) setCode:(NSString*) value;
+- (SetupResponseEventBuilder*) clearCode;
+
+- (NSMutableArray *)wifiNetworks;
+- (WifiNetwork*)wifiNetworksAtIndex:(NSUInteger)index;
+- (SetupResponseEventBuilder *)addWifiNetworks:(WifiNetwork*)value;
+- (SetupResponseEventBuilder *)setWifiNetworksArray:(NSArray *)array;
+- (SetupResponseEventBuilder *)clearWifiNetworks;
 @end
 
 
