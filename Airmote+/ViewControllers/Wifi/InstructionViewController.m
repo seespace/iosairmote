@@ -12,6 +12,7 @@
 #import "SVProgressHUD.h"
 #import "NSData+NetService.h"
 #import "ProtoHelper.h"
+#import "WifiHelper.h"
 
 #define kAccessPointIP @"192.168.49.1"
 
@@ -45,6 +46,9 @@
   _bonjourManager.delegate = self;
   [_bonjourManager start];
   //TODO disable Next button
+
+  [WifiHelper currentConnectedWiFiSSID];
+
 }
 
 
