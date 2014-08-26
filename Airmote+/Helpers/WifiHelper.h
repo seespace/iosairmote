@@ -8,4 +8,9 @@
 
 @interface WifiHelper : NSObject
 +(NSString *)currentConnectedWiFiSSID;
+
+/**
+* @return YES if connected to a WiFi with SDID in following format "InAiRxxxx", x stands for a digit
+*/
++(BOOL)isConnectedToInAiRWiFi;
 @end

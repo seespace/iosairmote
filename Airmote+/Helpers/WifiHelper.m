@@ -25,4 +25,15 @@
     return info[@"SSID"];
 }
 
++ (BOOL)isConnectedToInAiRWiFi {
+  NSString *currentWifiSDID = [WifiHelper currentConnectedWiFiSSID];
+  if ([currentWifiSDID rangeOfString:@"InAir"].location != NSNotFound)
+  {
+    return YES;
+  }
+
+  return NO;
+}
+
+
 @end

@@ -12,10 +12,6 @@
 @required
 - (void)bonjourManagerFinishedDiscoveringServices:(NSArray *)services;
 - (void)bonjourManagerServiceNotFound;
-@optional
-- (void)bonjourManagerDidFoundAndResolveServices:(NSArray *)services;
-- (void)bonjourManagerDidResolveHostNames:(NSArray *)hosts;
-
 @end
 
 @interface BonjourManager : NSObject

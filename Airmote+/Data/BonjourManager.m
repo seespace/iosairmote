@@ -11,12 +11,11 @@
 
 
 
-@interface BonjourManager () <NSNetServiceBrowserDelegate, NSNetServiceDelegate>
+@interface BonjourManager () <NSNetServiceBrowserDelegate>
 @end
 
 @implementation BonjourManager {
   NSNetServiceBrowser *_browser;
-  int runningNetServiceCallsCount;
   BOOL foundAllService;
   NSMutableArray *_services;
   NSMutableArray *_discoveredServices;
@@ -29,18 +28,13 @@
     _browser.delegate = self;
     _services = [[NSMutableArray alloc] init];
     _discoveredServices = [[NSMutableArray alloc] init];
-    runningNetServiceCallsCount = 0;
     foundAllService = NO;
   }
   return self;
 }
 
 - (void)netServiceBrowser:(NSNetServiceBrowser *)aBrowser didFindService:(NSNetService *)aService moreComing:(BOOL)more {
-  NSNetService *remoteService = aService;
-  remoteService.delegate = self;
-  [remoteService resolveWithTimeout:10];
-  [_discoveredServices addObject:remoteService];
-  runningNetServiceCallsCount++;
+  [_discoveredServices addObject:aService];
   foundAllService = !more;
   if (foundAllService && [self.delegate respondsToSelector:@selector(bonjourManagerFinishedDiscoveringServices:)]) {
     [self.delegate bonjourManagerFinishedDiscoveringServices:_discoveredServices];
@@ -66,26 +60,6 @@
   }
 }
 
-
-#pragma mark - NetServiceDelegate
-
-- (void)netServiceDidResolveAddress:(NSNetService *)aService {
-  runningNetServiceCallsCount--;
-  [_services addObject:aService];
-  [self callFinishDelegateIfDone];
-}
-
-- (void)callFinishDelegateIfDone {
-  if (foundAllService && runningNetServiceCallsCount == 0 && [self.delegate respondsToSelector:@selector(bonjourManagerDidFoundAndResolveServices:)]) {
-    [self.delegate bonjourManagerDidFoundAndResolveServices:_services];
-  }
-}
-
-
-- (void)netService:(NSNetService *)sender didNotResolve:(NSDictionary *)errorDict {
-  runningNetServiceCallsCount--;
-  [self callFinishDelegateIfDone];
-}
 
 - (void)start {
   [_browser stop];

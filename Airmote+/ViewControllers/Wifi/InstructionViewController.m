@@ -15,6 +15,7 @@
 #import "WifiHelper.h"
 
 #define kAccessPointIP @"192.168.49.1"
+#define MAX_RETRY_COUNT 3
 
 @interface InstructionViewController ()
 
@@ -27,6 +28,11 @@
   BonjourManager *_bonjourManager;
 
   BOOL isConnecting;
+  BOOL isDiscoveringBonjourServices;
+  BOOL isResolvingService;
+  int retryCount;
+  int resolveServiceRetryCount;
+  NSNetService *_netService;
 }
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -44,10 +50,23 @@
                                                                            target:self action:@selector(nextButtonPressed:)];
   _bonjourManager = [[BonjourManager alloc] init];
   _bonjourManager.delegate = self;
-  [_bonjourManager start];
-  //TODO disable Next button
 
-  [WifiHelper currentConnectedWiFiSSID];
+  self.navigationItem.rightBarButtonItem.enabled = NO;
+
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(didBecomeActive:)
+                                               name:UIApplicationDidBecomeActiveNotification
+                                             object:nil];
+}
+
+- (void)didBecomeActive:(NSNotification *)notification {
+  if ([WifiHelper isConnectedToInAiRWiFi] && !isDiscoveringBonjourServices) {
+    isDiscoveringBonjourServices = YES;
+    [_bonjourManager start];
+  }
+  else {
+    NSLog(@"NOT CONNECTED TO INAIRNETWORK");
+  }
 
 }
 
@@ -67,32 +86,43 @@
 }
 
 - (void)bonjourManagerFinishedDiscoveringServices:(NSArray *)services {
+  isDiscoveringBonjourServices = NO;
   if ([services count]) {
-    NSNetService *service = services[0];
-    if (service.addresses.count == 0) {
-      service.delegate = self;
-      [service resolveWithTimeout:10];
-    } else {
-      if ([service.addresses count]) {
-        NSString *address = [(service.addresses)[0] socketAddress];
-        [self connectToHost:address];
-      }
+    retryCount = 0;
+    resolveServiceRetryCount = 0;
+    _netService = services[0];
+    _netService.delegate = self;
+    isResolvingService = YES;
+    [_netService resolveWithTimeout:10];
 
-    }
   } else {
-    // TODO find a better solution
-    [self connectToHost:kAccessPointIP];
+    [self restartBonjourIfNeeded];
+  }
+}
+
+- (void)restartBonjourIfNeeded {
+  if (retryCount < MAX_RETRY_COUNT && !isDiscoveringBonjourServices) {
+    isDiscoveringBonjourServices = NO;
+    [_bonjourManager start];
+    retryCount++;
   }
 }
 
 - (void)bonjourManagerServiceNotFound {
-  NSLog(@"Failed to find bonjour services");
+  isDiscoveringBonjourServices = NO;
+  [self restartBonjourIfNeeded];
 }
 
 
 - (void)netService:(NSNetService *)sender didNotResolve:(NSDictionary *)errorDict {
   NSLog(@"Failed to resolve address for service: %@", sender);
-  //TODO retry ??
+  if (resolveServiceRetryCount < MAX_RETRY_COUNT)
+  {
+    resolveServiceRetryCount++;
+    [_netService resolveWithTimeout:10];
+//    isResolvingService = YES;
+  }
+
 }
 
 
@@ -141,17 +171,30 @@
   SetupResponseEvent *ev = [event getExtension:[SetupResponseEvent event]];
   NSString *confirmationCode = ev.code;
 
-  confirmationCodeLabel.text = confirmationCode;
-  [SVProgressHUD dismiss];
-  [UIView animateWithDuration:0.5 animations:^{
-      instructionLabel.alpha = 0.0;
-  }                completion:^(BOOL finished) {
+  switch (ev.phase)
+  {
+    case SetupPhaseRequestCode: {
+      confirmationCodeLabel.text = confirmationCode;
+      [SVProgressHUD dismiss];
       [UIView animateWithDuration:0.5 animations:^{
+        instructionLabel.alpha = 0.0;
+      }                completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.5 animations:^{
           connectedContainerView.alpha = 1.0;
+        }];
       }];
-  }];
+
+      break;
+    }
+    default:
+      NSLog(@"Event recevied - Phase: %d", ev.phase);
+  }
 
   //TODO enable Next when received confirmation code
+}
+
+- (void)dealloc {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end
