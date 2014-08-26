@@ -65,7 +65,7 @@
   }
   else {
     if (![WifiHelper isConnectedToInAiRWiFi]) {
-      [SVProgressHUD showErrorWithStatus:@"Not connected to InAiRxxx network"];
+      [SVProgressHUD showErrorWithStatus:@"Not connected to an InAiR network"];
     }
 
   }

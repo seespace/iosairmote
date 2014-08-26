@@ -16,6 +16,7 @@
 
 @implementation EnterPasswordViewController {
   __weak IBOutlet UITextField *passwordTextField;
+    __weak IBOutlet UILabel *wifiNameLabel;
 
 }
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -28,6 +29,7 @@
 
 - (void)viewDidLoad {
   [super viewDidLoad];
+    wifiNameLabel.text = self.networkSDID;
   if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
     self.edgesForExtendedLayout = UIRectEdgeNone;
   self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(nextButtonPressed:)];
