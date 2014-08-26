@@ -6,14 +6,13 @@
 //  Copyright (c) 2014 Long Nguyen. All rights reserved.
 //
 
+#import <SVProgressHUD/SVProgressHUD.h>
 #import "WiFiListViewController.h"
 #import "WifiCell.h"
 #import "EnterPasswordViewController.h"
-#import "EventCenter.h"
 #import "ProtoHelper.h"
 
 #define kWifiCellHeight 30
-#define kNumberOfWifiNetworks 100
 
 @interface WiFiListViewController ()
 
@@ -37,9 +36,12 @@
   if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
     self.edgesForExtendedLayout = UIRectEdgeNone;
 
-  //TODO send request to retrieve list of wifi network
   Event *ev = [ProtoHelper setupWifiScanRequest];
   [[EventCenter defaultCenter] sendEvent:ev withTag:0];
+  [SVProgressHUD showWithStatus:@"Loading..." maskType:SVProgressHUDMaskTypeGradient];
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (30 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    [SVProgressHUD dismiss];
+  });
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -48,10 +50,28 @@
 
 
 - (void)eventCenter:(EventCenter *)eventCenter receivedEvent:(Event *)event {
-  // TODO reload tableview
+
+  [SVProgressHUD dismiss];
   SetupResponseEvent *ev = [event getExtension:[SetupResponseEvent event]];
-  wifiNetworks = ev.wifiNetworks;
-  [tableView reloadData];
+
+  switch (ev.phase) {
+    case SetupPhaseRequestWifiScan: {
+      if (ev.error) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:ev.errorMessage
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alertView show];
+      } else {
+        wifiNetworks = ev.wifiNetworks;
+        [tableView reloadData];
+      }
+      break;
+    }
+
+    default:
+      break;
+  }
 }
 
 - (void)didReceiveMemoryWarning {

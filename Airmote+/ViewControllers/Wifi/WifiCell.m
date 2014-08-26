@@ -8,38 +8,33 @@
 
 #import "WifiCell.h"
 
-@implementation WifiCell
-{
-    __weak IBOutlet UIImageView *signalStrengthImageView;
-    __weak IBOutlet UILabel *wifiNameLabel;
+@implementation WifiCell {
+  __weak IBOutlet UIImageView *signalStrengthImageView;
+  __weak IBOutlet UILabel *wifiNameLabel;
 }
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-        // Initialization code
-    }
-    return self;
-}
-
-- (void)awakeFromNib
-{
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+  self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+  if (self) {
     // Initialization code
+  }
+  return self;
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
+- (void)awakeFromNib {
+  // Initialization code
 }
 
--(void)configureCellWithName:(NSString *)name andSignalLevel:(int)signalLevel
-{
-    wifiNameLabel.text = name;
-    signalLevel = MAX(0, MIN(3, signalLevel));
-    signalStrengthImageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"%d", signalLevel + 1]];
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+  [super setSelected:selected animated:animated];
+
+  // Configure the view for the selected state
+}
+
+- (void)configureCellWithName:(NSString *)name andSignalLevel:(int)signalLevel {
+  wifiNameLabel.text = name;
+  signalLevel = MAX(0, MIN(3, signalLevel));
+  signalStrengthImageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"%d", signalLevel + 1]];
 }
 
 @end

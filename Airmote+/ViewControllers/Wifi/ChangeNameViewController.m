@@ -8,7 +8,6 @@
 
 #import "ChangeNameViewController.h"
 #import "WiFiListViewController.h"
-#import "EventCenter.h"
 #import "Proto.pb.h"
 #import "ProtoHelper.h"
 
@@ -44,8 +43,6 @@
 
 - (void)nextButtonPressed:(id)sender {
   [self sendRenameRequestWithName:textField.text];
-  WiFiListViewController *wifiListVC = [[WiFiListViewController alloc] init];
-  [self.navigationController pushViewController:wifiListVC animated:YES];
 }
 
 
@@ -55,7 +52,25 @@
 }
 
 - (void)eventCenter:(EventCenter *)eventCenter receivedEvent:(Event *)event {
-  // TODO if success goto next screen
+  SetupResponseEvent *ev = [event getExtension:[SetupResponseEvent event]];
+  switch (ev.phase) {
+    case SetupPhaseRequestRename: {
+      if (ev.error) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:ev.errorMessage delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+      }
+      else {
+        WiFiListViewController *wifiListVC = [[WiFiListViewController alloc] init];
+        [self.navigationController pushViewController:wifiListVC animated:YES];
+      }
+      break;
+    }
+
+
+    default:
+      break;
+  }
 }
 
 
@@ -66,7 +81,6 @@
 
 - (void)sendRenameRequestWithName:(NSString *)name {
   if ([name length] > 0) {
-    //TODO send a change name request to server using EventCenter
     Event *ev = [ProtoHelper setupRenameRequestWithName:name];
     [[EventCenter defaultCenter] sendEvent:ev withTag:0];
   }

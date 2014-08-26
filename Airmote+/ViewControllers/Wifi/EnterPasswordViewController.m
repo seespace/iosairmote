@@ -14,8 +14,10 @@
 
 @end
 
-@implementation EnterPasswordViewController
+@implementation EnterPasswordViewController {
+  __weak IBOutlet UITextField *passwordTextField;
 
+}
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
   if (self) {
@@ -37,11 +39,22 @@
 
 - (void)eventCenter:(EventCenter *)eventCenter receivedEvent:(Event *)event {
   SetupResponseEvent *ev = [event getExtension:[SetupResponseEvent event]];
+  self.navigationItem.rightBarButtonItem.enabled = YES;
   if (ev.error) {
-    // TODO display error
     NSString *errorMessage = ev.errorMessage;
+
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:errorMessage
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+    [alertView show];
   } else {
-    // TODO finish
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Connected" message:@"Conencted to Wifi, go an change your wifi back to the same network you connected to."
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+    [alertView show];
+
   }
 }
 
@@ -51,10 +64,9 @@
 }
 
 - (void)nextButtonPressed:(id)sender {
-  //TODO send event to InAiR to login to wifi
-
-  Event *ev = [ProtoHelper setupWifiConnectRequestWithSSID:self.networkSDID password:@"passwordhere"];
+  Event *ev = [ProtoHelper setupWifiConnectRequestWithSSID:self.networkSDID password:passwordTextField.text];
   [[EventCenter defaultCenter] sendEvent:ev withTag:0];
+  self.navigationItem.rightBarButtonItem.enabled = NO;
 }
 
 @end

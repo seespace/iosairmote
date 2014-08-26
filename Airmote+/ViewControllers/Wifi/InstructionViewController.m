@@ -14,7 +14,6 @@
 #import "ProtoHelper.h"
 #import "WifiHelper.h"
 
-#define kAccessPointIP @"192.168.49.1"
 #define MAX_RETRY_COUNT 3
 
 @interface InstructionViewController ()
@@ -29,7 +28,7 @@
 
   BOOL isConnecting;
   BOOL isDiscoveringBonjourServices;
-  BOOL isResolvingService;
+
   int retryCount;
   int resolveServiceRetryCount;
   NSNetService *_netService;
@@ -60,12 +59,15 @@
 }
 
 - (void)didBecomeActive:(NSNotification *)notification {
-  if ([WifiHelper isConnectedToInAiRWiFi] && !isDiscoveringBonjourServices) {
+  if (![EventCenter defaultCenter].isActive && [WifiHelper isConnectedToInAiRWiFi] && !isDiscoveringBonjourServices) {
     isDiscoveringBonjourServices = YES;
     [_bonjourManager start];
   }
   else {
-    NSLog(@"NOT CONNECTED TO INAIRNETWORK");
+    if (![WifiHelper isConnectedToInAiRWiFi]) {
+      [SVProgressHUD showErrorWithStatus:@"Not connected to InAiRxxx network"];
+    }
+
   }
 
 }
@@ -90,9 +92,9 @@
   if ([services count]) {
     retryCount = 0;
     resolveServiceRetryCount = 0;
+    _netService.delegate = nil;
     _netService = services[0];
     _netService.delegate = self;
-    isResolvingService = YES;
     [_netService resolveWithTimeout:10];
 
   } else {
@@ -116,11 +118,9 @@
 
 - (void)netService:(NSNetService *)sender didNotResolve:(NSDictionary *)errorDict {
   NSLog(@"Failed to resolve address for service: %@", sender);
-  if (resolveServiceRetryCount < MAX_RETRY_COUNT)
-  {
+  if (resolveServiceRetryCount < MAX_RETRY_COUNT) {
     resolveServiceRetryCount++;
     [_netService resolveWithTimeout:10];
-//    isResolvingService = YES;
   }
 
 }
@@ -128,7 +128,9 @@
 
 - (void)netServiceDidResolveAddress:(NSNetService *)service {
   if ([service.addresses count]) {
-    NSString *address = [[service.addresses objectAtIndex:0] socketAddress];
+    resolveServiceRetryCount = 0;
+    _netService.delegate = nil;
+    NSString *address = [(service.addresses)[0] socketAddress];
     [self connectToHost:address];
   }
 
@@ -171,8 +173,7 @@
   SetupResponseEvent *ev = [event getExtension:[SetupResponseEvent event]];
   NSString *confirmationCode = ev.code;
 
-  switch (ev.phase)
-  {
+  switch (ev.phase) {
     case SetupPhaseRequestCode: {
       confirmationCodeLabel.text = confirmationCode;
       [SVProgressHUD dismiss];
@@ -184,13 +185,13 @@
         }];
       }];
 
+      self.navigationItem.rightBarButtonItem.enabled = YES;
       break;
     }
     default:
       NSLog(@"Event recevied - Phase: %d", ev.phase);
   }
 
-  //TODO enable Next when received confirmation code
 }
 
 - (void)dealloc {
