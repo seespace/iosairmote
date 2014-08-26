@@ -4095,6 +4095,7 @@ static OAuthResponseEvent* defaultOAuthResponseEventInstance = nil;
 @property (strong) NSString* ssid;
 @property SInt32 strength;
 @property (strong) NSString* bssid;
+@property (strong) NSString* capabilities;
 @end
 
 @implementation WifiNetwork
@@ -4120,15 +4121,24 @@ static OAuthResponseEvent* defaultOAuthResponseEventInstance = nil;
   hasBssid_ = !!value_;
 }
 @synthesize bssid;
+- (BOOL) hasCapabilities {
+  return !!hasCapabilities_;
+}
+- (void) setHasCapabilities:(BOOL) value_ {
+  hasCapabilities_ = !!value_;
+}
+@synthesize capabilities;
 - (void) dealloc {
   self.ssid = nil;
   self.bssid = nil;
+  self.capabilities = nil;
 }
 - (id) init {
   if ((self = [super init])) {
     self.ssid = @"";
     self.strength = 0;
     self.bssid = @"";
+    self.capabilities = @"";
   }
   return self;
 }
@@ -4160,6 +4170,9 @@ static WifiNetwork* defaultWifiNetworkInstance = nil;
   if (self.hasBssid) {
     [output writeString:3 value:self.bssid];
   }
+  if (self.hasCapabilities) {
+    [output writeString:4 value:self.capabilities];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -4177,6 +4190,9 @@ static WifiNetwork* defaultWifiNetworkInstance = nil;
   }
   if (self.hasBssid) {
     size_ += computeStringSize(3, self.bssid);
+  }
+  if (self.hasCapabilities) {
+    size_ += computeStringSize(4, self.capabilities);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -4222,6 +4238,9 @@ static WifiNetwork* defaultWifiNetworkInstance = nil;
   if (self.hasBssid) {
     [output appendFormat:@"%@%@: %@\n", indent, @"bssid", self.bssid];
   }
+  if (self.hasCapabilities) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"capabilities", self.capabilities];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (BOOL) isEqual:(id)other {
@@ -4239,6 +4258,8 @@ static WifiNetwork* defaultWifiNetworkInstance = nil;
       (!self.hasStrength || self.strength == otherMessage.strength) &&
       self.hasBssid == otherMessage.hasBssid &&
       (!self.hasBssid || [self.bssid isEqual:otherMessage.bssid]) &&
+      self.hasCapabilities == otherMessage.hasCapabilities &&
+      (!self.hasCapabilities || [self.capabilities isEqual:otherMessage.capabilities]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -4251,6 +4272,9 @@ static WifiNetwork* defaultWifiNetworkInstance = nil;
   }
   if (self.hasBssid) {
     hashCode = hashCode * 31 + [self.bssid hash];
+  }
+  if (self.hasCapabilities) {
+    hashCode = hashCode * 31 + [self.capabilities hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -4307,6 +4331,9 @@ static WifiNetwork* defaultWifiNetworkInstance = nil;
   if (other.hasBssid) {
     [self setBssid:other.bssid];
   }
+  if (other.hasCapabilities) {
+    [self setCapabilities:other.capabilities];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -4338,6 +4365,10 @@ static WifiNetwork* defaultWifiNetworkInstance = nil;
       }
       case 26: {
         [self setBssid:[input readString]];
+        break;
+      }
+      case 34: {
+        [self setCapabilities:[input readString]];
         break;
       }
     }
@@ -4389,6 +4420,22 @@ static WifiNetwork* defaultWifiNetworkInstance = nil;
 - (WifiNetworkBuilder*) clearBssid {
   result.hasBssid = NO;
   result.bssid = @"";
+  return self;
+}
+- (BOOL) hasCapabilities {
+  return result.hasCapabilities;
+}
+- (NSString*) capabilities {
+  return result.capabilities;
+}
+- (WifiNetworkBuilder*) setCapabilities:(NSString*) value {
+  result.hasCapabilities = YES;
+  result.capabilities = value;
+  return self;
+}
+- (WifiNetworkBuilder*) clearCapabilities {
+  result.hasCapabilities = NO;
+  result.capabilities = @"";
   return self;
 }
 @end

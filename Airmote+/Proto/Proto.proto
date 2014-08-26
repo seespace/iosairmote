@@ -230,6 +230,7 @@ message WifiNetwork {
   required string ssid = 1;
   optional int32 strength = 2;
   optional string bssid = 3;
+  optional string capabilities = 4;
 }
 
 message SetupRequestEvent {

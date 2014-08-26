@@ -975,16 +975,20 @@ BOOL HandMotionEventStateIsValidValue(HandMotionEventState value);
   BOOL hasStrength_:1;
   BOOL hasSsid_:1;
   BOOL hasBssid_:1;
+  BOOL hasCapabilities_:1;
   SInt32 strength;
   NSString* ssid;
   NSString* bssid;
+  NSString* capabilities;
 }
 - (BOOL) hasSsid;
 - (BOOL) hasStrength;
 - (BOOL) hasBssid;
+- (BOOL) hasCapabilities;
 @property (readonly, strong) NSString* ssid;
 @property (readonly) SInt32 strength;
 @property (readonly, strong) NSString* bssid;
+@property (readonly, strong) NSString* capabilities;
 
 + (WifiNetwork*) defaultInstance;
 - (WifiNetwork*) defaultInstance;
@@ -1035,6 +1039,11 @@ BOOL HandMotionEventStateIsValidValue(HandMotionEventState value);
 - (NSString*) bssid;
 - (WifiNetworkBuilder*) setBssid:(NSString*) value;
 - (WifiNetworkBuilder*) clearBssid;
+
+- (BOOL) hasCapabilities;
+- (NSString*) capabilities;
+- (WifiNetworkBuilder*) setCapabilities:(NSString*) value;
+- (WifiNetworkBuilder*) clearCapabilities;
 @end
 
 @interface SetupRequestEvent : PBGeneratedMessage {
