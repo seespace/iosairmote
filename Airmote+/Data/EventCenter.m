@@ -73,7 +73,15 @@ static const uint8_t kSessionStartTag = 9;
 - (void)socket:(GCDAsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag {
   NSLog(@"Did read data");
 
-  NSData *msg = [data subdataWithRange:NSMakeRange(4, data.length - 4)];
+  NSData *lengthData = [data subdataWithRange:NSMakeRange(0, 4)];
+  int length = CFSwapInt32BigToHost(*(int*)([lengthData bytes]));
+  if (length > data.length)
+  {
+    NSLog(@"ERROR: Length value is bigger than actual data length");
+    return;
+  }
+
+  NSData *msg = [data subdataWithRange:NSMakeRange(4, length)];
 
   Event *event = [ProtoHelper parseFromData:msg];
 

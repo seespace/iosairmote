@@ -60,6 +60,10 @@
   }
 }
 
+- (void)netServiceBrowserDidStopSearch:(NSNetServiceBrowser *)aNetServiceBrowser {
+  NSLog(@"Stop searching");
+}
+
 
 - (void)start {
   [_browser stop];

@@ -24,6 +24,8 @@
 		01A90609182A49A100D85971 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 01A90607182A49A100D85971 /* AppDelegate.m */; };
 		01F415611871DA4300029AFE /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 01F415601871DA4300029AFE /* Settings.bundle */; };
 		37347075505D4DBDB2B7D0D4 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B16347417AEC44FE911F15C2 /* libPods.a */; };
+		B46889AA19AEE5ED0043A8A9 /* ConnectedConfirmationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B46889A819AEE5ED0043A8A9 /* ConnectedConfirmationViewController.m */; };
+		B46889AB19AEE5ED0043A8A9 /* ConnectedConfirmationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B46889A919AEE5ED0043A8A9 /* ConnectedConfirmationViewController.xib */; };
 		B4B87A8119A20A5400E2BDD0 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B4B87A8019A20A5400E2BDD0 /* libz.dylib */; };
 		B4BBD95319A3661500156A92 /* InstructionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BBD95119A3661500156A92 /* InstructionViewController.m */; };
 		B4BBD95419A3661500156A92 /* InstructionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4BBD95219A3661500156A92 /* InstructionViewController.xib */; };
@@ -99,6 +101,9 @@
 		01A90607182A49A100D85971 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		01F415601871DA4300029AFE /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		B16347417AEC44FE911F15C2 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		B46889A719AEE5ED0043A8A9 /* ConnectedConfirmationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectedConfirmationViewController.h; sourceTree = "<group>"; };
+		B46889A819AEE5ED0043A8A9 /* ConnectedConfirmationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectedConfirmationViewController.m; sourceTree = "<group>"; };
+		B46889A919AEE5ED0043A8A9 /* ConnectedConfirmationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConnectedConfirmationViewController.xib; sourceTree = "<group>"; };
 		B4B87A8019A20A5400E2BDD0 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		B4BBD95019A3661500156A92 /* InstructionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstructionViewController.h; sourceTree = "<group>"; };
 		B4BBD95119A3661500156A92 /* InstructionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstructionViewController.m; sourceTree = "<group>"; };
@@ -140,6 +145,7 @@
 		C5844C3C3E765B9D9015EA81 /* WifiHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WifiHelper.h; sourceTree = "<group>"; };
 		C5844D3A171D285B6A5A09D2 /* EventCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventCenter.h; sourceTree = "<group>"; };
 		C5844E2561A6F310A6AB2A6E /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
+		C5844EA208CDA6A382AB9A98 /* AppDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDefines.h; sourceTree = "<group>"; };
 		C5844ED89441B78E5ED9D931 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		C5844F7CC173DFDDC8EF66C6 /* DDURLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDURLParser.h; sourceTree = "<group>"; };
 		E95074B5BA314146817E932C /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
@@ -229,6 +235,7 @@
 				C5844DF4E48C812A124BD5B5 /* View */,
 				C5844331283D679720E4F533 /* Helpers */,
 				C5844B139560E82998715985 /* Proto */,
+				C5844EA208CDA6A382AB9A98 /* AppDefines.h */,
 			);
 			path = "Airmote+";
 			sourceTree = "<group>";
@@ -333,6 +340,9 @@
 				B4F9934819A4E925006FC9C2 /* EnterPasswordViewController.h */,
 				B4F9934919A4E925006FC9C2 /* EnterPasswordViewController.m */,
 				B4F9934A19A4E925006FC9C2 /* EnterPasswordViewController.xib */,
+				B46889A719AEE5ED0043A8A9 /* ConnectedConfirmationViewController.h */,
+				B46889A819AEE5ED0043A8A9 /* ConnectedConfirmationViewController.m */,
+				B46889A919AEE5ED0043A8A9 /* ConnectedConfirmationViewController.xib */,
 			);
 			path = Wifi;
 			sourceTree = "<group>";
@@ -456,6 +466,7 @@
 				B4F9934219A4DE77006FC9C2 /* VerifyInAiRViewController.xib in Resources */,
 				B4F9933819A487EA006FC9C2 /* WiFiListViewController.xib in Resources */,
 				B4BBD95419A3661500156A92 /* InstructionViewController.xib in Resources */,
+				B46889AB19AEE5ED0043A8A9 /* ConnectedConfirmationViewController.xib in Resources */,
 				C5844AB198B3D10C81FB020E /* Proto.proto in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -527,6 +538,7 @@
 				C5844157B336B00A1022EA6A /* ProtoHelper.m in Sources */,
 				C58440858C2E4C0D850E5583 /* Proto.pb.m in Sources */,
 				C5844214A4CD8611C5BC8659 /* WifiHelper.m in Sources */,
+				B46889AA19AEE5ED0043A8A9 /* ConnectedConfirmationViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

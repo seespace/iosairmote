@@ -62,6 +62,7 @@
       }
       else {
         WiFiListViewController *wifiListVC = [[WiFiListViewController alloc] init];
+        [EventCenter defaultCenter].delegate = wifiListVC;
         [self.navigationController pushViewController:wifiListVC animated:YES];
       }
       break;

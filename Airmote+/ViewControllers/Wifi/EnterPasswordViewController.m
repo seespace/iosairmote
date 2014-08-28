@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Long Nguyen. All rights reserved.
 //
 
+#import <SVProgressHUD/SVProgressHUD.h>
 #import "EnterPasswordViewController.h"
-#import "EventCenter.h"
 #import "ProtoHelper.h"
 
 @interface EnterPasswordViewController ()
@@ -16,7 +16,7 @@
 
 @implementation EnterPasswordViewController {
   __weak IBOutlet UITextField *passwordTextField;
-    __weak IBOutlet UILabel *wifiNameLabel;
+  __weak IBOutlet UILabel *wifiNameLabel;
 
 }
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -28,8 +28,10 @@
 }
 
 - (void)viewDidLoad {
+
   [super viewDidLoad];
-    wifiNameLabel.text = self.networkSDID;
+
+  wifiNameLabel.text = self.networkSSID;
   if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
     self.edgesForExtendedLayout = UIRectEdgeNone;
   self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(nextButtonPressed:)];
@@ -37,27 +39,28 @@
 
 - (void)viewDidAppear:(BOOL)animated {
   [EventCenter defaultCenter].delegate = self;
+
 }
 
 - (void)eventCenter:(EventCenter *)eventCenter receivedEvent:(Event *)event {
   SetupResponseEvent *ev = [event getExtension:[SetupResponseEvent event]];
   self.navigationItem.rightBarButtonItem.enabled = YES;
   if (ev.error) {
-    NSString *errorMessage = ev.errorMessage;
-
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:errorMessage
-                                                       delegate:nil
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
-    [alertView show];
+//    NSString *errorMessage = ev.errorMessage;
+    [SVProgressHUD showErrorWithStatus:@"Failed to connect"];
   } else {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Connected" message:@"Conencted to Wifi, go an change your wifi back to the same network you connected to."
-                                                       delegate:nil
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
-    [alertView show];
+    [SVProgressHUD showSuccessWithStatus:@"Connected"];
+    ConnectedConfirmationViewController *confirmationViewController = [[ConnectedConfirmationViewController alloc] init];
+    confirmationViewController.delegate = self;
+    confirmationViewController.networkSSID = self.networkSSID;
 
+    [self.navigationController presentViewController:confirmationViewController animated:YES completion:NULL];
   }
+}
+
+
+- (void)didConnectedToTheSameNetworkWithInAirDevice {
+  [self.parentViewController.presentingViewController dismissViewControllerAnimated:NO completion:NULL];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -66,9 +69,10 @@
 }
 
 - (void)nextButtonPressed:(id)sender {
-  Event *ev = [ProtoHelper setupWifiConnectRequestWithSSID:self.networkSDID password:passwordTextField.text];
+  Event *ev = [ProtoHelper setupWifiConnectRequestWithSSID:self.networkSSID password:passwordTextField.text];
   [[EventCenter defaultCenter] sendEvent:ev withTag:0];
   self.navigationItem.rightBarButtonItem.enabled = NO;
+  [SVProgressHUD showWithStatus:@"InAir device connecting..."];
 }
 
 @end

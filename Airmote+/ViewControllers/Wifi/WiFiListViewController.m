@@ -112,7 +112,8 @@
   WifiNetwork *network = wifiNetworks[(NSUInteger) indexPath.row];
 
   EnterPasswordViewController *enterPasswordVC = [[EnterPasswordViewController alloc] init];
-  enterPasswordVC.networkSDID = network.ssid; //TODO use real data
+    [EventCenter defaultCenter].delegate = enterPasswordVC;
+  enterPasswordVC.networkSSID = network.ssid;
   [self.navigationController pushViewController:enterPasswordVC animated:YES];
 }
 
