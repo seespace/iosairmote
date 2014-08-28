@@ -27,6 +27,7 @@
 - (BOOL)isActive;
 
 - (BOOL)connectToHost:(NSString *)hostname;
+- (BOOL)disconnect;
 
 - (void)sendEvent:(Event *)event withTag:(u_int8_t)tag;
 @end

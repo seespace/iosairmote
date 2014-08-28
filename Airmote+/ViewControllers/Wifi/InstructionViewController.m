@@ -62,7 +62,7 @@
     if (![WifiHelper isConnectedToInAiRWiFi]) {
         [SVProgressHUD showErrorWithStatus:@"Not connected to an InAiR network"];
     } else {
-        if (![EventCenter defaultCenter].isActive && !isDiscoveringBonjourServices) {
+        if (![EventCenter defaultCenter].isActive && !isDiscoveringBonjourServices && (self == self.navigationController.topViewController)) {
             isDiscoveringBonjourServices = YES;
             [_bonjourManager start];
         }
@@ -78,6 +78,7 @@
 - (void)nextButtonPressed:(id)sender {
   ChangeNameViewController *nameViewController = [[ChangeNameViewController alloc] init];
   [EventCenter defaultCenter].delegate = nameViewController;
+//    _bonjourManager.delegate = nil
   [self.navigationController pushViewController:nameViewController animated:YES];
 }
 

@@ -18,7 +18,6 @@
   BOOL _serverSelectorDisplayed;
 
   Event *_oauthEvent;
-  EventCenter *_eventCenter;
 }
 
 @end
@@ -39,7 +38,6 @@ static const uint8_t kMotionShakeTag = 6;
   [super viewDidLoad];
   _bonjourManager = [[BonjourManager alloc] init];
   _bonjourManager.delegate = self;
-  isResolvingServiceAddress = YES;
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(applicationDidBecomeActive)
                                                name:@"applicationDidBecomeActive"
@@ -53,6 +51,8 @@ static const uint8_t kMotionShakeTag = 6;
   BOOL connectedToWifi = [[NSUserDefaults standardUserDefaults] boolForKey:@"DidSetupWifi"];
   if (connectedToWifi) {
     [_bonjourManager start];
+      isResolvingServiceAddress = YES;
+      
     [SVProgressHUD showWithStatus:@"Scanning..." maskType:SVProgressHUDMaskTypeBlack];
   } else {
     InstructionViewController *instructionViewController = [[InstructionViewController alloc] init];
@@ -65,6 +65,8 @@ static const uint8_t kMotionShakeTag = 6;
 }
 
 - (void)inAirDeviceDiDConnect:(NSNotification *)notification {
+  [[EventCenter defaultCenter] disconnect];
+    
   [self reconnectToServiceIfNeeded];
 }
 
@@ -81,10 +83,11 @@ static const uint8_t kMotionShakeTag = 6;
 }
 
 - (void)reconnectToServiceIfNeeded {
-  if ([WifiHelper isConnectedToInAiRWiFi])
+  BOOL connectedToWifi = [[NSUserDefaults standardUserDefaults] boolForKey:@"DidSetupWifi"];
+  if ([WifiHelper isConnectedToInAiRWiFi] || ! connectedToWifi)
     return;
 
-  if (!isResolvingServiceAddress && !_eventCenter.isActive && !_serverSelectorDisplayed) {
+  if (!isResolvingServiceAddress && ![EventCenter defaultCenter].isActive && !_serverSelectorDisplayed) {
     if ([_services count]) {
       [self chooseServerWithMessage:@"Choose a device"];
     }
@@ -231,7 +234,7 @@ static const uint8_t kMotionShakeTag = 6;
   if (motion == UIEventSubtypeMotionShake) {
     Event *ev = [ProtoHelper motionEventWithTimestamp:(SInt64) (event.timestamp * 1000)
                                                  type:MotionEventTypeShake];
-    [_eventCenter sendEvent:ev withTag:kMotionShakeTag];
+    [[EventCenter defaultCenter] sendEvent:ev withTag:kMotionShakeTag];
   }
 }
 
@@ -256,7 +259,7 @@ static const uint8_t kMotionShakeTag = 6;
     OAuthRequestEvent *event = [_oauthEvent getExtension:[OAuthRequestEvent event]];
     self.webViewController.URL = [NSURL URLWithString:event.authUrl];
     self.webViewController.delegate = self;
-    self.webViewController.eventCenter = _eventCenter;
+    self.webViewController.eventCenter = [EventCenter defaultCenter];
     self.webViewController.oauthEvent = _oauthEvent;
     [self.webViewController load];
 
@@ -279,12 +282,12 @@ static const uint8_t kMotionShakeTag = 6;
 
 - (void)connectToHost:(NSString *)hostname {
 
-  _eventCenter.delegate = nil;
+  [EventCenter defaultCenter].delegate = nil;
 
-  _eventCenter = [EventCenter defaultCenter];
-  _trackpadView.eventCenter = _eventCenter;
-  _eventCenter.delegate = self;
-  BOOL canStartConnection = [_eventCenter connectToHost:hostname];
+  
+  _trackpadView.eventCenter = [EventCenter defaultCenter];
+  [EventCenter defaultCenter].delegate = self;
+  BOOL canStartConnection = [[EventCenter defaultCenter] connectToHost:hostname];
   if (canStartConnection) {
     [SVProgressHUD showWithStatus:@"Connecting" maskType:SVProgressHUDMaskTypeBlack];
   }

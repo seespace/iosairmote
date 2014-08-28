@@ -37,9 +37,9 @@
   if ([self.networkSSID isEqualToString:currentSSID]) {
     if ([self.delegate respondsToSelector:@selector(didConnectedToTheSameNetworkWithInAirDevice)]) {
         [self.presentingViewController dismissViewControllerAnimated:YES completion:^{
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"DidSetupWifi"];
             [self.delegate didConnectedToTheSameNetworkWithInAirDevice];
             [[NSNotificationCenter defaultCenter] postNotificationName:kInAirDeviceDidConnectToWifiNotification object:nil userInfo:nil];
-            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"DidSetupWifi"];
         }];
     }
   } else {

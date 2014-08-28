@@ -56,6 +56,13 @@ static const uint8_t kSessionStartTag = 9;
   return YES;
 }
 
+- (BOOL)disconnect {
+  _socket.delegate = nil;
+  [_socket disconnect];
+  _socket.delegate = self;
+  return NO;
+}
+
 - (void)sendEvent:(Event *)event withTag:(u_int8_t)tag {
   NSData *data = [Event dataFromEvent:event];
   [_socket writeData:data withTimeout:0 tag:tag];
