@@ -9,6 +9,7 @@
 #import "VerifyInAiRViewController.h"
 #import "Proto.pb.h"
 #import "ProtoHelper.h"
+#import "WiFiListViewController.h"
 
 @interface VerifyInAiRViewController ()
 
@@ -48,6 +49,15 @@
 - (IBAction)noButtonPressed:(id)sender {
   [self.navigationController popViewControllerAnimated:NO];
 }
+
+
+- (IBAction)yesButtonPressed:(id)sender
+{
+  WiFiListViewController *wifiListVC = [[WiFiListViewController alloc] init];
+  [EventCenter defaultCenter].delegate = wifiListVC;
+  [self.navigationController pushViewController:wifiListVC animated:NO];
+}
+
 
 - (void)requestConfirmationCode {
   Event *ev = [ProtoHelper setupCodeRequest];
