@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="14A314h" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="14A343f" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1552" identifier="iOS"/>
+        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
@@ -23,7 +23,7 @@
                         </constraints>
                     </imageView>
                     <label appearanceType="aqua" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E7Q-ck-5gc">
-                        <rect key="frame" x="52" y="11" width="253" height="21"/>
+                        <rect key="frame" x="52" y="11" width="243" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="nyH-oD-nei"/>
@@ -32,21 +32,35 @@
                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <imageView appearanceType="aqua" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lock" translatesAutoresizingMaskIntoConstraints="NO" id="XZM-fh-xi9">
+                        <rect key="frame" x="299" y="14" width="16" height="16"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="16" id="556-lb-uML"/>
+                            <constraint firstAttribute="width" constant="16" id="n3W-a0-Swx"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="E7Q-ck-5gc" secondAttribute="trailing" constant="15" id="874-4n-S4z"/>
                     <constraint firstItem="E7Q-ck-5gc" firstAttribute="leading" secondItem="BRf-3K-2Pb" secondAttribute="trailing" constant="16" id="Q0R-Oi-NtB"/>
+                    <constraint firstItem="XZM-fh-xi9" firstAttribute="top" secondItem="E7Q-ck-5gc" secondAttribute="top" constant="3" id="R9r-4n-WKI"/>
                     <constraint firstAttribute="centerY" secondItem="E7Q-ck-5gc" secondAttribute="centerY" constant="0.5" id="SC4-e1-ZgV"/>
                     <constraint firstAttribute="centerY" secondItem="BRf-3K-2Pb" secondAttribute="centerY" id="Ses-2f-Bek"/>
+                    <constraint firstItem="XZM-fh-xi9" firstAttribute="leading" secondItem="E7Q-ck-5gc" secondAttribute="trailing" constant="4" id="U15-rZ-lPJ"/>
                     <constraint firstItem="BRf-3K-2Pb" firstAttribute="leading" secondItem="fXy-3C-XvS" secondAttribute="leading" constant="20" id="jQ5-RF-dK8"/>
+                    <constraint firstAttribute="trailing" secondItem="XZM-fh-xi9" secondAttribute="trailing" constant="5" id="mdH-2c-UWf"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
             <connections>
+                <outlet property="lockIconView" destination="XZM-fh-xi9" id="ef2-Ay-fVG"/>
                 <outlet property="signalStrengthImageView" destination="BRf-3K-2Pb" id="ka3-jU-IM0"/>
                 <outlet property="wifiNameLabel" destination="E7Q-ck-5gc" id="ovS-IB-oxi"/>
             </connections>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="lock" width="64" height="64"/>
+    </resources>
 </document>

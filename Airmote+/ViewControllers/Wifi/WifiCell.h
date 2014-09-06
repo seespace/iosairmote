@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface WifiCell : UITableViewCell
-- (void)configureCellWithName:(NSString *)name andSignalLevel:(int)signalLevel;
+- (void)configureCellWithName:(NSString *)name andSignalLevel:(int)signalLevel passwordRequired:(BOOL)passwordRequired;
 @end

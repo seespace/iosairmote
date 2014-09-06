@@ -50,6 +50,7 @@
 		C584471B49D0CE130B025D7F /* Event+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = C584418E08FB8FB0F1DDF896 /* Event+Extension.m */; };
 		C5844A0B86EA15AA83BB1977 /* NSData+NetService.m in Sources */ = {isa = PBXBuildFile; fileRef = C5844A3ABF93BE55E57B1EB8 /* NSData+NetService.m */; };
 		C5844AB198B3D10C81FB020E /* Proto.proto in Resources */ = {isa = PBXBuildFile; fileRef = C584488EB37D152402FECCDD /* Proto.proto */; };
+		C5844B96C4F5A3E00AE2726A /* WifiNetwork+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = C58448D55F9A1DC3853DD753 /* WifiNetwork+Extension.m */; };
 		C5844F87624D1E90C002C719 /* EventCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = C58442F85EC1ECBA64716687 /* EventCenter.m */; };
 /* End PBXBuildFile section */
 
@@ -123,6 +124,7 @@
 		C584404E51B140564D994D4F /* NSData+NetService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+NetService.h"; sourceTree = "<group>"; };
 		C584416A29484E52858F86F6 /* BonjourManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BonjourManager.m; sourceTree = "<group>"; };
 		C584418E08FB8FB0F1DDF896 /* Event+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Event+Extension.m"; sourceTree = "<group>"; };
+		C58441D73782F3A380E60FCC /* WifiNetwork+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WifiNetwork+Extension.h"; sourceTree = "<group>"; };
 		C584421B3AFAC90EE9EFDA78 /* ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
 		C584428433A94E0EC31817FB /* ProtoHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProtoHelper.h; sourceTree = "<group>"; };
 		C58442F85EC1ECBA64716687 /* EventCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventCenter.m; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 		C58447673E7AFDD47F95408F /* BonjourManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BonjourManager.h; sourceTree = "<group>"; };
 		C584485FF4326A8E9B08B3A4 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		C584488EB37D152402FECCDD /* Proto.proto */ = {isa = PBXFileReference; lastKnownFileType = file.proto; path = Proto.proto; sourceTree = "<group>"; };
+		C58448D55F9A1DC3853DD753 /* WifiNetwork+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WifiNetwork+Extension.m"; sourceTree = "<group>"; };
 		C58448D5F1B330194444A5F2 /* Event+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Event+Extension.h"; sourceTree = "<group>"; };
 		C58449999B7324E698D6643F /* Proto.pb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Proto.pb.m; sourceTree = "<group>"; };
 		C58449D8A0EA2DEB85384596 /* DDURLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDURLParser.m; sourceTree = "<group>"; };
@@ -273,6 +276,8 @@
 				C58448D5F1B330194444A5F2 /* Event+Extension.h */,
 				C5844A3ABF93BE55E57B1EB8 /* NSData+NetService.m */,
 				C584404E51B140564D994D4F /* NSData+NetService.h */,
+				C58448D55F9A1DC3853DD753 /* WifiNetwork+Extension.m */,
+				C58441D73782F3A380E60FCC /* WifiNetwork+Extension.h */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -533,6 +538,7 @@
 				C58440858C2E4C0D850E5583 /* Proto.pb.m in Sources */,
 				C5844214A4CD8611C5BC8659 /* WifiHelper.m in Sources */,
 				B46889AA19AEE5ED0043A8A9 /* ConnectedConfirmationViewController.m in Sources */,
+				C5844B96C4F5A3E00AE2726A /* WifiNetwork+Extension.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

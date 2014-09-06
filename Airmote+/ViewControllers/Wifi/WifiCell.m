@@ -11,6 +11,7 @@
 @implementation WifiCell {
   __weak IBOutlet UIImageView *signalStrengthImageView;
   __weak IBOutlet UILabel *wifiNameLabel;
+  __weak IBOutlet UIImageView *lockIconView;
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -31,10 +32,11 @@
   // Configure the view for the selected state
 }
 
-- (void)configureCellWithName:(NSString *)name andSignalLevel:(int)signalLevel {
+- (void)configureCellWithName:(NSString *)name andSignalLevel:(int)signalLevel passwordRequired:(BOOL)passwordRequired {
   wifiNameLabel.text = name;
   signalLevel = MAX(0, MIN(3, signalLevel));
   signalStrengthImageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"%d", signalLevel + 1]];
+  lockIconView.hidden = ! passwordRequired;
 }
 
 @end

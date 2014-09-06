@@ -11,6 +11,7 @@
 #import "WifiCell.h"
 #import "EnterPasswordViewController.h"
 #import "ProtoHelper.h"
+#import "WifiNetwork+Extension.h"
 
 #define kWifiCellHeight 30
 
@@ -104,7 +105,7 @@
 
   WifiNetwork *network = wifiNetworks[(NSUInteger) indexPath.row];
 
-  [cell configureCellWithName:network.ssid andSignalLevel:network.strength];
+  [cell configureCellWithName:network.ssid andSignalLevel:network.strength passwordRequired:network.requiredPassword];
   return cell;
 }
 
