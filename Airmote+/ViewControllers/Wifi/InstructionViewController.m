@@ -7,11 +7,9 @@
 //
 
 #import "InstructionViewController.h"
-#import "ChangeNameViewController.h"
-#import "Proto.pb.h"
+#import "VerifyInAiRViewController.h"
 #import "SVProgressHUD.h"
 #import "NSData+NetService.h"
-#import "ProtoHelper.h"
 #import "WifiHelper.h"
 #import "FXBlurView.h"
 
@@ -49,14 +47,9 @@
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-  self.title = @"Setup InAiR";
 
-  self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain
-                                                                           target:self action:@selector(nextButtonPressed:)];
   _bonjourManager = [[BonjourManager alloc] init];
   _bonjourManager.delegate = self;
-
-  self.navigationItem.rightBarButtonItem.enabled = NO;
 
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(didBecomeActive:)
@@ -96,12 +89,6 @@
     detailLabel.alpha = 0.0;
     tryAgainButton.alpha = 0.0;
   }];
-
-
-  [UIView animateWithDuration:0.6 animations:^{
-//
-  }                completion:NULL];
-
 }
 
 - (void)fadeInNotConnectedView {
@@ -109,7 +96,7 @@
     return;
   }
 
-  [UIView animateWithDuration:0.3 delay:3.0 options:0 animations:^{
+  [UIView animateWithDuration:0.3 delay:0 options:0 animations:^{
     notConnectedView.alpha = 1.0;
 
   }                completion:^(BOOL finished) {
@@ -126,13 +113,6 @@
 
 - (void)viewDidAppear:(BOOL)animated {
   [EventCenter defaultCenter].delegate = self;
-}
-
-- (void)nextButtonPressed:(id)sender {
-  ChangeNameViewController *nameViewController = [[ChangeNameViewController alloc] init];
-  [EventCenter defaultCenter].delegate = nameViewController;
-//    _bonjourManager.delegate = nil
-  [self.navigationController pushViewController:nameViewController animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -207,44 +187,18 @@
 
 - (void)eventCenterDidConnect {
   [SVProgressHUD dismiss];
+  [self fadeOutNotConnectedView];
   isConnecting = NO;
-  [self requestConfirmationCode];
+
+  VerifyInAiRViewController *verifyVC = [[VerifyInAiRViewController alloc] init];
+  [EventCenter defaultCenter].delegate = verifyVC;
+  [self.navigationController pushViewController:verifyVC animated:NO];
 }
 
-- (void)requestConfirmationCode {
-  Event *ev = [ProtoHelper setupCodeRequest];
-  [[EventCenter defaultCenter] sendEvent:ev withTag:0];
-}
 
 - (void)eventCenterDidDisconnectWithError:(NSError *)error {
   [SVProgressHUD dismiss];
-  //TODO show retry button??
   isConnecting = NO;
-}
-
-- (void)eventCenter:(EventCenter *)eventCenter receivedEvent:(Event *)event {
-  SetupResponseEvent *ev = [event getExtension:[SetupResponseEvent event]];
-  NSString *confirmationCode = ev.code;
-
-  switch (ev.phase) {
-    case SetupPhaseRequestCode: {
-      confirmationCodeLabel.text = confirmationCode;
-      [SVProgressHUD dismiss];
-      [UIView animateWithDuration:0.5 animations:^{
-        instructionLabel.alpha = 0.0;
-      }                completion:^(BOOL finished) {
-        [UIView animateWithDuration:0.5 animations:^{
-          connectedContainerView.alpha = 1.0;
-        }];
-      }];
-
-      self.navigationItem.rightBarButtonItem.enabled = YES;
-      break;
-    }
-    default:
-      NSLog(@"Event recevied - Phase: %d", ev.phase);
-  }
-
 }
 
 - (IBAction)tryAgainButtonPressed:(id)sender {
@@ -252,6 +206,7 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self connectIfNeeded];
     });
+  [self fadeOutNotConnectedView];
 }
 
 - (void)dealloc {

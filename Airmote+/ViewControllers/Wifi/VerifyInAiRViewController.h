@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "EventCenter.h"
 
-@interface VerifyInAiRViewController : UIViewController
+@interface VerifyInAiRViewController : UIViewController <EventCenterDelegate>
 
 @end
