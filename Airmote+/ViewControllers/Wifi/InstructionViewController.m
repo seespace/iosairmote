@@ -13,6 +13,7 @@
 #import "NSData+NetService.h"
 #import "ProtoHelper.h"
 #import "WifiHelper.h"
+#import "FXBlurView.h"
 
 #define MAX_RETRY_COUNT 3
 
@@ -24,6 +25,11 @@
   __weak IBOutlet UIView *connectedContainerView;
   __weak IBOutlet UILabel *confirmationCodeLabel;
   __weak IBOutlet UILabel *instructionLabel;
+  __weak IBOutlet FXBlurView *notConnectedView;
+
+  __weak IBOutlet UILabel *headTitleLabel;
+  __weak IBOutlet UILabel *detailLabel;
+  __weak IBOutlet UIButton *tryAgainButton;
   BonjourManager *_bonjourManager;
 
   BOOL isConnecting;
@@ -56,18 +62,65 @@
                                            selector:@selector(didBecomeActive:)
                                                name:UIApplicationDidBecomeActiveNotification
                                              object:nil];
+  notConnectedView.blurRadius = 6.0;
 }
 
 - (void)didBecomeActive:(NSNotification *)notification {
-    if (![WifiHelper isConnectedToInAiRWiFi]) {
-        [SVProgressHUD showErrorWithStatus:@"Not connected to an InAiR network"];
-    } else {
-        if (![EventCenter defaultCenter].isActive && !isDiscoveringBonjourServices && (self == self.navigationController.topViewController)) {
-            isDiscoveringBonjourServices = YES;
-            [_bonjourManager start];
-        }
-    }
+  [self connectIfNeeded];
 
+}
+
+- (void)connectIfNeeded {
+  if (![WifiHelper isConnectedToInAiRWiFi]) {
+    [self fadeInNotConnectedView];
+  } else {
+    if (![EventCenter defaultCenter].isActive && !isDiscoveringBonjourServices && (self == self.navigationController.topViewController)) {
+      [self fadeOutNotConnectedView];
+      isDiscoveringBonjourServices = YES;
+      [_bonjourManager start];
+    }
+  }
+}
+
+
+- (void)fadeOutNotConnectedView {
+  if (notConnectedView.alpha == 0.0) {
+    return;
+  }
+
+  [UIView animateWithDuration:0.6 delay:0.4 options:UIViewAnimationOptionCurveEaseIn animations:^{
+    notConnectedView.alpha = 0.0;
+
+  }                completion:^(BOOL finished) {
+    headTitleLabel.alpha = 0.0;
+    detailLabel.alpha = 0.0;
+    tryAgainButton.alpha = 0.0;
+  }];
+
+
+  [UIView animateWithDuration:0.6 animations:^{
+//
+  }                completion:NULL];
+
+}
+
+- (void)fadeInNotConnectedView {
+  if (notConnectedView.alpha == 1.0) {
+    return;
+  }
+
+  [UIView animateWithDuration:0.3 delay:3.0 options:0 animations:^{
+    notConnectedView.alpha = 1.0;
+
+  }                completion:^(BOOL finished) {
+    [UIView animateWithDuration:0.3 delay:0 options:0 animations:^{
+      headTitleLabel.alpha = 1.0;
+      detailLabel.alpha = 1.0;
+      tryAgainButton.alpha = 1.0;
+    }                completion:^(BOOL finished) {
+
+    }];
+  }];
 }
 
 
@@ -192,6 +245,13 @@
       NSLog(@"Event recevied - Phase: %d", ev.phase);
   }
 
+}
+
+- (IBAction)tryAgainButtonPressed:(id)sender {
+  [self fadeOutNotConnectedView];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self connectIfNeeded];
+    });
 }
 
 - (void)dealloc {

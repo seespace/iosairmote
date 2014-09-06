@@ -57,6 +57,7 @@ static const uint8_t kMotionShakeTag = 6;
   } else {
     InstructionViewController *instructionViewController = [[InstructionViewController alloc] init];
     UINavigationController *navigationVC = [[UINavigationController alloc] initWithRootViewController:instructionViewController];
+    navigationVC.navigationBarHidden = YES;
     [self.navigationController presentViewController:navigationVC
                                             animated:NO
                                           completion:NULL];
