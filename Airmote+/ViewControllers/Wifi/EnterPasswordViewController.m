@@ -48,16 +48,14 @@
     case SetupPhaseRequestWifiConnect: {
       if (ev.error) {
         [SVProgressHUD dismiss];
+        wrongPasswordLabel.text = @"WRONG PASSWORD";
         [UIView animateWithDuration:0.6 animations:^{
           wrongPasswordLabel.alpha = 1.0;
         }];
         
       } else {
         [SVProgressHUD showSuccessWithStatus:@"Connected"];
-        ConnectedConfirmationViewController *confirmationViewController = [[ConnectedConfirmationViewController alloc] init];
-        confirmationViewController.delegate = self;
-        confirmationViewController.networkSSID = self.networkSSID;
-        [self.navigationController presentViewController:confirmationViewController animated:YES completion:NULL];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kInAirConnectedToSelectedWifiNotification object:nil userInfo:@{kNetworkSSIDKey: self.networkSSID}];
       }
     }
       break;
@@ -68,20 +66,26 @@
 }
 
 
-- (void)didConnectedToTheSameNetworkWithInAirDevice {
-  [self.parentViewController.presentingViewController dismissViewControllerAnimated:NO completion:NULL];
-}
-
 - (void)didReceiveMemoryWarning {
   [super didReceiveMemoryWarning];
   // Dispose of any resources that can be recreated.
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField {
-  if (YES) {
+  if (textField.text.length >= 5) {
     Event *ev = [ProtoHelper setupWifiConnectRequestWithSSID:self.networkSSID password:passwordTextField.text];
     [[EventCenter defaultCenter] sendEvent:ev withTag:0];
     [SVProgressHUD showWithStatus:@"InAir device connecting..."];
+    [UIView animateWithDuration:0.6 animations:^{
+      wrongPasswordLabel.alpha = 0.0;
+    }];
+
+  } else {
+    wrongPasswordLabel.text = @"PASSWORD MUST BE AT LEAST 5 CHARACTERS";
+    [UIView animateWithDuration:0.6 animations:^{
+      wrongPasswordLabel.alpha = 1.0;
+    }];
+
   }
   
   return YES;

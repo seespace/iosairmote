@@ -39,7 +39,7 @@
         [self.presentingViewController dismissViewControllerAnimated:YES completion:^{
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"DidSetupWifi"];
             [self.delegate didConnectedToTheSameNetworkWithInAirDevice];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kInAirDeviceDidConnectToWifiNotification object:nil userInfo:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kInAirDeviceDidConnectToTheSameWifiNotification object:nil userInfo:nil];
         }];
     }
   } else {
