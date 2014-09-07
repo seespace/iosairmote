@@ -36,6 +36,7 @@
   int retryCount;
   int resolveServiceRetryCount;
   NSNetService *_netService;
+  BOOL viewDidAppear;
 }
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -56,21 +57,37 @@
                                                name:UIApplicationDidBecomeActiveNotification
                                              object:nil];
   notConnectedView.blurRadius = 6.0;
+  viewDidAppear = NO;
 }
 
+
 - (void)didBecomeActive:(NSNotification *)notification {
+  
   [self connectIfNeeded];
 
 }
 
 - (void)connectIfNeeded {
-  if (![WifiHelper isConnectedToInAiRWiFi]) {
-    [self fadeInNotConnectedView];
+
+  if (self != self.navigationController.topViewController) {
+    return;
+  }
+  
+  if ([EventCenter defaultCenter].isActive) {
+    [self fadeOutNotConnectedView];
+    [self showVerificationViewController];
   } else {
-    if (![EventCenter defaultCenter].isActive && !isDiscoveringBonjourServices && (self == self.navigationController.topViewController)) {
-      [self fadeOutNotConnectedView];
-      isDiscoveringBonjourServices = YES;
-      [_bonjourManager start];
+    if (![WifiHelper isConnectedToInAiRWiFi]) {
+      [self fadeInNotConnectedView];
+    } else {
+
+      if (!isDiscoveringBonjourServices) {
+        [self fadeOutNotConnectedView];
+        isDiscoveringBonjourServices = YES;
+        [_bonjourManager start];
+      } else {
+        NSLog(@"Ignoring connect request...");
+      }
     }
   }
 }
@@ -113,6 +130,13 @@
 
 - (void)viewDidAppear:(BOOL)animated {
   [EventCenter defaultCenter].delegate = self;
+  if (viewDidAppear) {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+      [self connectIfNeeded];
+    });
+
+  }
+  viewDidAppear = YES;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -189,10 +213,15 @@
   [SVProgressHUD dismiss];
   [self fadeOutNotConnectedView];
   isConnecting = NO;
+  [self showVerificationViewController];
+}
 
+
+- (void)showVerificationViewController {
   VerifyInAiRViewController *verifyVC = [[VerifyInAiRViewController alloc] init];
   [EventCenter defaultCenter].delegate = verifyVC;
   [self.navigationController pushViewController:verifyVC animated:NO];
+
 }
 
 
@@ -203,9 +232,9 @@
 
 - (IBAction)tryAgainButtonPressed:(id)sender {
   [self fadeOutNotConnectedView];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self connectIfNeeded];
-    });
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    [self connectIfNeeded];
+  });
   [self fadeOutNotConnectedView];
 }
 

@@ -111,11 +111,11 @@
 
 - (void)tableView:(UITableView *)tableView1 didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   WifiNetwork *network = wifiNetworks[(NSUInteger) indexPath.row];
-
+  [tableView1 deselectRowAtIndexPath:indexPath animated:YES];
   EnterPasswordViewController *enterPasswordVC = [[EnterPasswordViewController alloc] init];
     [EventCenter defaultCenter].delegate = enterPasswordVC;
   enterPasswordVC.networkSSID = network.ssid;
-  [self.navigationController pushViewController:enterPasswordVC animated:YES];
+  [self.navigationController pushViewController:enterPasswordVC animated:NO];
 }
 
 

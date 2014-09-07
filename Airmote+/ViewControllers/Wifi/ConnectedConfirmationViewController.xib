@@ -1,39 +1,81 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="14A329f" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="14A343f" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ConnectedConfirmationViewController">
             <connections>
-                <outlet property="confirmationLabel" destination="mb0-Nb-PbG" id="9YV-LP-GAp"/>
+                <outlet property="confirmationLabel" destination="Z3P-JL-XsQ" id="F3T-JN-UnI"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
-            <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label appearanceType="aqua" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="751" text="Your InAiR device is connected to your selected network. " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="mb0-Nb-PbG">
-                    <rect key="frame" x="20" y="20" width="280" height="41"/>
+                <label appearanceType="aqua" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="751" text="From your phone setting, connect to" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="140" translatesAutoresizingMaskIntoConstraints="NO" id="mb0-Nb-PbG">
+                    <rect key="frame" x="94" y="241" width="140" height="41"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="280" id="93u-bi-cge"/>
+                        <constraint firstAttribute="width" constant="140" id="93u-bi-cge"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="17"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <label appearanceType="aqua" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="80" translatesAutoresizingMaskIntoConstraints="NO" id="tBp-L6-OX2">
+                    <rect key="frame" x="10" y="241" width="80" height="60"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="80" id="Tjn-Nd-y4d"/>
+                        <constraint firstAttribute="height" constant="60" id="nza-fV-97S"/>
+                    </constraints>
+                    <attributedString key="attributedText">
+                        <fragment content="ONE MORE THING">
+                            <attributes>
+                                <color key="NSColor" red="0.2627450980392157" green="0.2627450980392157" blue="0.27843137254901962" alpha="1" colorSpace="calibratedRGB"/>
+                                <font key="NSFont" size="19" name="HelveticaNeue-Bold"/>
+                                <paragraphStyle key="NSParagraphStyle" alignment="right" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="0.80000000000000004"/>
+                            </attributes>
+                        </fragment>
+                    </attributedString>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label appearanceType="aqua" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="751" text="WIFI" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="203" translatesAutoresizingMaskIntoConstraints="NO" id="Z3P-JL-XsQ">
+                    <rect key="frame" x="94" y="280" width="203" height="20"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="20" id="8ue-ox-6X7"/>
+                        <constraint firstAttribute="width" constant="203" id="utz-5U-Zk8"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView appearanceType="aqua" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="inAirLogo" translatesAutoresizingMaskIntoConstraints="NO" id="VBz-9N-PBj">
+                    <rect key="frame" x="94" y="168" width="57" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="57" id="VZb-jc-tuE"/>
+                        <constraint firstAttribute="height" constant="44" id="gWS-I3-Gmq"/>
+                    </constraints>
+                </imageView>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
             <constraints>
-                <constraint firstItem="mb0-Nb-PbG" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="Qux-gY-ZIV"/>
-                <constraint firstAttribute="centerX" secondItem="mb0-Nb-PbG" secondAttribute="centerX" id="fig-RY-PAY"/>
+                <constraint firstItem="mb0-Nb-PbG" firstAttribute="leading" secondItem="tBp-L6-OX2" secondAttribute="trailing" constant="4" id="92z-2E-Ibn"/>
+                <constraint firstItem="VBz-9N-PBj" firstAttribute="leading" secondItem="mb0-Nb-PbG" secondAttribute="leading" id="G9H-W3-RVq"/>
+                <constraint firstItem="mb0-Nb-PbG" firstAttribute="top" secondItem="VBz-9N-PBj" secondAttribute="bottom" constant="29" id="H7M-hP-x04"/>
+                <constraint firstAttribute="centerY" secondItem="tBp-L6-OX2" secondAttribute="centerY" constant="13" id="TWN-YP-7E4"/>
+                <constraint firstAttribute="centerY" secondItem="mb0-Nb-PbG" secondAttribute="centerY" constant="23" id="aw0-aI-p5p"/>
+                <constraint firstItem="tBp-L6-OX2" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="cwR-o8-957"/>
+                <constraint firstItem="Z3P-JL-XsQ" firstAttribute="top" secondItem="mb0-Nb-PbG" secondAttribute="bottom" constant="-2" id="dHq-fc-iPa"/>
+                <constraint firstItem="mb0-Nb-PbG" firstAttribute="leading" secondItem="Z3P-JL-XsQ" secondAttribute="leading" id="snz-Hd-YbY"/>
             </constraints>
-            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
-            <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
     </objects>
+    <resources>
+        <image name="inAirLogo" width="156" height="123"/>
+    </resources>
 </document>

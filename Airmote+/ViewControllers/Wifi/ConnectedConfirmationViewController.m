@@ -43,7 +43,8 @@
         }];
     }
   } else {
-    [self updateConfirmationMessage:currentSSID];
+    confirmationLabel.text = self.networkSSID;
+//    [self updateConfirmationMessage:currentSSID];
   }
 }
 

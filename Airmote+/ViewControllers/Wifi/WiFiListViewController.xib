@@ -17,7 +17,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView appearanceType="aqua" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="FWs-AP-kSI">
-                    <rect key="frame" x="80" y="173" width="200" height="255"/>
+                    <rect key="frame" x="94" y="173" width="186" height="255"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
@@ -31,7 +31,7 @@
                     </connections>
                 </tableView>
                 <label appearanceType="aqua" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="751" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="200" translatesAutoresizingMaskIntoConstraints="NO" id="CWJ-YY-OFk">
-                    <rect key="frame" x="100" y="70" width="200" height="46"/>
+                    <rect key="frame" x="94" y="70" width="200" height="46"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="200" id="TU5-zw-83g"/>
                         <constraint firstAttribute="height" constant="46" id="e1R-Y0-1PG"/>
@@ -50,7 +50,7 @@ WIFI</string>
                     <nil key="highlightedColor"/>
                 </label>
                 <label appearanceType="aqua" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="751" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="190" translatesAutoresizingMaskIntoConstraints="NO" id="cVl-tN-hox">
-                    <rect key="frame" x="100" y="126" width="190" height="27"/>
+                    <rect key="frame" x="94" y="126" width="190" height="27"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="190" id="D4o-XW-Q5M"/>
@@ -67,7 +67,7 @@ WIFI</string>
                     <nil key="highlightedColor"/>
                 </label>
                 <view appearanceType="aqua" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ty4-mP-kd1" userLabel="Separator">
-                    <rect key="frame" x="101" y="170" width="180" height="2"/>
+                    <rect key="frame" x="95" y="170" width="180" height="2"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <constraints>
@@ -93,7 +93,7 @@ WIFI</string>
                     <nil key="highlightedColor"/>
                 </label>
                 <view appearanceType="aqua" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="obZ-4b-wZ4" userLabel="Separator">
-                    <rect key="frame" x="100" y="430" width="180" height="2"/>
+                    <rect key="frame" x="94" y="430" width="180" height="2"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <constraints>
@@ -102,7 +102,7 @@ WIFI</string>
                     </constraints>
                 </view>
                 <button appearanceType="aqua" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3TQ-Sd-yLR">
-                    <rect key="frame" x="100" y="452" width="141" height="30"/>
+                    <rect key="frame" x="94" y="452" width="141" height="30"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="30" id="GZi-zf-WRM"/>
                         <constraint firstAttribute="width" constant="141" id="wpl-L4-2RH"/>
@@ -122,15 +122,15 @@ WIFI</string>
             </subviews>
             <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
             <constraints>
-                <constraint firstItem="FWs-AP-kSI" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="80" id="25j-x6-4lX"/>
+                <constraint firstItem="FWs-AP-kSI" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="94" id="25j-x6-4lX"/>
                 <constraint firstItem="ty4-mP-kd1" firstAttribute="leading" secondItem="obZ-4b-wZ4" secondAttribute="leading" constant="1" id="2iJ-PH-gKV"/>
-                <constraint firstAttribute="centerY" secondItem="THb-7i-ULY" secondAttribute="centerY" constant="12.5" id="47M-DC-6Hm"/>
+                <constraint firstAttribute="centerY" secondItem="THb-7i-ULY" secondAttribute="centerY" constant="13" id="47M-DC-6Hm"/>
                 <constraint firstItem="obZ-4b-wZ4" firstAttribute="top" secondItem="FWs-AP-kSI" secondAttribute="bottom" constant="2" id="8WH-Wg-rt9"/>
                 <constraint firstItem="THb-7i-ULY" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="A6n-Bd-wka"/>
                 <constraint firstItem="ty4-mP-kd1" firstAttribute="top" secondItem="cVl-tN-hox" secondAttribute="bottom" constant="17" id="RZT-qy-L6M"/>
                 <constraint firstItem="3TQ-Sd-yLR" firstAttribute="leading" secondItem="obZ-4b-wZ4" secondAttribute="leading" id="Sfg-vs-hd3"/>
                 <constraint firstItem="cVl-tN-hox" firstAttribute="leading" secondItem="CWJ-YY-OFk" secondAttribute="leading" id="WNc-ba-H86"/>
-                <constraint firstItem="CWJ-YY-OFk" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="100" id="ZZF-xc-be3"/>
+                <constraint firstItem="CWJ-YY-OFk" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="94" id="ZZF-xc-be3"/>
                 <constraint firstItem="3TQ-Sd-yLR" firstAttribute="top" secondItem="obZ-4b-wZ4" secondAttribute="bottom" constant="20" id="b7a-TP-ezi"/>
                 <constraint firstAttribute="trailing" secondItem="FWs-AP-kSI" secondAttribute="trailing" constant="40" id="cRk-Nu-AnP"/>
                 <constraint firstAttribute="centerY" secondItem="FWs-AP-kSI" secondAttribute="centerY" constant="-16.5" id="k0S-Zm-jps"/>
