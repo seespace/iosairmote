@@ -1,3 +1,1 @@
-#define kInAirDeviceDidConnectToTheSameWifiNotification @"InAirDeviceDidConnectToWifiNotification"
-#define kInAirConnectedToSelectedWifiNotification @"InAirConnectedToSelectedWifiNotification"
-#define kNetworkSSIDKey @"NetworkSSIDKey"
+#define kInAirDeviceDidConnectToWifiNotification @"InAirDeviceDidConnectToWifiNotification"

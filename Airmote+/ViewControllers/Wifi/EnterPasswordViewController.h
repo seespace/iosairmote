@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "EventCenter.h"
+#import "ConnectedConfirmationViewController.h"
 
-@interface EnterPasswordViewController : UIViewController <EventCenterDelegate, UITextFieldDelegate>
+@interface EnterPasswordViewController : UIViewController <EventCenterDelegate, UITextFieldDelegate, ConfirmationViewDelegate>
 
 @property(nonatomic, copy) NSString *networkSSID;
 @end

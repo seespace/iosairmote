@@ -43,7 +43,8 @@ static const uint8_t kMotionShakeTag = 6;
                                                name:@"applicationDidBecomeActive"
                                              object:nil];
 
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inAirDeviceDidConnectToSelectedWifi:) name:kInAirConnectedToSelectedWifiNotification object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inAirDeviceDiDConnect:) name:kInAirDeviceDidConnectToWifiNotification object:nil];
+
   [self.navigationController setNavigationBarHidden:YES];
   _trackpadView.viewController = self;
 
@@ -64,14 +65,10 @@ static const uint8_t kMotionShakeTag = 6;
   }
 }
 
-- (void)inAirDeviceDidConnectToSelectedWifi:(NSNotification *)notification {
-  NSString *networkSSID = [(notification.userInfo) objectForKey:kNetworkSSIDKey];
-  [self.navigationController.presentedViewController dismissViewControllerAnimated:YES completion:^{
-    ConnectedConfirmationViewController *confirmationViewController = [[ConnectedConfirmationViewController alloc] init];
-    confirmationViewController.delegate = self;
-    confirmationViewController.networkSSID = networkSSID;
-    [self.navigationController presentViewController:confirmationViewController animated:YES completion:NULL];
-  }];
+- (void)inAirDeviceDiDConnect:(NSNotification *)notification {
+  [[EventCenter defaultCenter] disconnect];
+    
+  [self reconnectToServiceIfNeeded];
 }
 
 
@@ -306,9 +303,4 @@ static const uint8_t kMotionShakeTag = 6;
   return _webViewController;
 }
 
-- (void)didConnectedToTheSameNetworkWithInAirDevice {
-  [self.navigationController dismissViewControllerAnimated:YES completion:NULL];
-  [[EventCenter defaultCenter] disconnect];
-  [self reconnectToServiceIfNeeded];
-}
 @end
