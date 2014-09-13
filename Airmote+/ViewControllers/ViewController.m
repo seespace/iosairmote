@@ -25,7 +25,8 @@
 @implementation ViewController {
   NSArray *_services;
   BonjourManager *_bonjourManager;
-  BOOL isResolvingServiceAddress;
+  BOOL isConnecting;
+  NSString *lastIPAddress;
 }
 
 
@@ -51,8 +52,8 @@ static const uint8_t kMotionShakeTag = 6;
   BOOL connectedToWifi = [[NSUserDefaults standardUserDefaults] boolForKey:@"DidSetupWifi"];
   if (connectedToWifi) {
     [_bonjourManager start];
-      isResolvingServiceAddress = YES;
-      
+      isConnecting = YES;
+    _services = nil;
     [SVProgressHUD showWithStatus:@"Scanning..." maskType:SVProgressHUDMaskTypeBlack];
   } else {
     InstructionViewController *instructionViewController = [[InstructionViewController alloc] init];
@@ -67,7 +68,7 @@ static const uint8_t kMotionShakeTag = 6;
 
 - (void)inAirDeviceDiDConnect:(NSNotification *)notification {
   [[EventCenter defaultCenter] disconnect];
-    
+
   [self reconnectToServiceIfNeeded];
 }
 
@@ -80,6 +81,9 @@ static const uint8_t kMotionShakeTag = 6;
 #pragma mark Auto reconnect when become active
 
 - (void)applicationDidBecomeActive {
+  // Clear out cached services when the app coming back from foreground
+  // because the services might be gone by the time we coming back.
+  _services = nil;
   [self reconnectToServiceIfNeeded];
 }
 
@@ -88,15 +92,18 @@ static const uint8_t kMotionShakeTag = 6;
   if ([WifiHelper isConnectedToInAiRWiFi] || ! connectedToWifi)
     return;
 
-  if (!isResolvingServiceAddress && ![EventCenter defaultCenter].isActive && !_serverSelectorDisplayed) {
-    if ([_services count]) {
+  if (isConnecting || _serverSelectorDisplayed) {
+    return;
+  }
+  
+  if (! [EventCenter defaultCenter].isActive && [_services count]) {
       [self chooseServerWithMessage:@"Choose a device"];
-    }
-    else {
-      [_bonjourManager start];
-      [SVProgressHUD showWithStatus:@"Scanning..." maskType:SVProgressHUDMaskTypeBlack];
-      isResolvingServiceAddress = YES;
-    }
+  } else {
+    [_bonjourManager start];
+    _services = nil;
+    [SVProgressHUD showWithStatus:@"Scanning..." maskType:SVProgressHUDMaskTypeBlack];
+    isConnecting = YES;
+
   }
 }
 
@@ -105,12 +112,12 @@ static const uint8_t kMotionShakeTag = 6;
 
 - (void)bonjourManagerServiceNotFound {
   [SVProgressHUD showErrorWithStatus:@"Service not found"];
-  isResolvingServiceAddress = NO;
+  isConnecting = NO;
 }
 
 - (void)bonjourManagerFinishedDiscoveringServices:(NSArray *)services {
   [SVProgressHUD dismiss];
-  isResolvingServiceAddress = NO;
+  isConnecting = NO;
   _services = services;
   if (!_serverSelectorDisplayed) {
     [self chooseServerWithMessage:@"Choose a device"];
@@ -173,6 +180,7 @@ static const uint8_t kMotionShakeTag = 6;
   else {
     _serverSelectorDisplayed = NO;
   }
+  _serverSelectorDisplayed = NO;
 }
 
 #pragma mark - AlertViewDelegate
@@ -209,9 +217,11 @@ static const uint8_t kMotionShakeTag = 6;
 
 - (void)eventCenterDidConnect {
   [SVProgressHUD showSuccessWithStatus:@"Connected"];
+  isConnecting = NO;
 }
 
 - (void)eventCenterDidDisconnectWithError:(NSError *)error {
+  isConnecting = NO;
   [SVProgressHUD showErrorWithStatus:[error localizedDescription]];
   NSLog(@"Error: %@. Code: %ld", [error localizedDescription], (long) [error code]);
 }
@@ -220,6 +230,7 @@ static const uint8_t kMotionShakeTag = 6;
 
 - (void)netService:(NSNetService *)sender didNotResolve:(NSDictionary *)errorDict {
   NSLog(@"Service is denied");
+  isConnecting = NO;
 }
 
 
