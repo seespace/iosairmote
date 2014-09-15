@@ -16,7 +16,7 @@ static const uint8_t kSessionStartTag = 9;
 //static const uint8_t kSessionEndTag = 10;
 
 @implementation EventCenter {
-
+  NSString *lastConnectedHostName;
 }
 
 - (id)init {
@@ -53,6 +53,7 @@ static const uint8_t kSessionStartTag = 9;
     return NO;
   }
 
+  lastConnectedHostName = hostname;
   return YES;
 }
 
@@ -100,7 +101,6 @@ static const uint8_t kSessionStartTag = 9;
 
 - (void)socket:(GCDAsyncSocket *)sock didConnectToHost:(NSString *)host port:(UInt16)port {
   NSLog(@"Connected to %@", host);
-
   // TCP_NO_DELAY
   [_socket performBlock:^{
       int fd = [_socket socketFD];
@@ -118,15 +118,16 @@ static const uint8_t kSessionStartTag = 9;
   [self registerDevice];
 
   [_socket readDataWithTimeout:-1 tag:0];
-  if (self.delegate && [self.delegate respondsToSelector:@selector(eventCenterDidConnect)]) {
-    [self.delegate eventCenterDidConnect];
+  if (self.delegate && [self.delegate respondsToSelector:@selector(eventCenterDidConnectToHost:)]) {
+    [self.delegate eventCenterDidConnectToHost:lastConnectedHostName];
   }
 }
 
 - (void)socketDidDisconnect:(GCDAsyncSocket *)sock withError:(NSError *)error {
-  if (self.delegate && [self.delegate respondsToSelector:@selector(eventCenterDidDisconnectWithError:)]) {
-    [self.delegate eventCenterDidDisconnectWithError:error];
+  if (self.delegate && [self.delegate respondsToSelector:@selector(eventCenterDidDisconnectFromHost:withError:)]) {
+    [self.delegate eventCenterDidDisconnectFromHost:lastConnectedHostName withError:error];
   }
+  lastConnectedHostName = nil;
 }
 
 

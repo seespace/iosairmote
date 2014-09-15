@@ -26,7 +26,7 @@
   NSArray *_services;
   BonjourManager *_bonjourManager;
   BOOL isConnecting;
-  NSString *lastIPAddress;
+  NSString *lastConnectedHostName;
 }
 
 
@@ -215,12 +215,12 @@ static const uint8_t kMotionShakeTag = 6;
   }
 }
 
-- (void)eventCenterDidConnect {
+- (void)eventCenterDidConnectToHost:(NSString *)hostName {
   [SVProgressHUD showSuccessWithStatus:@"Connected"];
   isConnecting = NO;
 }
 
-- (void)eventCenterDidDisconnectWithError:(NSError *)error {
+- (void)eventCenterDidDisconnectFromHost:(NSString *)hostName withError:(NSError *)error {
   isConnecting = NO;
   [SVProgressHUD showErrorWithStatus:[error localizedDescription]];
   NSLog(@"Error: %@. Code: %ld", [error localizedDescription], (long) [error code]);

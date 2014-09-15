@@ -11,9 +11,9 @@
 
 @protocol EventCenterDelegate <NSObject>
 @optional
-- (void)eventCenterDidConnect;
+- (void)eventCenterDidConnectToHost:(NSString *)hostName;
 
-- (void)eventCenterDidDisconnectWithError:(NSError *)error;
+- (void)eventCenterDidDisconnectFromHost:(NSString *)hostName withError:(NSError *)error;
 
 - (void)eventCenter:(EventCenter *)eventCenter receivedEvent:(Event *)event;
 @end

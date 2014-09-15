@@ -209,7 +209,7 @@
   }
 }
 
-- (void)eventCenterDidConnect {
+- (void)eventCenterDidConnectToHost:(NSString *)hostName {
   [SVProgressHUD dismiss];
   [self fadeOutNotConnectedView];
   isConnecting = NO;
@@ -225,7 +225,7 @@
 }
 
 
-- (void)eventCenterDidDisconnectWithError:(NSError *)error {
+- (void)eventCenterDidDisconnectFromHost:(NSString *)hostName withError:(NSError *)error {
   [SVProgressHUD dismiss];
   isConnecting = NO;
 }
