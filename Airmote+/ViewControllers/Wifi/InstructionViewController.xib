@@ -7,7 +7,6 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="InstructionViewController">
             <connections>
-                <outlet property="connectedContainerView" destination="HJT-Gw-s4t" id="JKF-qK-NAR"/>
                 <outlet property="detailLabel" destination="y0f-9Y-fvY" id="I2G-z3-I01"/>
                 <outlet property="headTitleLabel" destination="vIV-vG-RmG" id="gIE-Vp-Fv1"/>
                 <outlet property="instructionLabel" destination="y5X-h1-M8l" id="4Sb-lW-DxT"/>
@@ -164,59 +163,16 @@ NOT CONNECTED</string>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </view>
-                        <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HJT-Gw-s4t" userLabel="ConnectedContainer">
-                            <rect key="frame" x="0.0" y="285" width="320" height="257"/>
-                            <subviews>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You are now connected to an InAir device. Make sure the code appear on your TV is the same as the one bellow:" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="203" translatesAutoresizingMaskIntoConstraints="NO" id="DSU-DP-2dQ">
-                                    <rect key="frame" x="68" y="65" width="203" height="93"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="203" id="qiX-b3-qzZ"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="16"/>
-                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="751" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="200" translatesAutoresizingMaskIntoConstraints="NO" id="aPa-GV-WoN">
-                                    <rect key="frame" x="69" y="10" width="200" height="46"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="200" id="EBZ-1H-AUO"/>
-                                    </constraints>
-                                    <attributedString key="attributedText">
-                                        <fragment>
-                                            <string key="content">DEVICE
-VERIFICATION</string>
-                                            <attributes>
-                                                <color key="NSColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <font key="NSFont" size="24" name="HelveticaNeue-CondensedBold"/>
-                                                <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="0.80000000000000004"/>
-                                            </attributes>
-                                        </fragment>
-                                    </attributedString>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                            </subviews>
-                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstItem="aPa-GV-WoN" firstAttribute="top" secondItem="HJT-Gw-s4t" secondAttribute="top" constant="10" id="7YQ-80-EIZ"/>
-                                <constraint firstItem="aPa-GV-WoN" firstAttribute="leading" secondItem="DSU-DP-2dQ" secondAttribute="leading" constant="1" id="7kg-3h-UIT"/>
-                                <constraint firstItem="DSU-DP-2dQ" firstAttribute="top" secondItem="aPa-GV-WoN" secondAttribute="bottom" constant="8.5" id="Z7Q-9j-emg"/>
-                                <constraint firstAttribute="height" constant="257" id="cDV-ef-DbY"/>
-                                <constraint firstAttribute="width" constant="320" id="cpc-2T-Q7S"/>
-                                <constraint firstItem="aPa-GV-WoN" firstAttribute="leading" secondItem="HJT-Gw-s4t" secondAttribute="leading" constant="69" id="lBt-42-4hR"/>
-                            </constraints>
-                        </view>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="centerY" secondItem="EoR-1c-t8l" secondAttribute="centerY" constant="13.5" id="0mT-nz-ATt"/>
                         <constraint firstItem="y5X-h1-M8l" firstAttribute="top" secondItem="flz-qw-bZE" secondAttribute="bottom" constant="30" id="7CP-f2-eao"/>
-                        <constraint firstItem="HJT-Gw-s4t" firstAttribute="top" secondItem="flz-qw-bZE" secondAttribute="bottom" constant="100" id="8WQ-x3-cIN"/>
                         <constraint firstItem="flz-qw-bZE" firstAttribute="leading" secondItem="y5X-h1-M8l" secondAttribute="leading" id="Fr7-1U-0Ys"/>
                         <constraint firstItem="zQb-Gl-MBB" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="GAr-iq-emC"/>
                         <constraint firstItem="y5X-h1-M8l" firstAttribute="leading" secondItem="EoR-1c-t8l" secondAttribute="trailing" constant="4" id="J41-QX-GsX"/>
                         <constraint firstAttribute="bottom" secondItem="zQb-Gl-MBB" secondAttribute="bottom" id="J5y-UB-gKv"/>
                         <constraint firstItem="zQb-Gl-MBB" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="O4d-yi-d76"/>
-                        <constraint firstItem="HJT-Gw-s4t" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="cWX-v8-qYS"/>
                         <constraint firstAttribute="trailing" secondItem="zQb-Gl-MBB" secondAttribute="trailing" id="eRk-8D-0mu"/>
                         <constraint firstAttribute="centerY" secondItem="y5X-h1-M8l" secondAttribute="centerY" constant="14" id="sFp-CW-5BB"/>
                         <constraint firstItem="EoR-1c-t8l" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="yZp-5P-yZe"/>

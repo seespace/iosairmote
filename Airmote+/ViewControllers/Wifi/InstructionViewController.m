@@ -20,8 +20,6 @@
 @end
 
 @implementation InstructionViewController {
-  __weak IBOutlet UIView *connectedContainerView;
-  __weak IBOutlet UILabel *confirmationCodeLabel;
   __weak IBOutlet UILabel *instructionLabel;
   __weak IBOutlet FXBlurView *notConnectedView;
 
