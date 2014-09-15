@@ -27,6 +27,7 @@
   BonjourManager *_bonjourManager;
   BOOL isConnecting;
   NSString *lastConnectedHostName;
+  BOOL isReconnecting;
 }
 
 
@@ -52,7 +53,7 @@ static const uint8_t kMotionShakeTag = 6;
   BOOL connectedToWifi = [[NSUserDefaults standardUserDefaults] boolForKey:@"DidSetupWifi"];
   if (connectedToWifi) {
     [_bonjourManager start];
-      isConnecting = YES;
+    isConnecting = YES;
     _services = nil;
     [SVProgressHUD showWithStatus:@"Scanning..." maskType:SVProgressHUDMaskTypeBlack];
   } else {
@@ -83,21 +84,28 @@ static const uint8_t kMotionShakeTag = 6;
 - (void)applicationDidBecomeActive {
   // Clear out cached services when the app coming back from foreground
   // because the services might be gone by the time we coming back.
-  _services = nil;
-  [self reconnectToServiceIfNeeded];
+  if ([lastConnectedHostName length] > 0) {
+    if (![EventCenter defaultCenter].isActive) {
+      [[EventCenter defaultCenter] connectToHost:lastConnectedHostName];
+      isReconnecting = YES;
+    }
+  } else {
+    [self reconnectToServiceIfNeeded];
+  }
+
 }
 
 - (void)reconnectToServiceIfNeeded {
   BOOL connectedToWifi = [[NSUserDefaults standardUserDefaults] boolForKey:@"DidSetupWifi"];
-  if ([WifiHelper isConnectedToInAiRWiFi] || ! connectedToWifi)
+  if ([WifiHelper isConnectedToInAiRWiFi] || !connectedToWifi)
     return;
 
   if (isConnecting || _serverSelectorDisplayed) {
     return;
   }
-  
-  if (! [EventCenter defaultCenter].isActive && [_services count]) {
-      [self chooseServerWithMessage:@"Choose a device"];
+
+  if (![EventCenter defaultCenter].isActive && [_services count]) {
+    [self chooseServerWithMessage:@"Choose a device"];
   } else {
     [_bonjourManager start];
     _services = nil;
@@ -216,14 +224,29 @@ static const uint8_t kMotionShakeTag = 6;
 }
 
 - (void)eventCenterDidConnectToHost:(NSString *)hostName {
-  [SVProgressHUD showSuccessWithStatus:@"Connected"];
-  isConnecting = NO;
+  lastConnectedHostName = hostName;
+  if (isReconnecting) {
+    isReconnecting = NO;
+  }
+  else {
+    [SVProgressHUD showSuccessWithStatus:@"Connected"];
+    isConnecting = NO;
+  }
 }
 
 - (void)eventCenterDidDisconnectFromHost:(NSString *)hostName withError:(NSError *)error {
-  isConnecting = NO;
-  [SVProgressHUD showErrorWithStatus:[error localizedDescription]];
-  NSLog(@"Error: %@. Code: %ld", [error localizedDescription], (long) [error code]);
+  if (isReconnecting) {
+    if (![EventCenter defaultCenter].isActive) {
+      if ([hostName isEqualToString:lastConnectedHostName]) {
+        [self reconnectToServiceIfNeeded];
+      }
+    }
+  } else {
+    isConnecting = NO;
+    [SVProgressHUD showErrorWithStatus:[error localizedDescription]];
+    NSLog(@"Error: %@. Code: %ld", [error localizedDescription], (long) [error code]);
+  }
+  lastConnectedHostName = nil;
 }
 
 #pragma mark - NetServiceDelegate
@@ -296,7 +319,7 @@ static const uint8_t kMotionShakeTag = 6;
 
   [EventCenter defaultCenter].delegate = nil;
 
-  
+
   _trackpadView.eventCenter = [EventCenter defaultCenter];
   [EventCenter defaultCenter].delegate = self;
   BOOL canStartConnection = [[EventCenter defaultCenter] connectToHost:hostname];

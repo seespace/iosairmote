@@ -33,16 +33,27 @@
   return self;
 }
 
+-(void)netServiceBrowser:(NSNetServiceBrowser *)aNetServiceBrowser didFindDomain:(NSString *)domainString moreComing:(BOOL)moreComing
+{
+  NSLog(@"didFindDomain");
+}
+
+-(void)netServiceBrowserWillSearch:(NSNetServiceBrowser *)aNetServiceBrowser
+{
+  NSLog(@"netServiceBrowserWillSearch");
+}
+
 - (void)netServiceBrowser:(NSNetServiceBrowser *)aBrowser didFindService:(NSNetService *)aService moreComing:(BOOL)more {
   [_discoveredServices addObject:aService];
   foundAllService = !more;
   if (foundAllService && [self.delegate respondsToSelector:@selector(bonjourManagerFinishedDiscoveringServices:)]) {
     [self.delegate bonjourManagerFinishedDiscoveringServices:_discoveredServices];
+    [_browser stop];
   }
 }
 
 - (void)netServiceBrowser:(NSNetServiceBrowser *)aBrowser didRemoveService:(NSNetService *)aService moreComing:(BOOL)more {
-  [_discoveredServices removeAllObjects];
+  [_discoveredServices removeObject:aService];
   if (!more && [_discoveredServices count] == 0) {
     if ([self.delegate respondsToSelector:@selector(bonjourManagerServiceNotFound)]) {
       [self.delegate bonjourManagerServiceNotFound];
