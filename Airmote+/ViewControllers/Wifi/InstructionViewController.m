@@ -21,7 +21,6 @@
 
 @implementation InstructionViewController {
   __weak IBOutlet UILabel *instructionLabel;
-  __weak IBOutlet FXBlurView *notConnectedView;
 
   __weak IBOutlet UILabel *headTitleLabel;
   __weak IBOutlet UILabel *detailLabel;
@@ -54,7 +53,6 @@
                                            selector:@selector(didBecomeActive:)
                                                name:UIApplicationDidBecomeActiveNotification
                                              object:nil];
-  notConnectedView.blurRadius = 6.0;
   viewDidAppear = NO;
 }
 
@@ -72,15 +70,10 @@
   }
   
   if ([EventCenter defaultCenter].isActive) {
-    [self fadeOutNotConnectedView];
     [self showVerificationViewController];
   } else {
-    if (![WifiHelper isConnectedToInAiRWiFi]) {
-      [self fadeInNotConnectedView];
-    } else {
-
+    if ([WifiHelper isConnectedToInAiRWiFi]) {
       if (!isDiscoveringBonjourServices) {
-        [self fadeOutNotConnectedView];
         isDiscoveringBonjourServices = YES;
         [_bonjourManager start];
       } else {
@@ -90,40 +83,6 @@
   }
 }
 
-
-- (void)fadeOutNotConnectedView {
-  if (notConnectedView.alpha == 0.0) {
-    return;
-  }
-
-  [UIView animateWithDuration:0.6 delay:0.4 options:UIViewAnimationOptionCurveEaseIn animations:^{
-    notConnectedView.alpha = 0.0;
-
-  }                completion:^(BOOL finished) {
-    headTitleLabel.alpha = 0.0;
-    detailLabel.alpha = 0.0;
-    tryAgainButton.alpha = 0.0;
-  }];
-}
-
-- (void)fadeInNotConnectedView {
-  if (notConnectedView.alpha == 1.0) {
-    return;
-  }
-
-  [UIView animateWithDuration:0.3 delay:0 options:0 animations:^{
-    notConnectedView.alpha = 1.0;
-
-  }                completion:^(BOOL finished) {
-    [UIView animateWithDuration:0.3 delay:0 options:0 animations:^{
-      headTitleLabel.alpha = 1.0;
-      detailLabel.alpha = 1.0;
-      tryAgainButton.alpha = 1.0;
-    }                completion:^(BOOL finished) {
-
-    }];
-  }];
-}
 
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -209,7 +168,6 @@
 
 - (void)eventCenterDidConnectToHost:(NSString *)hostName {
   [SVProgressHUD dismiss];
-  [self fadeOutNotConnectedView];
   isConnecting = NO;
   [self showVerificationViewController];
 }
@@ -226,14 +184,6 @@
 - (void)eventCenterDidDisconnectFromHost:(NSString *)hostName withError:(NSError *)error {
   [SVProgressHUD dismiss];
   isConnecting = NO;
-}
-
-- (IBAction)tryAgainButtonPressed:(id)sender {
-  [self fadeOutNotConnectedView];
-  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-    [self connectIfNeeded];
-  });
-  [self fadeOutNotConnectedView];
 }
 
 - (void)dealloc {
