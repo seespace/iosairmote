@@ -50,8 +50,8 @@ static const uint8_t kMotionShakeTag = 6;
   [self.navigationController setNavigationBarHidden:YES];
   _trackpadView.viewController = self;
 
-  BOOL connectedToWifi = [[NSUserDefaults standardUserDefaults] boolForKey:@"DidSetupWifi"];
-  if (connectedToWifi) {
+  BOOL requiredWifiSetup = [[NSUserDefaults standardUserDefaults] boolForKey:kWifiSetupKey];
+  if (! requiredWifiSetup) {
     [_bonjourManager start];
     isConnecting = YES;
     _services = nil;
@@ -84,6 +84,14 @@ static const uint8_t kMotionShakeTag = 6;
 - (void)applicationDidBecomeActive {
   // Clear out cached services when the app coming back from foreground
   // because the services might be gone by the time we coming back.
+  
+  BOOL requiredWifi = [[NSUserDefaults standardUserDefaults] boolForKey:kWifiSetupKey];
+  if (!requiredWifi) {
+    if (self.navigationController.presentedViewController != nil){
+      [self.navigationController dismissViewControllerAnimated:YES completion:NULL];
+    }
+  }
+  
   if ([lastConnectedHostName length] > 0) {
     if (![EventCenter defaultCenter].isActive) {
       [[EventCenter defaultCenter] connectToHost:lastConnectedHostName];
@@ -96,8 +104,8 @@ static const uint8_t kMotionShakeTag = 6;
 }
 
 - (void)reconnectToServiceIfNeeded {
-  BOOL connectedToWifi = [[NSUserDefaults standardUserDefaults] boolForKey:@"DidSetupWifi"];
-  if ([WifiHelper isConnectedToInAiRWiFi] || !connectedToWifi)
+  BOOL requiredWifiSetup = [[NSUserDefaults standardUserDefaults] boolForKey:kWifiSetupKey];
+  if ([WifiHelper isConnectedToInAiRWiFi] || requiredWifiSetup)
     return;
 
   if (isConnecting || _serverSelectorDisplayed) {
@@ -253,6 +261,7 @@ static const uint8_t kMotionShakeTag = 6;
 
 - (void)netService:(NSNetService *)sender didNotResolve:(NSDictionary *)errorDict {
   NSLog(@"Service is denied");
+  
   isConnecting = NO;
 }
 
