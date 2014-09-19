@@ -3,12 +3,12 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "background_tile.png"
+      "filename" : "textBoxBg.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "background_tile@2x.png"
+      "filename" : "textBoxBg@2x.png"
     },
     {
       "idiom" : "universal",
