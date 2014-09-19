@@ -54,6 +54,7 @@
                                                name:UIApplicationDidBecomeActiveNotification
                                              object:nil];
   viewDidAppear = NO;
+  [self showVerificationViewController];  
 }
 
 
