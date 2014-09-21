@@ -14,6 +14,8 @@
 #import "WifiHelper.h"
 #import "InstructionViewController.h"
 
+#define kTimeOutDuration 10.0
+
 @interface ViewController () {
   BOOL _serverSelectorDisplayed;
 
@@ -183,7 +185,7 @@ static const uint8_t kMotionShakeTag = 6;
   }
   else {
     service.delegate = self;
-    [service resolveWithTimeout:10];
+    [service resolveWithTimeout:kTimeOutDuration];
   }
 }
 
@@ -259,9 +261,16 @@ static const uint8_t kMotionShakeTag = 6;
 
 #pragma mark - NetServiceDelegate
 
-- (void)netService:(NSNetService *)sender didNotResolve:(NSDictionary *)errorDict {
-  NSLog(@"Service is denied");
+-(void)netServiceDidStop:(NSNetService *)sender {
+  NSLog(@"NetService did stop");
+  sender.delegate = nil;
   
+}
+
+
+- (void)netService:(NSNetService *)sender didNotResolve:(NSDictionary *)errorDict {
+  NSLog(@"Service is denied with Error: %@", errorDict);
+  sender.delegate = nil;
   isConnecting = NO;
 }
 
@@ -269,6 +278,7 @@ static const uint8_t kMotionShakeTag = 6;
 - (void)netServiceDidResolveAddress:(NSNetService *)service {
   NSString *address = [(service.addresses)[0] socketAddress];
   [self connectToHost:address];
+  service.delegate = nil;
 }
 
 #pragma mark -
