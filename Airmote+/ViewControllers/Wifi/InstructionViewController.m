@@ -11,7 +11,6 @@
 #import "SVProgressHUD.h"
 #import "NSData+NetService.h"
 #import "WifiHelper.h"
-#import "FXBlurView.h"
 
 #define MAX_RETRY_COUNT 3
 

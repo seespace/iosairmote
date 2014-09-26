@@ -38,8 +38,8 @@
 		B4F9934719A4E097006FC9C2 /* ChangeNameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4F9934519A4E097006FC9C2 /* ChangeNameViewController.xib */; };
 		B4F9934B19A4E925006FC9C2 /* EnterPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F9934919A4E925006FC9C2 /* EnterPasswordViewController.m */; };
 		B4F9934C19A4E925006FC9C2 /* EnterPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4F9934A19A4E925006FC9C2 /* EnterPasswordViewController.xib */; };
-		C584401A066D1F1903B6A015 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5844ED89441B78E5ED9D931 /* ViewController.m */; };
-		C5844045E9501BBBDD32072C /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C584421B3AFAC90EE9EFDA78 /* ViewController.xib */; };
+		C584401A066D1F1903B6A015 /* TrackPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5844ED89441B78E5ED9D931 /* TrackPadViewController.m */; };
+		C5844045E9501BBBDD32072C /* TrackPadViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C584421B3AFAC90EE9EFDA78 /* TrackPadViewController.xib */; };
 		C58440858C2E4C0D850E5583 /* Proto.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = C58449999B7324E698D6643F /* Proto.pb.m */; };
 		C5844157B336B00A1022EA6A /* ProtoHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C58446B8812F646BE82E52DB /* ProtoHelper.m */; };
 		C58441B46815767B70AA5966 /* BonjourManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C584416A29484E52858F86F6 /* BonjourManager.m */; };
@@ -126,11 +126,11 @@
 		C584416A29484E52858F86F6 /* BonjourManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BonjourManager.m; sourceTree = "<group>"; };
 		C584418E08FB8FB0F1DDF896 /* Event+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Event+Extension.m"; sourceTree = "<group>"; };
 		C58441D73782F3A380E60FCC /* WifiNetwork+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WifiNetwork+Extension.h"; sourceTree = "<group>"; };
-		C584421B3AFAC90EE9EFDA78 /* ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
+		C584421B3AFAC90EE9EFDA78 /* TrackPadViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TrackPadViewController.xib; sourceTree = "<group>"; };
 		C584428433A94E0EC31817FB /* ProtoHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProtoHelper.h; sourceTree = "<group>"; };
 		C58442F85EC1ECBA64716687 /* EventCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventCenter.m; sourceTree = "<group>"; };
 		C5844342A82ABE053BC34B9A /* IAStateMachine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAStateMachine.m; sourceTree = "<group>"; };
-		C584435BDD4471829B24E14F /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		C584435BDD4471829B24E14F /* TrackPadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackPadViewController.h; sourceTree = "<group>"; };
 		C58446B8812F646BE82E52DB /* ProtoHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProtoHelper.m; sourceTree = "<group>"; };
 		C58447673E7AFDD47F95408F /* BonjourManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BonjourManager.h; sourceTree = "<group>"; };
 		C584485FF4326A8E9B08B3A4 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
@@ -148,7 +148,7 @@
 		C5844D3A171D285B6A5A09D2 /* EventCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventCenter.h; sourceTree = "<group>"; };
 		C5844E2561A6F310A6AB2A6E /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		C5844EA208CDA6A382AB9A98 /* AppDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDefines.h; sourceTree = "<group>"; };
-		C5844ED89441B78E5ED9D931 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		C5844ED89441B78E5ED9D931 /* TrackPadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrackPadViewController.m; sourceTree = "<group>"; };
 		C5844F7BF68A9E3F9EA726FF /* IAStateMachine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAStateMachine.h; sourceTree = "<group>"; };
 		C5844F7CC173DFDDC8EF66C6 /* DDURLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDURLParser.h; sourceTree = "<group>"; };
 		E95074B5BA314146817E932C /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
@@ -299,9 +299,9 @@
 		C58448E1ADE49C610D8758EA /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				C5844ED89441B78E5ED9D931 /* ViewController.m */,
-				C584435BDD4471829B24E14F /* ViewController.h */,
-				C584421B3AFAC90EE9EFDA78 /* ViewController.xib */,
+				C5844ED89441B78E5ED9D931 /* TrackPadViewController.m */,
+				C584435BDD4471829B24E14F /* TrackPadViewController.h */,
+				C584421B3AFAC90EE9EFDA78 /* TrackPadViewController.xib */,
 				C584485FF4326A8E9B08B3A4 /* WebViewController.m */,
 				C5844E2561A6F310A6AB2A6E /* WebViewController.h */,
 				C5844CAC08888A7C40594B7D /* Wifi */,
@@ -466,7 +466,7 @@
 				B4F9934C19A4E925006FC9C2 /* EnterPasswordViewController.xib in Resources */,
 				010887CD182CCE6E008BDD22 /* Podfile in Resources */,
 				01A9021A182A3CBE00D85971 /* InfoPlist.strings in Resources */,
-				C5844045E9501BBBDD32072C /* ViewController.xib in Resources */,
+				C5844045E9501BBBDD32072C /* TrackPadViewController.xib in Resources */,
 				B4F9934219A4DE77006FC9C2 /* VerifyInAiRViewController.xib in Resources */,
 				B4F9933819A487EA006FC9C2 /* WiFiListViewController.xib in Resources */,
 				B4BBD95419A3661500156A92 /* InstructionViewController.xib in Resources */,
@@ -530,7 +530,7 @@
 				B4F9934619A4E097006FC9C2 /* ChangeNameViewController.m in Sources */,
 				B4F9933B19A497F1006FC9C2 /* WifiCell.m in Sources */,
 				B4F9934B19A4E925006FC9C2 /* EnterPasswordViewController.m in Sources */,
-				C584401A066D1F1903B6A015 /* ViewController.m in Sources */,
+				C584401A066D1F1903B6A015 /* TrackPadViewController.m in Sources */,
 				C584443CEB09A26106DE0C2E /* WebViewController.m in Sources */,
 				B4BBD95319A3661500156A92 /* InstructionViewController.m in Sources */,
 				C584471B49D0CE130B025D7F /* Event+Extension.m in Sources */,

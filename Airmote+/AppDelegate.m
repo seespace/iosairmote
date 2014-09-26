@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "IAStateMachine.h"
 
 @implementation AppDelegate
 
@@ -15,11 +16,13 @@
 - (BOOL)application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    ViewController *viewController  = [[ViewController alloc] init];
+    TrackPadViewController *viewController  = [[TrackPadViewController alloc] init];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
     self.window.rootViewController = navigationController;
     
     [self.window makeKeyAndVisible];
+
+  [IAStateMachine sharedStateMachine];
     return YES;
 }
 

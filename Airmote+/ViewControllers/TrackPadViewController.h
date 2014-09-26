@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  TrackPadViewController.h
 //  Airmote+
 //
 //  Created by Long Nguyen on 11/6/13.
@@ -15,7 +15,7 @@
 
 #define kWifiSetupKey @"enable_wifi_setup"
 @class TrackPadView;
-@interface ViewController : UIViewController <UIActionSheetDelegate, UIGestureRecognizerDelegate, UIWebViewDelegate, BonjourManagerDelegate, EventCenterDelegate, NSNetServiceDelegate>
+@interface TrackPadViewController : UIViewController <UIActionSheetDelegate, UIGestureRecognizerDelegate, UIWebViewDelegate, BonjourManagerDelegate, EventCenterDelegate, NSNetServiceDelegate>
 
 @property(nonatomic, strong) UIActionSheet *actionSheet;
 

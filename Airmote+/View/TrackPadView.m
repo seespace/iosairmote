@@ -6,7 +6,7 @@
 #import "TrackPadView.h"
 #import "EventCenter.h"
 #import "ProtoHelper.h"
-#import "ViewController.h"
+#import "TrackPadViewController.h"
 
 static const uint8_t kTouchBeganTag = 2;
 static const uint8_t kTouchMovedTag = 3;

@@ -8,12 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-#import "ViewController.h"
+#import "TrackPadViewController.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-@property (strong, nonatomic) ViewController *viewController;
+@property (strong, nonatomic) TrackPadViewController *viewController;
 @property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
 
 @end

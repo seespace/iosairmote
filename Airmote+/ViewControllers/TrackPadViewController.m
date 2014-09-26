@@ -1,12 +1,12 @@
 //
-//  ViewController.m
+//  TrackPadViewController.m
 //  Airmote+
 //
 //  Created by Long Nguyen on 11/6/13.
 //  Copyright (c) 2013 Long Nguyen. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "TrackPadViewController.h"
 #import <SVProgressHUD/SVProgressHUD.h>
 #import "ProtoHelper.h"
 #import "TrackPadView.h"
@@ -16,7 +16,7 @@
 
 #define kTimeOutDuration 10.0
 
-@interface ViewController () {
+@interface TrackPadViewController () {
   BOOL _serverSelectorDisplayed;
 
   Event *_oauthEvent;
@@ -24,7 +24,7 @@
 
 @end
 
-@implementation ViewController {
+@implementation TrackPadViewController {
   NSArray *_services;
   BonjourManager *_bonjourManager;
   BOOL isConnecting;
