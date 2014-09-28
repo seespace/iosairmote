@@ -7,48 +7,83 @@
 #import "TKStateMachine.h"
 
 
-#define kIdleKey @"Idle"
+#define kStateIdle @"Idle"
 
-#define kStateWifiSetupKey @"StartWifiSetup"
+#define kStateWifiSetupStart @"StartWifiSetup"
 
-#define kSetupBonjourDiscoveryKey @"SetupBonjourDiscovery"
+#define kStateSetupBonjourDiscovery @"SetupBonjourDiscovery"
 
-#define kSetupServiceResolvingKey @"SetupServiceResolving"
+#define kStateSetupServiceResolving @"SetupServiceResolving"
 
-#define kSetupAddressFoundKey @"ConnectingToInAirSocket"
+#define kStateSetupAddressFound @"ConnectingToInAirSocket"
 
-#define kFailedToConnectToInAirSocketKey @"FailedToConnectToInAirSocket"
+#define kStateFailedToConnectToInAirSocket @"FailedToConnectToInAirSocket"
 
-#define kCodeVerificationKey @"CodeVerification"
+#define kStateCodeVerification @"CodeVerification"
 
-#define kWifiListingKey @"WifiListing"
+#define kStateWifiListing @"WifiListing"
 
-#define kFailedToGetWifiListingKey @"FailedToGetWifiList"
+#define kStateFailedToGetWifiListing @"FailedToGetWifiList"
 
-#define kEnteringWifiPasswordKey @"EnteringWifiPassword"
+#define kStateEnteringWifiPassword @"EnteringWifiPassword"
 
-#define kSelectedOpenWifiKey @"SelectedOpenWifi"
+#define kStateSelectedOpenWifi @"SelectedOpenWifi"
 
-#define kSameWifiAwaitingKey @"SameWifiAwaiting"
+#define kStateSameWifiAwaiting @"SameWifiAwaiting"
 
-#define kWifiSetupDoneKey @"WifiSetupDone"
+#define kStateWifiSetupDone @"WifiSetupDone"
 
-#define kBonjourDiscoveryKey @"BonjourDiscovery"
+#define kStateBonjourDiscovery @"BonjourDiscovery"
 
-#define kFoundMultipleServicesKey @"FoundMultipleServices"
+#define kStateFoundMultipleServices @"FoundMultipleServices"
 
-#define kServiceResolvingKey @"ServiceResolving"
+#define kStateServiceResolving @"ServiceResolving"
 
-#define kAddressResolvedKey @"AddressResolved"
+#define kStateAddressResolved @"AddressResolved"
 
-#define kSocketConnectedKey @"SocketConnected"
+#define kStateSocketConnected @"SocketConnected"
 
-#define kCodeVerificationStartKey @"CodeVerificationStart"
+#define kStateCodeVerificationStart @"CodeVerificationStart"
+
+
+// Events definitions
+#define kEventSetupStart @"Setup: Start"
+
+#define kEventSetupDetectedInAirWifi @"Setup: Detected InAiR Wifi"
+
+#define kEventSetupFoundBonjourService @"Setup: Found InAir Service"
+
+#define kEventSetupAddressFound @"Setup: Address Found"
+
+#define kEventSetupSocketConnected @"Setup: Socket Connected"
+
+#define kEventSetupCodeVerificationReceived @"Setup: Code verification received"
+
+#define kEventSetupSameCodeVerified @"Setup: Same code verified"
+
+#define kEventSetupUserSelectedOpenWifi @"Setup: User selected open wifi"
+
+#define kEventSetupUserSelectedSecureWifi @"Setup: User selected secure wifi"
+
+#define kEventUserConnectedToSecureWifi @"Setup: User conncected secure wifi"
+
+#define kEventSetupConnectedToTheSameNetwork @"Setup: Connected to the same network"
+
+#define kEventBonjourStart @"Start bonjour"
+
+#define kEventFoundOneService @"Found one service"
+
+#define kEventFoundMultipleServices @"Found multiple services"
+
+#define kEventFoundAddress @"Found Address"
+
+#define kEventRealSocketConnected @"Socket Connected"
+
+
+#define kEventStartNormalWorkFlow @"Start normal work flow"
 
 @interface IAStateMachine : TKStateMachine
 + (IAStateMachine *)sharedStateMachine;
-
-- (void)test;
 
 - (void)setup;
 @end
