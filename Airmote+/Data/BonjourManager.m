@@ -19,6 +19,7 @@
   BOOL foundAllService;
   NSMutableArray *_services;
   NSMutableArray *_discoveredServices;
+  NSTimer *timeOutTimer;
 }
 
 - (id)init {
@@ -33,17 +34,16 @@
   return self;
 }
 
--(void)netServiceBrowser:(NSNetServiceBrowser *)aNetServiceBrowser didFindDomain:(NSString *)domainString moreComing:(BOOL)moreComing
-{
+- (void)netServiceBrowser:(NSNetServiceBrowser *)aNetServiceBrowser didFindDomain:(NSString *)domainString moreComing:(BOOL)moreComing {
   NSLog(@"didFindDomain");
 }
 
--(void)netServiceBrowserWillSearch:(NSNetServiceBrowser *)aNetServiceBrowser
-{
+- (void)netServiceBrowserWillSearch:(NSNetServiceBrowser *)aNetServiceBrowser {
   NSLog(@"netServiceBrowserWillSearch");
 }
 
 - (void)netServiceBrowser:(NSNetServiceBrowser *)aBrowser didFindService:(NSNetService *)aService moreComing:(BOOL)more {
+  [timeOutTimer invalidate];
   [_discoveredServices addObject:aService];
   foundAllService = !more;
   if (foundAllService && [self.delegate respondsToSelector:@selector(bonjourManagerFinishedDiscoveringServices:)]) {
@@ -63,6 +63,7 @@
 }
 
 - (void)netServiceBrowser:(NSNetServiceBrowser *)aNetServiceBrowser didNotSearch:(NSDictionary *)errorDict {
+  [timeOutTimer invalidate];
   if ([self.delegate respondsToSelector:@selector(bonjourManagerServiceNotFound)]) {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
       [self.delegate bonjourManagerServiceNotFound];
@@ -73,10 +74,24 @@
 
 - (void)netServiceBrowserDidStopSearch:(NSNetServiceBrowser *)aNetServiceBrowser {
   NSLog(@"Stop searching");
+  [timeOutTimer invalidate];
 }
 
+- (void)timerFired:(NSTimer *)timer {
+  [_browser stop];
+  if ([self.delegate respondsToSelector:@selector(bonjourManagerServiceNotFound)]) {
+    [self.delegate bonjourManagerServiceNotFound];
+  }
+}
 
 - (void)start {
+  if (timeOutTimer != nil) {
+    [timeOutTimer invalidate];
+    timeOutTimer = nil;
+  }
+
+  timeOutTimer = [NSTimer scheduledTimerWithTimeInterval:30.0 target:self selector:@selector(timerFired:) userInfo:nil repeats:NO];
+
   [_browser stop];
   [_discoveredServices removeAllObjects];
   [_services removeAllObjects];
