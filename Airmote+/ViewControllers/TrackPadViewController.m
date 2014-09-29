@@ -47,6 +47,225 @@ static const uint8_t kMotionShakeTag = 6;
   [self fireStartupEvents];
 }
 
+#pragma mark - AppDidBecomeActive
+
+- (void)applicationDidBecomeActive {
+  if ([lastConnectedHostName length] > 0) {
+    if (![EventCenter defaultCenter].isActive) {
+      NSError *error = nil;
+      [[IAStateMachine sharedStateMachine] fireEvent:kEventFailToConnectToInAiR userInfo:nil error:&error];
+      if (error) {
+        NSLog(@"ERROR: %@", error);
+      }
+
+      [[IAStateMachine sharedStateMachine] fireEvent:kEventServiceResolved userInfo:nil error:&error];
+      if (error) {
+        NSLog(@"ERROR: %@", error);
+      }
+    }
+  } else {
+    [self reconnectToServiceIfNeeded];
+  }
+
+}
+
+- (void)reconnectToServiceIfNeeded {
+  if (![EventCenter defaultCenter].isActive && [_services count]) {
+    [self connectToAvailableServices];
+  } else {
+    [self startBonjourDiscovery];
+  }
+}
+
+
+#pragma mark - BonjourManagerDelegate
+
+- (void)bonjourManagerServiceNotFound {
+  [SVProgressHUD showErrorWithStatus:@"InAiR devices not found."];
+  NSError *error = NULL;
+  [[IAStateMachine sharedStateMachine] fireEvent:kEventFailToConnectToInAiR userInfo:nil error:&error];
+  if (error) {
+    NSLog(@"Cannot fire event: [%@] - error: %@", kEventFailToConnectToInAiR, [error description]);
+  }
+}
+
+- (void)bonjourManagerFinishedDiscoveringServices:(NSArray *)services {
+  [SVProgressHUD dismiss];
+  _services = services;
+  [self connectToAvailableServices];
+}
+
+
+#pragma mark - NetServiceDelegate
+
+- (void)netServiceDidStop:(NSNetService *)sender {
+  NSLog(@"NetService did stop");
+  sender.delegate = nil;
+}
+
+
+- (void)netService:(NSNetService *)sender didNotResolve:(NSDictionary *)errorDict {
+  NSLog(@"Service is denied with Error: %@", errorDict);
+  sender.delegate = nil;
+  [[IAStateMachine sharedStateMachine] fireEvent:kEventFailToConnectToInAiR userInfo:nil error:nil];
+}
+
+
+- (void)netServiceDidResolveAddress:(NSNetService *)service {
+  NSString *address = [(service.addresses)[0] socketAddress];
+  lastConnectedHostName = address;
+  service.delegate = nil;
+  [[IAStateMachine sharedStateMachine] fireEvent:kEventServiceResolved userInfo:nil error:nil];
+}
+
+
+#pragma mark - EventCenterDelegate
+
+- (void)eventCenter:(EventCenter *)eventCenter receivedEvent:(Event *)event {
+  NSLog(@"%@", event);
+
+  // process events
+  switch (event.type) {
+    case EventTypeOauthRequest:
+      [self processOAuthRequest:event];
+      break;
+
+    default:
+      break;
+  }
+}
+
+- (void)eventCenterDidConnectToHost:(NSString *)hostName {
+  lastConnectedHostName = hostName;
+  TKState *socketConnected = [[IAStateMachine sharedStateMachine] stateNamed:kStateSocketConnected];
+  [socketConnected setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+    [SVProgressHUD showSuccessWithStatus:@"Connected"];
+  }];
+  NSError *error = nil;
+  [[IAStateMachine sharedStateMachine] fireEvent:kEventRealSocketConnected userInfo:nil error:&error];
+  if (error) {
+    NSLog(@"ERROR: %@", error);
+  }
+}
+
+- (void)eventCenterDidDisconnectFromHost:(NSString *)hostName withError:(NSError *)error {
+  [SVProgressHUD showErrorWithStatus:[error localizedDescription]];
+  NSLog(@"Error: %@. Code: %ld", [error localizedDescription], (long) [error code]);
+}
+
+
+#pragma mark - Action sheets
+
+
+- (void)showActionSheet {
+  _actionSheet = [[UIActionSheet alloc] init];
+  [_actionSheet setTitle:@"Choose a device"];
+  [_actionSheet setDelegate:self];
+
+  for (NSNetService *service in _services) {
+    NSString *title = service.name;
+    [_actionSheet addButtonWithTitle:title];
+  }
+
+  [_actionSheet addButtonWithTitle:@"Cancel"];
+  _actionSheet.cancelButtonIndex = _services.count;
+
+  [_actionSheet showInView:self.view];
+}
+
+#pragma mark - ActionSheet Delegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+  NSError *error = nil;
+  if (buttonIndex != actionSheet.cancelButtonIndex) {
+    _selectedService = _services[buttonIndex];
+    [[IAStateMachine sharedStateMachine] fireEvent:kEventStartResolvingService userInfo:nil error:&error];
+  }
+  else {
+    [[IAStateMachine sharedStateMachine] fireEvent:kEventFailToConnectToInAiR userInfo:nil error:&error];
+  }
+  if (error) {
+    NSLog(@"ERROR: %@", error);
+  }
+
+}
+
+#pragma mark - AlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+  if ([alertView.title isEqualToString:@"OAuth"]) {
+    if (buttonIndex != alertView.cancelButtonIndex) {
+      [self processOAuthRequest];
+    }
+  }
+}
+
+#pragma mark -
+#pragma mark Motion
+
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
+  if (motion == UIEventSubtypeMotionShake) {
+    Event *ev = [ProtoHelper motionEventWithTimestamp:(SInt64) (event.timestamp * 1000)
+                                                 type:MotionEventTypeShake];
+    [[EventCenter defaultCenter] sendEvent:ev withTag:kMotionShakeTag];
+  }
+}
+
+
+#pragma mark -
+#pragma mark OAuth
+
+- (void)processOAuthRequest:(Event *)event {
+  if (_oauthEvent == nil) {
+    _oauthEvent = event;
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"OAuth" message:@"InAir would like to open webview for OAuth authentication." delegate:self cancelButtonTitle:@"Don't Allow" otherButtonTitles:@"OK", nil];
+    [alertView show];
+  }
+}
+
+- (void)processOAuthRequest {
+  if (_oauthEvent == nil) {
+    return;
+  }
+
+  if (self.navigationController.topViewController != self.webViewController) {
+    OAuthRequestEvent *event = [_oauthEvent getExtension:[OAuthRequestEvent event]];
+    self.webViewController.URL = [NSURL URLWithString:event.authUrl];
+    self.webViewController.delegate = self;
+    self.webViewController.eventCenter = [EventCenter defaultCenter];
+    self.webViewController.oauthEvent = _oauthEvent;
+    [self.webViewController load];
+
+    [self.navigationController pushViewController:self.webViewController animated:YES];
+  }
+}
+
+#pragma mark - Privates
+
+
+- (void)connectToService:(NSNetService *)service {
+  if (service.addresses.count > 0) {
+    NSString *address = [(service.addresses)[0] socketAddress];
+    [self connectToHost:address];
+  }
+  else {
+    service.delegate = self;
+    [service resolveWithTimeout:kTimeOutDuration];
+  }
+}
+
+
+- (void)connectToHost:(NSString *)hostname {
+  [EventCenter defaultCenter].delegate = nil;
+  _trackpadView.eventCenter = [EventCenter defaultCenter];
+  [EventCenter defaultCenter].delegate = self;
+
+  BOOL canStartConnection = [[EventCenter defaultCenter] connectToHost:hostname];
+  if (canStartConnection) {
+    [SVProgressHUD showWithStatus:@"Connecting" maskType:SVProgressHUDMaskTypeBlack];
+  }
+}
+
 
 - (void)fireStartupEvents {
   IAStateMachine *stateMachine = [IAStateMachine sharedStateMachine];
@@ -119,58 +338,6 @@ static const uint8_t kMotionShakeTag = 6;
   }
 }
 
-#pragma mark -
-#pragma mark Auto reconnect when become active
-
-- (void)applicationDidBecomeActive {
-  // Clear out cached services when the app coming back from foreground
-  // because the services might be gone by the time we coming back.
-  if ([lastConnectedHostName length] > 0) {
-    if (![EventCenter defaultCenter].isActive) {
-      NSError *error = nil;
-      [[IAStateMachine sharedStateMachine] fireEvent:kEventFailToConnectToInAiR userInfo:nil error:&error];
-      if (error) {
-        NSLog(@"ERROR: %@", error);
-      }
-
-      [[IAStateMachine sharedStateMachine] fireEvent:kEventServiceResolved userInfo:nil error:&error];
-      if (error) {
-        NSLog(@"ERROR: %@", error);
-      }
-    }
-  } else {
-    [self reconnectToServiceIfNeeded];
-  }
-
-}
-
-- (void)reconnectToServiceIfNeeded {
-  if (![EventCenter defaultCenter].isActive && [_services count]) {
-    [self connectToAvailableServices];
-  } else {
-    [self startBonjourDiscovery];
-  }
-}
-
-#pragma mark - BonjourManagerDelegate
-
-- (void)bonjourManagerServiceNotFound {
-  [SVProgressHUD showErrorWithStatus:@"InAiR devices not found."];
-  NSError *error = NULL;
-  [[IAStateMachine sharedStateMachine] fireEvent:kEventFailToConnectToInAiR userInfo:nil error:&error];
-  if (error) {
-    NSLog(@"Cannot fire event: [%@] - error: %@", kEventFailToConnectToInAiR, [error description]);
-  }
-}
-
-- (void)bonjourManagerFinishedDiscoveringServices:(NSArray *)services {
-  [SVProgressHUD dismiss];
-  _services = services;
-  [self connectToAvailableServices];
-}
-
-
-#pragma mark - Action sheets
 
 - (void)connectToAvailableServices {
   NSError *error = NULL;
@@ -185,170 +352,6 @@ static const uint8_t kMotionShakeTag = 6;
     NSLog(@"ERROR: %@", error);
   }
 
-}
-
-- (void)showActionSheet {
-  _actionSheet = [[UIActionSheet alloc] init];
-  [_actionSheet setTitle:@"Choose a device"];
-  [_actionSheet setDelegate:self];
-
-  for (NSNetService *service in _services) {
-    NSString *title = service.name;
-    [_actionSheet addButtonWithTitle:title];
-  }
-
-  [_actionSheet addButtonWithTitle:@"Cancel"];
-  _actionSheet.cancelButtonIndex = _services.count;
-
-  [_actionSheet showInView:self.view];
-}
-
-- (void)connectToService:(NSNetService *)service {
-  if (service.addresses.count > 0) {
-    NSString *address = [(service.addresses)[0] socketAddress];
-    [self connectToHost:address];
-  }
-  else {
-    service.delegate = self;
-    [service resolveWithTimeout:kTimeOutDuration];
-  }
-}
-
-#pragma mark - ActionSheet Delegate
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-  NSError *error = nil;
-  if (buttonIndex != actionSheet.cancelButtonIndex) {
-    _selectedService = _services[buttonIndex];
-    [[IAStateMachine sharedStateMachine] fireEvent:kEventStartResolvingService userInfo:nil error:&error];
-  }
-  else {
-    [[IAStateMachine sharedStateMachine] fireEvent:kEventFailToConnectToInAiR userInfo:nil error:&error];
-  }
-  if (error) {
-    NSLog(@"ERROR: %@", error);
-  }
-
-}
-
-#pragma mark - AlertViewDelegate
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-  if ([alertView.title isEqualToString:@"OAuth"]) {
-    if (buttonIndex != alertView.cancelButtonIndex) {
-      [self processOAuthRequest];
-    }
-  }
-}
-
-#pragma mark - NetServiceDelegate
-
-- (void)netServiceDidStop:(NSNetService *)sender {
-  NSLog(@"NetService did stop");
-  sender.delegate = nil;
-}
-
-
-- (void)netService:(NSNetService *)sender didNotResolve:(NSDictionary *)errorDict {
-  NSLog(@"Service is denied with Error: %@", errorDict);
-  sender.delegate = nil;
-  [[IAStateMachine sharedStateMachine] fireEvent:kEventFailToConnectToInAiR userInfo:nil error:nil];
-}
-
-
-- (void)netServiceDidResolveAddress:(NSNetService *)service {
-  NSString *address = [(service.addresses)[0] socketAddress];
-  lastConnectedHostName = address;
-  service.delegate = nil;
-  [[IAStateMachine sharedStateMachine] fireEvent:kEventServiceResolved userInfo:nil error:nil];
-}
-
-
-#pragma mark - EventCenterDelegate
-
-- (void)eventCenter:(EventCenter *)eventCenter receivedEvent:(Event *)event {
-  NSLog(@"%@", event);
-
-  // process events
-  switch (event.type) {
-    case EventTypeOauthRequest:
-      [self processOAuthRequest:event];
-      break;
-
-    default:
-      break;
-  }
-}
-
-- (void)eventCenterDidConnectToHost:(NSString *)hostName {
-  lastConnectedHostName = hostName;
-  TKState *socketConnected = [[IAStateMachine sharedStateMachine] stateNamed:kStateSocketConnected];
-  [socketConnected setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
-    [SVProgressHUD showSuccessWithStatus:@"Connected"];
-  }];
-  NSError *error = nil;
-  [[IAStateMachine sharedStateMachine] fireEvent:kEventRealSocketConnected userInfo:nil error:&error];
-  if (error) {
-    NSLog(@"ERROR: %@", error);
-  }
-}
-
-- (void)eventCenterDidDisconnectFromHost:(NSString *)hostName withError:(NSError *)error {
-  [SVProgressHUD showErrorWithStatus:[error localizedDescription]];
-  NSLog(@"Error: %@. Code: %ld", [error localizedDescription], (long) [error code]);
-}
-
-#pragma mark -
-#pragma mark Motion
-
-- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
-  if (motion == UIEventSubtypeMotionShake) {
-    Event *ev = [ProtoHelper motionEventWithTimestamp:(SInt64) (event.timestamp * 1000)
-                                                 type:MotionEventTypeShake];
-    [[EventCenter defaultCenter] sendEvent:ev withTag:kMotionShakeTag];
-  }
-}
-
-
-#pragma mark -
-#pragma mark OAuth
-
-- (void)processOAuthRequest:(Event *)event {
-  if (_oauthEvent == nil) {
-    _oauthEvent = event;
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"OAuth" message:@"InAir would like to open webview for OAuth authentication." delegate:self cancelButtonTitle:@"Don't Allow" otherButtonTitles:@"OK", nil];
-    [alertView show];
-  }
-}
-
-- (void)processOAuthRequest {
-  if (_oauthEvent == nil) {
-    return;
-  }
-
-  if (self.navigationController.topViewController != self.webViewController) {
-    OAuthRequestEvent *event = [_oauthEvent getExtension:[OAuthRequestEvent event]];
-    self.webViewController.URL = [NSURL URLWithString:event.authUrl];
-    self.webViewController.delegate = self;
-    self.webViewController.eventCenter = [EventCenter defaultCenter];
-    self.webViewController.oauthEvent = _oauthEvent;
-    [self.webViewController load];
-
-    [self.navigationController pushViewController:self.webViewController animated:YES];
-  }
-}
-
-#pragma mark - Privates
-
-- (void)connectToHost:(NSString *)hostname {
-  [EventCenter defaultCenter].delegate = nil;
-  _trackpadView.eventCenter = [EventCenter defaultCenter];
-  [EventCenter defaultCenter].delegate = self;
-
-  BOOL canStartConnection = [[EventCenter defaultCenter] connectToHost:hostname];
-  if (canStartConnection) {
-    [SVProgressHUD showWithStatus:@"Connecting" maskType:SVProgressHUDMaskTypeBlack];
-  }
 }
 
 
