@@ -8,6 +8,7 @@
 #import "TKEvent.h"
 
 
+
 @implementation IAStateMachine {
 
 }
@@ -27,47 +28,17 @@
 - (void)setup {
 
   TKState *idle = [TKState stateWithName:kStateIdle]; // Begin state
-  TKState *startWifiSetup = [TKState stateWithName:kStateWifiSetupStart];
-  TKState *setupBonjourDiscovery = [TKState stateWithName:kStateSetupBonjourDiscovery];
-  TKState *setupServiceResolving = [TKState stateWithName:kStateSetupServiceResolving];
-  TKState *setupAddressFound = [TKState stateWithName:kStateSetupAddressFound];
-  TKState *codeVerificationStart = [TKState stateWithName:kStateCodeVerificationStart];
-  TKState *failedToConnectToInAirSocket = [TKState stateWithName:kStateFailedToConnectToInAirSocket];
-  TKState *codeVerification = [TKState stateWithName:kStateCodeVerification];
-  TKState *wifiListing = [TKState stateWithName:kStateWifiListing];
-  TKState *failedToGetWifiList = [TKState stateWithName:kStateFailedToGetWifiListing];
-  TKState *enteringWifiPassword = [TKState stateWithName:kStateEnteringWifiPassword];
-  TKState *selectedOpenWifi = [TKState stateWithName:kStateSelectedOpenWifi];
-  TKState *sameWiFiAwaiting = [TKState stateWithName:kStateSameWifiAwaiting];
 
   TKState *normalStart = [TKState stateWithName:kStateNormalStart];
+  TKState *startWifiSetup = [TKState stateWithName:kStateWifiSetupStart];
   TKState *bonjourDiscovery = [TKState stateWithName:kStateBonjourDiscovery];
   TKState *foundMultipleServices = [TKState stateWithName:kStateFoundMultipleServices];
   TKState *serviceResolving = [TKState stateWithName:kStateServiceResolving];
   TKState *serviceResolved = [TKState stateWithName:kStateAddressResolved];
   TKState *socketConnected = [TKState stateWithName:kStateSocketConnected];  //Done state
 
-  [self addStates:@[idle, startWifiSetup, setupBonjourDiscovery, setupServiceResolving,
-      setupAddressFound, failedToConnectToInAirSocket, codeVerificationStart,
-      codeVerification, wifiListing, failedToGetWifiList, enteringWifiPassword,
-      selectedOpenWifi, sameWiFiAwaiting, normalStart, bonjourDiscovery,
+  [self addStates:@[idle, normalStart, startWifiSetup, bonjourDiscovery,
       foundMultipleServices, serviceResolving, serviceResolved, socketConnected]];
-
-
-
-
-
-  TKEvent *detectedInAirWifiEvent = [TKEvent eventWithName:kEventSetupDetectedInAirWifi transitioningFromStates:@[startWifiSetup] toState:setupBonjourDiscovery];
-  TKEvent *setupBonjourServiceFoundEvent = [TKEvent eventWithName:kEventSetupFoundBonjourService transitioningFromStates:@[setupBonjourDiscovery] toState:setupServiceResolving];
-  TKEvent *setupAddressFoundEvent = [TKEvent eventWithName:kEventSetupAddressFound transitioningFromStates:@[setupServiceResolving] toState:setupAddressFound];
-  TKEvent *setupSocketConnectedEvent = [TKEvent eventWithName:kEventSetupSocketConnected transitioningFromStates:@[setupAddressFound] toState:codeVerificationStart];
-  TKEvent *setupCodeVerificationReceivedEvent = [TKEvent eventWithName:kEventSetupCodeVerificationReceived transitioningFromStates:@[codeVerificationStart] toState:codeVerification];
-  TKEvent *userConfirmedCodeEvent = [TKEvent eventWithName:kEventSetupSameCodeVerified transitioningFromStates:@[codeVerification] toState:wifiListing];
-  TKEvent *userSelectedOpenWifiEvent = [TKEvent eventWithName:kEventSetupUserSelectedOpenWifi transitioningFromStates:@[wifiListing] toState:sameWiFiAwaiting];
-  TKEvent *userSelectedSecureWifiEvent = [TKEvent eventWithName:kEventSetupUserSelectedSecureWifi transitioningFromStates:@[wifiListing] toState:enteringWifiPassword];
-  TKEvent *userStartConnectedToSecureEvent = [TKEvent eventWithName:kEventUserConnectedToSecureWifi transitioningFromStates:@[enteringWifiPassword] toState:sameWiFiAwaiting];
-  TKEvent *detectedToTheSameWifiEvent = [TKEvent eventWithName:kEventSetupConnectedToTheSameNetwork transitioningFromStates:@[sameWiFiAwaiting] toState:normalStart];
-
 
   TKEvent *startBonjourServiceEvent = [TKEvent eventWithName:kEventBonjourStart
                                      transitioningFromStates:@[normalStart]
@@ -99,9 +70,85 @@
   TKEvent *startNormalWorkflowEvent = [TKEvent eventWithName:kEventStartNormalWorkFlow transitioningFromStates:@[idle] toState:normalStart];
   [self addEvents:@[startSetupEvent, startNormalWorkflowEvent]];
 
-//  [self addEvents:@[startSetupEvent, startNormalWorkflowEvent, detectedInAirWifiEvent, setupBonjourServiceFoundEvent, setupAddressFoundEvent, setupSocketConnectedEvent, setupCodeVerificationReceivedEvent,
-//  userConfirmedCodeEvent, userSelectedOpenWifiEvent, userSelectedSecureWifiEvent, userStartConnectedToSecureEvent, detectedToTheSameWifiEvent,
-//  startBonjourServiceEvent, failedToConnectToInAirEvent, serviceResolvedEvent, startResolvingServiceEvent, foundMultipleServicesEvent, serviceResolvedEvent, socketConnectedEvent]];
+  // WIFI setup flow setup
+
+  TKState *setupBonjourDiscovery = [TKState stateWithName:kStateSetupBonjourDiscovery];
+  TKState *setupServiceResolving = [TKState stateWithName:kStateSetupServiceResolving];
+  TKState *setupServiceResolved = [TKState stateWithName:kStateSetupAddressFound];
+  TKState *codeVerificationStart = [TKState stateWithName:kStateCodeVerificationStart];
+  TKState *codeVerification = [TKState stateWithName:kStateCodeVerification];
+  TKState *wifiListing = [TKState stateWithName:kStateWifiListing];
+  TKState *failedToGetWifiList = [TKState stateWithName:kStateFailedToGetWifiListing];
+  TKState *enteringWifiPassword = [TKState stateWithName:kStateEnteringWifiPassword];
+  TKState *selectedOpenWifi = [TKState stateWithName:kStateSelectedOpenWifi];
+  TKState *sameWiFiAwaiting = [TKState stateWithName:kStateSameWifiAwaiting];
+
+  [self addStates:@[setupBonjourDiscovery, setupServiceResolving,
+        setupServiceResolved, codeVerificationStart,
+        codeVerification, wifiListing, failedToGetWifiList, enteringWifiPassword,
+        selectedOpenWifi, sameWiFiAwaiting]];
+
+  TKEvent *detectedInAirWifiEvent = [TKEvent eventWithName:kEventSetupDetectedInAirWifi
+                                   transitioningFromStates:@[startWifiSetup]
+                                                   toState:setupBonjourDiscovery];
+
+  TKEvent *setupBonjourServiceFoundEvent = [TKEvent eventWithName:kEventSetupFoundBonjourService
+                                          transitioningFromStates:@[setupBonjourDiscovery]
+                                                          toState:setupServiceResolving];
+
+  TKEvent *setupAddressFoundEvent = [TKEvent eventWithName:kEventSetupAddressFound
+                                   transitioningFromStates:@[setupServiceResolving]
+                                                   toState:setupServiceResolved];
+
+  TKEvent *setupSocketConnectedEvent = [TKEvent eventWithName:kEventSetupSocketConnected
+                                      transitioningFromStates:@[setupServiceResolved]
+                                                      toState:codeVerificationStart];
+
+  TKEvent *setupCodeVerificationReceivedEvent = [TKEvent eventWithName:kEventSetupCodeVerificationReceived
+                                               transitioningFromStates:@[codeVerificationStart]
+                                                               toState:codeVerification];
+
+  TKEvent *userConfirmedCodeEvent = [TKEvent eventWithName:kEventSetupSameCodeVerified
+                                   transitioningFromStates:@[codeVerification]
+                                                   toState:wifiListing];
+
+  TKEvent *userSelectedOpenWifiEvent = [TKEvent eventWithName:kEventSetupUserSelectedOpenWifi
+                                      transitioningFromStates:@[wifiListing]
+                                                      toState:sameWiFiAwaiting];
+
+  TKEvent *userSelectedSecureWifiEvent = [TKEvent eventWithName:kEventSetupUserSelectedSecureWifi
+                                        transitioningFromStates:@[wifiListing]
+                                                        toState:enteringWifiPassword];
+
+  TKEvent *userStartConnectedToSecureEvent = [TKEvent eventWithName:kEventUserConnectedToSecureWifi
+                                            transitioningFromStates:@[enteringWifiPassword]
+                                                            toState:sameWiFiAwaiting];
+
+  TKEvent *detectedToTheSameWifiEvent = [TKEvent eventWithName:kEventSetupConnectedToTheSameNetwork
+                                       transitioningFromStates:@[sameWiFiAwaiting]
+                                                       toState:normalStart];
+
+  TKEvent *failedToConnectToSocketEvent = [TKEvent eventWithName:kEventSetupFailedToConnectToSocket
+                                    transitioningFromStates:@[setupBonjourDiscovery, setupServiceResolving, setupServiceResolved]
+                                                    toState:startWifiSetup];
+
+  TKEvent *failedToRetrieveConfirmationCodeEvent = [TKEvent eventWithName:kEventSetupFailedToRetrieveConfirmationCode
+                                                  transitioningFromStates:@[socketConnected, codeVerification ]
+                                                                  toState:startWifiSetup];
+
+  TKEvent *backToCodeVerificationEvent = [TKEvent eventWithName:kEventSetupBackToCodeVerification
+                                   transitioningFromStates:@[wifiListing]
+                                                   toState:codeVerification];
+
+  TKEvent *backToWifiListingEvent = [TKEvent eventWithName:kEventSetupBackToWifiListing
+                                   transitioningFromStates:@[enteringWifiPassword] toState:wifiListing];
+
+  [self addEvents:@[detectedInAirWifiEvent, setupBonjourServiceFoundEvent, setupAddressFoundEvent,
+      setupSocketConnectedEvent, setupCodeVerificationReceivedEvent, userConfirmedCodeEvent,
+      userSelectedOpenWifiEvent, userSelectedSecureWifiEvent, userStartConnectedToSecureEvent,
+      detectedToTheSameWifiEvent, failedToConnectToSocketEvent, failedToRetrieveConfirmationCodeEvent,
+      backToCodeVerificationEvent,backToWifiListingEvent]];
+
 }
 
 @end

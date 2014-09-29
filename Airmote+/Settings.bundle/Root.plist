@@ -18,7 +18,7 @@
 			<key>Key</key>
 			<string>enable_wifi_setup</string>
 			<key>DefaultValue</key>
-			<true/>
+			<false/>
 		</dict>
 		<dict>
 			<key>AutocapitalizationType</key>

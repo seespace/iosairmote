@@ -59,6 +59,8 @@
 
 #define kEventSetupSocketConnected @"Setup: Socket Connected"
 
+#define kEventSetupFailedToConnectToSocket @"EventSetupFailedToConnectToSocket"
+
 #define kEventSetupCodeVerificationReceived @"Setup: Code verification received"
 
 #define kEventSetupSameCodeVerified @"Setup: Same code verified"
@@ -71,6 +73,12 @@
 
 #define kEventSetupConnectedToTheSameNetwork @"Setup: Connected to the same network"
 
+#define kEventSetupFailedToRetrieveConfirmationCode @"EventSetupFailedToRetrieveConfirmationCode"
+
+#define kEventSetupBackToCodeVerification @"EventSetupBackToCodeVerification"
+
+#define kEventSetupBackToWifiListing @"EventSetupBackToWifiListing"
+
 #define kEventBonjourStart @"Start bonjour"
 
 #define kEventStartResolvingService @"Start resolving service"
@@ -82,7 +90,6 @@
 #define kEventServiceResolved @"Service Resolved"
 
 #define kEventRealSocketConnected @"Socket Connected"
-
 
 #define kEventStartNormalWorkFlow @"Start normal work flow"
 

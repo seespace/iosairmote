@@ -73,7 +73,11 @@ static const uint8_t kMotionShakeTag = 6;
   if (![EventCenter defaultCenter].isActive && [_services count]) {
     [self connectToAvailableServices];
   } else {
-    [self startBonjourDiscovery];
+    NSError *error = nil;
+    [[IAStateMachine sharedStateMachine] fireEvent:kEventBonjourStart userInfo:nil error:&error];
+    if (error) {
+      NSLog(@"ERROR: %@", error);
+    }
   }
 }
 
@@ -269,8 +273,8 @@ static const uint8_t kMotionShakeTag = 6;
 
 - (void)fireStartupEvents {
   IAStateMachine *stateMachine = [IAStateMachine sharedStateMachine];
-  BOOL requiredWifiSetup = [[NSUserDefaults standardUserDefaults] boolForKey:kWifiSetupKey];
-  if (requiredWifiSetup) {
+  BOOL completeWifiSetup = [[NSUserDefaults standardUserDefaults] boolForKey:kWifiSetupKey];
+  if (! completeWifiSetup) {
     [stateMachine fireEvent:kEventSetupStart userInfo:nil error:nil];
   } else {
     [stateMachine fireEvent:kEventStartNormalWorkFlow userInfo:nil error:nil];
