@@ -31,9 +31,11 @@
 
 #define kStateSameWifiAwaiting @"SameWifiAwaiting"
 
-#define kStateWifiSetupDone @"WifiSetupDone"
+#define kStateNormalStart @"NormalState"
 
 #define kStateBonjourDiscovery @"BonjourDiscovery"
+
+#define kStateBonjourDiscoveryFailed @"StateBonjourDiscoveryFailed"
 
 #define kStateFoundMultipleServices @"FoundMultipleServices"
 
@@ -71,11 +73,13 @@
 
 #define kEventBonjourStart @"Start bonjour"
 
-#define kEventFoundOneService @"Found one service"
+#define kEventStartResolvingService @"Start resolving service"
 
 #define kEventFoundMultipleServices @"Found multiple services"
 
-#define kEventFoundAddress @"Found Address"
+#define kEventFailToConnectToInAiR @"Fail to connect to InAiR device"
+
+#define kEventServiceResolved @"Service Resolved"
 
 #define kEventRealSocketConnected @"Socket Connected"
 

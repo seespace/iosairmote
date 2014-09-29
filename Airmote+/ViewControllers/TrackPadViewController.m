@@ -13,13 +13,16 @@
 #import "NSData+NetService.h"
 #import "WifiHelper.h"
 #import "InstructionViewController.h"
+#import "IAStateMachine.h"
+#import "TKState.h"
+#import "TKTransition.h"
 
 #define kTimeOutDuration 10.0
 
 @interface TrackPadViewController () {
   BOOL _serverSelectorDisplayed;
-
   Event *_oauthEvent;
+  NSNetService *_selectedService;
 }
 
 @end
@@ -27,11 +30,8 @@
 @implementation TrackPadViewController {
   NSArray *_services;
   BonjourManager *_bonjourManager;
-  BOOL isConnecting;
   NSString *lastConnectedHostName;
-  BOOL isReconnecting;
 }
-
 
 static const uint8_t kMotionShakeTag = 6;
 
@@ -44,34 +44,95 @@ static const uint8_t kMotionShakeTag = 6;
   _bonjourManager.delegate = self;
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(applicationDidBecomeActive)
-                                               name:@"applicationDidBecomeActive"
+                                               name:UIApplicationDidBecomeActiveNotification
                                              object:nil];
 
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inAirDeviceDiDConnect:) name:kInAirDeviceDidConnectToWifiNotification object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(inAirDeviceDiDConnect:)
+                                               name:kInAirDeviceDidConnectToWifiNotification
+                                             object:nil];
 
   [self.navigationController setNavigationBarHidden:YES];
   _trackpadView.viewController = self;
 
+  [self configureStateMachine];
+  [self fireStartupEvents];
+}
+
+- (void)fireStartupEvents {
+  IAStateMachine *stateMachine = [IAStateMachine sharedStateMachine];
   BOOL requiredWifiSetup = [[NSUserDefaults standardUserDefaults] boolForKey:kWifiSetupKey];
-  if (! requiredWifiSetup) {
+  if (requiredWifiSetup) {
+    [stateMachine fireEvent:kEventSetupStart userInfo:nil error:nil];
+  } else {
+    [stateMachine fireEvent:kEventStartNormalWorkFlow userInfo:nil error:nil];
+  }
+}
+
+- (void)configureStateMachine {
+  IAStateMachine *stateMachine = [IAStateMachine sharedStateMachine];
+  [stateMachine activate];
+
+  TKState *wifiSetupDone = [stateMachine stateNamed:kStateNormalStart];
+  [wifiSetupDone setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
+    if ([stateMachine.currentState.name isEqualToString:kStateIdle]) {
+      [self startBonjourDiscovery];
+    }
+  }];
+
+  TKState *wifiSetupStart = [stateMachine stateNamed:kStateWifiSetupStart];
+  [wifiSetupStart setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
+    if ([stateMachine.currentState.name isEqualToString:kStateIdle] || [stateMachine.currentState.name isEqualToString:kStateBonjourDiscoveryFailed]) {
+      [self startWifiSetupWorkFlow];
+    }
+  }];
+
+  TKState *foundMultipleServices = [[IAStateMachine sharedStateMachine] stateNamed:kStateFoundMultipleServices];
+  [foundMultipleServices setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+    [self showActionSheet];
+  }];
+
+
+  TKState *serviceResolvingState = [[IAStateMachine sharedStateMachine] stateNamed:kStateServiceResolving];
+  [serviceResolvingState setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+    [self connectToService:_selectedService];
+  }];
+
+  TKState *serviceResolvedState = [[IAStateMachine sharedStateMachine] stateNamed:kStateAddressResolved];
+  [serviceResolvedState setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+    [self connectToHost:lastConnectedHostName];
+  }];
+}
+
+- (void)startWifiSetupWorkFlow {
+  InstructionViewController *instructionViewController = [[InstructionViewController alloc] init];
+  UINavigationController *navigationVC = [[UINavigationController alloc] initWithRootViewController:instructionViewController];
+  navigationVC.navigationBarHidden = YES;
+  [self.navigationController presentViewController:navigationVC
+                                          animated:NO
+                                        completion:NULL];
+}
+
+
+- (void)startBonjourDiscovery {
+
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.02 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
     [_bonjourManager start];
-    isConnecting = YES;
     _services = nil;
     [SVProgressHUD showWithStatus:@"Scanning..." maskType:SVProgressHUDMaskTypeBlack];
-  } else {
-    InstructionViewController *instructionViewController = [[InstructionViewController alloc] init];
-    UINavigationController *navigationVC = [[UINavigationController alloc] initWithRootViewController:instructionViewController];
-    navigationVC.navigationBarHidden = YES;
-    [self.navigationController presentViewController:navigationVC
-                                            animated:NO
-                                          completion:NULL];
 
-  }
+    NSError *error = nil;
+
+    [[IAStateMachine sharedStateMachine] fireEvent:kEventBonjourStart userInfo:nil error:&error];
+    if (error) {
+      NSLog(@"ERROR: %@", error);
+    }
+
+  });
 }
 
 - (void)inAirDeviceDiDConnect:(NSNotification *)notification {
   [[EventCenter defaultCenter] disconnect];
-
   [self reconnectToServiceIfNeeded];
 }
 
@@ -86,22 +147,22 @@ static const uint8_t kMotionShakeTag = 6;
 - (void)applicationDidBecomeActive {
   // Clear out cached services when the app coming back from foreground
   // because the services might be gone by the time we coming back.
-  
-  BOOL requiredWifi = [[NSUserDefaults standardUserDefaults] boolForKey:kWifiSetupKey];
-  if (!requiredWifi) {
-    if (self.navigationController.presentedViewController != nil){
-      [self.navigationController dismissViewControllerAnimated:YES completion:NULL];
-    }
-  }
-  
-  if ([lastConnectedHostName length] > 0) {
-    if (![EventCenter defaultCenter].isActive) {
-      [[EventCenter defaultCenter] connectToHost:lastConnectedHostName];
-      isReconnecting = YES;
-    }
-  } else {
-    [self reconnectToServiceIfNeeded];
-  }
+
+//  BOOL requiredWifi = [[NSUserDefaults standardUserDefaults] boolForKey:kWifiSetupKey];
+//  if (!requiredWifi) {
+//    if (self.navigationController.presentedViewController != nil) {
+//      [self.navigationController dismissViewControllerAnimated:YES completion:NULL];
+//    }
+//  }
+//
+//  if ([lastConnectedHostName length] > 0) {
+//    if (![EventCenter defaultCenter].isActive) {
+//      [[EventCenter defaultCenter] connectToHost:lastConnectedHostName];
+////      isReconnecting = YES;
+//    }
+//  } else {
+//    [self reconnectToServiceIfNeeded];
+//  }
 
 }
 
@@ -110,72 +171,72 @@ static const uint8_t kMotionShakeTag = 6;
   if ([WifiHelper isConnectedToInAiRWiFi] || requiredWifiSetup)
     return;
 
-  if (isConnecting || _serverSelectorDisplayed) {
+  if (_serverSelectorDisplayed) {
     return;
   }
 
   if (![EventCenter defaultCenter].isActive && [_services count]) {
-    [self chooseServerWithMessage:@"Choose a device"];
+    [self connectToAvailableServices];
   } else {
     [_bonjourManager start];
     _services = nil;
     [SVProgressHUD showWithStatus:@"Scanning..." maskType:SVProgressHUDMaskTypeBlack];
-    isConnecting = YES;
-
   }
 }
 
 #pragma mark - BonjourManagerDelegate
 
-
 - (void)bonjourManagerServiceNotFound {
-  [SVProgressHUD showErrorWithStatus:@"Service not found"];
-  isConnecting = NO;
+  [SVProgressHUD showErrorWithStatus:@"InAiR devices not found."];
+  NSError *error = NULL;
+  [[IAStateMachine sharedStateMachine] fireEvent:kEventFailToConnectToInAiR userInfo:nil error:&error];
+  if (error) {
+    NSLog(@"Cannot fire event: [%@] - error: %@", kEventFailToConnectToInAiR, [error description]);
+  }
 }
 
 - (void)bonjourManagerFinishedDiscoveringServices:(NSArray *)services {
   [SVProgressHUD dismiss];
-  isConnecting = NO;
   _services = services;
   if (!_serverSelectorDisplayed) {
-    [self chooseServerWithMessage:@"Choose a device"];
+    [self connectToAvailableServices];
   }
 }
 
 
 #pragma mark - Action sheets
 
-- (void)chooseServerWithMessage:(NSString *)message {
+- (void)connectToAvailableServices {
+  NSError *error = NULL;
   if (_services.count > 1) {
-    _actionSheet = [[UIActionSheet alloc] init];
-    [_actionSheet setDelegate:self];
+    [[IAStateMachine sharedStateMachine] fireEvent:kEventFoundMultipleServices userInfo:nil error:&error];
+  } else if (_services.count == 1) {
+    _selectedService = _services[0];
+    [[IAStateMachine sharedStateMachine] fireEvent:kEventStartResolvingService userInfo:nil error:&error];
+  }
 
-    [_actionSheet setTitle:message];
+  if (error) {
+    NSLog(@"ERROR: %@", error);
+  }
 
-    for (NSNetService *service in _services) {
+}
+
+- (void)showActionSheet {
+  _actionSheet = [[UIActionSheet alloc] init];
+  [_actionSheet setDelegate:self];
+
+  [_actionSheet setTitle:@"Choose a device"];
+
+  for (NSNetService *service in _services) {
       NSString *title = service.name;
       [_actionSheet addButtonWithTitle:title];
     }
 
-    [_actionSheet addButtonWithTitle:@"Cancel"];
-    _actionSheet.cancelButtonIndex = _services.count;
+  [_actionSheet addButtonWithTitle:@"Cancel"];
+  _actionSheet.cancelButtonIndex = _services.count;
 
-    [_actionSheet showInView:self.view];
-    _serverSelectorDisplayed = YES;
-  } else if (_services.count == 1) {
-    NSNetService *service = (NSNetService *) _services[0];
-    [self connectToService:service];
-  } else {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"AirServer"
-                                                    message:message
-                                                   delegate:self
-                                          cancelButtonTitle:@"Cancel"
-                                          otherButtonTitles:@"Connect", nil];
-    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-    UITextField *alertTextField = [alert textFieldAtIndex:0];
-    alertTextField.placeholder = @"inair.local or 127.0.0.1";
-    [alert show];
-  }
+  [_actionSheet showInView:self.view];
+//  _serverSelectorDisplayed = YES;  #warning: might need to check
 }
 
 - (void)connectToService:(NSNetService *)service {
@@ -191,25 +252,27 @@ static const uint8_t kMotionShakeTag = 6;
 
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+  NSError *error = nil;
   if (buttonIndex != actionSheet.cancelButtonIndex) {
-    NSNetService *service = (NSNetService *) _services[buttonIndex];
-    [self connectToService:service];
+    _selectedService = _services[buttonIndex];
+    [[IAStateMachine sharedStateMachine] fireEvent:kEventStartResolvingService userInfo:nil error:&error];
   }
   else {
-    _serverSelectorDisplayed = NO;
+    //TODO double check
+//    _serverSelectorDisplayed = NO;
+    [[IAStateMachine sharedStateMachine] fireEvent:kEventFailToConnectToInAiR userInfo:nil error:&error] ;
   }
-  _serverSelectorDisplayed = NO;
+//  _serverSelectorDisplayed = NO;
+  if (error) {
+    NSLog(@"ERROR: %@", error );
+  }
+
 }
 
 #pragma mark - AlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-  if ([alertView.title isEqualToString:@"AirServer"]) {
-    if (buttonIndex != alertView.cancelButtonIndex) {
-      UITextField *alertTextField = [alertView textFieldAtIndex:0];
-      [self connectToHost:alertTextField.text];
-    }
-  } else if ([alertView.title isEqualToString:@"OAuth"]) {
+  if ([alertView.title isEqualToString:@"OAuth"]) {
     if (buttonIndex != alertView.cancelButtonIndex) {
       [self processOAuthRequest];
     }
@@ -235,50 +298,62 @@ static const uint8_t kMotionShakeTag = 6;
 
 - (void)eventCenterDidConnectToHost:(NSString *)hostName {
   lastConnectedHostName = hostName;
-  if (isReconnecting) {
-    isReconnecting = NO;
-  }
-  else {
-    [SVProgressHUD showSuccessWithStatus:@"Connected"];
-    isConnecting = NO;
-  }
+//  if (isReconnecting) {
+//    isReconnecting = NO;
+//  }
+//  else {
+    TKState *socketConnected = [[IAStateMachine sharedStateMachine] stateNamed:kStateSocketConnected];
+    [socketConnected setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+      [SVProgressHUD showSuccessWithStatus:@"Connected"];
+    }];
+    NSError *error = nil;
+    [[IAStateMachine sharedStateMachine] fireEvent:kEventRealSocketConnected userInfo:nil error:&error];
+    if (error) {
+      NSLog(@"ERROR: %@", error);
+    }
+
+//  }
+
 }
 
 - (void)eventCenterDidDisconnectFromHost:(NSString *)hostName withError:(NSError *)error {
-  if (isReconnecting) {
-    if (![EventCenter defaultCenter].isActive) {
-      if ([hostName isEqualToString:lastConnectedHostName]) {
-        [self reconnectToServiceIfNeeded];
-      }
-    }
-  } else {
-    isConnecting = NO;
+//  if (isReconnecting) {
+//    if (![EventCenter defaultCenter].isActive) {
+//      if ([hostName isEqualToString:lastConnectedHostName]) {
+//        [self reconnectToServiceIfNeeded];
+//      }
+//    }
+//  } else {
+//    isConnecting = NO;
     [SVProgressHUD showErrorWithStatus:[error localizedDescription]];
     NSLog(@"Error: %@. Code: %ld", [error localizedDescription], (long) [error code]);
-  }
-  lastConnectedHostName = nil;
+//  }
+//  lastConnectedHostName = nil;
 }
 
 #pragma mark - NetServiceDelegate
 
--(void)netServiceDidStop:(NSNetService *)sender {
+- (void)netServiceDidStop:(NSNetService *)sender {
   NSLog(@"NetService did stop");
   sender.delegate = nil;
-  
+  //TODO check if this need to go to an event
 }
 
 
 - (void)netService:(NSNetService *)sender didNotResolve:(NSDictionary *)errorDict {
   NSLog(@"Service is denied with Error: %@", errorDict);
   sender.delegate = nil;
-  isConnecting = NO;
+//  isConnecting = NO;
+  [[IAStateMachine sharedStateMachine] fireEvent:kEventFailToConnectToInAiR userInfo:nil error:nil];
 }
 
 
 - (void)netServiceDidResolveAddress:(NSNetService *)service {
   NSString *address = [(service.addresses)[0] socketAddress];
-  [self connectToHost:address];
+
+  lastConnectedHostName = address;
   service.delegate = nil;
+  [[IAStateMachine sharedStateMachine] fireEvent:kEventServiceResolved userInfo:nil error:nil];
 }
 
 #pragma mark -
