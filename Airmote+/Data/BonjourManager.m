@@ -6,10 +6,6 @@
 #import "BonjourManager.h"
 
 #define kServiceType @"_irpc._tcp."
-//#define kHostIP @"192.168.1.186"
-//#define kHostIP @"127.0.0.1"
-
-
 
 @interface BonjourManager () <NSNetServiceBrowserDelegate>
 @end

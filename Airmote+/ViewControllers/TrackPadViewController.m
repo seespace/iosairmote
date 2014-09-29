@@ -11,7 +11,6 @@
 #import "ProtoHelper.h"
 #import "TrackPadView.h"
 #import "NSData+NetService.h"
-#import "WifiHelper.h"
 #import "InstructionViewController.h"
 #import "IAStateMachine.h"
 #import "TKState.h"
@@ -19,18 +18,12 @@
 
 #define kTimeOutDuration 10.0
 
-@interface TrackPadViewController () {
-  BOOL _serverSelectorDisplayed;
-  Event *_oauthEvent;
-  NSNetService *_selectedService;
-}
-
-@end
-
 @implementation TrackPadViewController {
   NSArray *_services;
   BonjourManager *_bonjourManager;
   NSString *lastConnectedHostName;
+  Event *_oauthEvent;
+  NSNetService *_selectedService;
 }
 
 static const uint8_t kMotionShakeTag = 6;
@@ -47,17 +40,13 @@ static const uint8_t kMotionShakeTag = 6;
                                                name:UIApplicationDidBecomeActiveNotification
                                              object:nil];
 
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(inAirDeviceDiDConnect:)
-                                               name:kInAirDeviceDidConnectToWifiNotification
-                                             object:nil];
-
   [self.navigationController setNavigationBarHidden:YES];
   _trackpadView.viewController = self;
 
   [self configureStateMachine];
   [self fireStartupEvents];
 }
+
 
 - (void)fireStartupEvents {
   IAStateMachine *stateMachine = [IAStateMachine sharedStateMachine];
@@ -69,6 +58,7 @@ static const uint8_t kMotionShakeTag = 6;
   }
 }
 
+
 - (void)configureStateMachine {
   IAStateMachine *stateMachine = [IAStateMachine sharedStateMachine];
   [stateMachine activate];
@@ -76,7 +66,9 @@ static const uint8_t kMotionShakeTag = 6;
   TKState *wifiSetupDone = [stateMachine stateNamed:kStateNormalStart];
   [wifiSetupDone setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
     if ([stateMachine.currentState.name isEqualToString:kStateIdle]) {
-      [self startBonjourDiscovery];
+      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (0.02 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self startBonjourDiscovery];
+      });
     }
   }];
 
@@ -104,6 +96,7 @@ static const uint8_t kMotionShakeTag = 6;
   }];
 }
 
+
 - (void)startWifiSetupWorkFlow {
   InstructionViewController *instructionViewController = [[InstructionViewController alloc] init];
   UINavigationController *navigationVC = [[UINavigationController alloc] initWithRootViewController:instructionViewController];
@@ -115,30 +108,15 @@ static const uint8_t kMotionShakeTag = 6;
 
 
 - (void)startBonjourDiscovery {
+  _services = nil;
+  [_bonjourManager start];
+  [SVProgressHUD showWithStatus:@"Scanning..." maskType:SVProgressHUDMaskTypeBlack];
 
-  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.02 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-    [_bonjourManager start];
-    _services = nil;
-    [SVProgressHUD showWithStatus:@"Scanning..." maskType:SVProgressHUDMaskTypeBlack];
-
-    NSError *error = nil;
-
-    [[IAStateMachine sharedStateMachine] fireEvent:kEventBonjourStart userInfo:nil error:&error];
-    if (error) {
-      NSLog(@"ERROR: %@", error);
-    }
-
-  });
-}
-
-- (void)inAirDeviceDiDConnect:(NSNotification *)notification {
-  [[EventCenter defaultCenter] disconnect];
-  [self reconnectToServiceIfNeeded];
-}
-
-
-- (void)viewWillAppear:(BOOL)animated {
-  [self.navigationController setNavigationBarHidden:YES];
+  NSError *error = nil;
+  [[IAStateMachine sharedStateMachine] fireEvent:kEventBonjourStart userInfo:nil error:&error];
+  if (error) {
+    NSLog(@"ERROR: %@", error);
+  }
 }
 
 #pragma mark -
@@ -147,40 +125,30 @@ static const uint8_t kMotionShakeTag = 6;
 - (void)applicationDidBecomeActive {
   // Clear out cached services when the app coming back from foreground
   // because the services might be gone by the time we coming back.
+  if ([lastConnectedHostName length] > 0) {
+    if (![EventCenter defaultCenter].isActive) {
+      NSError *error = nil;
+      [[IAStateMachine sharedStateMachine] fireEvent:kEventFailToConnectToInAiR userInfo:nil error:&error];
+      if (error) {
+        NSLog(@"ERROR: %@", error);
+      }
 
-//  BOOL requiredWifi = [[NSUserDefaults standardUserDefaults] boolForKey:kWifiSetupKey];
-//  if (!requiredWifi) {
-//    if (self.navigationController.presentedViewController != nil) {
-//      [self.navigationController dismissViewControllerAnimated:YES completion:NULL];
-//    }
-//  }
-//
-//  if ([lastConnectedHostName length] > 0) {
-//    if (![EventCenter defaultCenter].isActive) {
-//      [[EventCenter defaultCenter] connectToHost:lastConnectedHostName];
-////      isReconnecting = YES;
-//    }
-//  } else {
-//    [self reconnectToServiceIfNeeded];
-//  }
+      [[IAStateMachine sharedStateMachine] fireEvent:kEventServiceResolved userInfo:nil error:&error];
+      if (error) {
+        NSLog(@"ERROR: %@", error);
+      }
+    }
+  } else {
+    [self reconnectToServiceIfNeeded];
+  }
 
 }
 
 - (void)reconnectToServiceIfNeeded {
-  BOOL requiredWifiSetup = [[NSUserDefaults standardUserDefaults] boolForKey:kWifiSetupKey];
-  if ([WifiHelper isConnectedToInAiRWiFi] || requiredWifiSetup)
-    return;
-
-  if (_serverSelectorDisplayed) {
-    return;
-  }
-
   if (![EventCenter defaultCenter].isActive && [_services count]) {
     [self connectToAvailableServices];
   } else {
-    [_bonjourManager start];
-    _services = nil;
-    [SVProgressHUD showWithStatus:@"Scanning..." maskType:SVProgressHUDMaskTypeBlack];
+    [self startBonjourDiscovery];
   }
 }
 
@@ -198,9 +166,7 @@ static const uint8_t kMotionShakeTag = 6;
 - (void)bonjourManagerFinishedDiscoveringServices:(NSArray *)services {
   [SVProgressHUD dismiss];
   _services = services;
-  if (!_serverSelectorDisplayed) {
-    [self connectToAvailableServices];
-  }
+  [self connectToAvailableServices];
 }
 
 
@@ -223,20 +189,18 @@ static const uint8_t kMotionShakeTag = 6;
 
 - (void)showActionSheet {
   _actionSheet = [[UIActionSheet alloc] init];
+  [_actionSheet setTitle:@"Choose a device"];
   [_actionSheet setDelegate:self];
 
-  [_actionSheet setTitle:@"Choose a device"];
-
   for (NSNetService *service in _services) {
-      NSString *title = service.name;
-      [_actionSheet addButtonWithTitle:title];
-    }
+    NSString *title = service.name;
+    [_actionSheet addButtonWithTitle:title];
+  }
 
   [_actionSheet addButtonWithTitle:@"Cancel"];
   _actionSheet.cancelButtonIndex = _services.count;
 
   [_actionSheet showInView:self.view];
-//  _serverSelectorDisplayed = YES;  #warning: might need to check
 }
 
 - (void)connectToService:(NSNetService *)service {
@@ -250,6 +214,7 @@ static const uint8_t kMotionShakeTag = 6;
   }
 }
 
+#pragma mark - ActionSheet Delegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
   NSError *error = nil;
@@ -258,13 +223,10 @@ static const uint8_t kMotionShakeTag = 6;
     [[IAStateMachine sharedStateMachine] fireEvent:kEventStartResolvingService userInfo:nil error:&error];
   }
   else {
-    //TODO double check
-//    _serverSelectorDisplayed = NO;
-    [[IAStateMachine sharedStateMachine] fireEvent:kEventFailToConnectToInAiR userInfo:nil error:&error] ;
+    [[IAStateMachine sharedStateMachine] fireEvent:kEventFailToConnectToInAiR userInfo:nil error:&error];
   }
-//  _serverSelectorDisplayed = NO;
   if (error) {
-    NSLog(@"ERROR: %@", error );
+    NSLog(@"ERROR: %@", error);
   }
 
 }
@@ -277,6 +239,28 @@ static const uint8_t kMotionShakeTag = 6;
       [self processOAuthRequest];
     }
   }
+}
+
+#pragma mark - NetServiceDelegate
+
+- (void)netServiceDidStop:(NSNetService *)sender {
+  NSLog(@"NetService did stop");
+  sender.delegate = nil;
+}
+
+
+- (void)netService:(NSNetService *)sender didNotResolve:(NSDictionary *)errorDict {
+  NSLog(@"Service is denied with Error: %@", errorDict);
+  sender.delegate = nil;
+  [[IAStateMachine sharedStateMachine] fireEvent:kEventFailToConnectToInAiR userInfo:nil error:nil];
+}
+
+
+- (void)netServiceDidResolveAddress:(NSNetService *)service {
+  NSString *address = [(service.addresses)[0] socketAddress];
+  lastConnectedHostName = address;
+  service.delegate = nil;
+  [[IAStateMachine sharedStateMachine] fireEvent:kEventServiceResolved userInfo:nil error:nil];
 }
 
 
@@ -298,62 +282,20 @@ static const uint8_t kMotionShakeTag = 6;
 
 - (void)eventCenterDidConnectToHost:(NSString *)hostName {
   lastConnectedHostName = hostName;
-//  if (isReconnecting) {
-//    isReconnecting = NO;
-//  }
-//  else {
-    TKState *socketConnected = [[IAStateMachine sharedStateMachine] stateNamed:kStateSocketConnected];
-    [socketConnected setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
-      [SVProgressHUD showSuccessWithStatus:@"Connected"];
-    }];
-    NSError *error = nil;
-    [[IAStateMachine sharedStateMachine] fireEvent:kEventRealSocketConnected userInfo:nil error:&error];
-    if (error) {
-      NSLog(@"ERROR: %@", error);
-    }
-
-//  }
-
+  TKState *socketConnected = [[IAStateMachine sharedStateMachine] stateNamed:kStateSocketConnected];
+  [socketConnected setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+    [SVProgressHUD showSuccessWithStatus:@"Connected"];
+  }];
+  NSError *error = nil;
+  [[IAStateMachine sharedStateMachine] fireEvent:kEventRealSocketConnected userInfo:nil error:&error];
+  if (error) {
+    NSLog(@"ERROR: %@", error);
+  }
 }
 
 - (void)eventCenterDidDisconnectFromHost:(NSString *)hostName withError:(NSError *)error {
-//  if (isReconnecting) {
-//    if (![EventCenter defaultCenter].isActive) {
-//      if ([hostName isEqualToString:lastConnectedHostName]) {
-//        [self reconnectToServiceIfNeeded];
-//      }
-//    }
-//  } else {
-//    isConnecting = NO;
-    [SVProgressHUD showErrorWithStatus:[error localizedDescription]];
-    NSLog(@"Error: %@. Code: %ld", [error localizedDescription], (long) [error code]);
-//  }
-//  lastConnectedHostName = nil;
-}
-
-#pragma mark - NetServiceDelegate
-
-- (void)netServiceDidStop:(NSNetService *)sender {
-  NSLog(@"NetService did stop");
-  sender.delegate = nil;
-  //TODO check if this need to go to an event
-}
-
-
-- (void)netService:(NSNetService *)sender didNotResolve:(NSDictionary *)errorDict {
-  NSLog(@"Service is denied with Error: %@", errorDict);
-  sender.delegate = nil;
-//  isConnecting = NO;
-  [[IAStateMachine sharedStateMachine] fireEvent:kEventFailToConnectToInAiR userInfo:nil error:nil];
-}
-
-
-- (void)netServiceDidResolveAddress:(NSNetService *)service {
-  NSString *address = [(service.addresses)[0] socketAddress];
-
-  lastConnectedHostName = address;
-  service.delegate = nil;
-  [[IAStateMachine sharedStateMachine] fireEvent:kEventServiceResolved userInfo:nil error:nil];
+  [SVProgressHUD showErrorWithStatus:[error localizedDescription]];
+  NSLog(@"Error: %@. Code: %ld", [error localizedDescription], (long) [error code]);
 }
 
 #pragma mark -
@@ -396,26 +338,13 @@ static const uint8_t kMotionShakeTag = 6;
   }
 }
 
-
-#pragma mark -
-#pragma mark Others
-
-- (void)didReceiveMemoryWarning {
-  [super didReceiveMemoryWarning];
-  // Dispose of any resources that can be recreated.
-}
-
-
 #pragma mark - Privates
 
-
 - (void)connectToHost:(NSString *)hostname {
-
   [EventCenter defaultCenter].delegate = nil;
-
-
   _trackpadView.eventCenter = [EventCenter defaultCenter];
   [EventCenter defaultCenter].delegate = self;
+
   BOOL canStartConnection = [[EventCenter defaultCenter] connectToHost:hostname];
   if (canStartConnection) {
     [SVProgressHUD showWithStatus:@"Connecting" maskType:SVProgressHUDMaskTypeBlack];

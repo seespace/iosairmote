@@ -74,11 +74,11 @@
                                                      toState:bonjourDiscovery];
 
   TKEvent *foundMultipleServicesEvent = [TKEvent eventWithName:kEventFoundMultipleServices
-                                       transitioningFromStates:@[bonjourDiscovery]
+                                       transitioningFromStates:@[normalStart, bonjourDiscovery]
                                                        toState:foundMultipleServices];
 
   TKEvent *startResolvingServiceEvent = [TKEvent eventWithName:kEventStartResolvingService
-                                       transitioningFromStates:@[bonjourDiscovery, foundMultipleServices]
+                                       transitioningFromStates:@[normalStart, bonjourDiscovery, foundMultipleServices]
                                                        toState:serviceResolving];
 
   TKEvent *failedToConnectToInAirEvent = [TKEvent eventWithName:kEventFailToConnectToInAiR
@@ -86,7 +86,7 @@
                                                        toState:normalStart];
 
   TKEvent *serviceResolvedEvent = [TKEvent eventWithName:kEventServiceResolved
-                              transitioningFromStates:@[serviceResolving]
+                              transitioningFromStates:@[serviceResolving, normalStart]
                                               toState:serviceResolved];
   TKEvent *socketConnectedEvent = [TKEvent eventWithName:kEventRealSocketConnected
                                  transitioningFromStates:@[serviceResolved]
