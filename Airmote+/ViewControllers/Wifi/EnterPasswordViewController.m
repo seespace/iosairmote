@@ -33,6 +33,9 @@
 
   [super viewDidLoad];
 
+  passwordTextField.tintColor = [UIColor redColor];
+  passwordTextField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 30)];
+  passwordTextField.leftViewMode = UITextFieldViewModeAlways;
   wifiNameLabel.text = self.networkSSID;
   if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
     self.edgesForExtendedLayout = UIRectEdgeNone;

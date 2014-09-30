@@ -57,7 +57,10 @@
     case SetupPhaseRequestRename: {
       if (ev.error) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:ev.errorMessage delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                                                        message:ev.errorMessage
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
         [alert show];
       }
       else {
