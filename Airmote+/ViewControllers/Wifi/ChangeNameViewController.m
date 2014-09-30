@@ -34,6 +34,9 @@
   if ([self respondsToSelector:@selector(edgesForExtendedLayout)]) {
     self.edgesForExtendedLayout = UIRectEdgeNone;
   }
+  textField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 30)];
+  textField.leftViewMode = UITextFieldViewModeAlways;
+
 }
 
 - (void)viewDidAppear:(BOOL)animated {
