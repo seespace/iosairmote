@@ -65,6 +65,16 @@
       [self.navigationController popViewControllerAnimated:NO];
     }
   }];
+
+  [[[IAStateMachine sharedStateMachine] stateNamed:kStateSameWifiAwaiting] setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
+    if ([[IAStateMachine sharedStateMachine] isInState:kStateSetupWifiListing]) {
+      [SVProgressHUD showSuccessWithStatus:@"Connected"];
+      ConnectedConfirmationViewController *confirmationViewController = [[ConnectedConfirmationViewController alloc] init];
+      confirmationViewController.delegate = self;
+      confirmationViewController.networkSSID = _selectedNetwork.ssid;
+      [self.navigationController presentViewController:confirmationViewController animated:YES completion:NULL];
+    }
+  }];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -79,7 +89,26 @@
 
   switch (ev.phase) {
     case SetupPhaseRequestWifiScan: {
+      [self handleWifiScanEvent:ev];
+      break;
+    }
+
+    case SetupPhaseRequestWifiConnect: {
       if (ev.error) {
+        [SVProgressHUD dismiss];
+      } else {
+        [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupUserSelectedOpenWifi];
+      }
+      break;
+    }
+
+    default:
+      break;
+  }
+}
+
+- (void)handleWifiScanEvent:(SetupResponseEvent *)ev {
+  if (ev.error) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:ev.errorMessage
                                                            delegate:nil
@@ -99,12 +128,6 @@
           [tableView reloadData];
         }
       }
-      break;
-    }
-
-    default:
-      break;
-  }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -143,11 +166,24 @@
 - (void)tableView:(UITableView *)tableView1 didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   _selectedNetwork = wifiNetworks[(NSUInteger) indexPath.row];
   [tableView1 deselectRowAtIndexPath:indexPath animated:YES];
-  [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupUserSelectedSecureWifi];
+  if (_selectedNetwork.requiredPassword) {
+    [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupUserSelectedSecureWifi];
+  } else {
+    if ([[IAStateMachine sharedStateMachine] isInState:kStateSetupWifiListing]) {
+      Event *ev = [ProtoHelper setupWifiConnectRequestWithSSID:_selectedNetwork.ssid password:@""];
+      [[EventCenter defaultCenter] sendEvent:ev withTag:0];
+      [SVProgressHUD showWithStatus:@"InAir device connecting..."];
+    }
+  }
 }
 
 
 - (IBAction)backButtonPressed:(id)sender {
   [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupBackToCodeVerification];
 }
+
+- (void)didConnectedToTheSameNetworkWithInAirDevice {
+  [self.parentViewController.presentingViewController dismissViewControllerAnimated:NO completion:NULL];
+}
+
 @end

@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "EventCenter.h"
+#import "ConnectedConfirmationViewController.h"
 
-@interface WiFiListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, EventCenterDelegate>
+@interface WiFiListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, EventCenterDelegate, ConfirmationViewDelegate>
 
 @end
