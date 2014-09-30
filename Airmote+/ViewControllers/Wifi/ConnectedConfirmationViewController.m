@@ -8,6 +8,8 @@
 
 #import "ConnectedConfirmationViewController.h"
 #import "WifiHelper.h"
+#import "IAStateMachine.h"
+#import "TKState.h"
 
 @interface ConnectedConfirmationViewController ()
 
@@ -29,19 +31,28 @@
   [super viewDidLoad];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
   [self updateNetworkStatus];
+  [self configureStateMachine];
+
+}
+
+- (void)configureStateMachine {
+  // NOTE: we should only use willEnterStateBlock so that we don't mess up with setDidEnterStateBlock configured in TrackPadViewController
+  [[[IAStateMachine sharedStateMachine] stateNamed:kStateSameWifiAwaiting] setWillExitStateBlock:^(TKState *state, TKTransition *transition) {
+    if ([self.delegate respondsToSelector:@selector(didConnectedToTheSameNetworkWithInAirDevice)]) {
+      [self.presentingViewController dismissViewControllerAnimated:YES completion:^{
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"enable_wifi_setup"];
+        [self.delegate didConnectedToTheSameNetworkWithInAirDevice];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kInAirDeviceDidConnectToWifiNotification object:nil userInfo:nil];
+      }];
+    }
+  }];
 
 }
 
 - (void)updateNetworkStatus {
   NSString *currentSSID = [WifiHelper currentConnectedWiFiSSID];
   if ([self.networkSSID isEqualToString:currentSSID]) {
-    if ([self.delegate respondsToSelector:@selector(didConnectedToTheSameNetworkWithInAirDevice)]) {
-        [self.presentingViewController dismissViewControllerAnimated:YES completion:^{
-            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"enable_wifi_setup"];
-            [self.delegate didConnectedToTheSameNetworkWithInAirDevice];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kInAirDeviceDidConnectToWifiNotification object:nil userInfo:nil];
-        }];
-    }
+    [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupConnectedToTheSameNetwork];
   } else {
     confirmationLabel.text = self.networkSSID;
 //    [self updateConfirmationMessage:currentSSID];
@@ -52,8 +63,8 @@
   NSString *message = [NSString stringWithFormat:@"Your InAiR device has connected to %@, and your iPhone is currently connected to %@. Open Settings to change your Wifi network to %@", self.networkSSID, currentSSID, self.networkSSID];
   NSMutableAttributedString *attributedMessage = [[NSMutableAttributedString alloc] initWithString:message];
 
-  NSDictionary *normalText = @{NSFontAttributeName: [UIFont fontWithName:@"Helvetica" size:confirmationLabel.font.pointSize] };
-  NSDictionary *boldText = @{NSFontAttributeName: [UIFont fontWithName:@"Helvetica-Bold" size:confirmationLabel.font.pointSize] };
+  NSDictionary *normalText = @{NSFontAttributeName : [UIFont fontWithName:@"Helvetica" size:confirmationLabel.font.pointSize]};
+  NSDictionary *boldText = @{NSFontAttributeName : [UIFont fontWithName:@"Helvetica-Bold" size:confirmationLabel.font.pointSize]};
 
   NSRange inAiRNetworkNameRange = [message rangeOfString:self.networkSSID options:0];
 
@@ -83,7 +94,7 @@
 }
 
 
--(void) dealloc {
+- (void)dealloc {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
