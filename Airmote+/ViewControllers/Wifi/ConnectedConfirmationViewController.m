@@ -16,7 +16,7 @@
 @end
 
 @implementation ConnectedConfirmationViewController {
-  __weak IBOutlet UILabel *confirmationLabel;
+  __weak IBOutlet UILabel *networkSSIDLabel;
 
 }
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -32,6 +32,7 @@
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
   [self updateNetworkStatus];
   [self configureStateMachine];
+  networkSSIDLabel.text = self.networkSSID;
 
 }
 
@@ -53,35 +54,9 @@
   NSString *currentSSID = [WifiHelper currentConnectedWiFiSSID];
   if ([self.networkSSID isEqualToString:currentSSID]) {
     [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupConnectedToTheSameNetwork];
-  } else {
-    confirmationLabel.text = self.networkSSID;
-//    [self updateConfirmationMessage:currentSSID];
   }
 }
 
-- (void)updateConfirmationMessage:(NSString *)currentSSID {
-  NSString *message = [NSString stringWithFormat:@"Your InAiR device has connected to %@, and your iPhone is currently connected to %@. Open Settings to change your Wifi network to %@", self.networkSSID, currentSSID, self.networkSSID];
-  NSMutableAttributedString *attributedMessage = [[NSMutableAttributedString alloc] initWithString:message];
-
-  NSDictionary *normalText = @{NSFontAttributeName : [UIFont fontWithName:@"Helvetica" size:confirmationLabel.font.pointSize]};
-  NSDictionary *boldText = @{NSFontAttributeName : [UIFont fontWithName:@"Helvetica-Bold" size:confirmationLabel.font.pointSize]};
-
-  NSRange inAiRNetworkNameRange = [message rangeOfString:self.networkSSID options:0];
-
-  NSUInteger lastLocation = inAiRNetworkNameRange.location + inAiRNetworkNameRange.length + 1;
-  NSRange remainingRange = NSMakeRange(lastLocation, message.length - lastLocation);
-  NSRange currentNetworkNameRange = [message rangeOfString:currentSSID options:0 range:remainingRange];
-
-  lastLocation = currentNetworkNameRange.length + currentNetworkNameRange.location + 1;
-  remainingRange = NSMakeRange(lastLocation, message.length - lastLocation);
-  NSRange connectToNetworkNameRange = [message rangeOfString:self.networkSSID options:0 range:remainingRange];
-
-  [attributedMessage setAttributes:normalText range:NSMakeRange(0, message.length)];
-  [attributedMessage setAttributes:boldText range:inAiRNetworkNameRange];
-  [attributedMessage setAttributes:boldText range:currentNetworkNameRange];
-  [attributedMessage setAttributes:boldText range:connectToNetworkNameRange];
-  confirmationLabel.attributedText = attributedMessage;
-}
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification {
   [self updateNetworkStatus];
