@@ -11,8 +11,8 @@
 #import "SVProgressHUD.h"
 #import "NSData+NetService.h"
 #import "WifiHelper.h"
-
-#define MAX_RETRY_COUNT 3
+#import "TKState.h"
+#import "IAStateMachine.h"
 
 @interface InstructionViewController ()
 
@@ -21,18 +21,10 @@
 @implementation InstructionViewController {
   __weak IBOutlet UILabel *instructionLabel;
 
-  __weak IBOutlet UILabel *headTitleLabel;
-  __weak IBOutlet UILabel *detailLabel;
-  __weak IBOutlet UIButton *tryAgainButton;
   BonjourManager *_bonjourManager;
-
-  BOOL isConnecting;
-  BOOL isDiscoveringBonjourServices;
-
-  int retryCount;
-  int resolveServiceRetryCount;
   NSNetService *_netService;
   BOOL viewDidAppear;
+  NSString *_lastResolvedAddress;
 }
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -53,7 +45,30 @@
                                                name:UIApplicationDidBecomeActiveNotification
                                              object:nil];
   viewDidAppear = NO;
-  [self showVerificationViewController];  
+  [self configureStateMachine];
+}
+
+- (void)configureStateMachine {
+  TKState *bonjourDiscoveryState = [[IAStateMachine sharedStateMachine] stateNamed:kStateSetupBonjourDiscovery];
+  [bonjourDiscoveryState setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+    [_bonjourManager start];
+  }];
+
+  TKState *serviceResolvingState = [[IAStateMachine sharedStateMachine] stateNamed:kStateSetupServiceResolving];
+  [serviceResolvingState setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+    [_netService resolveWithTimeout:10];
+  }];
+
+  TKState *serviceResolved = [[IAStateMachine sharedStateMachine] stateNamed:kStateSetupServiceResolved];
+  [serviceResolved setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+    [self connectToHost:_lastResolvedAddress];
+  }];
+
+  TKState *socketConnected = [[IAStateMachine sharedStateMachine] stateNamed:kStateSetupSocketConnected];
+  [socketConnected setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+    [SVProgressHUD dismiss];
+    [self showVerificationViewController];
+  }];
 }
 
 
@@ -65,21 +80,19 @@
 
 - (void)connectIfNeeded {
 
-  if (self != self.navigationController.topViewController) {
-    return;
-  }
-  
+  NSError *error = nil;
   if ([EventCenter defaultCenter].isActive) {
-    [self showVerificationViewController];
+    [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupSocketConnected userInfo:nil error:&error];
   } else {
     if ([WifiHelper isConnectedToInAiRWiFi]) {
-      if (!isDiscoveringBonjourServices) {
-        isDiscoveringBonjourServices = YES;
-        [_bonjourManager start];
-      } else {
-        NSLog(@"Ignoring connect request...");
-      }
+      [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupDetectedInAirWifi userInfo:nil error:&error];
+    } else {
+      [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupFailedToConnectToSocket userInfo:nil error:&error];
     }
+  }
+
+  if (error) {
+    NSLog(@"connectIfNeeded - ERROR: %@", [error description]);
   }
 }
 
@@ -102,74 +115,87 @@
 }
 
 - (void)bonjourManagerFinishedDiscoveringServices:(NSArray *)services {
-  isDiscoveringBonjourServices = NO;
+//  isDiscoveringBonjourServices = NO;
+  NSError *error = nil;
   if ([services count]) {
-    retryCount = 0;
-    resolveServiceRetryCount = 0;
+    
     _netService.delegate = nil;
+    [_netService stop];
     _netService = services[0];
     _netService.delegate = self;
-    [_netService resolveWithTimeout:10];
 
+    [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupFoundBonjourService userInfo:nil error:&error];
   } else {
-    [self restartBonjourIfNeeded];
+    [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupFailedToConnectToSocket userInfo:nil error:&error];
   }
-}
 
-- (void)restartBonjourIfNeeded {
-  if (retryCount < MAX_RETRY_COUNT && !isDiscoveringBonjourServices) {
-    isDiscoveringBonjourServices = NO;
-    [_bonjourManager start];
-    retryCount++;
+  if (error) {
+
+    NSLog(@"bonjourManagerFinishedDiscoveringServices - ERROR: %@", [error description]);
   }
+
 }
 
 - (void)bonjourManagerServiceNotFound {
-  isDiscoveringBonjourServices = NO;
-  [self restartBonjourIfNeeded];
+  NSError *error = nil;
+  [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupFailedToConnectToSocket userInfo:nil error:&error];
+  if (error) {
+    NSLog(@"bonjourManagerServiceNotFound - ERROR: %@", [error description]);
+  }
 }
 
 
 - (void)netService:(NSNetService *)sender didNotResolve:(NSDictionary *)errorDict {
   NSLog(@"Failed to resolve address for service: %@", sender);
-  if (resolveServiceRetryCount < MAX_RETRY_COUNT) {
-    resolveServiceRetryCount++;
-    [_netService resolveWithTimeout:10];
-  }
 
+  NSError *error = nil;
+  [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupFailedToConnectToSocket userInfo:nil error:&error];
+  if (error) {
+    NSLog(@"netService: didNotResolve: - ERROR: %@", [error description]);
+  }
 }
 
 
 - (void)netServiceDidResolveAddress:(NSNetService *)service {
-  if ([service.addresses count]) {
-    resolveServiceRetryCount = 0;
-    _netService.delegate = nil;
-    NSString *address = [(service.addresses)[0] socketAddress];
-    [self connectToHost:address];
-  }
+  NSError *error = nil;
 
+  if ([service.addresses count]) {
+    _netService.delegate = nil;
+    _lastResolvedAddress = [(service.addresses)[0] socketAddress];
+    [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupServiceResolved userInfo:nil error:&error];
+
+  } else {
+    _lastResolvedAddress = nil;
+      [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupFailedToConnectToSocket userInfo:nil error:&error];
+    }
+
+  if (error) {
+    NSLog(@"netServiceDidResolveAddress: - ERROR: %@", [error description]);
+  }
 }
 
 
 - (void)connectToHost:(NSString *)hostname {
-  if (isConnecting)
-    return;
 
   EventCenter *eventCenter = [EventCenter defaultCenter];
   eventCenter.delegate = nil;
 
   eventCenter = [EventCenter defaultCenter];
   eventCenter.delegate = self;
-  isConnecting = [eventCenter connectToHost:hostname];
+  BOOL isConnecting = [eventCenter connectToHost:hostname];
   if (isConnecting) {
     [SVProgressHUD showWithStatus:@"Connecting" maskType:SVProgressHUDMaskTypeBlack];
   }
 }
 
 - (void)eventCenterDidConnectToHost:(NSString *)hostName {
-  [SVProgressHUD dismiss];
-  isConnecting = NO;
-  [self showVerificationViewController];
+  NSError *error = nil;
+
+  [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupSocketConnected userInfo:nil error:&error];
+  if (error) {
+    NSLog(@"eventCenterDidConnectToHost: - ERROR: %@", [error description]);
+  }
+
 }
 
 
@@ -183,7 +209,7 @@
 
 - (void)eventCenterDidDisconnectFromHost:(NSString *)hostName withError:(NSError *)error {
   [SVProgressHUD dismiss];
-  isConnecting = NO;
+  //TODO check if this need to fire an event
 }
 
 - (void)dealloc {

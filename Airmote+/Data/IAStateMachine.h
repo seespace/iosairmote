@@ -15,13 +15,13 @@
 
 #define kStateSetupServiceResolving @"SetupServiceResolving"
 
-#define kStateSetupAddressFound @"ConnectingToInAirSocket"
+#define kStateSetupServiceResolved @"ConnectingToInAirSocket"
 
 #define kStateFailedToConnectToInAirSocket @"FailedToConnectToInAirSocket"
 
-#define kStateCodeVerification @"CodeVerification"
+#define kStateSetupCodeVerification @"CodeVerification"
 
-#define kStateWifiListing @"WifiListing"
+#define kStateSetupWifiListing @"WifiListing"
 
 #define kStateFailedToGetWifiListing @"FailedToGetWifiList"
 
@@ -45,7 +45,7 @@
 
 #define kStateSocketConnected @"SocketConnected"
 
-#define kStateCodeVerificationStart @"CodeVerificationStart"
+#define kStateSetupSocketConnected @"CodeVerificationStart"
 
 
 // Events definitions
@@ -55,7 +55,7 @@
 
 #define kEventSetupFoundBonjourService @"Setup: Found InAir Service"
 
-#define kEventSetupAddressFound @"Setup: Address Found"
+#define kEventSetupServiceResolved @"Setup: Address Found"
 
 #define kEventSetupSocketConnected @"Setup: Socket Connected"
 
