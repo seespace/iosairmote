@@ -149,4 +149,13 @@
 
 }
 
+
+-(void)fireEvent:(id)eventOrEventName  {
+  NSError *error = nil;
+  [[IAStateMachine sharedStateMachine] fireEvent:eventOrEventName userInfo:nil error:&error];
+  if (error) {
+    NSLog(@"ERROR: %@", error);
+  }
+
+}
 @end

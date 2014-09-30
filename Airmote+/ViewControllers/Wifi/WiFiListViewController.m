@@ -12,6 +12,8 @@
 #import "EnterPasswordViewController.h"
 #import "ProtoHelper.h"
 #import "WifiNetwork+Extension.h"
+#import "IAStateMachine.h"
+#import "TKState.h"
 
 #define kWifiCellHeight 30
 
@@ -23,6 +25,7 @@
 
   __weak IBOutlet UITableView *tableView;
   NSArray *wifiNetworks;
+  WifiNetwork *_selectedNetwork;
 }
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -37,12 +40,31 @@
   if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
     self.edgesForExtendedLayout = UIRectEdgeNone;
 
-  Event *ev = [ProtoHelper setupWifiScanRequest];
-  [[EventCenter defaultCenter] sendEvent:ev withTag:0];
-  [SVProgressHUD showWithStatus:@"Loading..." maskType:SVProgressHUDMaskTypeGradient];
-  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (30 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-    [SVProgressHUD dismiss];
-  });
+  if ([[IAStateMachine sharedStateMachine].currentState.name isEqualToString:kStateSetupWifiListing]) {
+    Event *ev = [ProtoHelper setupWifiScanRequest];
+    [[EventCenter defaultCenter] sendEvent:ev withTag:0];
+    [SVProgressHUD showWithStatus:@"Loading..." maskType:SVProgressHUDMaskTypeGradient];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (30 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+      [SVProgressHUD dismiss];
+    });
+  }
+  [self configureStateMachine];
+
+}
+
+- (void)configureStateMachine {
+  [[[IAStateMachine sharedStateMachine] stateNamed:kStateEnteringWifiPassword] setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+    EnterPasswordViewController *enterPasswordVC = [[EnterPasswordViewController alloc] init];
+    [EventCenter defaultCenter].delegate = enterPasswordVC;
+    enterPasswordVC.networkSSID = _selectedNetwork.ssid;
+    [self.navigationController pushViewController:enterPasswordVC animated:NO];
+  }];
+
+  [[[IAStateMachine sharedStateMachine] stateNamed:kStateSetupCodeVerification] setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
+    if ([[[[IAStateMachine sharedStateMachine] currentState] name] isEqualToString:kStateSetupWifiListing]) {
+      [self.navigationController popViewControllerAnimated:NO];
+    }
+  }];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -64,8 +86,18 @@
                                                   cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alertView show];
       } else {
-        wifiNetworks = ev.wifiNetworks;
-        [tableView reloadData];
+        if ([ev.wifiNetworks count] == 0) {
+          UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                              message:@"WiFi networks are not available."
+                                                             delegate:nil
+                                                    cancelButtonTitle:@"OK"
+                                                    otherButtonTitles:nil];
+          [alertView show];
+        }
+        else {
+          wifiNetworks = ev.wifiNetworks;
+          [tableView reloadData];
+        }
       }
       break;
     }
@@ -94,7 +126,6 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView1 cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-  //TODO use real data in here
   static NSString *wifiCellIdentifier = @"WifiCellIdentifier";
 
   WifiCell *cell = [tableView1 dequeueReusableCellWithIdentifier:wifiCellIdentifier];
@@ -110,16 +141,13 @@
 }
 
 - (void)tableView:(UITableView *)tableView1 didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-  WifiNetwork *network = wifiNetworks[(NSUInteger) indexPath.row];
+  _selectedNetwork = wifiNetworks[(NSUInteger) indexPath.row];
   [tableView1 deselectRowAtIndexPath:indexPath animated:YES];
-  EnterPasswordViewController *enterPasswordVC = [[EnterPasswordViewController alloc] init];
-    [EventCenter defaultCenter].delegate = enterPasswordVC;
-  enterPasswordVC.networkSSID = network.ssid;
-  [self.navigationController pushViewController:enterPasswordVC animated:NO];
+  [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupUserSelectedSecureWifi];
 }
 
 
 - (IBAction)backButtonPressed:(id)sender {
-  [self.navigationController popViewControllerAnimated:NO];
+  [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupBackToCodeVerification];
 }
 @end

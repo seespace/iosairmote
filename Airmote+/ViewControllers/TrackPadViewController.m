@@ -289,7 +289,7 @@ static const uint8_t kMotionShakeTag = 6;
   TKState *wifiSetupDone = [stateMachine stateNamed:kStateNormalStart];
   [wifiSetupDone setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
     if ([stateMachine.currentState.name isEqualToString:kStateIdle]) {
-      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (0.02 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self startBonjourDiscovery];
       });
     }

@@ -99,4 +99,6 @@
 + (IAStateMachine *)sharedStateMachine;
 
 - (void)setup;
+
+- (void)fireEvent:(id)eventOrEventName;
 @end
