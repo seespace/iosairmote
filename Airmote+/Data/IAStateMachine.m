@@ -75,17 +75,16 @@
   TKState *setupBonjourDiscovery = [TKState stateWithName:kStateSetupBonjourDiscovery];
   TKState *setupServiceResolving = [TKState stateWithName:kStateSetupServiceResolving];
   TKState *setupServiceResolved = [TKState stateWithName:kStateSetupServiceResolved];
-  TKState *codeVerificationStart = [TKState stateWithName:kStateSetupSocketConnected];
+  TKState *setupSocketConnected = [TKState stateWithName:kStateSetupSocketConnected];
   TKState *codeVerification = [TKState stateWithName:kStateSetupCodeVerification];
+
   TKState *wifiListing = [TKState stateWithName:kStateSetupWifiListing];
   TKState *enteringWifiPassword = [TKState stateWithName:kStateEnteringWifiPassword];
-  TKState *selectedOpenWifi = [TKState stateWithName:kStateSelectedOpenWifi];
   TKState *sameWiFiAwaiting = [TKState stateWithName:kStateSameWifiAwaiting];
 
   [self addStates:@[setupBonjourDiscovery, setupServiceResolving,
-        setupServiceResolved, codeVerificationStart,
-        codeVerification, wifiListing, enteringWifiPassword,
-        selectedOpenWifi, sameWiFiAwaiting]];
+        setupServiceResolved, setupSocketConnected, codeVerification,
+        wifiListing, enteringWifiPassword, sameWiFiAwaiting]];
 
   TKEvent *detectedInAirWifiEvent = [TKEvent eventWithName:kEventSetupDetectedInAirWifi
                                    transitioningFromStates:@[startWifiSetup]
@@ -100,11 +99,11 @@
                                                    toState:setupServiceResolved];
 
   TKEvent *setupSocketConnectedEvent = [TKEvent eventWithName:kEventSetupSocketConnected
-                                      transitioningFromStates:@[setupServiceResolved]
-                                                      toState:codeVerificationStart];
+                                      transitioningFromStates:@[startWifiSetup, setupServiceResolved]
+                                                      toState:setupSocketConnected];
 
   TKEvent *setupCodeVerificationReceivedEvent = [TKEvent eventWithName:kEventSetupCodeVerificationReceived
-                                               transitioningFromStates:@[codeVerificationStart]
+                                               transitioningFromStates:@[setupSocketConnected]
                                                                toState:codeVerification];
 
   TKEvent *userConfirmedCodeEvent = [TKEvent eventWithName:kEventSetupSameCodeVerified
@@ -132,7 +131,7 @@
                                                     toState:startWifiSetup];
 
   TKEvent *failedToRetrieveConfirmationCodeEvent = [TKEvent eventWithName:kEventSetupFailedToRetrieveConfirmationCode
-                                                  transitioningFromStates:@[socketConnected, codeVerification ]
+                                                  transitioningFromStates:@[codeVerification ]
                                                                   toState:startWifiSetup];
 
   TKEvent *backToCodeVerificationEvent = [TKEvent eventWithName:kEventSetupBackToCodeVerification

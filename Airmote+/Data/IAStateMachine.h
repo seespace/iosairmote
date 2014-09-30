@@ -9,43 +9,45 @@
 
 #define kStateIdle @"Idle"
 
-#define kStateWifiSetupStart @"StartWifiSetup"
+#define kStateWifiSetupStart @"StateWifiSetupStart"
 
-#define kStateSetupBonjourDiscovery @"SetupBonjourDiscovery"
+#define kStateSetupBonjourDiscovery @"StateSetupBonjourDiscovery"
 
-#define kStateSetupServiceResolving @"SetupServiceResolving"
+#define kStateSetupServiceResolving @"StateSetupServiceResolving"
 
-#define kStateSetupServiceResolved @"ConnectingToInAirSocket"
+#define kStateSetupServiceResolved @"StateSetupServiceResolved"
 
-#define kStateFailedToConnectToInAirSocket @"FailedToConnectToInAirSocket"
 
-#define kStateSetupCodeVerification @"CodeVerification"
+#define kStateSetupCodeVerification @"StateSetupCodeVerification"
 
-#define kStateSetupWifiListing @"WifiListing"
+//#define kStateSetupConfirmationCodeReceived @"kStateSetupConfirmationCodeReceived"
 
-#define kStateFailedToGetWifiListing @"FailedToGetWifiList"
+#define kStateSetupWifiListing @"StateSetupWifiListing"
 
-#define kStateEnteringWifiPassword @"EnteringWifiPassword"
 
-#define kStateSelectedOpenWifi @"SelectedOpenWifi"
+#define kStateFailedToGetWifiListing @"StateFailedToGetWifiListing"
 
-#define kStateSameWifiAwaiting @"SameWifiAwaiting"
+#define kStateEnteringWifiPassword @"StateEnteringWifiPassword"
 
-#define kStateNormalStart @"NormalState"
+#define kStateSelectedOpenWifi @"StateSelectedOpenWifi"
 
-#define kStateBonjourDiscovery @"BonjourDiscovery"
+#define kStateSameWifiAwaiting @"StateSameWifiAwaiting"
+
+#define kStateNormalStart @"StateNormalStart"
+
+#define kStateBonjourDiscovery @"StateBonjourDiscovery"
 
 #define kStateBonjourDiscoveryFailed @"StateBonjourDiscoveryFailed"
 
-#define kStateFoundMultipleServices @"FoundMultipleServices"
+#define kStateFoundMultipleServices @"StateFoundMultipleServices"
 
-#define kStateServiceResolving @"ServiceResolving"
+#define kStateServiceResolving @"StateServiceResolving"
 
-#define kStateAddressResolved @"AddressResolved"
+#define kStateAddressResolved @"StateAddressResolved"
 
-#define kStateSocketConnected @"SocketConnected"
+#define kStateSocketConnected @"StateSocketConnected"
 
-#define kStateSetupSocketConnected @"CodeVerificationStart"
+#define kStateSetupSocketConnected @"StateSetupSocketConnected"
 
 
 // Events definitions

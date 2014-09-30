@@ -10,6 +10,8 @@
 #import "Proto.pb.h"
 #import "ProtoHelper.h"
 #import "WiFiListViewController.h"
+#import "TKState.h"
+#import "IAStateMachine.h"
 
 @interface VerifyInAiRViewController ()
 
@@ -24,17 +26,23 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
   if (self) {
-    // Custom initialization
+    [self configureStateMachine];
   }
   return self;
 }
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-  for (UIView *aView in views) {
-    aView.alpha = 0.0;
-  }
   [self requestConfirmationCode];
+}
+
+- (void)configureStateMachine {
+  TKState *wifiListingState = [[IAStateMachine sharedStateMachine] stateNamed:kStateSetupWifiListing];
+  [wifiListingState setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+    WiFiListViewController *wifiListVC = [[WiFiListViewController alloc] init];
+    [EventCenter defaultCenter].delegate = wifiListVC;
+    [self.navigationController pushViewController:wifiListVC animated:NO];    
+  }];
 }
 
 
@@ -47,15 +55,19 @@
 }
 
 - (IBAction)noButtonPressed:(id)sender {
+  NSError *error = nil;
+  [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupFailedToRetrieveConfirmationCode userInfo:nil error:&error];
   [self.navigationController popViewControllerAnimated:NO];
 }
 
 
 - (IBAction)yesButtonPressed:(id)sender
 {
-  WiFiListViewController *wifiListVC = [[WiFiListViewController alloc] init];
-  [EventCenter defaultCenter].delegate = wifiListVC;
-  [self.navigationController pushViewController:wifiListVC animated:NO];
+  NSError *error = nil;
+  [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupSameCodeVerified userInfo:nil error:&error];
+  if (error) {
+    NSLog(@"yesButtonPressed- ERROR: %@", error);
+  }
 }
 
 
@@ -77,6 +89,11 @@
         }
       } completion:NULL];
 
+      NSError *error = nil;
+      [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupCodeVerificationReceived userInfo:nil error:&error];
+      if (error) {
+        NSLog(@"eventCenter: receivedEvent:- ERROR: %@", error);
+      }
       break;
     }
     default:
