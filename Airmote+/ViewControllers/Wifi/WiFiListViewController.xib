@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="14A343f" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="14A361c" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
@@ -16,11 +16,11 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="760" text="Connect your InAiR device to one of following WiFi:" lineBreakMode="tailTruncation" numberOfLines="9" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="130" translatesAutoresizingMaskIntoConstraints="NO" id="ZmT-BN-ioq">
-                    <rect key="frame" x="160" y="227" width="130" height="88"/>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="760" text="Connect your InAiR device to:" lineBreakMode="tailTruncation" numberOfLines="9" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="130" translatesAutoresizingMaskIntoConstraints="NO" id="ZmT-BN-ioq">
+                    <rect key="frame" x="160" y="105" width="150" height="88"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="88" id="S4b-sR-Woj"/>
-                        <constraint firstAttribute="width" constant="130" id="tL9-73-XuQ"/>
+                        <constraint firstAttribute="width" constant="150" id="tL9-73-XuQ"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="19"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -47,9 +47,9 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="751" text="SELECT AND JOIN" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PC6-zB-xB2">
-                    <rect key="frame" x="160.5" y="76" width="110" height="90"/>
+                    <rect key="frame" x="160" y="30" width="150" height="60"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="110" id="eLc-eT-cky"/>
+                        <constraint firstAttribute="width" constant="150" id="eLc-eT-cky"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="26"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -71,11 +71,12 @@
                     </connections>
                 </button>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="ulw-8x-kcX">
-                    <rect key="frame" x="160" y="196" width="150" height="288"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <rect key="frame" x="160" y="203" width="150" height="281"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="150" id="zPA-9F-zFf"/>
                     </constraints>
+                    <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="uDh-xr-V2s"/>
                         <outlet property="delegate" destination="-1" id="XMM-wh-VE0"/>
@@ -87,16 +88,16 @@
                 <constraint firstAttribute="centerY" secondItem="b7M-Hp-Y5F" secondAttribute="centerY" constant="13.5" id="4du-Oh-goM"/>
                 <constraint firstItem="PC6-zB-xB2" firstAttribute="leading" secondItem="ulw-8x-kcX" secondAttribute="leading" id="5C0-mF-zGe"/>
                 <constraint firstItem="lk9-Lm-fDG" firstAttribute="leading" secondItem="ulw-8x-kcX" secondAttribute="leading" id="6xt-6Z-Tdh"/>
-                <constraint firstItem="PC6-zB-xB2" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="76" id="7ee-5x-3A3"/>
+                <constraint firstItem="PC6-zB-xB2" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="30" id="7ee-5x-3A3"/>
                 <constraint firstItem="qJj-e9-x8K" firstAttribute="leading" secondItem="b7M-Hp-Y5F" secondAttribute="trailing" constant="4" id="87Y-9O-s5P"/>
-                <constraint firstItem="ulw-8x-kcX" firstAttribute="top" secondItem="PC6-zB-xB2" secondAttribute="bottom" constant="30" id="9ik-Xr-7SL"/>
+                <constraint firstItem="ZmT-BN-ioq" firstAttribute="top" secondItem="PC6-zB-xB2" secondAttribute="bottom" constant="15" id="Gh7-U9-pIx"/>
                 <constraint firstItem="ZmT-BN-ioq" firstAttribute="leading" secondItem="ulw-8x-kcX" secondAttribute="leading" id="LbD-94-OLX"/>
                 <constraint firstItem="b7M-Hp-Y5F" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="MYQ-Ti-bWi"/>
                 <constraint firstItem="lk9-Lm-fDG" firstAttribute="top" secondItem="ulw-8x-kcX" secondAttribute="bottom" constant="20" id="QGv-Mc-way"/>
-                <constraint firstItem="qJj-e9-x8K" firstAttribute="centerY" secondItem="ZmT-BN-ioq" secondAttribute="centerY" id="Vwj-kp-R6W"/>
                 <constraint firstAttribute="bottom" secondItem="lk9-Lm-fDG" secondAttribute="bottom" constant="20" id="gFN-3A-yGt"/>
-                <constraint firstItem="PC6-zB-xB2" firstAttribute="leading" secondItem="ZmT-BN-ioq" secondAttribute="leading" constant="0.5" id="kig-nW-psd"/>
+                <constraint firstItem="PC6-zB-xB2" firstAttribute="leading" secondItem="ZmT-BN-ioq" secondAttribute="leading" id="kig-nW-psd"/>
                 <constraint firstAttribute="centerY" secondItem="qJj-e9-x8K" secondAttribute="centerY" constant="13" id="maU-ay-M3R"/>
+                <constraint firstItem="ulw-8x-kcX" firstAttribute="top" secondItem="ZmT-BN-ioq" secondAttribute="bottom" constant="10" id="y0b-7E-T04"/>
                 <constraint firstItem="ZmT-BN-ioq" firstAttribute="leading" secondItem="b7M-Hp-Y5F" secondAttribute="trailing" constant="100" id="yZh-j3-P2O"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>

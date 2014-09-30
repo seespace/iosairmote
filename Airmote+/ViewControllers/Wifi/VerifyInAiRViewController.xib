@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="14A343f" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="14A361c" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VerifyInAiRViewController">
@@ -16,8 +16,8 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label appearanceType="aqua" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="760" lineBreakMode="tailTruncation" numberOfLines="9" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="130" translatesAutoresizingMaskIntoConstraints="NO" id="c3j-hh-J8V">
-                    <rect key="frame" x="160" y="157" width="130" height="175"/>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="760" lineBreakMode="tailTruncation" numberOfLines="9" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="130" translatesAutoresizingMaskIntoConstraints="NO" id="c3j-hh-J8V">
+                    <rect key="frame" x="160" y="146" width="130" height="197"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="130" id="FZJ-91-Rwz"/>
                     </constraints>
@@ -28,7 +28,7 @@ Make sure that the code that appears on your TV is the same as the one below:
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label appearanceType="aqua" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Setup" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="50" translatesAutoresizingMaskIntoConstraints="NO" id="D4a-vK-nd6">
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Setup" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="50" translatesAutoresizingMaskIntoConstraints="NO" id="D4a-vK-nd6">
                     <rect key="frame" x="10" y="246" width="50" height="49"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="50" id="V2x-xL-08s"/>
@@ -38,9 +38,8 @@ Make sure that the code that appears on your TV is the same as the one below:
                     <color key="textColor" red="0.6588235294" green="0.6588235294" blue="0.6588235294" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label appearanceType="aqua" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BCB-iP-YWI">
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BCB-iP-YWI">
                     <rect key="frame" x="64" y="206" width="90" height="130"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="130" id="Lot-UR-b9b"/>
                         <constraint firstAttribute="width" constant="90" id="QSH-KW-1ih"/>
@@ -49,9 +48,8 @@ Make sure that the code that appears on your TV is the same as the one below:
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label appearanceType="aqua" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="751" text="VERIFY" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qFW-1m-qPc">
-                    <rect key="frame" x="161" y="76" width="139" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="751" text="VERIFY" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qFW-1m-qPc">
+                    <rect key="frame" x="161" y="30" width="139" height="30"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="139" id="0sB-td-aIE"/>
                     </constraints>
@@ -59,9 +57,8 @@ Make sure that the code that appears on your TV is the same as the one below:
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label appearanceType="aqua" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="751" text="CODE" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iDv-kq-ab5">
-                    <rect key="frame" x="161" y="359" width="139" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="751" text="CODE" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iDv-kq-ab5">
+                    <rect key="frame" x="161" y="370" width="139" height="30"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="30" id="oll-Tp-qjV"/>
                         <constraint firstAttribute="width" constant="139" id="p9h-cN-iXt"/>
@@ -70,16 +67,14 @@ Make sure that the code that appears on your TV is the same as the one below:
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label appearanceType="aqua" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="IS THAT YOUR CODE" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="110" translatesAutoresizingMaskIntoConstraints="NO" id="nb4-DR-cFl">
-                    <rect key="frame" x="44" y="434" width="110" height="40"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="IS THAT YOUR CODE" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="110" translatesAutoresizingMaskIntoConstraints="NO" id="nb4-DR-cFl">
+                    <rect key="frame" x="44" y="434" width="110" height="39.5"/>
                     <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="17"/>
                     <color key="textColor" white="0.33605498120300753" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button appearanceType="aqua" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lf3-ki-52V">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lf3-ki-52V">
                     <rect key="frame" x="160" y="411" width="92" height="44"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="0cV-ed-tEo"/>
                         <constraint firstAttribute="width" constant="92" id="Occ-to-GPa"/>
@@ -93,9 +88,8 @@ Make sure that the code that appears on your TV is the same as the one below:
                         <action selector="yesButtonPressed:" destination="-1" eventType="touchUpInside" id="n7w-mS-SHY"/>
                     </connections>
                 </button>
-                <button appearanceType="aqua" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MsE-iX-Jp9">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MsE-iX-Jp9">
                     <rect key="frame" x="160" y="457" width="92" height="49"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="92" id="2pr-cc-Xm7"/>
                         <constraint firstAttribute="height" constant="49" id="a16-Sc-uq9"/>
@@ -120,7 +114,7 @@ Make sure that the code that appears on your TV is the same as the one below:
                 <constraint firstAttribute="centerX" secondItem="c3j-hh-J8V" secondAttribute="centerX" constant="-65" id="OO9-iW-yNe"/>
                 <constraint firstItem="c3j-hh-J8V" firstAttribute="leading" secondItem="iDv-kq-ab5" secondAttribute="leading" constant="-1" id="QLD-HN-cEI"/>
                 <constraint firstAttribute="centerX" secondItem="qFW-1m-qPc" secondAttribute="centerX" constant="-70.5" id="Qgu-2e-3d8"/>
-                <constraint firstItem="qFW-1m-qPc" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="76" id="U4c-ld-x2Q"/>
+                <constraint firstItem="qFW-1m-qPc" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="30" id="U4c-ld-x2Q"/>
                 <constraint firstItem="Lf3-ki-52V" firstAttribute="top" secondItem="nb4-DR-cFl" secondAttribute="top" constant="-23" id="VOb-cP-lcO"/>
                 <constraint firstItem="MsE-iX-Jp9" firstAttribute="top" secondItem="nb4-DR-cFl" secondAttribute="top" constant="23" id="XOI-ql-qfE"/>
                 <constraint firstAttribute="centerY" secondItem="D4a-vK-nd6" secondAttribute="centerY" constant="14" id="amk-do-AH1"/>
@@ -130,6 +124,12 @@ Make sure that the code that appears on your TV is the same as the one below:
                 <constraint firstItem="MsE-iX-Jp9" firstAttribute="leading" secondItem="Lf3-ki-52V" secondAttribute="leading" id="mPn-aK-dyA"/>
                 <constraint firstItem="BCB-iP-YWI" firstAttribute="leading" secondItem="D4a-vK-nd6" secondAttribute="trailing" constant="4" id="pum-8h-ka8"/>
             </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
         </view>
     </objects>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
 </document>

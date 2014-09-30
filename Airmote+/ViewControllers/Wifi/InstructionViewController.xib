@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="14A343f" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="14A361c" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="InstructionViewController">
@@ -38,9 +38,8 @@
                             <color key="textColor" red="0.6588235294117647" green="0.6588235294117647" blue="0.6588235294117647" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label appearanceType="aqua" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bA5-1l-f7M">
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bA5-1l-f7M">
                             <rect key="frame" x="64" y="211" width="80" height="120"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="120" id="2qC-QX-TxU"/>
                                 <constraint firstAttribute="width" constant="80" id="Pk8-ff-0Ic"/>
@@ -49,9 +48,8 @@
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label appearanceType="aqua" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="751" text="CONNECT" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xyV-KK-sLB">
-                            <rect key="frame" x="161" y="50" width="139" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="751" text="CONNECT" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xyV-KK-sLB">
+                            <rect key="frame" x="161" y="30" width="139" height="30"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="139" id="Xep-dk-9yy"/>
                             </constraints>
@@ -65,7 +63,7 @@
                         <constraint firstAttribute="centerY" secondItem="EoR-1c-t8l" secondAttribute="centerY" constant="13.5" id="0mT-nz-ATt"/>
                         <constraint firstItem="bA5-1l-f7M" firstAttribute="leading" secondItem="EoR-1c-t8l" secondAttribute="trailing" constant="4" id="DG4-Xl-TCP"/>
                         <constraint firstItem="y5X-h1-M8l" firstAttribute="leading" secondItem="EoR-1c-t8l" secondAttribute="trailing" constant="100" id="J41-QX-GsX"/>
-                        <constraint firstItem="xyV-KK-sLB" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="50" id="MeY-hN-4Xl"/>
+                        <constraint firstItem="xyV-KK-sLB" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="30" id="MeY-hN-4Xl"/>
                         <constraint firstAttribute="centerY" secondItem="bA5-1l-f7M" secondAttribute="centerY" constant="13" id="gKN-3i-1zj"/>
                         <constraint firstAttribute="centerX" secondItem="xyV-KK-sLB" secondAttribute="centerX" constant="-70.5" id="je1-C3-igl"/>
                         <constraint firstItem="y5X-h1-M8l" firstAttribute="leading" secondItem="bA5-1l-f7M" secondAttribute="trailing" constant="16" id="lwM-OR-WH6"/>
@@ -81,6 +79,12 @@
                 <constraint firstAttribute="trailing" secondItem="i5M-Pr-FkT" secondAttribute="trailing" id="O6z-Sk-mOW"/>
                 <constraint firstAttribute="bottom" secondItem="i5M-Pr-FkT" secondAttribute="bottom" id="kDy-sI-PHO"/>
             </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
         </view>
     </objects>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
 </document>
