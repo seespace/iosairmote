@@ -9,6 +9,8 @@
 #import <SVProgressHUD/SVProgressHUD.h>
 #import "EnterPasswordViewController.h"
 #import "ProtoHelper.h"
+#import "IAStateMachine.h"
+#import "TKState.h"
 
 @interface EnterPasswordViewController ()
 
@@ -35,6 +37,24 @@
   if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
     self.edgesForExtendedLayout = UIRectEdgeNone;
   [passwordTextField becomeFirstResponder];
+  [self configureStateMachine];
+}
+
+- (void)configureStateMachine {
+  [[[IAStateMachine sharedStateMachine] stateNamed:kStateSameWifiAwaiting] setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+    [SVProgressHUD showSuccessWithStatus:@"Connected"];
+    ConnectedConfirmationViewController *confirmationViewController = [[ConnectedConfirmationViewController alloc] init];
+    confirmationViewController.delegate = self;
+    confirmationViewController.networkSSID = self.networkSSID;
+    [self.navigationController presentViewController:confirmationViewController animated:YES completion:NULL];
+  }];
+
+  [[[IAStateMachine sharedStateMachine] stateNamed:kStateSetupWifiListing] setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
+    if ([[IAStateMachine sharedStateMachine] isInState:kStateEnteringWifiPassword]) {
+      [self.navigationController popViewControllerAnimated:NO];
+    }
+  }];
+
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -53,11 +73,7 @@
         }];
         
       } else {
-        [SVProgressHUD showSuccessWithStatus:@"Connected"];
-        ConnectedConfirmationViewController *confirmationViewController = [[ConnectedConfirmationViewController alloc] init];
-        confirmationViewController.delegate = self;
-        confirmationViewController.networkSSID = self.networkSSID;
-        [self.navigationController presentViewController:confirmationViewController animated:YES completion:NULL];
+        [[IAStateMachine sharedStateMachine] fireEvent:kEventUserConnectedToSecureWifi];
       }
     }
       break;
@@ -88,7 +104,7 @@
 }
 
 - (IBAction)backButtonPressed:(id)sender {
-  [self.navigationController popViewControllerAnimated:NO];
+  [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupBackToWifiListing];
 }
 
 @end
