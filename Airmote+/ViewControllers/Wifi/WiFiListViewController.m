@@ -15,7 +15,7 @@
 #import "IAStateMachine.h"
 #import "TKState.h"
 
-#define kWifiCellHeight 30
+#define kWifiCellHeight 38
 
 @interface WiFiListViewController ()
 
@@ -49,6 +49,7 @@
     });
   }
   [self configureStateMachine];
+  tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
 }
 
