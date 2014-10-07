@@ -145,8 +145,10 @@ BOOL PhaseIsValidValue(Phase value) {
 BOOL SetupPhaseIsValidValue(SetupPhase value) {
   switch (value) {
     case SetupPhaseRequestCode:
+    case SetupPhaseVerifyCode:
     case SetupPhaseRequestRename:
     case SetupPhaseRequestWifiScan:
+    case SetupPhaseRequestWifiSelect:
     case SetupPhaseRequestWifiConnect:
       return YES;
     default:
@@ -4445,6 +4447,7 @@ static WifiNetwork* defaultWifiNetworkInstance = nil;
 @property (strong) NSString* name;
 @property (strong) NSString* ssid;
 @property (strong) NSString* password;
+@property BOOL back;
 @end
 
 @implementation SetupRequestEvent
@@ -4477,6 +4480,18 @@ static WifiNetwork* defaultWifiNetworkInstance = nil;
   hasPassword_ = !!value_;
 }
 @synthesize password;
+- (BOOL) hasBack {
+  return !!hasBack_;
+}
+- (void) setHasBack:(BOOL) value_ {
+  hasBack_ = !!value_;
+}
+- (BOOL) back {
+  return !!back_;
+}
+- (void) setBack:(BOOL) value_ {
+  back_ = !!value_;
+}
 - (void) dealloc {
   self.name = nil;
   self.ssid = nil;
@@ -4488,6 +4503,7 @@ static WifiNetwork* defaultWifiNetworkInstance = nil;
     self.name = @"";
     self.ssid = @"";
     self.password = @"";
+    self.back = NO;
   }
   return self;
 }
@@ -4525,6 +4541,9 @@ static SetupRequestEvent* defaultSetupRequestEventInstance = nil;
   if (self.hasPassword) {
     [output writeString:4 value:self.password];
   }
+  if (self.hasBack) {
+    [output writeBool:5 value:self.back];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -4545,6 +4564,9 @@ static SetupRequestEvent* defaultSetupRequestEventInstance = nil;
   }
   if (self.hasPassword) {
     size_ += computeStringSize(4, self.password);
+  }
+  if (self.hasBack) {
+    size_ += computeBoolSize(5, self.back);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -4593,6 +4615,9 @@ static SetupRequestEvent* defaultSetupRequestEventInstance = nil;
   if (self.hasPassword) {
     [output appendFormat:@"%@%@: %@\n", indent, @"password", self.password];
   }
+  if (self.hasBack) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"back", [NSNumber numberWithBool:self.back]];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (BOOL) isEqual:(id)other {
@@ -4612,6 +4637,8 @@ static SetupRequestEvent* defaultSetupRequestEventInstance = nil;
       (!self.hasSsid || [self.ssid isEqual:otherMessage.ssid]) &&
       self.hasPassword == otherMessage.hasPassword &&
       (!self.hasPassword || [self.password isEqual:otherMessage.password]) &&
+      self.hasBack == otherMessage.hasBack &&
+      (!self.hasBack || self.back == otherMessage.back) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -4627,6 +4654,9 @@ static SetupRequestEvent* defaultSetupRequestEventInstance = nil;
   }
   if (self.hasPassword) {
     hashCode = hashCode * 31 + [self.password hash];
+  }
+  if (self.hasBack) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.back] hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -4686,6 +4716,9 @@ static SetupRequestEvent* defaultSetupRequestEventInstance = nil;
   if (other.hasPassword) {
     [self setPassword:other.password];
   }
+  if (other.hasBack) {
+    [self setBack:other.back];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -4726,6 +4759,10 @@ static SetupRequestEvent* defaultSetupRequestEventInstance = nil;
       }
       case 34: {
         [self setPassword:[input readString]];
+        break;
+      }
+      case 40: {
+        [self setBack:[input readBool]];
         break;
       }
     }
@@ -4793,6 +4830,22 @@ static SetupRequestEvent* defaultSetupRequestEventInstance = nil;
 - (SetupRequestEventBuilder*) clearPassword {
   result.hasPassword = NO;
   result.password = @"";
+  return self;
+}
+- (BOOL) hasBack {
+  return result.hasBack;
+}
+- (BOOL) back {
+  return result.back;
+}
+- (SetupRequestEventBuilder*) setBack:(BOOL) value {
+  result.hasBack = YES;
+  result.back = value;
+  return self;
+}
+- (SetupRequestEventBuilder*) clearBack {
+  result.hasBack = NO;
+  result.back = NO;
   return self;
 }
 @end

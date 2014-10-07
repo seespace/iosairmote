@@ -54,9 +54,11 @@ BOOL PhaseIsValidValue(Phase value);
 
 typedef enum {
   SetupPhaseRequestCode = 0,
-  SetupPhaseRequestRename = 1,
-  SetupPhaseRequestWifiScan = 2,
-  SetupPhaseRequestWifiConnect = 3,
+  SetupPhaseVerifyCode = 1,
+  SetupPhaseRequestRename = 2,
+  SetupPhaseRequestWifiScan = 3,
+  SetupPhaseRequestWifiSelect = 4,
+  SetupPhaseRequestWifiConnect = 5,
 } SetupPhase;
 
 BOOL SetupPhaseIsValidValue(SetupPhase value);
@@ -1048,10 +1050,12 @@ BOOL HandMotionEventStateIsValidValue(HandMotionEventState value);
 
 @interface SetupRequestEvent : PBGeneratedMessage {
 @private
+  BOOL hasBack_:1;
   BOOL hasName_:1;
   BOOL hasSsid_:1;
   BOOL hasPassword_:1;
   BOOL hasPhase_:1;
+  BOOL back_:1;
   NSString* name;
   NSString* ssid;
   NSString* password;
@@ -1061,10 +1065,12 @@ BOOL HandMotionEventStateIsValidValue(HandMotionEventState value);
 - (BOOL) hasName;
 - (BOOL) hasSsid;
 - (BOOL) hasPassword;
+- (BOOL) hasBack;
 @property (readonly) SetupPhase phase;
 @property (readonly, strong) NSString* name;
 @property (readonly, strong) NSString* ssid;
 @property (readonly, strong) NSString* password;
+- (BOOL) back;
 
 + (SetupRequestEvent*) defaultInstance;
 - (SetupRequestEvent*) defaultInstance;
@@ -1121,6 +1127,11 @@ BOOL HandMotionEventStateIsValidValue(HandMotionEventState value);
 - (NSString*) password;
 - (SetupRequestEventBuilder*) setPassword:(NSString*) value;
 - (SetupRequestEventBuilder*) clearPassword;
+
+- (BOOL) hasBack;
+- (BOOL) back;
+- (SetupRequestEventBuilder*) setBack:(BOOL) value;
+- (SetupRequestEventBuilder*) clearBack;
 @end
 
 @interface SetupResponseEvent : PBGeneratedMessage {

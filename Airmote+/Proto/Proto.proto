@@ -221,9 +221,11 @@ message OAuthResponseEvent {
 
 enum SetupPhase {
   REQUEST_CODE = 0;
-  REQUEST_RENAME = 1;
-  REQUEST_WIFI_SCAN = 2;
-  REQUEST_WIFI_CONNECT = 3;
+  VERIFY_CODE = 1;
+  REQUEST_RENAME = 2;
+  REQUEST_WIFI_SCAN = 3;
+  REQUEST_WIFI_SELECT = 4;
+  REQUEST_WIFI_CONNECT = 5;
 }
 
 message WifiNetwork {
@@ -246,6 +248,9 @@ message SetupRequestEvent {
   // wifi
   optional string ssid = 3;
   optional string password = 4;
+
+  // back or not
+  optional bool back = 5 [default = false];
 }
 
 message SetupResponseEvent {
