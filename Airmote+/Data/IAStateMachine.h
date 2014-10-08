@@ -20,6 +20,8 @@
 
 #define kStateSetupCodeVerification @"StateSetupCodeVerification"
 
+#define kStateSetupChangeName @"StateSetupChangeName"
+
 //#define kStateSetupConfirmationCodeReceived @"kStateSetupConfirmationCodeReceived"
 
 #define kStateSetupWifiListing @"StateSetupWifiListing"
@@ -51,49 +53,53 @@
 
 
 // Events definitions
-#define kEventSetupStart @"Setup: Start"
+#define kEventSetupStart @"EventSetupStart"
 
-#define kEventSetupDetectedInAirWifi @"Setup: Detected InAiR Wifi"
+#define kEventSetupDetectedInAirWifi @"EventSetupDetectedInAirWifi"
 
-#define kEventSetupFoundBonjourService @"Setup: Found InAir Service"
+#define kEventSetupFoundBonjourService @"EventSetupFoundBonjourService"
 
-#define kEventSetupServiceResolved @"Setup: Address Found"
+#define kEventSetupServiceResolved @"EventSetupServiceResolved"
 
-#define kEventSetupSocketConnected @"Setup: Socket Connected"
+#define kEventSetupSocketConnected @"EventSetupSocketConnected"
 
 #define kEventSetupFailedToConnectToSocket @"EventSetupFailedToConnectToSocket"
 
-#define kEventSetupCodeVerificationReceived @"Setup: Code verification received"
+#define kEventSetupCodeVerificationReceived @"EventSetupCodeVerificationReceived"
 
-#define kEventSetupSameCodeVerified @"Setup: Same code verified"
+#define kEventSetupSameCodeVerified @"EventSetupSameCodeVerified"
 
-#define kEventSetupUserSelectedOpenWifi @"Setup: User selected open wifi"
+#define kEventSetupNameChanged @"EventSetupNameChanged"
 
-#define kEventSetupUserSelectedSecureWifi @"Setup: User selected secure wifi"
+#define kEventSetupUserSelectedOpenWifi @"EventSetupUserSelectedOpenWifi"
 
-#define kEventUserConnectedToSecureWifi @"Setup: User conncected secure wifi"
+#define kEventSetupUserSelectedSecureWifi @"EventSetupUserSelectedSecureWifi"
 
-#define kEventSetupConnectedToTheSameNetwork @"Setup: Connected to the same network"
+#define kEventUserConnectedToSecureWifi @"EventUserConnectedToSecureWifi"
+
+#define kEventSetupConnectedToTheSameNetwork @"EventSetupConnectedToTheSameNetwork"
 
 #define kEventSetupFailedToRetrieveConfirmationCode @"EventSetupFailedToRetrieveConfirmationCode"
 
 #define kEventSetupBackToCodeVerification @"EventSetupBackToCodeVerification"
 
+#define kEventSetupBackToNameChanging @"EventSetupBackToNameChanging"
+
 #define kEventSetupBackToWifiListing @"EventSetupBackToWifiListing"
 
-#define kEventBonjourStart @"Start bonjour"
+#define kEventBonjourStart @"EventBonjourStart"
 
-#define kEventStartResolvingService @"Start resolving service"
+#define kEventStartResolvingService @"EventStartResolvingService"
 
-#define kEventFoundMultipleServices @"Found multiple services"
+#define kEventFoundMultipleServices @"EventFoundMultipleServices"
 
-#define kEventFailToConnectToInAiR @"Fail to connect to InAiR device"
+#define kEventFailToConnectToInAiR @"EventFailToConnectToInAiR"
 
-#define kEventServiceResolved @"Service Resolved"
+#define kEventServiceResolved @"kEventServiceResolved"
 
-#define kEventRealSocketConnected @"Socket Connected"
+#define kEventRealSocketConnected @"kEventRealSocketConnected"
 
-#define kEventStartNormalWorkFlow @"Start normal work flow"
+#define kEventStartNormalWorkFlow @"kEventStartNormalWorkFlow"
 
 @interface IAStateMachine : TKStateMachine
 + (IAStateMachine *)sharedStateMachine;
