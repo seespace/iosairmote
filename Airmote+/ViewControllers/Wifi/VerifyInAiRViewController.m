@@ -9,7 +9,6 @@
 #import "VerifyInAiRViewController.h"
 #import "Proto.pb.h"
 #import "ProtoHelper.h"
-#import "WiFiListViewController.h"
 #import "TKState.h"
 #import "IAStateMachine.h"    ]
 #import "ChangeNameViewController.h"
@@ -46,6 +45,12 @@
       [self.navigationController pushViewController:changeNameViewController animated:NO];
     }
   }];
+
+  [[[IAStateMachine sharedStateMachine] stateNamed:kStateSetupCodeVerification] setDidExitStateBlock:^(TKState *state, TKTransition *transition) {
+    if ([[IAStateMachine sharedStateMachine] isInState:kStateWifiSetupStart]) {
+      [self.navigationController popViewControllerAnimated:NO];
+    }
+  }];
 }
 
 
@@ -58,19 +63,13 @@
 }
 
 - (IBAction)noButtonPressed:(id)sender {
-  NSError *error = nil;
-  [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupFailedToRetrieveConfirmationCode userInfo:nil error:&error];
-  [self.navigationController popViewControllerAnimated:NO];
+  [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupFailedToRetrieveConfirmationCode];
 }
 
 
 - (IBAction)yesButtonPressed:(id)sender
 {
-  NSError *error = nil;
-  [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupSameCodeVerified userInfo:nil error:&error];
-  if (error) {
-    NSLog(@"yesButtonPressed- ERROR: %@", error);
-  }
+  [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupSameCodeVerified];
 }
 
 
@@ -91,12 +90,9 @@
           aView.alpha = 1.0;
         }
       } completion:NULL];
+      NSLog(@"eventCenter: receivedEvent");
+      [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupCodeVerificationReceived];
 
-      NSError *error = nil;
-      [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupCodeVerificationReceived userInfo:nil error:&error];
-      if (error) {
-        NSLog(@"eventCenter: receivedEvent:- ERROR: %@", error);
-      }
       break;
     }
     default:

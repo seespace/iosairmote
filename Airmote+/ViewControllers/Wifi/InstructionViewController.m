@@ -73,29 +73,25 @@
 
 
 - (void)didBecomeActive:(NSNotification *)notification {
-  
+
   [self connectIfNeeded];
 
 }
 
 - (void)connectIfNeeded {
 
-  NSError *error = nil;
   if ([EventCenter defaultCenter].isActive) {
-    [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupSocketConnected userInfo:nil error:&error];
+    [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupSocketConnected];
   } else {
     if ([WifiHelper isConnectedToInAiRWiFi]) {
-      [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupDetectedInAirWifi userInfo:nil error:&error];
+      [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupDetectedInAirWifi];
     } else {
-      [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupFailedToConnectToSocket userInfo:nil error:&error];
+      [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupFailedToConnectToSocket];
     }
   }
 
-  if (error) {
-    NSLog(@"connectIfNeeded - ERROR: %@", [error description]);
-  }
+  NSLog(@"connectIfNeeded");
 }
-
 
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -115,63 +111,45 @@
 }
 
 - (void)bonjourManagerFinishedDiscoveringServices:(NSArray *)services {
-//  isDiscoveringBonjourServices = NO;
-  NSError *error = nil;
   if ([services count]) {
-    
+
     _netService.delegate = nil;
     [_netService stop];
     _netService = services[0];
     _netService.delegate = self;
 
-    [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupFoundBonjourService userInfo:nil error:&error];
+    [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupFoundBonjourService];
   } else {
-    [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupFailedToConnectToSocket userInfo:nil error:&error];
+    [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupFailedToConnectToSocket];
   }
 
-  if (error) {
-
-    NSLog(@"bonjourManagerFinishedDiscoveringServices - ERROR: %@", [error description]);
-  }
-
+  NSLog(@"bonjourManagerFinishedDiscoveringServices");
 }
 
 - (void)bonjourManagerServiceNotFound {
-  NSError *error = nil;
-  [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupFailedToConnectToSocket userInfo:nil error:&error];
-  if (error) {
-    NSLog(@"bonjourManagerServiceNotFound - ERROR: %@", [error description]);
-  }
+  [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupFailedToConnectToSocket];
+  NSLog(@"bonjourManagerServiceNotFound");
 }
 
 
 - (void)netService:(NSNetService *)sender didNotResolve:(NSDictionary *)errorDict {
   NSLog(@"Failed to resolve address for service: %@", sender);
-
-  NSError *error = nil;
-  [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupFailedToConnectToSocket userInfo:nil error:&error];
-  if (error) {
-    NSLog(@"netService: didNotResolve: - ERROR: %@", [error description]);
-  }
+  [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupFailedToConnectToSocket];
 }
 
 
 - (void)netServiceDidResolveAddress:(NSNetService *)service {
-  NSError *error = nil;
-
   if ([service.addresses count]) {
     _netService.delegate = nil;
     _lastResolvedAddress = [(service.addresses)[0] socketAddress];
-    [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupServiceResolved userInfo:nil error:&error];
+    [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupServiceResolved];
 
   } else {
     _lastResolvedAddress = nil;
-      [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupFailedToConnectToSocket userInfo:nil error:&error];
-    }
-
-  if (error) {
-    NSLog(@"netServiceDidResolveAddress: - ERROR: %@", [error description]);
+    [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupFailedToConnectToSocket];
   }
+
+    NSLog(@"netServiceDidResolveAddress:");
 }
 
 
@@ -189,13 +167,9 @@
 }
 
 - (void)eventCenterDidConnectToHost:(NSString *)hostName {
-  NSError *error = nil;
 
-  [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupSocketConnected userInfo:nil error:&error];
-  if (error) {
-    NSLog(@"eventCenterDidConnectToHost: - ERROR: %@", [error description]);
-  }
-
+  [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupSocketConnected];
+  NSLog(@"eventCenterDidConnectToHost");
 }
 
 

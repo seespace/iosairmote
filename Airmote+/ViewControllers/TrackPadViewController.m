@@ -52,16 +52,8 @@ static const uint8_t kMotionShakeTag = 6;
 - (void)applicationDidBecomeActive {
   if ([lastConnectedHostName length] > 0) {
     if (![EventCenter defaultCenter].isActive) {
-      NSError *error = nil;
-      [[IAStateMachine sharedStateMachine] fireEvent:kEventFailToConnectToInAiR userInfo:nil error:&error];
-      if (error) {
-        NSLog(@"ERROR: %@", error);
-      }
-
-      [[IAStateMachine sharedStateMachine] fireEvent:kEventServiceResolved userInfo:nil error:&error];
-      if (error) {
-        NSLog(@"ERROR: %@", error);
-      }
+      [[IAStateMachine sharedStateMachine] fireEvent:kEventFailToConnectToInAiR]; //TODO double check why there 2 events
+      [[IAStateMachine sharedStateMachine] fireEvent:kEventServiceResolved];
     }
   } else {
     [self reconnectToServiceIfNeeded];
@@ -73,11 +65,7 @@ static const uint8_t kMotionShakeTag = 6;
   if (![EventCenter defaultCenter].isActive && [_services count]) {
     [self connectToAvailableServices];
   } else {
-    NSError *error = nil;
-    [[IAStateMachine sharedStateMachine] fireEvent:kEventBonjourStart userInfo:nil error:&error];
-    if (error) {
-      NSLog(@"ERROR: %@", error);
-    }
+    [[IAStateMachine sharedStateMachine] fireEvent:kEventBonjourStart];
   }
 }
 
@@ -86,11 +74,7 @@ static const uint8_t kMotionShakeTag = 6;
 
 - (void)bonjourManagerServiceNotFound {
   [SVProgressHUD showErrorWithStatus:@"InAiR devices not found."];
-  NSError *error = NULL;
-  [[IAStateMachine sharedStateMachine] fireEvent:kEventFailToConnectToInAiR userInfo:nil error:&error];
-  if (error) {
-    NSLog(@"Cannot fire event: [%@] - error: %@", kEventFailToConnectToInAiR, [error description]);
-  }
+  [[IAStateMachine sharedStateMachine] fireEvent:kEventFailToConnectToInAiR];
 }
 
 - (void)bonjourManagerFinishedDiscoveringServices:(NSArray *)services {
@@ -111,7 +95,7 @@ static const uint8_t kMotionShakeTag = 6;
 - (void)netService:(NSNetService *)sender didNotResolve:(NSDictionary *)errorDict {
   NSLog(@"Service is denied with Error: %@", errorDict);
   sender.delegate = nil;
-  [[IAStateMachine sharedStateMachine] fireEvent:kEventFailToConnectToInAiR userInfo:nil error:nil];
+  [[IAStateMachine sharedStateMachine] fireEvent:kEventFailToConnectToInAiR];
 }
 
 
@@ -119,7 +103,7 @@ static const uint8_t kMotionShakeTag = 6;
   NSString *address = [(service.addresses)[0] socketAddress];
   lastConnectedHostName = address;
   service.delegate = nil;
-  [[IAStateMachine sharedStateMachine] fireEvent:kEventServiceResolved userInfo:nil error:nil];
+  [[IAStateMachine sharedStateMachine] fireEvent:kEventServiceResolved];
 }
 
 
@@ -145,11 +129,7 @@ static const uint8_t kMotionShakeTag = 6;
   [socketConnected setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
     [SVProgressHUD showSuccessWithStatus:@"Connected"];
   }];
-  NSError *error = nil;
-  [[IAStateMachine sharedStateMachine] fireEvent:kEventRealSocketConnected userInfo:nil error:&error];
-  if (error) {
-    NSLog(@"ERROR: %@", error);
-  }
+  [[IAStateMachine sharedStateMachine] fireEvent:kEventRealSocketConnected];
 }
 
 - (void)eventCenterDidDisconnectFromHost:(NSString *)hostName withError:(NSError *)error {
@@ -180,18 +160,13 @@ static const uint8_t kMotionShakeTag = 6;
 #pragma mark - ActionSheet Delegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-  NSError *error = nil;
   if (buttonIndex != actionSheet.cancelButtonIndex) {
     _selectedService = _services[buttonIndex];
-    [[IAStateMachine sharedStateMachine] fireEvent:kEventStartResolvingService userInfo:nil error:&error];
+    [[IAStateMachine sharedStateMachine] fireEvent:kEventStartResolvingService];
   }
   else {
-    [[IAStateMachine sharedStateMachine] fireEvent:kEventFailToConnectToInAiR userInfo:nil error:&error];
+    [[IAStateMachine sharedStateMachine] fireEvent:kEventFailToConnectToInAiR];
   }
-  if (error) {
-    NSLog(@"ERROR: %@", error);
-  }
-
 }
 
 #pragma mark - AlertViewDelegate
@@ -275,9 +250,9 @@ static const uint8_t kMotionShakeTag = 6;
   IAStateMachine *stateMachine = [IAStateMachine sharedStateMachine];
   BOOL completeWifiSetup = [[NSUserDefaults standardUserDefaults] boolForKey:kWifiSetupKey];
   if (! completeWifiSetup) {
-    [stateMachine fireEvent:kEventSetupStart userInfo:nil error:nil];
+    [stateMachine fireEvent:kEventSetupStart];
   } else {
-    [stateMachine fireEvent:kEventStartNormalWorkFlow userInfo:nil error:nil];
+    [stateMachine fireEvent:kEventStartNormalWorkFlow];
   }
 }
 
@@ -335,27 +310,17 @@ static const uint8_t kMotionShakeTag = 6;
   [_bonjourManager start];
   [SVProgressHUD showWithStatus:@"Scanning..." maskType:SVProgressHUDMaskTypeBlack];
 
-  NSError *error = nil;
-  [[IAStateMachine sharedStateMachine] fireEvent:kEventBonjourStart userInfo:nil error:&error];
-  if (error) {
-    NSLog(@"ERROR: %@", error);
-  }
+  [[IAStateMachine sharedStateMachine] fireEvent:kEventBonjourStart];
 }
 
 
 - (void)connectToAvailableServices {
-  NSError *error = NULL;
   if (_services.count > 1) {
-    [[IAStateMachine sharedStateMachine] fireEvent:kEventFoundMultipleServices userInfo:nil error:&error];
+    [[IAStateMachine sharedStateMachine] fireEvent:kEventFoundMultipleServices];
   } else if (_services.count == 1) {
     _selectedService = _services[0];
-    [[IAStateMachine sharedStateMachine] fireEvent:kEventStartResolvingService userInfo:nil error:&error];
+    [[IAStateMachine sharedStateMachine] fireEvent:kEventStartResolvingService];
   }
-
-  if (error) {
-    NSLog(@"ERROR: %@", error);
-  }
-
 }
 
 
