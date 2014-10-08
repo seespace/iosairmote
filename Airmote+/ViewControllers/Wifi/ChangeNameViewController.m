@@ -10,6 +10,8 @@
 #import "WiFiListViewController.h"
 #import "Proto.pb.h"
 #import "ProtoHelper.h"
+#import "IAStateMachine.h"
+#import "TKState.h"
 
 @interface ChangeNameViewController ()
 
@@ -36,7 +38,24 @@
   }
   textField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 30)];
   textField.leftViewMode = UITextFieldViewModeAlways;
+  [self configureStateMachine];
+}
 
+- (void)configureStateMachine {
+  [[[IAStateMachine sharedStateMachine] stateNamed:kStateSetupChangeName] setDidExitStateBlock:^(TKState *state, TKTransition *transition) {
+    if ([[IAStateMachine sharedStateMachine] isInState:kStateSetupWifiListing]) {
+      WiFiListViewController *wifiListVC = [[WiFiListViewController alloc] init];
+      [EventCenter defaultCenter].delegate = wifiListVC;
+      [self.navigationController pushViewController:wifiListVC animated:YES];
+    }
+  }];
+
+
+  [[[IAStateMachine sharedStateMachine] stateNamed:kStateSetupCodeVerification] setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
+    if ([[IAStateMachine sharedStateMachine] isInState:kStateSetupChangeName]) {
+      [self.navigationController popViewControllerAnimated:NO];
+    }
+  }];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -67,9 +86,7 @@
         [alert show];
       }
       else {
-        WiFiListViewController *wifiListVC = [[WiFiListViewController alloc] init];
-        [EventCenter defaultCenter].delegate = wifiListVC;
-        [self.navigationController pushViewController:wifiListVC animated:YES];
+        [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupNameChanged];
       }
       break;
     }
@@ -91,6 +108,9 @@
     Event *ev = [ProtoHelper setupRenameRequestWithName:name];
     [[EventCenter defaultCenter] sendEvent:ev withTag:0];
   }
+}
+- (IBAction)backPressed:(id)sender {
+  [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupBackToCodeVerification];
 }
 
 @end

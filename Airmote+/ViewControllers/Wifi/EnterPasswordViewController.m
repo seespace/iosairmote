@@ -52,8 +52,8 @@
     [self.navigationController presentViewController:confirmationViewController animated:YES completion:NULL];
   }];
 
-  [[[IAStateMachine sharedStateMachine] stateNamed:kStateSetupWifiListing] setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
-    if ([[IAStateMachine sharedStateMachine] isInState:kStateEnteringWifiPassword]) {
+  [[[IAStateMachine sharedStateMachine] stateNamed:kStateEnteringWifiPassword] setDidExitStateBlock:^(TKState *state, TKTransition *transition) {
+    if ([[IAStateMachine sharedStateMachine] isInState:kStateSetupWifiListing]) {
       [self.navigationController popViewControllerAnimated:NO];
     }
   }];

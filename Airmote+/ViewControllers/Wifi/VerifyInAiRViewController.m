@@ -11,7 +11,8 @@
 #import "ProtoHelper.h"
 #import "WiFiListViewController.h"
 #import "TKState.h"
-#import "IAStateMachine.h"
+#import "IAStateMachine.h"    ]
+#import "ChangeNameViewController.h"
 
 @interface VerifyInAiRViewController ()
 
@@ -37,11 +38,13 @@
 }
 
 - (void)configureStateMachine {
-  TKState *wifiListingState = [[IAStateMachine sharedStateMachine] stateNamed:kStateSetupWifiListing];
-  [wifiListingState setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
-    WiFiListViewController *wifiListVC = [[WiFiListViewController alloc] init];
-    [EventCenter defaultCenter].delegate = wifiListVC;
-    [self.navigationController pushViewController:wifiListVC animated:NO];    
+  TKState *nameChangingState = [[IAStateMachine sharedStateMachine] stateNamed:kStateSetupChangeName];
+  [nameChangingState setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
+    if ([[IAStateMachine sharedStateMachine] isInState:kStateSetupCodeVerification]) {
+      ChangeNameViewController *changeNameViewController = [[ChangeNameViewController alloc] init];
+      [[EventCenter defaultCenter] setDelegate:changeNameViewController];
+      [self.navigationController pushViewController:changeNameViewController animated:NO];
+    }
   }];
 }
 

@@ -61,7 +61,7 @@
     [self.navigationController pushViewController:enterPasswordVC animated:NO];
   }];
 
-  [[[IAStateMachine sharedStateMachine] stateNamed:kStateSetupCodeVerification] setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
+  [[[IAStateMachine sharedStateMachine] stateNamed:kStateSetupChangeName] setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
     if ([[[[IAStateMachine sharedStateMachine] currentState] name] isEqualToString:kStateSetupWifiListing]) {
       [self.navigationController popViewControllerAnimated:NO];
     }
@@ -180,7 +180,7 @@
 
 
 - (IBAction)backButtonPressed:(id)sender {
-  [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupBackToCodeVerification];
+  [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupBackToNameChanging];
 }
 
 - (void)didConnectedToTheSameNetworkWithInAirDevice {
