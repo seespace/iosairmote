@@ -18,6 +18,9 @@ message Event {
 
     SETUP_REQUEST = 9;
     SETUP_RESPONSE = 10;
+
+    TEXT_INPUT_REQUEST = 11;
+    TEXT_INPUT_RESPONSE = 12;
   }
 
   required Type type = 1;
@@ -268,4 +271,35 @@ message SetupResponseEvent {
 
   // wifi list
   repeated WifiNetwork wifi_networks = 5;
+}
+
+message TextInputRequestEvent {
+  extend Event {
+    required TextInputRequestEvent event = 110;
+  }
+
+  enum Type {
+    TEXT = 0;
+    PASSWORD = 1;
+  }
+
+  required Type type = 1 [default = TEXT];
+  optional int32 max_length = 2;
+}
+
+message TextInputResponseEvent {
+  extend Event {
+    required TextInputResponseEvent event = 111;
+  }
+
+  enum State {
+    BEGAN = 0;
+    CHANGED = 1;
+    ENDED = 2;
+    CANCELLED = 3;
+  }
+
+  required State state = 1;
+  required string text = 2;
+  optional bool encrypted = 3 [default = false];
 }

@@ -14,6 +14,8 @@ static id<PBExtensionField> OAuthRequestEvent_event = nil;
 static id<PBExtensionField> OAuthResponseEvent_event = nil;
 static id<PBExtensionField> SetupRequestEvent_event = nil;
 static id<PBExtensionField> SetupResponseEvent_event = nil;
+static id<PBExtensionField> TextInputRequestEvent_event = nil;
+static id<PBExtensionField> TextInputResponseEvent_event = nil;
 static PBExtensionRegistry* extensionRegistry = nil;
 + (PBExtensionRegistry*) extensionRegistry {
   return extensionRegistry;
@@ -111,6 +113,24 @@ static PBExtensionRegistry* extensionRegistry = nil;
                                         isRepeated:NO
                                           isPacked:NO
                             isMessageSetWireFormat:NO];
+    TextInputRequestEvent_event =
+      [PBConcreteExtensionField extensionWithType:PBExtensionTypeMessage
+                                     extendedClass:[Event class]
+                                       fieldNumber:110
+                                      defaultValue:[TextInputRequestEvent defaultInstance]
+                               messageOrGroupClass:[TextInputRequestEvent class]
+                                        isRepeated:NO
+                                          isPacked:NO
+                            isMessageSetWireFormat:NO];
+    TextInputResponseEvent_event =
+      [PBConcreteExtensionField extensionWithType:PBExtensionTypeMessage
+                                     extendedClass:[Event class]
+                                       fieldNumber:111
+                                      defaultValue:[TextInputResponseEvent defaultInstance]
+                               messageOrGroupClass:[TextInputResponseEvent class]
+                                        isRepeated:NO
+                                          isPacked:NO
+                            isMessageSetWireFormat:NO];
     PBMutableExtensionRegistry* registry = [PBMutableExtensionRegistry registry];
     [self registerAllExtensions:registry];
     extensionRegistry = registry;
@@ -127,6 +147,8 @@ static PBExtensionRegistry* extensionRegistry = nil;
   [registry addExtension:OAuthResponseEvent_event];
   [registry addExtension:SetupRequestEvent_event];
   [registry addExtension:SetupResponseEvent_event];
+  [registry addExtension:TextInputRequestEvent_event];
+  [registry addExtension:TextInputResponseEvent_event];
 }
 @end
 
@@ -426,6 +448,8 @@ BOOL EventTypeIsValidValue(EventType value) {
     case EventTypeOauthResponse:
     case EventTypeSetupRequest:
     case EventTypeSetupResponse:
+    case EventTypeTextInputRequest:
+    case EventTypeTextInputResponse:
       return YES;
     default:
       return NO;
@@ -5278,6 +5302,605 @@ static SetupResponseEvent* defaultSetupResponseEventInstance = nil;
 }
 - (SetupResponseEventBuilder *)clearWifiNetworks {
   result.wifiNetworksArray = nil;
+  return self;
+}
+@end
+
+@interface TextInputRequestEvent ()
+@property TextInputRequestEventType type;
+@property SInt32 maxLength;
+@end
+
+@implementation TextInputRequestEvent
+
+- (BOOL) hasType {
+  return !!hasType_;
+}
+- (void) setHasType:(BOOL) value_ {
+  hasType_ = !!value_;
+}
+@synthesize type;
+- (BOOL) hasMaxLength {
+  return !!hasMaxLength_;
+}
+- (void) setHasMaxLength:(BOOL) value_ {
+  hasMaxLength_ = !!value_;
+}
+@synthesize maxLength;
+- (void) dealloc {
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.type = TextInputRequestEventTypeText;
+    self.maxLength = 0;
+  }
+  return self;
+}
++ (id<PBExtensionField>) event {
+  return TextInputRequestEvent_event;
+}
+static TextInputRequestEvent* defaultTextInputRequestEventInstance = nil;
++ (void) initialize {
+  if (self == [TextInputRequestEvent class]) {
+    defaultTextInputRequestEventInstance = [[TextInputRequestEvent alloc] init];
+  }
+}
++ (TextInputRequestEvent*) defaultInstance {
+  return defaultTextInputRequestEventInstance;
+}
+- (TextInputRequestEvent*) defaultInstance {
+  return defaultTextInputRequestEventInstance;
+}
+- (BOOL) isInitialized {
+  if (!self.hasType) {
+    return NO;
+  }
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasType) {
+    [output writeEnum:1 value:self.type];
+  }
+  if (self.hasMaxLength) {
+    [output writeInt32:2 value:self.maxLength];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (SInt32) serializedSize {
+  __block SInt32 size_ = memoizedSerializedSize;
+  if (size_ != -1) {
+    return size_;
+  }
+
+  size_ = 0;
+  if (self.hasType) {
+    size_ += computeEnumSize(1, self.type);
+  }
+  if (self.hasMaxLength) {
+    size_ += computeInt32Size(2, self.maxLength);
+  }
+  size_ += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size_;
+  return size_;
+}
++ (TextInputRequestEvent*) parseFromData:(NSData*) data {
+  return (TextInputRequestEvent*)[[[TextInputRequestEvent builder] mergeFromData:data] build];
+}
++ (TextInputRequestEvent*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (TextInputRequestEvent*)[[[TextInputRequestEvent builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (TextInputRequestEvent*) parseFromInputStream:(NSInputStream*) input {
+  return (TextInputRequestEvent*)[[[TextInputRequestEvent builder] mergeFromInputStream:input] build];
+}
++ (TextInputRequestEvent*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (TextInputRequestEvent*)[[[TextInputRequestEvent builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (TextInputRequestEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (TextInputRequestEvent*)[[[TextInputRequestEvent builder] mergeFromCodedInputStream:input] build];
+}
++ (TextInputRequestEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (TextInputRequestEvent*)[[[TextInputRequestEvent builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (TextInputRequestEventBuilder*) builder {
+  return [[TextInputRequestEventBuilder alloc] init];
+}
++ (TextInputRequestEventBuilder*) builderWithPrototype:(TextInputRequestEvent*) prototype {
+  return [[TextInputRequestEvent builder] mergeFrom:prototype];
+}
+- (TextInputRequestEventBuilder*) builder {
+  return [TextInputRequestEvent builder];
+}
+- (TextInputRequestEventBuilder*) toBuilder {
+  return [TextInputRequestEvent builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasType) {
+    [output appendFormat:@"%@%@: %d\n", indent, @"type", self.type];
+  }
+  if (self.hasMaxLength) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"maxLength", [NSNumber numberWithInteger:self.maxLength]];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[TextInputRequestEvent class]]) {
+    return NO;
+  }
+  TextInputRequestEvent *otherMessage = other;
+  return
+      self.hasType == otherMessage.hasType &&
+      (!self.hasType || self.type == otherMessage.type) &&
+      self.hasMaxLength == otherMessage.hasMaxLength &&
+      (!self.hasMaxLength || self.maxLength == otherMessage.maxLength) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  __block NSUInteger hashCode = 7;
+  if (self.hasType) {
+    hashCode = hashCode * 31 + self.type;
+  }
+  if (self.hasMaxLength) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInteger:self.maxLength] hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+BOOL TextInputRequestEventTypeIsValidValue(TextInputRequestEventType value) {
+  switch (value) {
+    case TextInputRequestEventTypeText:
+    case TextInputRequestEventTypePassword:
+      return YES;
+    default:
+      return NO;
+  }
+}
+@interface TextInputRequestEventBuilder()
+@property (strong) TextInputRequestEvent* result;
+@end
+
+@implementation TextInputRequestEventBuilder
+@synthesize result;
+- (void) dealloc {
+  self.result = nil;
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.result = [[TextInputRequestEvent alloc] init];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return result;
+}
+- (TextInputRequestEventBuilder*) clear {
+  self.result = [[TextInputRequestEvent alloc] init];
+  return self;
+}
+- (TextInputRequestEventBuilder*) clone {
+  return [TextInputRequestEvent builderWithPrototype:result];
+}
+- (TextInputRequestEvent*) defaultInstance {
+  return [TextInputRequestEvent defaultInstance];
+}
+- (TextInputRequestEvent*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (TextInputRequestEvent*) buildPartial {
+  TextInputRequestEvent* returnMe = result;
+  self.result = nil;
+  return returnMe;
+}
+- (TextInputRequestEventBuilder*) mergeFrom:(TextInputRequestEvent*) other {
+  if (other == [TextInputRequestEvent defaultInstance]) {
+    return self;
+  }
+  if (other.hasType) {
+    [self setType:other.type];
+  }
+  if (other.hasMaxLength) {
+    [self setMaxLength:other.maxLength];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (TextInputRequestEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (TextInputRequestEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    SInt32 tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 8: {
+        TextInputRequestEventType value = (TextInputRequestEventType)[input readEnum];
+        if (TextInputRequestEventTypeIsValidValue(value)) {
+          [self setType:value];
+        } else {
+          [unknownFields mergeVarintField:1 value:value];
+        }
+        break;
+      }
+      case 16: {
+        [self setMaxLength:[input readInt32]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasType {
+  return result.hasType;
+}
+- (TextInputRequestEventType) type {
+  return result.type;
+}
+- (TextInputRequestEventBuilder*) setType:(TextInputRequestEventType) value {
+  result.hasType = YES;
+  result.type = value;
+  return self;
+}
+- (TextInputRequestEventBuilder*) clearType {
+  result.hasType = NO;
+  result.type = TextInputRequestEventTypeText;
+  return self;
+}
+- (BOOL) hasMaxLength {
+  return result.hasMaxLength;
+}
+- (SInt32) maxLength {
+  return result.maxLength;
+}
+- (TextInputRequestEventBuilder*) setMaxLength:(SInt32) value {
+  result.hasMaxLength = YES;
+  result.maxLength = value;
+  return self;
+}
+- (TextInputRequestEventBuilder*) clearMaxLength {
+  result.hasMaxLength = NO;
+  result.maxLength = 0;
+  return self;
+}
+@end
+
+@interface TextInputResponseEvent ()
+@property TextInputResponseEventState state;
+@property (strong) NSString* text;
+@property BOOL encrypted;
+@end
+
+@implementation TextInputResponseEvent
+
+- (BOOL) hasState {
+  return !!hasState_;
+}
+- (void) setHasState:(BOOL) value_ {
+  hasState_ = !!value_;
+}
+@synthesize state;
+- (BOOL) hasText {
+  return !!hasText_;
+}
+- (void) setHasText:(BOOL) value_ {
+  hasText_ = !!value_;
+}
+@synthesize text;
+- (BOOL) hasEncrypted {
+  return !!hasEncrypted_;
+}
+- (void) setHasEncrypted:(BOOL) value_ {
+  hasEncrypted_ = !!value_;
+}
+- (BOOL) encrypted {
+  return !!encrypted_;
+}
+- (void) setEncrypted:(BOOL) value_ {
+  encrypted_ = !!value_;
+}
+- (void) dealloc {
+  self.text = nil;
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.state = TextInputResponseEventStateBegan;
+    self.text = @"";
+    self.encrypted = NO;
+  }
+  return self;
+}
++ (id<PBExtensionField>) event {
+  return TextInputResponseEvent_event;
+}
+static TextInputResponseEvent* defaultTextInputResponseEventInstance = nil;
++ (void) initialize {
+  if (self == [TextInputResponseEvent class]) {
+    defaultTextInputResponseEventInstance = [[TextInputResponseEvent alloc] init];
+  }
+}
++ (TextInputResponseEvent*) defaultInstance {
+  return defaultTextInputResponseEventInstance;
+}
+- (TextInputResponseEvent*) defaultInstance {
+  return defaultTextInputResponseEventInstance;
+}
+- (BOOL) isInitialized {
+  if (!self.hasState) {
+    return NO;
+  }
+  if (!self.hasText) {
+    return NO;
+  }
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasState) {
+    [output writeEnum:1 value:self.state];
+  }
+  if (self.hasText) {
+    [output writeString:2 value:self.text];
+  }
+  if (self.hasEncrypted) {
+    [output writeBool:3 value:self.encrypted];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (SInt32) serializedSize {
+  __block SInt32 size_ = memoizedSerializedSize;
+  if (size_ != -1) {
+    return size_;
+  }
+
+  size_ = 0;
+  if (self.hasState) {
+    size_ += computeEnumSize(1, self.state);
+  }
+  if (self.hasText) {
+    size_ += computeStringSize(2, self.text);
+  }
+  if (self.hasEncrypted) {
+    size_ += computeBoolSize(3, self.encrypted);
+  }
+  size_ += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size_;
+  return size_;
+}
++ (TextInputResponseEvent*) parseFromData:(NSData*) data {
+  return (TextInputResponseEvent*)[[[TextInputResponseEvent builder] mergeFromData:data] build];
+}
++ (TextInputResponseEvent*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (TextInputResponseEvent*)[[[TextInputResponseEvent builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (TextInputResponseEvent*) parseFromInputStream:(NSInputStream*) input {
+  return (TextInputResponseEvent*)[[[TextInputResponseEvent builder] mergeFromInputStream:input] build];
+}
++ (TextInputResponseEvent*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (TextInputResponseEvent*)[[[TextInputResponseEvent builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (TextInputResponseEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (TextInputResponseEvent*)[[[TextInputResponseEvent builder] mergeFromCodedInputStream:input] build];
+}
++ (TextInputResponseEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (TextInputResponseEvent*)[[[TextInputResponseEvent builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (TextInputResponseEventBuilder*) builder {
+  return [[TextInputResponseEventBuilder alloc] init];
+}
++ (TextInputResponseEventBuilder*) builderWithPrototype:(TextInputResponseEvent*) prototype {
+  return [[TextInputResponseEvent builder] mergeFrom:prototype];
+}
+- (TextInputResponseEventBuilder*) builder {
+  return [TextInputResponseEvent builder];
+}
+- (TextInputResponseEventBuilder*) toBuilder {
+  return [TextInputResponseEvent builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasState) {
+    [output appendFormat:@"%@%@: %d\n", indent, @"state", self.state];
+  }
+  if (self.hasText) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"text", self.text];
+  }
+  if (self.hasEncrypted) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"encrypted", [NSNumber numberWithBool:self.encrypted]];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[TextInputResponseEvent class]]) {
+    return NO;
+  }
+  TextInputResponseEvent *otherMessage = other;
+  return
+      self.hasState == otherMessage.hasState &&
+      (!self.hasState || self.state == otherMessage.state) &&
+      self.hasText == otherMessage.hasText &&
+      (!self.hasText || [self.text isEqual:otherMessage.text]) &&
+      self.hasEncrypted == otherMessage.hasEncrypted &&
+      (!self.hasEncrypted || self.encrypted == otherMessage.encrypted) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  __block NSUInteger hashCode = 7;
+  if (self.hasState) {
+    hashCode = hashCode * 31 + self.state;
+  }
+  if (self.hasText) {
+    hashCode = hashCode * 31 + [self.text hash];
+  }
+  if (self.hasEncrypted) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.encrypted] hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+BOOL TextInputResponseEventStateIsValidValue(TextInputResponseEventState value) {
+  switch (value) {
+    case TextInputResponseEventStateBegan:
+    case TextInputResponseEventStateChanged:
+    case TextInputResponseEventStateEnded:
+    case TextInputResponseEventStateCancelled:
+      return YES;
+    default:
+      return NO;
+  }
+}
+@interface TextInputResponseEventBuilder()
+@property (strong) TextInputResponseEvent* result;
+@end
+
+@implementation TextInputResponseEventBuilder
+@synthesize result;
+- (void) dealloc {
+  self.result = nil;
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.result = [[TextInputResponseEvent alloc] init];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return result;
+}
+- (TextInputResponseEventBuilder*) clear {
+  self.result = [[TextInputResponseEvent alloc] init];
+  return self;
+}
+- (TextInputResponseEventBuilder*) clone {
+  return [TextInputResponseEvent builderWithPrototype:result];
+}
+- (TextInputResponseEvent*) defaultInstance {
+  return [TextInputResponseEvent defaultInstance];
+}
+- (TextInputResponseEvent*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (TextInputResponseEvent*) buildPartial {
+  TextInputResponseEvent* returnMe = result;
+  self.result = nil;
+  return returnMe;
+}
+- (TextInputResponseEventBuilder*) mergeFrom:(TextInputResponseEvent*) other {
+  if (other == [TextInputResponseEvent defaultInstance]) {
+    return self;
+  }
+  if (other.hasState) {
+    [self setState:other.state];
+  }
+  if (other.hasText) {
+    [self setText:other.text];
+  }
+  if (other.hasEncrypted) {
+    [self setEncrypted:other.encrypted];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (TextInputResponseEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (TextInputResponseEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    SInt32 tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 8: {
+        TextInputResponseEventState value = (TextInputResponseEventState)[input readEnum];
+        if (TextInputResponseEventStateIsValidValue(value)) {
+          [self setState:value];
+        } else {
+          [unknownFields mergeVarintField:1 value:value];
+        }
+        break;
+      }
+      case 18: {
+        [self setText:[input readString]];
+        break;
+      }
+      case 24: {
+        [self setEncrypted:[input readBool]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasState {
+  return result.hasState;
+}
+- (TextInputResponseEventState) state {
+  return result.state;
+}
+- (TextInputResponseEventBuilder*) setState:(TextInputResponseEventState) value {
+  result.hasState = YES;
+  result.state = value;
+  return self;
+}
+- (TextInputResponseEventBuilder*) clearState {
+  result.hasState = NO;
+  result.state = TextInputResponseEventStateBegan;
+  return self;
+}
+- (BOOL) hasText {
+  return result.hasText;
+}
+- (NSString*) text {
+  return result.text;
+}
+- (TextInputResponseEventBuilder*) setText:(NSString*) value {
+  result.hasText = YES;
+  result.text = value;
+  return self;
+}
+- (TextInputResponseEventBuilder*) clearText {
+  result.hasText = NO;
+  result.text = @"";
+  return self;
+}
+- (BOOL) hasEncrypted {
+  return result.hasEncrypted;
+}
+- (BOOL) encrypted {
+  return result.encrypted;
+}
+- (TextInputResponseEventBuilder*) setEncrypted:(BOOL) value {
+  result.hasEncrypted = YES;
+  result.encrypted = value;
+  return self;
+}
+- (TextInputResponseEventBuilder*) clearEncrypted {
+  result.hasEncrypted = NO;
+  result.encrypted = NO;
   return self;
 }
 @end

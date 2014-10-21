@@ -96,4 +96,7 @@
 + (Event *)setupWifiConnectRequestWithSSID:(NSString *)ssid
                                   password:(NSString *)password;
 
++ (Event *)textInputResponseWithState:(TextInputResponseEventState)state
+                                 text:(NSString *)text;
+
 @end

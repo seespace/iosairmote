@@ -26,6 +26,10 @@
 @class SetupRequestEventBuilder;
 @class SetupResponseEvent;
 @class SetupResponseEventBuilder;
+@class TextInputRequestEvent;
+@class TextInputRequestEventBuilder;
+@class TextInputResponseEvent;
+@class TextInputResponseEventBuilder;
 @class TouchEvent;
 @class TouchEventBuilder;
 @class WifiNetwork;
@@ -75,6 +79,8 @@ typedef enum {
   EventTypeOauthResponse = 8,
   EventTypeSetupRequest = 9,
   EventTypeSetupResponse = 10,
+  EventTypeTextInputRequest = 11,
+  EventTypeTextInputResponse = 12,
 } EventType;
 
 BOOL EventTypeIsValidValue(EventType value);
@@ -158,6 +164,22 @@ typedef enum {
 } HandMotionEventState;
 
 BOOL HandMotionEventStateIsValidValue(HandMotionEventState value);
+
+typedef enum {
+  TextInputRequestEventTypeText = 0,
+  TextInputRequestEventTypePassword = 1,
+} TextInputRequestEventType;
+
+BOOL TextInputRequestEventTypeIsValidValue(TextInputRequestEventType value);
+
+typedef enum {
+  TextInputResponseEventStateBegan = 0,
+  TextInputResponseEventStateChanged = 1,
+  TextInputResponseEventStateEnded = 2,
+  TextInputResponseEventStateCancelled = 3,
+} TextInputResponseEventState;
+
+BOOL TextInputResponseEventStateIsValidValue(TextInputResponseEventState value);
 
 
 @interface ProtoRoot : NSObject {
@@ -1218,6 +1240,133 @@ BOOL HandMotionEventStateIsValidValue(HandMotionEventState value);
 - (SetupResponseEventBuilder *)addWifiNetworks:(WifiNetwork*)value;
 - (SetupResponseEventBuilder *)setWifiNetworksArray:(NSArray *)array;
 - (SetupResponseEventBuilder *)clearWifiNetworks;
+@end
+
+@interface TextInputRequestEvent : PBGeneratedMessage {
+@private
+  BOOL hasMaxLength_:1;
+  BOOL hasType_:1;
+  SInt32 maxLength;
+  TextInputRequestEventType type;
+}
+- (BOOL) hasType;
+- (BOOL) hasMaxLength;
+@property (readonly) TextInputRequestEventType type;
+@property (readonly) SInt32 maxLength;
+
++ (TextInputRequestEvent*) defaultInstance;
+- (TextInputRequestEvent*) defaultInstance;
+
++ (id<PBExtensionField>) event;
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (TextInputRequestEventBuilder*) builder;
++ (TextInputRequestEventBuilder*) builder;
++ (TextInputRequestEventBuilder*) builderWithPrototype:(TextInputRequestEvent*) prototype;
+- (TextInputRequestEventBuilder*) toBuilder;
+
++ (TextInputRequestEvent*) parseFromData:(NSData*) data;
++ (TextInputRequestEvent*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (TextInputRequestEvent*) parseFromInputStream:(NSInputStream*) input;
++ (TextInputRequestEvent*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (TextInputRequestEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (TextInputRequestEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface TextInputRequestEventBuilder : PBGeneratedMessageBuilder {
+@private
+  TextInputRequestEvent* result;
+}
+
+- (TextInputRequestEvent*) defaultInstance;
+
+- (TextInputRequestEventBuilder*) clear;
+- (TextInputRequestEventBuilder*) clone;
+
+- (TextInputRequestEvent*) build;
+- (TextInputRequestEvent*) buildPartial;
+
+- (TextInputRequestEventBuilder*) mergeFrom:(TextInputRequestEvent*) other;
+- (TextInputRequestEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (TextInputRequestEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasType;
+- (TextInputRequestEventType) type;
+- (TextInputRequestEventBuilder*) setType:(TextInputRequestEventType) value;
+- (TextInputRequestEventBuilder*) clearType;
+
+- (BOOL) hasMaxLength;
+- (SInt32) maxLength;
+- (TextInputRequestEventBuilder*) setMaxLength:(SInt32) value;
+- (TextInputRequestEventBuilder*) clearMaxLength;
+@end
+
+@interface TextInputResponseEvent : PBGeneratedMessage {
+@private
+  BOOL hasEncrypted_:1;
+  BOOL hasText_:1;
+  BOOL hasState_:1;
+  BOOL encrypted_:1;
+  NSString* text;
+  TextInputResponseEventState state;
+}
+- (BOOL) hasState;
+- (BOOL) hasText;
+- (BOOL) hasEncrypted;
+@property (readonly) TextInputResponseEventState state;
+@property (readonly, strong) NSString* text;
+- (BOOL) encrypted;
+
++ (TextInputResponseEvent*) defaultInstance;
+- (TextInputResponseEvent*) defaultInstance;
+
++ (id<PBExtensionField>) event;
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (TextInputResponseEventBuilder*) builder;
++ (TextInputResponseEventBuilder*) builder;
++ (TextInputResponseEventBuilder*) builderWithPrototype:(TextInputResponseEvent*) prototype;
+- (TextInputResponseEventBuilder*) toBuilder;
+
++ (TextInputResponseEvent*) parseFromData:(NSData*) data;
++ (TextInputResponseEvent*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (TextInputResponseEvent*) parseFromInputStream:(NSInputStream*) input;
++ (TextInputResponseEvent*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (TextInputResponseEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (TextInputResponseEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface TextInputResponseEventBuilder : PBGeneratedMessageBuilder {
+@private
+  TextInputResponseEvent* result;
+}
+
+- (TextInputResponseEvent*) defaultInstance;
+
+- (TextInputResponseEventBuilder*) clear;
+- (TextInputResponseEventBuilder*) clone;
+
+- (TextInputResponseEvent*) build;
+- (TextInputResponseEvent*) buildPartial;
+
+- (TextInputResponseEventBuilder*) mergeFrom:(TextInputResponseEvent*) other;
+- (TextInputResponseEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (TextInputResponseEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasState;
+- (TextInputResponseEventState) state;
+- (TextInputResponseEventBuilder*) setState:(TextInputResponseEventState) value;
+- (TextInputResponseEventBuilder*) clearState;
+
+- (BOOL) hasText;
+- (NSString*) text;
+- (TextInputResponseEventBuilder*) setText:(NSString*) value;
+- (TextInputResponseEventBuilder*) clearText;
+
+- (BOOL) hasEncrypted;
+- (BOOL) encrypted;
+- (TextInputResponseEventBuilder*) setEncrypted:(BOOL) value;
+- (TextInputResponseEventBuilder*) clearEncrypted;
 @end
 
 

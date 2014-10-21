@@ -423,4 +423,24 @@ static ProtoHelper *instance;
   return [builder build];
 }
 
++ (Event *)textInputResponseWithState:(TextInputResponseEventState)state
+                                 text:(NSString *)text {
+  [self ensureInitialized];
+  
+  TextInputResponseEvent *event = [[[[[TextInputResponseEventBuilder alloc] init]
+       setState:state]
+       setText:text]
+       build];
+  
+  // Build actual event
+  EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.timestamp = 0;
+  builder.trackingAreaWidth = 0;
+  builder.trackingAreaHeight = 0;
+  builder.type = EventTypeTextInputResponse;
+  [builder setExtension:[TextInputResponseEvent event] value:event];
+  
+  return [builder build];
+}
+
 @end
