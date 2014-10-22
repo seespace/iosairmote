@@ -24,6 +24,9 @@
   NSString *lastConnectedHostName;
   Event *_oauthEvent;
   NSNetService *_selectedService;
+  __weak IBOutlet UIView *inputView;
+  __weak IBOutlet NSLayoutConstraint *inputViewTopConstrain;
+  __weak IBOutlet UITextView *plainText;
 }
 
 static const uint8_t kMotionShakeTag = 6;
@@ -45,6 +48,21 @@ static const uint8_t kMotionShakeTag = 6;
 
   [self configureStateMachine];
   [self fireStartupEvents];
+
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(keyboardWillShow:)
+                                               name:UIKeyboardWillShowNotification
+                                             object:nil];
+
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(keyboardWillHide:)
+                                               name:UIKeyboardWillHideNotification
+                                             object:nil];
+}
+
+- (void)showInputView {
+  plainText.text = @"";
+  [plainText becomeFirstResponder];
 }
 
 #pragma mark - AppDidBecomeActive
@@ -118,6 +136,8 @@ static const uint8_t kMotionShakeTag = 6;
       [self processOAuthRequest:event];
       break;
 
+    case EventTypeTextInputRequest:
+      [self showInputView];
     default:
       break;
   }
@@ -330,6 +350,65 @@ static const uint8_t kMotionShakeTag = 6;
   }
 
   return _webViewController;
+}
+
+#pragma mark - Show/Hide Keyboard
+
+
+- (void)keyboardWillHide:(NSNotification *)notification {
+  float duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+  UIViewAnimationCurve curve = (UIViewAnimationCurve) [[[notification userInfo] objectForKey:UIKeyboardAnimationCurveUserInfoKey] intValue];
+  UIViewAnimationOptions curveOption = (UIViewAnimationOptions) (curve << 16);
+  [UIView animateWithDuration:duration
+                        delay:0
+                      options:curveOption
+                   animations:^{
+                      inputViewTopConstrain.constant = - inputView.frame.size.height - 20;
+                     [[self view] layoutIfNeeded];
+
+                   } completion:NULL];
+}
+
+- (void)keyboardWillShow:(NSNotification *)notification {
+  float duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+  UIViewAnimationCurve curve = (UIViewAnimationCurve) [[[notification userInfo] objectForKey:UIKeyboardAnimationCurveUserInfoKey] intValue];
+  UIViewAnimationOptions curveOption = (UIViewAnimationOptions) (curve << 16);
+  [UIView animateWithDuration:duration
+                        delay:0
+                      options:curveOption
+                   animations:^{
+                     inputViewTopConstrain.constant = 40;
+                     [[self view] layoutIfNeeded];
+                   } completion:NULL];
+
+}
+
+
+- (IBAction)cancelButtonTapped:(id)sender {
+  Event *event = [ProtoHelper textInputResponseWithState:TextInputResponseEventStateCancelled text:plainText.text];
+  [[EventCenter defaultCenter] sendEvent:event withTag:0];
+  [self dismissInputView];
+}
+
+
+- (IBAction)sendButtonTapped:(id)sender {
+  [self dismissInputView];
+  Event *event = [ProtoHelper textInputResponseWithState:TextInputResponseEventStateEnded text:plainText.text];
+  [[EventCenter defaultCenter] sendEvent:event withTag:0];
+}
+
+- (void)dismissInputView {
+  [plainText resignFirstResponder];
+}
+
+- (void)textViewDidChange:(UITextView *)textView {
+  Event *event = [ProtoHelper textInputResponseWithState:TextInputResponseEventStateChanged text:plainText.text];
+  [[EventCenter defaultCenter] sendEvent:event withTag:0];
+}
+
+
+- (void)dealloc {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

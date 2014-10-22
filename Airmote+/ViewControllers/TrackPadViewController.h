@@ -15,7 +15,7 @@
 
 #define kWifiSetupKey @"enable_wifi_setup"
 @class TrackPadView;
-@interface TrackPadViewController : UIViewController <UIActionSheetDelegate, UIGestureRecognizerDelegate, UIWebViewDelegate, BonjourManagerDelegate, EventCenterDelegate, NSNetServiceDelegate>
+@interface TrackPadViewController : UIViewController <UIActionSheetDelegate, UIGestureRecognizerDelegate, UIWebViewDelegate, BonjourManagerDelegate, EventCenterDelegate, NSNetServiceDelegate, UITextViewDelegate>
 
 @property(nonatomic, strong) UIActionSheet *actionSheet;
 
