@@ -49,7 +49,7 @@
     ConnectedConfirmationViewController *confirmationViewController = [[ConnectedConfirmationViewController alloc] init];
     confirmationViewController.delegate = self;
     confirmationViewController.networkSSID = self.networkSSID;
-    [self.navigationController presentViewController:confirmationViewController animated:YES completion:NULL];
+    [self.navigationController pushViewController:confirmationViewController animated:NO];
   }];
 
   [[[IAStateMachine sharedStateMachine] stateNamed:kStateEnteringWifiPassword] setDidExitStateBlock:^(TKState *state, TKTransition *transition) {
