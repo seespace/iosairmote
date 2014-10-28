@@ -14,9 +14,9 @@
 			<key>Type</key>
 			<string>PSToggleSwitchSpecifier</string>
 			<key>Title</key>
-			<string>Wifi Setup</string>
+			<string>Require wifi setup</string>
 			<key>Key</key>
-			<string>enable_wifi_setup</string>
+			<string>require_wifi_setup</string>
 			<key>DefaultValue</key>
 			<false/>
 		</dict>

@@ -268,8 +268,8 @@ static const uint8_t kMotionShakeTag = 6;
 
 - (void)fireStartupEvents {
   IAStateMachine *stateMachine = [IAStateMachine sharedStateMachine];
-  BOOL completeWifiSetup = [[NSUserDefaults standardUserDefaults] boolForKey:kWifiSetupKey];
-  if (! completeWifiSetup) {
+  BOOL completeWifiSetup = [[NSUserDefaults standardUserDefaults] boolForKey:kRequireWifiSetup];
+  if (completeWifiSetup) {
     [stateMachine fireEvent:kEventSetupStart];
   } else {
     [stateMachine fireEvent:kEventStartNormalWorkFlow];

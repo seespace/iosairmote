@@ -13,7 +13,6 @@
 #import "BonjourManager.h"
 #import "EventCenter.h"
 
-#define kWifiSetupKey @"enable_wifi_setup"
 @class TrackPadView;
 @interface TrackPadViewController : UIViewController <UIActionSheetDelegate, UIGestureRecognizerDelegate, UIWebViewDelegate, BonjourManagerDelegate, EventCenterDelegate, NSNetServiceDelegate, UITextViewDelegate>
 

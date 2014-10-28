@@ -39,7 +39,7 @@
 - (void)configureStateMachine {
   // NOTE: we should only use willEnterStateBlock so that we don't mess up with setDidEnterStateBlock configured in TrackPadViewController
   [[[IAStateMachine sharedStateMachine] stateNamed:kStateSameWifiAwaiting] setWillExitStateBlock:^(TKState *state, TKTransition *transition) {
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"enable_wifi_setup"];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kRequireWifiSetup];
         [[NSNotificationCenter defaultCenter] postNotificationName:kInAirDeviceDidConnectToWifiNotification object:nil userInfo:nil];
         [self.navigationController.presentingViewController dismissViewControllerAnimated:NO completion:NULL];
   }];

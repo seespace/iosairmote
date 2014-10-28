@@ -16,13 +16,15 @@
 - (BOOL)application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+  if ([[NSUserDefaults standardUserDefaults] objectForKey:kRequireWifiSetup] == nil) {
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kRequireWifiSetup];
+  }
+  
     TrackPadViewController *viewController  = [[TrackPadViewController alloc] init];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
     self.window.rootViewController = navigationController;
     
     [self.window makeKeyAndVisible];
-
-  [IAStateMachine sharedStateMachine];
     return YES;
 }
 
