@@ -23,14 +23,14 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5pv-oF-CEP" userLabel="Seperator">
-                            <rect key="frame" x="158" y="0.0" width="4" height="568"/>
+                            <rect key="frame" x="158.5" y="0.0" width="3" height="568"/>
                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="4" id="ZRf-e2-Tox"/>
+                                <constraint firstAttribute="width" constant="3" id="ZRf-e2-Tox"/>
                             </constraints>
                         </view>
                     </subviews>
-                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" white="0.89967105263157909" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="5pv-oF-CEP" firstAttribute="top" secondItem="nKI-Hj-0zZ" secondAttribute="top" id="2ER-dj-PE3"/>
                         <constraint firstAttribute="centerX" secondItem="5pv-oF-CEP" secondAttribute="centerX" id="NMC-dg-ybL"/>
