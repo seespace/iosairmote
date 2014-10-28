@@ -52,6 +52,13 @@ static const uint8_t kOAuthTag = 12;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:NO];
+
+}
+
+
+- (void)viewWillDisappear:(BOOL)animated {
+  [self.navigationController setNavigationBarHidden:YES];
+  [self.navigationController setToolbarHidden:YES];
 }
 
 - (void)load {
