@@ -17,7 +17,7 @@
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   if ([[NSUserDefaults standardUserDefaults] objectForKey:kRequireWifiSetup] == nil) {
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kRequireWifiSetup];
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kRequireWifiSetup];
   }
   
     TrackPadViewController *viewController  = [[TrackPadViewController alloc] init];
