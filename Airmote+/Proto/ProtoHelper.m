@@ -44,7 +44,7 @@ static ProtoHelper *instance;
 }
 
 + (SInt64)now {
-  return (SInt64) [[NSDate date] timeIntervalSince1970] * 1000;
+  return (SInt64) ([[NSDate date] timeIntervalSince1970] * 1000);
 }
 
 + (Phase)phaseFromUITouchPhase:(UITouchPhase)phase {
