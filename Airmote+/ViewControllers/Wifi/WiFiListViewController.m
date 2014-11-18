@@ -82,9 +82,8 @@
   [IAConnection sharedConnection].delegate = self;
 }
 
-
-- (void)eventCenter:(EventCenter *)eventCenter receivedEvent:(Event *)event {
-
+- (void)didReceiveEvent:(Event *)event
+{
   [SVProgressHUD dismiss];
   SetupResponseEvent *ev = [event getExtension:[SetupResponseEvent event]];
 

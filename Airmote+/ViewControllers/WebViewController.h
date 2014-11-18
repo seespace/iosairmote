@@ -8,7 +8,6 @@
 
 #import "PBWebViewController.h"
 
-@class EventCenter;
 @class OAuthRequestEvent;
 @class Event;
 
@@ -16,6 +15,5 @@
 
 @property (strong, nonatomic) id<UIWebViewDelegate> delegate;
 
-@property(nonatomic, weak) EventCenter *eventCenter;
 @property(nonatomic, strong) Event *oauthEvent;
 @end

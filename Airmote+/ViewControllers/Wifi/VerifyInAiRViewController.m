@@ -78,7 +78,8 @@
   [[IAConnection sharedConnection] sendEvent:ev withTag:0];
 }
 
-- (void)eventCenter:(EventCenter *)eventCenter receivedEvent:(Event *)event {
+- (void)didReceiveEvent:(Event *)event
+{
   SetupResponseEvent *ev = [event getExtension:[SetupResponseEvent event]];
   NSString *confirmationCode = ev.code;
 
@@ -100,6 +101,5 @@
   }
 
 }
-
 
 @end

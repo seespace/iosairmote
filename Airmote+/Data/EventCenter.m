@@ -15,6 +15,7 @@ static const int kServicePort = 8989;
 static const uint8_t kSessionStartTag = 9;
 //static const uint8_t kSessionEndTag = 10;
 
+#define kMaxConnectingDuration 10.0
 @implementation EventCenter {
   NSString *lastConnectedHostName;
 }
@@ -42,7 +43,7 @@ static const uint8_t kSessionStartTag = 9;
 //    //Do nothing
 //  }
   
-  if (![_socket connectToHost:hostname onPort:kServicePort withTimeout:30.0 error:&err]) {
+  if (![_socket connectToHost:hostname onPort:kServicePort withTimeout:kMaxConnectingDuration error:&err]) {
     NSLog(@"Could not connect to %@. Error: %@", hostname, err);
     if (err.code == 1) {
       //TODO investigate we should handle errorCode == 1 as below

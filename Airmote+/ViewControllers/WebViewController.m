@@ -7,9 +7,9 @@
 //
 
 #import "WebViewController.h"
-#import "EventCenter.h"
 #import "ProtoHelper.h"
 #import "DDURLParser.h"
+#import "IAConnection.h"
 
 static const uint8_t kOAuthTag = 12;
 
@@ -78,7 +78,7 @@ static const uint8_t kOAuthTag = 12;
 {
     Event *ev = [ProtoHelper oauthResponseWithCode:code target:_oauthEvent.replyTo];
 
-    [_eventCenter sendEvent:ev withTag:kOAuthTag];
+    [[IAConnection sharedConnection] sendEvent:ev withTag:kOAuthTag];
     _oauthEvent = nil;
     [self clear];
 }

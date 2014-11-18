@@ -12,7 +12,6 @@
 #import "ProtoHelper.h"
 #import "IAStateMachine.h"
 #import "TKState.h"
-#import "IAConnection.h"
 
 @interface ChangeNameViewController ()
 
@@ -74,7 +73,8 @@
   // Dispose of any resources that can be recreated.
 }
 
-- (void)eventCenter:(EventCenter *)eventCenter receivedEvent:(Event *)event {
+- (void)didReceiveEvent:(Event *)event
+{
   SetupResponseEvent *ev = [event getExtension:[SetupResponseEvent event]];
   switch (ev.phase) {
     case SetupPhaseRequestRename: {
@@ -96,6 +96,7 @@
     default:
       break;
   }
+
 }
 
 

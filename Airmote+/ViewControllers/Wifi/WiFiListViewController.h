@@ -7,10 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "EventCenter.h"
 #import "ConnectedConfirmationViewController.h"
 #import "IAConnection.h"
 
-@interface WiFiListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, EventCenterDelegate, ConfirmationViewDelegate, IAConnectionDelegate>
+@interface WiFiListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, ConfirmationViewDelegate, IAConnectionDelegate>
 
 @end

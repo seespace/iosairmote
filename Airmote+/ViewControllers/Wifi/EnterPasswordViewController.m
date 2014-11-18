@@ -61,12 +61,11 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-  //TODO fix this
-//  [EventCenter defaultCenter].delegate = self;
-
+  [IAConnection sharedConnection].delegate = self;
 }
 
-- (void)eventCenter:(EventCenter *)eventCenter receivedEvent:(Event *)event {
+- (void)didReceiveEvent:(Event *)event
+{
   SetupResponseEvent *ev = [event getExtension:[SetupResponseEvent event]];
   switch (ev.phase ) {
     case SetupPhaseRequestWifiConnect: {
@@ -75,13 +74,13 @@
         [UIView animateWithDuration:0.6 animations:^{
           wrongPasswordLabel.alpha = 1.0;
         }];
-        
+
       } else {
         [[IAStateMachine sharedStateMachine] fireEvent:kEventUserConnectedToSecureWifi];
       }
     }
       break;
-      
+
     default:
       break;
   }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14B23" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
@@ -23,18 +23,34 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5pv-oF-CEP" userLabel="Seperator">
-                            <rect key="frame" x="158.5" y="0.0" width="3" height="568"/>
+                            <rect key="frame" x="158" y="0.0" width="3" height="568"/>
                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="3" id="ZRf-e2-Tox"/>
                             </constraints>
                         </view>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VVv-W2-25p">
+                            <rect key="frame" x="269" y="1" width="50" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="50" id="KEz-w6-l8y"/>
+                                <constraint firstAttribute="height" constant="50" id="uKZ-yx-tes"/>
+                            </constraints>
+                            <inset key="imageEdgeInsets" minX="12" minY="12" maxX="12" maxY="12"/>
+                            <state key="normal" image="gear">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="settingsButtonTapped:" destination="-1" eventType="touchUpInside" id="jnH-gv-2OO"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.89967105263157909" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="5pv-oF-CEP" firstAttribute="top" secondItem="nKI-Hj-0zZ" secondAttribute="top" id="2ER-dj-PE3"/>
                         <constraint firstAttribute="centerX" secondItem="5pv-oF-CEP" secondAttribute="centerX" id="NMC-dg-ybL"/>
                         <constraint firstAttribute="bottom" secondItem="5pv-oF-CEP" secondAttribute="bottom" id="Zj1-0c-1MG"/>
+                        <constraint firstAttribute="trailing" secondItem="VVv-W2-25p" secondAttribute="trailing" constant="1" id="eEy-sK-KoC"/>
+                        <constraint firstItem="VVv-W2-25p" firstAttribute="top" secondItem="nKI-Hj-0zZ" secondAttribute="top" constant="1" id="zul-S0-Nbl"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sPp-Fi-YfW" userLabel="InputView">
@@ -96,9 +112,13 @@
                 <constraint firstAttribute="trailing" secondItem="nKI-Hj-0zZ" secondAttribute="trailing" id="w5d-4o-g6T"/>
                 <constraint firstItem="nKI-Hj-0zZ" firstAttribute="top" secondItem="1" secondAttribute="top" id="wmL-Gc-bca"/>
             </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
             <point key="canvasLocation" x="139" y="277"/>
         </view>
     </objects>
+    <resources>
+        <image name="gear" width="32" height="32"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

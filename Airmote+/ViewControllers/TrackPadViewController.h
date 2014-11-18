@@ -13,7 +13,7 @@
 #import "IAConnection.h"
 
 @class TrackPadView;
-@interface TrackPadViewController : UIViewController <UIActionSheetDelegate, UIGestureRecognizerDelegate, UIWebViewDelegate, EventCenterDelegate, NSNetServiceDelegate, UITextViewDelegate, IAConnectionDelegate>
+@interface TrackPadViewController : UIViewController <UIActionSheetDelegate, UIGestureRecognizerDelegate, UIWebViewDelegate, NSNetServiceDelegate, UITextViewDelegate, IAConnectionDelegate>
 
 @property(nonatomic, strong) UIActionSheet *actionSheet;
 

@@ -7,9 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "EventCenter.h"
 #import "IAConnection.h"
 
-@interface VerifyInAiRViewController : UIViewController <EventCenterDelegate, IAConnectionDelegate>
+@interface VerifyInAiRViewController : UIViewController <IAConnectionDelegate>
 
 @end

@@ -8,7 +8,8 @@
 #import "Reachability.h"
 
 #define kServiceType @"_irpc._tcp."
-
+#define kMaxScanningDuration 5.0
+#define kMaxResolvingDuration 5.0
 @implementation IAConnection
 {
   NSNetServiceBrowser *browser;
@@ -178,7 +179,7 @@
     }
     currentService = service;
     currentService.delegate = self;
-    [currentService resolveWithTimeout:30];
+    [currentService resolveWithTimeout:kMaxResolvingDuration];
     isResolving = YES;
   }
 
@@ -203,6 +204,7 @@
 {
   if (foundServices.count > 0) {
     [self reconnect];
+    return;
   }
 
   if (timeOutTimer != nil) {
@@ -210,7 +212,7 @@
     timeOutTimer = nil;
   }
 
-  timeOutTimer = [NSTimer scheduledTimerWithTimeInterval:30.0 target:self selector:@selector(timerFired:) userInfo:nil repeats:NO];
+  timeOutTimer = [NSTimer scheduledTimerWithTimeInterval:kMaxScanningDuration target:self selector:@selector(timerFired:) userInfo:nil repeats:NO];
 
   browser.delegate = nil;
   [browser stop];
@@ -221,7 +223,7 @@
 
   currentService.delegate = nil;
   [currentService stop];
-//  currentService = nil;
+  currentService = nil;
 
   if ([Reachability reachabilityForLocalWiFi].isReachableViaWiFi) {
     [browser searchForServicesOfType:kServiceType inDomain:@"local."];
@@ -270,22 +272,26 @@
     }
   }
   else {
-    BOOL shouldStartConnect = YES;
+    BOOL shouldClearServices = YES;
     if (foundServices != nil && foundServices.count > 0) {
       if (foundServices.count == 1) {
         [self connectToServiceAtIndex:0];
-        shouldStartConnect = NO;
+        shouldClearServices = NO;
       } else if (foundServices.count > 1) {
         if ([self.delegate respondsToSelector:@selector(didFoundServices:)]) {
           [self.delegate didFoundServices:foundServices];
-          shouldStartConnect = NO;
+          shouldClearServices = NO;
         }
       }
     }
 
-    if (shouldStartConnect) {
-      [self start];
+    if (shouldClearServices) {
+      [foundServices removeAllObjects];
     }
+
+//    if (shouldClearServices) {
+//      [self start];
+//    }
   }
 }
 
@@ -328,7 +334,7 @@
 {
   if ([hostName isEqualToString:currentService.hostName]) {
     if ([self.delegate respondsToSelector:@selector(didConnect:)]) {
-      [self.delegate didConnect:currentService.hostName];
+      [self.delegate didConnect:currentService.name];
     }
   }
   isConnecting = NO;
