@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "EventCenter.h"
+#import "IAConnection.h"
 
-@interface ChangeNameViewController : UIViewController <EventCenterDelegate, UITextFieldDelegate>
+@interface ChangeNameViewController : UIViewController <EventCenterDelegate, UITextFieldDelegate, IAConnectionDelegate>
 
 @end

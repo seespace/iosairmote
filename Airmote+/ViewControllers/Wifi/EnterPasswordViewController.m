@@ -61,7 +61,8 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-  [EventCenter defaultCenter].delegate = self;
+  //TODO fix this
+//  [EventCenter defaultCenter].delegate = self;
 
 }
 
@@ -99,7 +100,7 @@
 -(BOOL)textFieldShouldReturn:(UITextField *)textField {
   if (YES) {
     Event *ev = [ProtoHelper setupWifiConnectRequestWithSSID:self.networkSSID password:passwordTextField.text];
-    [[EventCenter defaultCenter] sendEvent:ev withTag:0];
+    [[IAConnection sharedConnection] sendEvent:ev withTag:0];
     [SVProgressHUD showWithStatus:@"InAir device connecting..."];
   }
   

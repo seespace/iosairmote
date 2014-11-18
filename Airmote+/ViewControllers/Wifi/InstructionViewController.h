@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "BonjourManager.h"
 #import "EventCenter.h"
+#import "IAConnection.h"
 
 @class EventCenter;
 
-@interface InstructionViewController : UIViewController <BonjourManagerDelegate, NSNetServiceDelegate, EventCenterDelegate>
+@interface InstructionViewController : UIViewController <BonjourManagerDelegate, NSNetServiceDelegate, EventCenterDelegate, IAConnectionDelegate>
 @end

@@ -22,8 +22,6 @@
 @property(nonatomic, strong) GCDAsyncSocket *socket;
 @property(nonatomic, weak) id <EventCenterDelegate> delegate;
 
-+ (EventCenter *)defaultCenter;
-
 - (BOOL)isActive;
 
 - (BOOL)connectToHost:(NSString *)hostname;

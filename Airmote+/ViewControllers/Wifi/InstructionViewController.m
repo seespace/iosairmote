@@ -13,6 +13,7 @@
 #import "WifiHelper.h"
 #import "TKState.h"
 #import "IAStateMachine.h"
+#import "IAConnection.h"
 
 @interface InstructionViewController ()
 
@@ -80,7 +81,7 @@
 
 - (void)connectIfNeeded {
 
-  if ([EventCenter defaultCenter].isActive) {
+  if ([IAConnection sharedConnection].isConnected) {
     [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupSocketConnected];
   } else {
     if ([WifiHelper isConnectedToInAiRWiFi]) {
@@ -95,7 +96,7 @@
 
 
 - (void)viewDidAppear:(BOOL)animated {
-  [EventCenter defaultCenter].delegate = self;
+  [IAConnection sharedConnection].delegate = self;
   if (viewDidAppear) {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
       [self connectIfNeeded];
@@ -154,16 +155,12 @@
 
 
 - (void)connectToHost:(NSString *)hostname {
-
-  EventCenter *eventCenter = [EventCenter defaultCenter];
-  eventCenter.delegate = nil;
-
-  eventCenter = [EventCenter defaultCenter];
-  eventCenter.delegate = self;
-  BOOL isConnecting = [eventCenter connectToHost:hostname];
-  if (isConnecting) {
-    [SVProgressHUD showWithStatus:@"Connecting" maskType:SVProgressHUDMaskTypeBlack];
-  }
+  [IAConnection sharedConnection].delegate = self;
+  //TODO rewrite this
+//  BOOL isConnecting = [eventCenter connectToHost:hostname];
+//  if (isConnecting) {
+//    [SVProgressHUD showWithStatus:@"Connecting" maskType:SVProgressHUDMaskTypeBlack];
+//  }
 }
 
 - (void)eventCenterDidConnectToHost:(NSString *)hostName {
@@ -175,7 +172,7 @@
 
 - (void)showVerificationViewController {
   VerifyInAiRViewController *verifyVC = [[VerifyInAiRViewController alloc] init];
-  [EventCenter defaultCenter].delegate = verifyVC;
+  [IAConnection sharedConnection].delegate = verifyVC;
   [self.navigationController pushViewController:verifyVC animated:NO];
 
 }

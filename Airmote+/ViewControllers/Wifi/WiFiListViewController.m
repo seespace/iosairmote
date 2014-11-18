@@ -42,7 +42,7 @@
 
   if ([[IAStateMachine sharedStateMachine].currentState.name isEqualToString:kStateSetupWifiListing]) {
     Event *ev = [ProtoHelper setupWifiScanRequest];
-    [[EventCenter defaultCenter] sendEvent:ev withTag:0];
+    [[IAConnection sharedConnection] sendEvent:ev withTag:0];
     [SVProgressHUD showWithStatus:@"Loading..." maskType:SVProgressHUDMaskTypeGradient];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (30 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
       [SVProgressHUD dismiss];
@@ -56,7 +56,7 @@
 - (void)configureStateMachine {
   [[[IAStateMachine sharedStateMachine] stateNamed:kStateEnteringWifiPassword] setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
     EnterPasswordViewController *enterPasswordVC = [[EnterPasswordViewController alloc] init];
-    [EventCenter defaultCenter].delegate = enterPasswordVC;
+    [IAConnection sharedConnection].delegate = enterPasswordVC;
     enterPasswordVC.networkSSID = _selectedNetwork.ssid;
     [self.navigationController pushViewController:enterPasswordVC animated:NO];
   }];
@@ -79,7 +79,7 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-  [EventCenter defaultCenter].delegate = self;
+  [IAConnection sharedConnection].delegate = self;
 }
 
 
@@ -172,7 +172,7 @@
   } else {
     if ([[IAStateMachine sharedStateMachine] isInState:kStateSetupWifiListing]) {
       Event *ev = [ProtoHelper setupWifiConnectRequestWithSSID:_selectedNetwork.ssid password:@""];
-      [[EventCenter defaultCenter] sendEvent:ev withTag:0];
+      [[IAConnection sharedConnection] sendEvent:ev withTag:0];
       [SVProgressHUD showWithStatus:@"InAir device connecting..."];
     }
   }

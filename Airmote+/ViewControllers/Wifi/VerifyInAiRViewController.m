@@ -41,7 +41,7 @@
   [nameChangingState setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
     if ([[IAStateMachine sharedStateMachine] isInState:kStateSetupCodeVerification]) {
       ChangeNameViewController *changeNameViewController = [[ChangeNameViewController alloc] init];
-      [[EventCenter defaultCenter] setDelegate:changeNameViewController];
+      [[IAConnection sharedConnection] setDelegate:changeNameViewController];
       [self.navigationController pushViewController:changeNameViewController animated:NO];
     }
   }];
@@ -75,7 +75,7 @@
 
 - (void)requestConfirmationCode {
   Event *ev = [ProtoHelper setupCodeRequest];
-  [[EventCenter defaultCenter] sendEvent:ev withTag:0];
+  [[IAConnection sharedConnection] sendEvent:ev withTag:0];
 }
 
 - (void)eventCenter:(EventCenter *)eventCenter receivedEvent:(Event *)event {

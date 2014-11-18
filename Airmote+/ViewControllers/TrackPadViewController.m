@@ -10,19 +10,10 @@
 #import <SVProgressHUD/SVProgressHUD.h>
 #import "ProtoHelper.h"
 #import "TrackPadView.h"
-#import "NSData+NetService.h"
 #import "InstructionViewController.h"
-#import "IAStateMachine.h"
-#import "TKState.h"
-#import "TKTransition.h"
-
-#define kTimeOutDuration 10.0
 
 @implementation TrackPadViewController {
-  NSArray *_services;
-  NSString *lastConnectedHostName;
   Event *_oauthEvent;
-  NSNetService *_selectedService;
   __weak IBOutlet UIView *inputView;
   __weak IBOutlet NSLayoutConstraint *inputViewTopConstrain;
   __weak IBOutlet UITextView *plainText;
@@ -37,20 +28,9 @@ static const uint8_t kMotionShakeTag = 6;
   [super viewDidLoad];
   [[IAConnection sharedConnection] setDelegate:self];
 
-  //TODO remove this
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(applicationDidBecomeActive)
-                                               name:UIApplicationDidBecomeActiveNotification
-                                             object:nil];
-
   [self.navigationController setNavigationBarHidden:YES];
   _trackpadView.viewController = self;
 
-//  [self configureStateMachine];
-//  [self fireStartupEvents];
-
-//  [[IAConnection sharedConnection] start];
-//  [SVProgressHUD showWithStatus:@"Scanning..." maskType:SVProgressHUDMaskTypeBlack];
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(keyboardWillShow:)
                                                name:UIKeyboardWillShowNotification
@@ -137,6 +117,18 @@ static const uint8_t kMotionShakeTag = 6;
 
 - (void)didReceiveEvent:(Event *)event
 {
+  NSLog(@"%@", event);
+
+  switch (event.type) {
+    case EventTypeOauthRequest:
+      [self processOAuthRequest:event];
+      break;
+
+    case EventTypeTextInputRequest:
+      [self showInputView];
+    default:
+      break;
+  }
 
 }
 
@@ -149,78 +141,10 @@ static const uint8_t kMotionShakeTag = 6;
 
 #pragma mark - AppDidBecomeActive
 
-- (void)applicationDidBecomeActive {
-//  if ([lastConnectedHostName length] > 0) {
-//    if (![EventCenter defaultCenter].isActive) {
-//      [[IAStateMachine sharedStateMachine] fireEvent:kEventFailToConnectToInAiR]; //TODO double check why there 2 events
-//      [[IAStateMachine sharedStateMachine] fireEvent:kEventServiceResolved];
-//    }
-//  } else {
-//    [self reconnectToServiceIfNeeded];
-//  }
-
-}
 
 - (void)reconnectToServiceIfNeeded {
   [[IAConnection sharedConnection] start];
 }
-
-
-#pragma mark - NetServiceDelegate
-
-- (void)netServiceDidStop:(NSNetService *)sender {
-  NSLog(@"NetService did stop");
-  sender.delegate = nil;
-}
-
-
-- (void)netService:(NSNetService *)sender didNotResolve:(NSDictionary *)errorDict {
-  NSLog(@"Service is denied with Error: %@", errorDict);
-  sender.delegate = nil;
-  [[IAStateMachine sharedStateMachine] fireEvent:kEventFailToConnectToInAiR];
-}
-
-
-- (void)netServiceDidResolveAddress:(NSNetService *)service {
-  NSString *address = [(service.addresses)[0] socketAddress];
-  lastConnectedHostName = address;
-  service.delegate = nil;
-  [[IAStateMachine sharedStateMachine] fireEvent:kEventServiceResolved];
-}
-
-
-#pragma mark - EventCenterDelegate
-
-- (void)eventCenter:(EventCenter *)eventCenter receivedEvent:(Event *)event {
-  NSLog(@"%@", event);
-
-  // process events
-  switch (event.type) {
-    case EventTypeOauthRequest:
-      [self processOAuthRequest:event];
-      break;
-
-    case EventTypeTextInputRequest:
-      [self showInputView];
-    default:
-      break;
-  }
-}
-
-- (void)eventCenterDidConnectToHost:(NSString *)hostName {
-  lastConnectedHostName = hostName;
-  TKState *socketConnected = [[IAStateMachine sharedStateMachine] stateNamed:kStateSocketConnected];
-  [socketConnected setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
-    [SVProgressHUD showSuccessWithStatus:@"Connected"];
-  }];
-  [[IAStateMachine sharedStateMachine] fireEvent:kEventRealSocketConnected];
-}
-
-- (void)eventCenterDidDisconnectFromHost:(NSString *)hostName withError:(NSError *)error {
-  [SVProgressHUD showErrorWithStatus:[error localizedDescription]];
-  NSLog(@"Error: %@. Code: %ld", [error localizedDescription], (long) [error code]);
-}
-
 
 #pragma mark - Action sheets
 
@@ -246,10 +170,6 @@ static const uint8_t kMotionShakeTag = 6;
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
   if (buttonIndex != actionSheet.cancelButtonIndex) {
     [[IAConnection sharedConnection] connectToServiceAtIndex:(NSUInteger) buttonIndex];
-//    [SVProgressHUD showWithStatus:@"Connecting..."];
-  }
-  else {
-//    [[IAStateMachine sharedStateMachine] fireEvent:kEventFailToConnectToInAiR];
   }
 }
 
@@ -270,7 +190,7 @@ static const uint8_t kMotionShakeTag = 6;
   if (motion == UIEventSubtypeMotionShake) {
     Event *ev = [ProtoHelper motionEventWithTimestamp:(SInt64) (event.timestamp * 1000)
                                                  type:MotionEventTypeShake];
-    [[EventCenter defaultCenter] sendEvent:ev withTag:kMotionShakeTag];
+    [[IAConnection sharedConnection] sendEvent:ev withTag:kMotionShakeTag];
   }
 }
 
@@ -295,7 +215,6 @@ static const uint8_t kMotionShakeTag = 6;
     OAuthRequestEvent *event = [_oauthEvent getExtension:[OAuthRequestEvent event]];
     self.webViewController.URL = [NSURL URLWithString:event.authUrl];
     self.webViewController.delegate = self;
-    self.webViewController.eventCenter = [EventCenter defaultCenter];
     self.webViewController.oauthEvent = _oauthEvent;
     [self.webViewController load];
 
@@ -304,79 +223,6 @@ static const uint8_t kMotionShakeTag = 6;
 }
 
 #pragma mark - Privates
-
-
-- (void)connectToService:(NSNetService *)service {
-  if (service.addresses.count > 0) {
-    NSString *address = [(service.addresses)[0] socketAddress];
-    [self connectToHost:address];
-  }
-  else {
-    service.delegate = self;
-    [service resolveWithTimeout:kTimeOutDuration];
-  }
-}
-
-
-- (void)connectToHost:(NSString *)hostname {
-  [EventCenter defaultCenter].delegate = nil;
-//  _trackpadView.eventCenter = [EventCenter defaultCenter];
-  [EventCenter defaultCenter].delegate = self;
-
-  BOOL canStartConnection = [[EventCenter defaultCenter] connectToHost:hostname];
-  if (canStartConnection) {
-    [SVProgressHUD showWithStatus:@"Connecting" maskType:SVProgressHUDMaskTypeBlack];
-  }
-}
-
-
-- (void)fireStartupEvents {
-  IAStateMachine *stateMachine = [IAStateMachine sharedStateMachine];
-  BOOL completeWifiSetup = [[NSUserDefaults standardUserDefaults] boolForKey:kRequireWifiSetup];
-  if (completeWifiSetup) {
-    [stateMachine fireEvent:kEventSetupStart];
-  } else {
-    [stateMachine fireEvent:kEventStartNormalWorkFlow];
-  }
-}
-
-
-- (void)configureStateMachine {
-  IAStateMachine *stateMachine = [IAStateMachine sharedStateMachine];
-  [stateMachine activate];
-
-  TKState *wifiSetupDone = [stateMachine stateNamed:kStateNormalStart];
-  [wifiSetupDone setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
-    if ([stateMachine isInState:kStateIdle] || [stateMachine isInState:kStateSameWifiAwaiting]) {
-      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self startBonjourDiscovery];
-      });
-    }
-  }];
-
-  TKState *wifiSetupStart = [stateMachine stateNamed:kStateWifiSetupStart];
-  [wifiSetupStart setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
-    if ([stateMachine.currentState.name isEqualToString:kStateIdle] || [stateMachine.currentState.name isEqualToString:kStateBonjourDiscoveryFailed]) {
-      [self startWifiSetupWorkFlow];
-    }
-  }];
-
-  TKState *foundMultipleServices = [[IAStateMachine sharedStateMachine] stateNamed:kStateFoundMultipleServices];
-  [foundMultipleServices setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
-//    [self showActionSheet];
-  }];
-
-
-  TKState *serviceResolvingState = [[IAStateMachine sharedStateMachine] stateNamed:kStateServiceResolving];
-  [serviceResolvingState setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
-    [self connectToService:_selectedService];
-  }];
-
-  TKState *serviceResolvedState = [[IAStateMachine sharedStateMachine] stateNamed:kStateAddressResolved];
-  [serviceResolvedState setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
-    [self connectToHost:lastConnectedHostName];
-  }];
-}
 
 
 - (void)startWifiSetupWorkFlow {
@@ -388,24 +234,6 @@ static const uint8_t kMotionShakeTag = 6;
                                         completion:NULL];
 }
 
-
-- (void)startBonjourDiscovery {
-//  _services = nil;
-//  [_bonjourManager start];
-//  [SVProgressHUD showWithStatus:@"Scanning..." maskType:SVProgressHUDMaskTypeBlack];
-//
-//  [[IAStateMachine sharedStateMachine] fireEvent:kEventBonjourStart];
-}
-
-
-//- (void)connectToAvailableServices {
-//  if (_services.count > 1) {
-//    [[IAStateMachine sharedStateMachine] fireEvent:kEventFoundMultipleServices];
-//  } else if (_services.count == 1) {
-//    _selectedService = _services[0];
-//    [[IAStateMachine sharedStateMachine] fireEvent:kEventStartResolvingService];
-//  }
-//}
 
 
 - (WebViewController *)webViewController {
@@ -452,7 +280,7 @@ static const uint8_t kMotionShakeTag = 6;
 
 - (IBAction)cancelButtonTapped:(id)sender {
   Event *event = [ProtoHelper textInputResponseWithState:TextInputResponseEventStateCancelled text:plainText.text];
-  [[EventCenter defaultCenter] sendEvent:event withTag:0];
+  [[IAConnection sharedConnection] sendEvent:event withTag:0];
   [self dismissInputView];
 }
 
@@ -460,7 +288,7 @@ static const uint8_t kMotionShakeTag = 6;
 - (IBAction)sendButtonTapped:(id)sender {
   [self dismissInputView];
   Event *event = [ProtoHelper textInputResponseWithState:TextInputResponseEventStateEnded text:plainText.text];
-  [[EventCenter defaultCenter] sendEvent:event withTag:0];
+  [[IAConnection sharedConnection] sendEvent:event withTag:0];
 }
 
 - (void)dismissInputView {
@@ -469,12 +297,9 @@ static const uint8_t kMotionShakeTag = 6;
 
 - (void)textViewDidChange:(UITextView *)textView {
   Event *event = [ProtoHelper textInputResponseWithState:TextInputResponseEventStateChanged text:plainText.text];
-  [[EventCenter defaultCenter] sendEvent:event withTag:0];
+  [[IAConnection sharedConnection] sendEvent:event withTag:0];
 }
 
 
-- (void)dealloc {
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
 
 @end

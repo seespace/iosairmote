@@ -12,6 +12,7 @@
 #import "ProtoHelper.h"
 #import "IAStateMachine.h"
 #import "TKState.h"
+#import "IAConnection.h"
 
 @interface ChangeNameViewController ()
 
@@ -45,7 +46,7 @@
   [[[IAStateMachine sharedStateMachine] stateNamed:kStateSetupChangeName] setDidExitStateBlock:^(TKState *state, TKTransition *transition) {
     if ([[IAStateMachine sharedStateMachine] isInState:kStateSetupWifiListing]) {
       WiFiListViewController *wifiListVC = [[WiFiListViewController alloc] init];
-      [EventCenter defaultCenter].delegate = wifiListVC;
+      [IAConnection sharedConnection].delegate = wifiListVC;
       [self.navigationController pushViewController:wifiListVC animated:YES];
     }
   }];
@@ -59,7 +60,7 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-  [EventCenter defaultCenter].delegate = self;
+  [IAConnection sharedConnection].delegate = self;
 }
 
 
@@ -106,7 +107,7 @@
 - (void)sendRenameRequestWithName:(NSString *)name {
   if ([name length] > 0) {
     Event *ev = [ProtoHelper setupRenameRequestWithName:name];
-    [[EventCenter defaultCenter] sendEvent:ev withTag:0];
+    [[IAConnection sharedConnection] sendEvent:ev withTag:0];
   }
 }
 - (IBAction)backPressed:(id)sender {
