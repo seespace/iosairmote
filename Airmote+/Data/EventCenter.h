@@ -14,7 +14,7 @@
 - (void)eventCenterDidConnectToHost:(NSString *)hostName;
 
 - (void)eventCenterDidDisconnectFromHost:(NSString *)hostName withError:(NSError *)error;
-
+- (void)eventCenterFailedToConnectToHost:(NSString *)hostName withError:(NSError *)error;
 - (void)eventCenter:(EventCenter *)eventCenter receivedEvent:(Event *)event;
 @end
 

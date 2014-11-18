@@ -69,6 +69,13 @@
 }
 
 #pragma mark - NetServiceBrowserDelegate
+- (void)netServiceBrowserWillSearch:(NSNetServiceBrowser *)aNetServiceBrowser
+{
+  isScanning = YES;
+  if ([self.delegate respondsToSelector:@selector(didStartScanning)]) {
+    [self.delegate didStartScanning];
+  }
+}
 
 - (void)netServiceBrowser:(NSNetServiceBrowser *)aBrowser didFindService:(NSNetService *)aService moreComing:(BOOL)more
 {
@@ -76,16 +83,18 @@
   [foundServices addObject:aService];
   foundAllServices = !more;
   if (foundAllServices) {
-    if ([self.delegate respondsToSelector:@selector(didFoundServices:)]) {
-      [self.delegate didFoundServices:foundServices];
-    }
-    [browser stop];
-
-    if (foundServices.count == 1) {
+    
+    if (foundServices.count > 1) {
+      if  ([self.delegate respondsToSelector:@selector(didFoundServices:)]) {
+        [self.delegate didFoundServices:foundServices];
+      }
+    } else if (foundServices.count == 1) {
       if (![self.delegate respondsToSelector:@selector(shouldConnectAutomatically)] || [self.delegate shouldConnectAutomatically]) {
         [self connectToService:foundServices[0]];
       }
     }
+    
+    [browser stop];
     isScanning = NO;
   }
 }
@@ -125,7 +134,9 @@
 
 - (void)appDidBecomeActive:(NSNotification *)notification
 {
-  //TODO retry connecting
+  if (! self.isConnected && ! self.isProcessing) {
+    [self start];
+  }
 }
 
 
@@ -153,6 +164,10 @@
 
 - (void)connectToService:(NSNetService *)service
 {
+  if (isConnecting) {
+    return;
+  }
+  
   if ([service.name isEqualToString:currentService.name]) {
     [eventCenter connectToHost:currentService.hostName];
     isConnecting = YES;
@@ -165,6 +180,10 @@
     currentService.delegate = self;
     [currentService resolveWithTimeout:30];
     isResolving = YES;
+  }
+
+  if ([self.delegate respondsToSelector:@selector(didStartConnecting)]) {
+    [self.delegate didStartConnecting];
   }
 }
 
@@ -182,6 +201,10 @@
 
 - (void)start
 {
+  if (foundServices.count > 0) {
+    [self reconnect];
+  }
+
   if (timeOutTimer != nil) {
     [timeOutTimer invalidate];
     timeOutTimer = nil;
@@ -213,6 +236,7 @@
 {
   if (eventCenter.isActive) {
     [eventCenter sendEvent:event withTag:tag];
+//    lastActiveTime = [NSDate date];
   } else {
     [self notifyError:IAConnectionErrorFailToSendEvent userInfo:nil];
   }
@@ -227,14 +251,62 @@
   }
 }
 
+- (void)reconnect
+{
+  if ([self isConnected] || [self isProcessing])  {
+    //TODO do we need to notify?
+    return;
+  }
+
+  if (currentService != nil) {
+    if (currentService.hostName != nil) {
+      [eventCenter connectToHost:currentService.hostName];
+      isConnecting = YES;
+      if ([self.delegate respondsToSelector:@selector(didStartConnecting)]) {
+        [self.delegate didStartConnecting];
+      }
+    } else {
+      [self connectToService:currentService];
+    }
+  }
+  else {
+    BOOL shouldStartConnect = YES;
+    if (foundServices != nil && foundServices.count > 0) {
+      if (foundServices.count == 1) {
+        [self connectToServiceAtIndex:0];
+        shouldStartConnect = NO;
+      } else if (foundServices.count > 1) {
+        if ([self.delegate respondsToSelector:@selector(didFoundServices:)]) {
+          [self.delegate didFoundServices:foundServices];
+          shouldStartConnect = NO;
+        }
+      }
+    }
+
+    if (shouldStartConnect) {
+      [self start];
+    }
+  }
+}
+
 
 #pragma mark - NetServiceDelegate
 
 - (void)netService:(NSNetService *)sender didNotResolve:(NSDictionary *)errorDict
 {
   [self notifyError:IAConnectionErrorServiceNotResolved userInfo:errorDict];
-  currentService = nil;
+  [self invalidateCurrentService];
+
   isResolving = NO;
+}
+
+- (void)invalidateCurrentService
+{
+  if (currentService) {
+    [foundServices removeObject:currentService];
+  }
+
+  currentService = nil;
 }
 
 
@@ -243,6 +315,9 @@
   if (currentService == sender) {
     [eventCenter connectToHost:currentService.hostName];
     isConnecting = YES;
+    if ([self.delegate respondsToSelector:@selector(didStartConnecting)]) {
+      [self.delegate didStartConnecting];
+    }
   } else {
     NSLog(@"ERROR: Trying to connect to another host while connecting to %@", currentService.hostName);
   }
@@ -271,6 +346,13 @@
   if ([self.delegate respondsToSelector:@selector(didReceiveEvent:)]) {
     [self.delegate didReceiveEvent:event];
   }
+}
+
+-(void)eventCenterFailedToConnectToHost:(NSString *)hostName withError:(NSError *)error
+{
+  [self notifyError:IAConnectionErrorFailToConnectSocket userInfo:[error userInfo]];
+  [self invalidateCurrentService];
+  isConnecting = NO;
 }
 
 @end

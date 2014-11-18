@@ -49,8 +49,8 @@ static const uint8_t kMotionShakeTag = 6;
 //  [self configureStateMachine];
 //  [self fireStartupEvents];
 
-  [[IAConnection sharedConnection] start];
-  [SVProgressHUD showWithStatus:@"Scanning..." maskType:SVProgressHUDMaskTypeBlack];
+//  [[IAConnection sharedConnection] start];
+//  [SVProgressHUD showWithStatus:@"Scanning..." maskType:SVProgressHUDMaskTypeBlack];
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(keyboardWillShow:)
                                                name:UIKeyboardWillShowNotification
@@ -60,6 +60,17 @@ static const uint8_t kMotionShakeTag = 6;
                                            selector:@selector(keyboardWillHide:)
                                                name:UIKeyboardWillHideNotification
                                              object:nil];
+}
+
+
+- (void)didStartScanning
+{
+  [SVProgressHUD showWithStatus:@"Scanning..."];
+}
+
+-(void)didStartConnecting
+{
+  [SVProgressHUD showWithStatus:@"Connecting..."];
 }
 
 
@@ -79,7 +90,7 @@ static const uint8_t kMotionShakeTag = 6;
 
 - (void)didFailToConnect:(NSError *)error
 {
-  NSLog(@"ERROR: Code: %d", error.code);
+  NSLog(@"ERROR: Code: %ld", error.code);
   switch (error.code) {
     case IAConnectionErrorServicesNotFound:
       [SVProgressHUD showErrorWithStatus:@"Devices not found!"];
@@ -113,6 +124,9 @@ static const uint8_t kMotionShakeTag = 6;
       [SVProgressHUD showErrorWithStatus:@"Wifi is not available"];
       break;
 
+    case IAConnectionErrorFailToConnectSocket:
+      [SVProgressHUD showErrorWithStatus:@"Cannot connect to socket"];
+      break;
 
     default:
       [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"Unknown Error Code: %ld", (long)error.code]];
@@ -232,7 +246,7 @@ static const uint8_t kMotionShakeTag = 6;
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
   if (buttonIndex != actionSheet.cancelButtonIndex) {
     [[IAConnection sharedConnection] connectToServiceAtIndex:(NSUInteger) buttonIndex];
-    [SVProgressHUD showWithStatus:@"Connecting..."];
+//    [SVProgressHUD showWithStatus:@"Connecting..."];
   }
   else {
 //    [[IAStateMachine sharedStateMachine] fireEvent:kEventFailToConnectToInAiR];

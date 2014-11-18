@@ -48,15 +48,23 @@ static const uint8_t kSessionStartTag = 9;
 - (BOOL)connectToHost:(NSString *)hostname {
   NSError *err = nil;
 
-
-  if (! [[_socket connectedHost] isEqualToString:hostname]) {
-    [_socket disconnect];
-  } else {
-    //Do nothing
-  }
+//  if (! [[_socket connectedHost] isEqualToString:hostname]) {
+//    [_socket disconnect];
+//  } else {
+//    //Do nothing
+//  }
   
   if (![_socket connectToHost:hostname onPort:kServicePort withTimeout:30.0 error:&err]) {
     NSLog(@"Could not connect to %@. Error: %@", hostname, err);
+    if (err.code == 1) {
+      //TODO investigate we should handle errorCode == 1 as below
+      [_socket disconnect];
+      [self connectToHost:hostname];
+    } else {
+      if ([self.delegate respondsToSelector:@selector(eventCenterFailedToConnectToHost:withError:)]) {
+        [self.delegate eventCenterFailedToConnectToHost:hostname withError:err];
+      }
+    }
     return NO;
   }
 

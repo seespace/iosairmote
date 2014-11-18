@@ -19,12 +19,16 @@ enum IAConnectionError
   IAConnectionErrorSocketInvalidData,
   IAConnectionErrorServiceNotResolved,
   IAConnectionErrorSocketLost,
+  IAConnectionErrorFailToConnectSocket,
   IAConnectionErrorFailToSendEvent
 };
 
 @protocol IAConnectionDelegate <NSObject>
 
 @optional
+
+-(void) didStartScanning;
+-(void) didStartConnecting;
 
 -(void) didConnect:(NSString *) hostName;
 -(void) didFoundServices:(NSArray *) foundServices;
@@ -47,6 +51,6 @@ enum IAConnectionError
 //
 //- (void) stop;
 - (void) connectToServiceAtIndex:(NSUInteger) index;
-//-(void) reconnect;
+-(void) reconnect;
 
 @end
