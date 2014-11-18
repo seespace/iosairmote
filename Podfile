@@ -5,3 +5,4 @@ pod 'SVProgressHUD', :head
 pod 'PBWebViewController'
 pod 'ProtocolBuffers', '~> 1.9'
 pod "TransitionKit"
+pod 'Reachability', '~> 3.1'

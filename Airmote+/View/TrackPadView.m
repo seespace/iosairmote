@@ -89,8 +89,13 @@ static const uint8_t kGestureStateChanged = 11;
 {
     if (![[IAConnection sharedConnection] isConnected])
     {
+      if (! [[IAConnection sharedConnection] isProcessing]) {
         [self.viewController reconnectToServiceIfNeeded];
-        return;
+      } else {
+        NSLog(@"ERROR: Trying to connect when it's connecting.");
+      }
+
+      return;
     }
 
     [self sendTouch:[touches anyObject] withEvent:event tag:kTouchBeganTag];

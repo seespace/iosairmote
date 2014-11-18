@@ -5,6 +5,7 @@
 
 #import "IAConnection.h"
 #import "Proto.pb.h"
+#import "Reachability.h"
 
 #define kServiceType @"_irpc._tcp."
 
@@ -16,6 +17,9 @@
   NSTimer *timeOutTimer;
   EventCenter *eventCenter;
   NSNetService *currentService;
+  BOOL isConnecting;
+  BOOL isResolving;
+  BOOL isScanning;
 }
 
 #pragma mark - Init
@@ -30,6 +34,15 @@
     foundAllServices = NO;
     eventCenter = [[EventCenter alloc] init];
     eventCenter.delegate = self;
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(appDidBecomeActive:)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(appWillEnterBackground:)
+                                                 name:UIApplicationWillResignActiveNotification
+                                               object:nil];
   }
   return self;
 }
@@ -70,50 +83,53 @@
 
     if (foundServices.count == 1) {
       if (![self.delegate respondsToSelector:@selector(shouldConnectAutomatically)] || [self.delegate shouldConnectAutomatically]) {
-
-        NSNetService *temp = foundServices[0];
-
-        [self connectToService:temp];
-
-      } else {
-
+        [self connectToService:foundServices[0]];
       }
-
     }
+    isScanning = NO;
   }
-
-}
-
-- (void)connectToService:(NSNetService *)service
-{
-  if (currentService) {
-          currentService.delegate = nil;
-          [currentService stop];
-        }
-  currentService = service;
-  currentService.delegate = self;
-  [currentService resolveWithTimeout:30];
 }
 
 
 - (void)netServiceBrowser:(NSNetServiceBrowser *)aBrowser didRemoveService:(NSNetService *)aService moreComing:(BOOL)more
 {
   [foundServices removeObject:aService];
-  if (!more && [foundServices count] == 0) {
-    //TODO handle error
-//    if ([self.delegate respondsToSelector:@selector(bonjourManagerServiceNotFound)]) {
-//      [self.delegate bonjourManagerServiceNotFound];
-//    }
-
-  }
 }
 
 - (void)netServiceBrowser:(NSNetServiceBrowser *)aNetServiceBrowser didNotSearch:(NSDictionary *)errorDict
 {
   [timeOutTimer invalidate];
   [self notifyError:IAConnectionErrorDidNotSearch userInfo:nil];
+  isScanning = NO;
 }
 
+
+- (void)netServiceBrowserDidStopSearch:(NSNetServiceBrowser *)aNetServiceBrowser
+{
+  [timeOutTimer invalidate];
+  if ([foundServices count] == 0) {
+    [self notifyError:IAConnectionErrorServicesNotFound userInfo:nil];
+  }
+  isScanning = NO;
+}
+
+
+#pragma mark - App lifecycle
+
+- (void)appWillEnterBackground:(NSNotification *)notification
+{
+  if ([eventCenter isActive]) {
+    [eventCenter disconnect];
+  }
+}
+
+- (void)appDidBecomeActive:(NSNotification *)notification
+{
+  //TODO retry connecting
+}
+
+
+#pragma mark - Private methods
 - (void)notifyError:(int)errorCode userInfo:(NSDictionary *)userInfo
 {
   if ([self.delegate respondsToSelector:@selector(didFailToConnect:)]) {
@@ -122,19 +138,10 @@
   }
 }
 
-- (void)netServiceBrowserDidStopSearch:(NSNetServiceBrowser *)aNetServiceBrowser
-{
-  NSLog(@"Stop searching");
-  [timeOutTimer invalidate];
-  //TODO handle no services found
-  if ([foundServices count] == 0) {
-    [self notifyError:IAConnectionErrorServicesNotFound userInfo:nil];
-  }
-}
 
 - (void)timerFired:(NSTimer *)timer
 {
-//  [browser stop];
+  [browser stop];
   if ([self.delegate respondsToSelector:@selector(didFailToConnect:)]) {
     NSError *error = [NSError errorWithDomain:kIAConnectionErrorDomain code:IAConnectionErrorDiscoveryTimedOut userInfo:nil];
     [self.delegate didFailToConnect:error];
@@ -143,6 +150,30 @@
 
 
 #pragma mark - Public methods
+
+- (void)connectToService:(NSNetService *)service
+{
+  if ([service.name isEqualToString:currentService.name]) {
+    [eventCenter connectToHost:currentService.hostName];
+    isConnecting = YES;
+  } else {
+    if (currentService) {
+      currentService.delegate = nil;
+      [currentService stop];
+    }
+    currentService = service;
+    currentService.delegate = self;
+    [currentService resolveWithTimeout:30];
+    isResolving = YES;
+  }
+}
+
+
+
+- (BOOL)isProcessing
+{
+  return isConnecting || isScanning || isResolving;
+}
 
 - (BOOL)isConnected
 {
@@ -167,10 +198,15 @@
 
   currentService.delegate = nil;
   [currentService stop];
-  currentService = nil;
+//  currentService = nil;
 
-//  [browser searchForBrowsableDomains];
-  [browser searchForServicesOfType:kServiceType inDomain:@"local."];
+  if ([Reachability reachabilityForLocalWiFi].isReachableViaWiFi) {
+    [browser searchForServicesOfType:kServiceType inDomain:@"local."];
+    isScanning = YES;
+
+  } else {
+    [self notifyError:IAConnectionErrorWifiNotAvailable userInfo:nil];
+  }
 }
 
 - (void)sendEvent:(Event *)event withTag:(u_int8_t)tag
@@ -198,6 +234,7 @@
 {
   [self notifyError:IAConnectionErrorServiceNotResolved userInfo:errorDict];
   currentService = nil;
+  isResolving = NO;
 }
 
 
@@ -205,9 +242,11 @@
 {
   if (currentService == sender) {
     [eventCenter connectToHost:currentService.hostName];
+    isConnecting = YES;
   } else {
     NSLog(@"ERROR: Trying to connect to another host while connecting to %@", currentService.hostName);
   }
+  isResolving = NO;
 }
 
 - (void)eventCenterDidConnectToHost:(NSString *)hostName
@@ -217,12 +256,14 @@
       [self.delegate didConnect:currentService.hostName];
     }
   }
+  isConnecting = NO;
 }
 
 - (void)eventCenterDidDisconnectFromHost:(NSString *)hostName withError:(NSError *)error
 {
   [self notifyError:IAConnectionErrorSocketLost userInfo:nil];
-
+  isConnecting = NO;
+//  currentService = nil;
 }
 
 - (void)eventCenter:(EventCenter *)eventCenter1 receivedEvent:(Event *)event

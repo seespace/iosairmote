@@ -12,6 +12,7 @@
 
 enum IAConnectionError
 {
+  IAConnectionErrorWifiNotAvailable,
   IAConnectionErrorDidNotSearch,
   IAConnectionErrorServicesNotFound,
   IAConnectionErrorDiscoveryTimedOut,
@@ -38,6 +39,7 @@ enum IAConnectionError
 @property (nonatomic, readonly) NSArray *foundServices;
 + (IAConnection *)sharedConnection;
 
+-(BOOL)isProcessing;
 -(BOOL) isConnected;
 - (void) start;
 //- (void) connect

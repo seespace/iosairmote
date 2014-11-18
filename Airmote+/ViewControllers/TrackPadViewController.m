@@ -19,7 +19,7 @@
 #define kTimeOutDuration 10.0
 
 @implementation TrackPadViewController {
-//  NSArray *_services;
+  NSArray *_services;
   NSString *lastConnectedHostName;
   Event *_oauthEvent;
   NSNetService *_selectedService;
@@ -103,9 +103,19 @@ static const uint8_t kMotionShakeTag = 6;
 
     case IAConnectionErrorSocketInvalidData:
       [SVProgressHUD showErrorWithStatus:@"Socket data is invalid"];
+      break;
+      
+    case IAConnectionErrorFailToSendEvent:
+      NSLog(@"Failed to send event");
+      break;
+
+    case IAConnectionErrorWifiNotAvailable:
+      [SVProgressHUD showErrorWithStatus:@"Wifi is not available"];
+      break;
+
 
     default:
-      [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"Error Code: %d", error.code]];
+      [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"Unknown Error Code: %ld", (long)error.code]];
       break;
   }
 }
@@ -222,6 +232,7 @@ static const uint8_t kMotionShakeTag = 6;
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
   if (buttonIndex != actionSheet.cancelButtonIndex) {
     [[IAConnection sharedConnection] connectToServiceAtIndex:(NSUInteger) buttonIndex];
+    [SVProgressHUD showWithStatus:@"Connecting..."];
   }
   else {
 //    [[IAStateMachine sharedStateMachine] fireEvent:kEventFailToConnectToInAiR];
