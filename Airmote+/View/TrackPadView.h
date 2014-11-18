@@ -6,12 +6,8 @@
 #import <Foundation/Foundation.h>
 
 @class TrackPadViewController;
-@class EventCenter;
-
 
 @interface TrackPadView : UIView
-@property (nonatomic, weak) EventCenter *eventCenter;
-
 //As we only use TrackPadView in TrackPadViewController class this should be OK
 @property (nonatomic, weak) TrackPadViewController *viewController;
 @end

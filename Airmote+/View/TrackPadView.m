@@ -4,7 +4,6 @@
 //
 
 #import "TrackPadView.h"
-#import "EventCenter.h"
 #import "ProtoHelper.h"
 #import "TrackPadViewController.h"
 
@@ -83,12 +82,12 @@ static const uint8_t kGestureStateChanged = 11;
                                      trackareaHeight:self.frame.size.height
                                                phase:[ProtoHelper phaseFromUITouchPhase:touch.phase]];
 
-    [_eventCenter sendEvent:ev withTag:tag];
+    [[IAConnection sharedConnection] sendEvent:ev withTag:tag];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    if (![_eventCenter isActive])
+    if (![[IAConnection sharedConnection] isConnected])
     {
         [self.viewController reconnectToServiceIfNeeded];
         return;
@@ -132,7 +131,7 @@ static const uint8_t kGestureStateChanged = 11;
                                                state:[ProtoHelper stateFromUIGestureRecognizerState:sender.state]
                                                count:(int) sender.numberOfTapsRequired];
 
-    [_eventCenter sendEvent:ev withTag:kGestureStateChanged];
+    [[IAConnection sharedConnection] sendEvent:ev withTag:kGestureStateChanged];
 }
 
 - (void)panHandle:(UIPanGestureRecognizer *)sender
@@ -151,7 +150,7 @@ static const uint8_t kGestureStateChanged = 11;
                                            velocityX:velocity.x
                                            velocityY:velocity.y];
 
-    [_eventCenter sendEvent:ev withTag:kGestureStateChanged];
+    [[IAConnection sharedConnection] sendEvent:ev withTag:kGestureStateChanged];
 }
 
 - (void)swipeHandle:(UISwipeGestureRecognizer *)sender
@@ -165,7 +164,7 @@ static const uint8_t kGestureStateChanged = 11;
                                                  state:[ProtoHelper stateFromUIGestureRecognizerState:sender.state]
                                              direction:[ProtoHelper directionFromUISwipeGestureRecognizerDirection:sender.direction]];
 
-    [_eventCenter sendEvent:ev withTag:kGestureStateChanged];
+    [[IAConnection sharedConnection] sendEvent:ev withTag:kGestureStateChanged];
 }
 
 - (void)longPressHandle:(UILongPressGestureRecognizer *)sender
@@ -179,6 +178,6 @@ static const uint8_t kGestureStateChanged = 11;
                                                      state:[ProtoHelper stateFromUIGestureRecognizerState:sender.state]
                                                   duration:0];
 
-    [_eventCenter sendEvent:ev withTag:kGestureStateChanged];
+    [[IAConnection sharedConnection] sendEvent:ev withTag:kGestureStateChanged];
 }
 @end

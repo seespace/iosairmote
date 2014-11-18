@@ -19,8 +19,7 @@
 #define kTimeOutDuration 10.0
 
 @implementation TrackPadViewController {
-  NSArray *_services;
-  BonjourManager *_bonjourManager;
+//  NSArray *_services;
   NSString *lastConnectedHostName;
   Event *_oauthEvent;
   NSNetService *_selectedService;
@@ -36,8 +35,9 @@ static const uint8_t kMotionShakeTag = 6;
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-  _bonjourManager = [[BonjourManager alloc] init];
-  _bonjourManager.delegate = self;
+  [[IAConnection sharedConnection] setDelegate:self];
+
+  //TODO remove this
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(applicationDidBecomeActive)
                                                name:UIApplicationDidBecomeActiveNotification
@@ -46,9 +46,11 @@ static const uint8_t kMotionShakeTag = 6;
   [self.navigationController setNavigationBarHidden:YES];
   _trackpadView.viewController = self;
 
-  [self configureStateMachine];
-  [self fireStartupEvents];
+//  [self configureStateMachine];
+//  [self fireStartupEvents];
 
+  [[IAConnection sharedConnection] start];
+  [SVProgressHUD showWithStatus:@"Scanning..." maskType:SVProgressHUDMaskTypeBlack];
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(keyboardWillShow:)
                                                name:UIKeyboardWillShowNotification
@@ -60,6 +62,62 @@ static const uint8_t kMotionShakeTag = 6;
                                              object:nil];
 }
 
+
+- (void)didConnect:(NSString *)hostName
+{
+  NSString *message = [NSString stringWithFormat:@"Connected to %@", hostName];
+  [SVProgressHUD showSuccessWithStatus:message];
+}
+
+
+- (void)didFoundServices:(NSArray *)foundServices
+{
+  [SVProgressHUD dismiss];
+  [self showActionSheetForServices:foundServices];
+}
+
+
+- (void)didFailToConnect:(NSError *)error
+{
+  NSLog(@"ERROR: Code: %d", error.code);
+  switch (error.code) {
+    case IAConnectionErrorServicesNotFound:
+      [SVProgressHUD showErrorWithStatus:@"Devices not found!"];
+      break;
+
+    case IAConnectionErrorDiscoveryTimedOut:
+      [SVProgressHUD showErrorWithStatus:@"Timed out"];
+      break;
+
+    case IAConnectionErrorDidNotSearch:
+      [SVProgressHUD showErrorWithStatus:@"Cannot start scanning"];
+      break;
+
+    case IAConnectionErrorSocketLost:
+      [SVProgressHUD showErrorWithStatus:@"Socket is lost!"];
+      break;
+
+    case IAConnectionErrorServiceNotResolved:
+      [SVProgressHUD showErrorWithStatus:@"Cannot resolve service"];
+      break;
+
+    case IAConnectionErrorSocketInvalidData:
+      [SVProgressHUD showErrorWithStatus:@"Socket data is invalid"];
+
+    default:
+      [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"Error Code: %d", error.code]];
+      break;
+  }
+}
+
+
+- (void)didReceiveEvent:(Event *)event
+{
+
+}
+
+
+
 - (void)showInputView {
   plainText.text = @"";
   [plainText becomeFirstResponder];
@@ -68,37 +126,19 @@ static const uint8_t kMotionShakeTag = 6;
 #pragma mark - AppDidBecomeActive
 
 - (void)applicationDidBecomeActive {
-  if ([lastConnectedHostName length] > 0) {
-    if (![EventCenter defaultCenter].isActive) {
-      [[IAStateMachine sharedStateMachine] fireEvent:kEventFailToConnectToInAiR]; //TODO double check why there 2 events
-      [[IAStateMachine sharedStateMachine] fireEvent:kEventServiceResolved];
-    }
-  } else {
-    [self reconnectToServiceIfNeeded];
-  }
+//  if ([lastConnectedHostName length] > 0) {
+//    if (![EventCenter defaultCenter].isActive) {
+//      [[IAStateMachine sharedStateMachine] fireEvent:kEventFailToConnectToInAiR]; //TODO double check why there 2 events
+//      [[IAStateMachine sharedStateMachine] fireEvent:kEventServiceResolved];
+//    }
+//  } else {
+//    [self reconnectToServiceIfNeeded];
+//  }
 
 }
 
 - (void)reconnectToServiceIfNeeded {
-  if (![EventCenter defaultCenter].isActive && [_services count]) {
-    [self connectToAvailableServices];
-  } else {
-    [[IAStateMachine sharedStateMachine] fireEvent:kEventBonjourStart];
-  }
-}
-
-
-#pragma mark - BonjourManagerDelegate
-
-- (void)bonjourManagerServiceNotFound {
-  [SVProgressHUD showErrorWithStatus:@"InAiR devices not found."];
-  [[IAStateMachine sharedStateMachine] fireEvent:kEventFailToConnectToInAiR];
-}
-
-- (void)bonjourManagerFinishedDiscoveringServices:(NSArray *)services {
-  [SVProgressHUD dismiss];
-  _services = services;
-  [self connectToAvailableServices];
+  [[IAConnection sharedConnection] start];
 }
 
 
@@ -161,18 +201,18 @@ static const uint8_t kMotionShakeTag = 6;
 #pragma mark - Action sheets
 
 
-- (void)showActionSheet {
+- (void)showActionSheetForServices:(NSArray *) services {
   _actionSheet = [[UIActionSheet alloc] init];
   [_actionSheet setTitle:@"Choose a device"];
   [_actionSheet setDelegate:self];
 
-  for (NSNetService *service in _services) {
+  for (NSNetService *service in services) {
     NSString *title = service.name;
     [_actionSheet addButtonWithTitle:title];
   }
 
   [_actionSheet addButtonWithTitle:@"Cancel"];
-  _actionSheet.cancelButtonIndex = _services.count;
+  _actionSheet.cancelButtonIndex = services.count;
 
   [_actionSheet showInView:self.view];
 }
@@ -181,11 +221,10 @@ static const uint8_t kMotionShakeTag = 6;
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
   if (buttonIndex != actionSheet.cancelButtonIndex) {
-    _selectedService = _services[buttonIndex];
-    [[IAStateMachine sharedStateMachine] fireEvent:kEventStartResolvingService];
+    [[IAConnection sharedConnection] connectToServiceAtIndex:(NSUInteger) buttonIndex];
   }
   else {
-    [[IAStateMachine sharedStateMachine] fireEvent:kEventFailToConnectToInAiR];
+//    [[IAStateMachine sharedStateMachine] fireEvent:kEventFailToConnectToInAiR];
   }
 }
 
@@ -256,7 +295,7 @@ static const uint8_t kMotionShakeTag = 6;
 
 - (void)connectToHost:(NSString *)hostname {
   [EventCenter defaultCenter].delegate = nil;
-  _trackpadView.eventCenter = [EventCenter defaultCenter];
+//  _trackpadView.eventCenter = [EventCenter defaultCenter];
   [EventCenter defaultCenter].delegate = self;
 
   BOOL canStartConnection = [[EventCenter defaultCenter] connectToHost:hostname];
@@ -299,7 +338,7 @@ static const uint8_t kMotionShakeTag = 6;
 
   TKState *foundMultipleServices = [[IAStateMachine sharedStateMachine] stateNamed:kStateFoundMultipleServices];
   [foundMultipleServices setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
-    [self showActionSheet];
+//    [self showActionSheet];
   }];
 
 
@@ -326,22 +365,22 @@ static const uint8_t kMotionShakeTag = 6;
 
 
 - (void)startBonjourDiscovery {
-  _services = nil;
-  [_bonjourManager start];
-  [SVProgressHUD showWithStatus:@"Scanning..." maskType:SVProgressHUDMaskTypeBlack];
-
-  [[IAStateMachine sharedStateMachine] fireEvent:kEventBonjourStart];
+//  _services = nil;
+//  [_bonjourManager start];
+//  [SVProgressHUD showWithStatus:@"Scanning..." maskType:SVProgressHUDMaskTypeBlack];
+//
+//  [[IAStateMachine sharedStateMachine] fireEvent:kEventBonjourStart];
 }
 
 
-- (void)connectToAvailableServices {
-  if (_services.count > 1) {
-    [[IAStateMachine sharedStateMachine] fireEvent:kEventFoundMultipleServices];
-  } else if (_services.count == 1) {
-    _selectedService = _services[0];
-    [[IAStateMachine sharedStateMachine] fireEvent:kEventStartResolvingService];
-  }
-}
+//- (void)connectToAvailableServices {
+//  if (_services.count > 1) {
+//    [[IAStateMachine sharedStateMachine] fireEvent:kEventFoundMultipleServices];
+//  } else if (_services.count == 1) {
+//    _selectedService = _services[0];
+//    [[IAStateMachine sharedStateMachine] fireEvent:kEventStartResolvingService];
+//  }
+//}
 
 
 - (WebViewController *)webViewController {
@@ -356,8 +395,9 @@ static const uint8_t kMotionShakeTag = 6;
 
 
 - (void)keyboardWillHide:(NSNotification *)notification {
-  float duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
-  UIViewAnimationCurve curve = (UIViewAnimationCurve) [[[notification userInfo] objectForKey:UIKeyboardAnimationCurveUserInfoKey] intValue];
+  NSDictionary *userInfo = [notification userInfo];
+  float duration = [userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue];
+  UIViewAnimationCurve curve = (UIViewAnimationCurve) [userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue];
   UIViewAnimationOptions curveOption = (UIViewAnimationOptions) (curve << 16);
   [UIView animateWithDuration:duration
                         delay:0
@@ -370,8 +410,9 @@ static const uint8_t kMotionShakeTag = 6;
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification {
-  float duration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
-  UIViewAnimationCurve curve = (UIViewAnimationCurve) [[[notification userInfo] objectForKey:UIKeyboardAnimationCurveUserInfoKey] intValue];
+  NSDictionary *userInfo = [notification userInfo];
+  float duration = [userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue];
+  UIViewAnimationCurve curve = (UIViewAnimationCurve) [userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue];
   UIViewAnimationOptions curveOption = (UIViewAnimationOptions) (curve << 16);
   [UIView animateWithDuration:duration
                         delay:0

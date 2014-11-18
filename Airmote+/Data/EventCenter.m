@@ -48,6 +48,13 @@ static const uint8_t kSessionStartTag = 9;
 - (BOOL)connectToHost:(NSString *)hostname {
   NSError *err = nil;
 
+
+  if (! [[_socket connectedHost] isEqualToString:hostname]) {
+    [_socket disconnect];
+  } else {
+    //Do nothing
+  }
+  
   if (![_socket connectToHost:hostname onPort:kServicePort withTimeout:30.0 error:&err]) {
     NSLog(@"Could not connect to %@. Error: %@", hostname, err);
     return NO;

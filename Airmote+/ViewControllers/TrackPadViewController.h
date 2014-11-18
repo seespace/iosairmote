@@ -12,9 +12,10 @@
 #import "WebViewController.h"
 #import "BonjourManager.h"
 #import "EventCenter.h"
+#import "IAConnection.h"
 
 @class TrackPadView;
-@interface TrackPadViewController : UIViewController <UIActionSheetDelegate, UIGestureRecognizerDelegate, UIWebViewDelegate, BonjourManagerDelegate, EventCenterDelegate, NSNetServiceDelegate, UITextViewDelegate>
+@interface TrackPadViewController : UIViewController <UIActionSheetDelegate, UIGestureRecognizerDelegate, UIWebViewDelegate, BonjourManagerDelegate, EventCenterDelegate, NSNetServiceDelegate, UITextViewDelegate, IAConnectionDelegate>
 
 @property(nonatomic, strong) UIActionSheet *actionSheet;
 

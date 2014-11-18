@@ -13,11 +13,12 @@
 enum IAConnectionError
 {
   IAConnectionErrorDidNotSearch,
+  IAConnectionErrorServicesNotFound,
   IAConnectionErrorDiscoveryTimedOut,
   IAConnectionErrorSocketInvalidData,
   IAConnectionErrorServiceNotResolved,
   IAConnectionErrorSocketLost,
-
+  IAConnectionErrorFailToSendEvent
 };
 
 @protocol IAConnectionDelegate <NSObject>
@@ -39,11 +40,11 @@ enum IAConnectionError
 
 -(BOOL) isConnected;
 - (void) start;
-
-//- (void)sendEvent:(Event *)event withTag:(u_int8_t)tag;
+//- (void) connect
+- (void)sendEvent:(Event *)event withTag:(u_int8_t)tag;
 //
 //- (void) stop;
-//- (void) connectToServiceAtIndex:(NSUInteger) index;
+- (void) connectToServiceAtIndex:(NSUInteger) index;
 //-(void) reconnect;
 
 @end

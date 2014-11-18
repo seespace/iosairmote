@@ -1,4 +1,4 @@
- //
+//
 // Created by Manh Tuan Cao on 11/18/14.
 // Copyright (c) 2014 Long Nguyen. All rights reserved.
 //
@@ -50,54 +50,30 @@
 
 #pragma mark - Getters
 
--(NSArray *)foundServices
+- (NSArray *)foundServices
 {
   return foundServices;
 }
 
 #pragma mark - NetServiceBrowserDelegate
 
-
--(void)netServiceBrowser:(NSNetServiceBrowser *)aNetServiceBrowser didFindDomain:(NSString *)domainString moreComing:(BOOL)moreComing
-{
-  NSLog(@"Domain: %@", domainString);
-  
-}
-
-
--(void)netServiceBrowserWillSearch:(NSNetServiceBrowser *)aNetServiceBrowser
-{
-  NSLog(@"");
-}
-
--(void)netServiceBrowser:(NSNetServiceBrowser *)aNetServiceBrowser didRemoveDomain:(NSString *)domainString moreComing:(BOOL)moreComing
-{
-  NSLog(@"");
-}
-
-
 - (void)netServiceBrowser:(NSNetServiceBrowser *)aBrowser didFindService:(NSNetService *)aService moreComing:(BOOL)more
 {
   [timeOutTimer invalidate];
   [foundServices addObject:aService];
   foundAllServices = !more;
-  if (foundAllServices)
-  {
+  if (foundAllServices) {
     if ([self.delegate respondsToSelector:@selector(didFoundServices:)]) {
       [self.delegate didFoundServices:foundServices];
     }
-//    [browser stop];
+    [browser stop];
 
     if (foundServices.count == 1) {
-      if (! [self.delegate respondsToSelector:@selector(shouldConnectAutomatically)] || [self.delegate shouldConnectAutomatically]) {
+      if (![self.delegate respondsToSelector:@selector(shouldConnectAutomatically)] || [self.delegate shouldConnectAutomatically]) {
 
-        if (currentService) {
-          currentService.delegate = nil;
-          [currentService stop];
-        }
-        currentService = foundServices[0];
-        currentService.delegate = self;
-        [currentService resolveWithTimeout:30];
+        NSNetService *temp = foundServices[0];
+
+        [self connectToService:temp];
 
       } else {
 
@@ -108,6 +84,16 @@
 
 }
 
+- (void)connectToService:(NSNetService *)service
+{
+  if (currentService) {
+          currentService.delegate = nil;
+          [currentService stop];
+        }
+  currentService = service;
+  currentService.delegate = self;
+  [currentService resolveWithTimeout:30];
+}
 
 
 - (void)netServiceBrowser:(NSNetServiceBrowser *)aBrowser didRemoveService:(NSNetService *)aService moreComing:(BOOL)more
@@ -131,7 +117,7 @@
 - (void)notifyError:(int)errorCode userInfo:(NSDictionary *)userInfo
 {
   if ([self.delegate respondsToSelector:@selector(didFailToConnect:)]) {
-    NSError *error = [NSError errorWithDomain:kIAConnectionErrorDomain code:IAConnectionErrorDidNotSearch userInfo:userInfo];
+    NSError *error = [NSError errorWithDomain:kIAConnectionErrorDomain code:errorCode userInfo:userInfo];
     [self.delegate didFailToConnect:error];
   }
 }
@@ -141,6 +127,9 @@
   NSLog(@"Stop searching");
   [timeOutTimer invalidate];
   //TODO handle no services found
+  if ([foundServices count] == 0) {
+    [self notifyError:IAConnectionErrorServicesNotFound userInfo:nil];
+  }
 }
 
 - (void)timerFired:(NSTimer *)timer
@@ -152,6 +141,8 @@
   }
 }
 
+
+#pragma mark - Public methods
 
 - (BOOL)isConnected
 {
@@ -167,11 +158,37 @@
 
   timeOutTimer = [NSTimer scheduledTimerWithTimeInterval:30.0 target:self selector:@selector(timerFired:) userInfo:nil repeats:NO];
 
-//  [browser stop];
+  browser.delegate = nil;
+  [browser stop];
+
+  browser.delegate = self;
   [foundServices removeAllObjects];
+  foundAllServices = NO;
+
+  currentService.delegate = nil;
+  [currentService stop];
+  currentService = nil;
 
 //  [browser searchForBrowsableDomains];
   [browser searchForServicesOfType:kServiceType inDomain:@"local."];
+}
+
+- (void)sendEvent:(Event *)event withTag:(u_int8_t)tag
+{
+  if (eventCenter.isActive) {
+    [eventCenter sendEvent:event withTag:tag];
+  } else {
+    [self notifyError:IAConnectionErrorFailToSendEvent userInfo:nil];
+  }
+
+}
+
+
+- (void)connectToServiceAtIndex:(NSUInteger)index
+{
+  if (index < foundServices.count) {
+    [self connectToService:foundServices[index]];
+  }
 }
 
 
@@ -179,19 +196,17 @@
 
 - (void)netService:(NSNetService *)sender didNotResolve:(NSDictionary *)errorDict
 {
-  [self notifyError:IAConnectionErrorServiceNotResolved userInfo:nil];
+  [self notifyError:IAConnectionErrorServiceNotResolved userInfo:errorDict];
   currentService = nil;
 }
 
 
 - (void)netServiceDidResolveAddress:(NSNetService *)sender
 {
-  if (currentService != sender) {
-    NSLog(@"ERROR: unexpected service resolved");
-
+  if (currentService == sender) {
     [eventCenter connectToHost:currentService.hostName];
-
-//    [self notifyError:IAConnectionError userInfo:<#(NSDictionary *)userInfo#>];
+  } else {
+    NSLog(@"ERROR: Trying to connect to another host while connecting to %@", currentService.hostName);
   }
 }
 
