@@ -52,6 +52,7 @@
 		C5844AB198B3D10C81FB020E /* Proto.proto in Resources */ = {isa = PBXBuildFile; fileRef = C584488EB37D152402FECCDD /* Proto.proto */; };
 		C5844B96C4F5A3E00AE2726A /* WifiNetwork+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = C58448D55F9A1DC3853DD753 /* WifiNetwork+Extension.m */; };
 		C5844CBAFA0DDC5AE4993D16 /* IAStateMachine.m in Sources */ = {isa = PBXBuildFile; fileRef = C5844342A82ABE053BC34B9A /* IAStateMachine.m */; };
+		C5844D863B1EFAC244C75EB8 /* IAConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = C5844072E0B87BC74BC615E0 /* IAConnection.m */; };
 		C5844F87624D1E90C002C719 /* EventCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = C58442F85EC1ECBA64716687 /* EventCenter.m */; };
 /* End PBXBuildFile section */
 
@@ -123,6 +124,7 @@
 		B4F9934919A4E925006FC9C2 /* EnterPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnterPasswordViewController.m; sourceTree = "<group>"; };
 		B4F9934A19A4E925006FC9C2 /* EnterPasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EnterPasswordViewController.xib; sourceTree = "<group>"; };
 		C584404E51B140564D994D4F /* NSData+NetService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+NetService.h"; sourceTree = "<group>"; };
+		C5844072E0B87BC74BC615E0 /* IAConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAConnection.m; sourceTree = "<group>"; };
 		C584416A29484E52858F86F6 /* BonjourManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BonjourManager.m; sourceTree = "<group>"; };
 		C584418E08FB8FB0F1DDF896 /* Event+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Event+Extension.m"; sourceTree = "<group>"; };
 		C58441D73782F3A380E60FCC /* WifiNetwork+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WifiNetwork+Extension.h"; sourceTree = "<group>"; };
@@ -146,6 +148,7 @@
 		C5844B7432A538FEF82462D1 /* TrackPadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackPadView.h; sourceTree = "<group>"; };
 		C5844C3C3E765B9D9015EA81 /* WifiHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WifiHelper.h; sourceTree = "<group>"; };
 		C5844D3A171D285B6A5A09D2 /* EventCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventCenter.h; sourceTree = "<group>"; };
+		C5844E141C3A2830491C7A78 /* IAConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAConnection.h; sourceTree = "<group>"; };
 		C5844E2561A6F310A6AB2A6E /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		C5844EA208CDA6A382AB9A98 /* AppDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDefines.h; sourceTree = "<group>"; };
 		C5844ED89441B78E5ED9D931 /* TrackPadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrackPadViewController.m; sourceTree = "<group>"; };
@@ -367,6 +370,8 @@
 				C5844D3A171D285B6A5A09D2 /* EventCenter.h */,
 				C5844342A82ABE053BC34B9A /* IAStateMachine.m */,
 				C5844F7BF68A9E3F9EA726FF /* IAStateMachine.h */,
+				C5844072E0B87BC74BC615E0 /* IAConnection.m */,
+				C5844E141C3A2830491C7A78 /* IAConnection.h */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -545,6 +550,7 @@
 				B46889AA19AEE5ED0043A8A9 /* ConnectedConfirmationViewController.m in Sources */,
 				C5844B96C4F5A3E00AE2726A /* WifiNetwork+Extension.m in Sources */,
 				C5844CBAFA0DDC5AE4993D16 /* IAStateMachine.m in Sources */,
+				C5844D863B1EFAC244C75EB8 /* IAConnection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
