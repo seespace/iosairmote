@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "BonjourManager.h"
 #import "IAConnection.h"
 
 @interface InstructionViewController : UIViewController < NSNetServiceDelegate, IAConnectionDelegate>

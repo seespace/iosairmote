@@ -22,7 +22,6 @@
 @implementation InstructionViewController {
   __weak IBOutlet UILabel *instructionLabel;
 
-  BonjourManager *_bonjourManager;
   NSNetService *_netService;
   BOOL viewDidAppear;
   NSString *_lastResolvedAddress;
@@ -38,9 +37,6 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
 
-  _bonjourManager = [[BonjourManager alloc] init];
-  _bonjourManager.delegate = self;
-
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(didBecomeActive:)
                                                name:UIApplicationDidBecomeActiveNotification
@@ -52,7 +48,7 @@
 - (void)configureStateMachine {
   TKState *bonjourDiscoveryState = [[IAStateMachine sharedStateMachine] stateNamed:kStateSetupBonjourDiscovery];
   [bonjourDiscoveryState setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
-    [_bonjourManager start];
+
   }];
 
   TKState *serviceResolvingState = [[IAStateMachine sharedStateMachine] stateNamed:kStateSetupServiceResolving];
