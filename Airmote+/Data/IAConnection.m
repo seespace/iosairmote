@@ -10,6 +10,7 @@
 #define kServiceType @"_irpc._tcp."
 #define kMaxScanningDuration 5.0
 #define kMaxResolvingDuration 5.0
+
 @implementation IAConnection
 {
   NSNetServiceBrowser *browser;
@@ -70,6 +71,7 @@
 }
 
 #pragma mark - NetServiceBrowserDelegate
+
 - (void)netServiceBrowserWillSearch:(NSNetServiceBrowser *)aNetServiceBrowser
 {
   isScanning = YES;
@@ -84,9 +86,9 @@
   [foundServices addObject:aService];
   foundAllServices = !more;
   if (foundAllServices) {
-    
+
     if (foundServices.count > 1) {
-      if  ([self.delegate respondsToSelector:@selector(didFoundServices:)]) {
+      if ([self.delegate respondsToSelector:@selector(didFoundServices:)]) {
         [self.delegate didFoundServices:foundServices];
       }
     } else if (foundServices.count == 1) {
@@ -94,7 +96,7 @@
         [self connectToService:foundServices[0]];
       }
     }
-    
+
     [browser stop];
     isScanning = NO;
   }
@@ -135,13 +137,23 @@
 
 - (void)appDidBecomeActive:(NSNotification *)notification
 {
-  if (! self.isConnected && ! self.isProcessing) {
+  if (!self.isConnected && !self.isProcessing) {
     [self start];
   }
 }
 
 
 #pragma mark - Private methods
+- (void)startScanningServices
+{
+  if ([Reachability reachabilityForLocalWiFi].isReachableViaWiFi) {
+    [browser searchForServicesOfType:kServiceType inDomain:@"local."];
+    isScanning = YES;
+  } else {
+    [self notifyError:IAConnectionErrorWifiNotAvailable userInfo:nil];
+  }
+}
+
 - (void)notifyError:(int)errorCode userInfo:(NSDictionary *)userInfo
 {
   if ([self.delegate respondsToSelector:@selector(didFailToConnect:)]) {
@@ -168,7 +180,7 @@
   if (isConnecting) {
     return;
   }
-  
+
   if ([service.name isEqualToString:currentService.name]) {
     [eventCenter connectToHost:currentService.hostName];
     isConnecting = YES;
@@ -189,7 +201,6 @@
 }
 
 
-
 - (BOOL)isProcessing
 {
   return isConnecting || isScanning || isResolving;
@@ -207,32 +218,40 @@
     return;
   }
 
+  browser.delegate = nil;
+  [browser stop];
+  browser.delegate = self;
+
+  currentService.delegate = nil;
+  [currentService stop];
+
+  [self resetStates];
+
+  [self startScanningServices];
+}
+
+
+- (void)stop
+{
   if (timeOutTimer != nil) {
     [timeOutTimer invalidate];
     timeOutTimer = nil;
   }
 
-  timeOutTimer = [NSTimer scheduledTimerWithTimeInterval:kMaxScanningDuration target:self selector:@selector(timerFired:) userInfo:nil repeats:NO];
-
-  browser.delegate = nil;
+  [eventCenter disconnect];
+  [currentService stop];
   [browser stop];
+}
 
-  browser.delegate = self;
+- (void)resetStates
+{
+  timeOutTimer = [NSTimer scheduledTimerWithTimeInterval:kMaxScanningDuration target:self selector:@selector(timerFired:) userInfo:nil repeats:NO];
   [foundServices removeAllObjects];
   foundAllServices = NO;
-
-  currentService.delegate = nil;
-  [currentService stop];
   currentService = nil;
 
-  if ([Reachability reachabilityForLocalWiFi].isReachableViaWiFi) {
-    [browser searchForServicesOfType:kServiceType inDomain:@"local."];
-    isScanning = YES;
-
-  } else {
-    [self notifyError:IAConnectionErrorWifiNotAvailable userInfo:nil];
-  }
 }
+
 
 - (void)sendEvent:(Event *)event withTag:(u_int8_t)tag
 {
@@ -255,7 +274,7 @@
 
 - (void)reconnect
 {
-  if ([self isConnected] || [self isProcessing])  {
+  if ([self isConnected] || [self isProcessing]) {
     //TODO do we need to notify?
     return;
   }
@@ -354,7 +373,7 @@
   }
 }
 
--(void)eventCenterFailedToConnectToHost:(NSString *)hostName withError:(NSError *)error
+- (void)eventCenterFailedToConnectToHost:(NSString *)hostName withError:(NSError *)error
 {
   [self notifyError:IAConnectionErrorFailToConnectSocket userInfo:[error userInfo]];
   [self invalidateCurrentService];

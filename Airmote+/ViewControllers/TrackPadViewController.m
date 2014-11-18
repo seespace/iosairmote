@@ -291,6 +291,7 @@ static const uint8_t kMotionShakeTag = 6;
   [[IAConnection sharedConnection] sendEvent:event withTag:0];
 }
 - (IBAction)settingsButtonTapped:(id)sender {
+  [self startWifiSetupWorkFlow];
 }
 
 - (void)dismissInputView {
