@@ -22,7 +22,7 @@
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kRequireWifiSetup];
   }
   
-    InstructionViewController *viewController  = [[InstructionViewController alloc] init];
+    TrackPadViewController *viewController  = [[TrackPadViewController alloc] init];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
   navigationController.navigationBarHidden = YES;
     self.window.rootViewController = navigationController;

@@ -44,7 +44,7 @@ static const uint8_t kMotionShakeTag = 6;
 
 - (BOOL)shouldConnectAutomatically
 {
-  return NO;
+  return YES;
 }
 
 - (void)didStartScanning
