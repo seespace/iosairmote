@@ -23,39 +23,12 @@
   IBOutletCollection(UIView) NSArray *views;
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-  self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-  if (self) {
-    [self configureStateMachine];
-  }
-  return self;
-}
 
 - (void)viewDidLoad {
   [super viewDidLoad];
   [self requestConfirmationCode];
 }
 
-- (void)configureStateMachine {
-  TKState *nameChangingState = [[IAStateMachine sharedStateMachine] stateNamed:kStateSetupChangeName];
-  [nameChangingState setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
-    if ([[IAStateMachine sharedStateMachine] isInState:kStateSetupCodeVerification]) {
-      ChangeNameViewController *changeNameViewController = [[ChangeNameViewController alloc] init];
-      [[IAConnection sharedConnection] setDelegate:changeNameViewController];
-      [self.navigationController pushViewController:changeNameViewController animated:NO];
-    }
-  }];
-
-  [[[IAStateMachine sharedStateMachine] stateNamed:kStateSetupCodeVerification] setDidExitStateBlock:^(TKState *state, TKTransition *transition) {
-    if ([[IAStateMachine sharedStateMachine] isInState:kStateWifiSetupStart]) {
-      [self.navigationController popViewControllerAnimated:NO];
-    }
-  }];
-}
-
-
--(void)viewDidAppear:(BOOL)animated {
-}
 
 - (void)didReceiveMemoryWarning {
   [super didReceiveMemoryWarning];
@@ -63,13 +36,14 @@
 }
 
 - (IBAction)noButtonPressed:(id)sender {
-  [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupFailedToRetrieveConfirmationCode];
+  [self.navigationController popViewControllerAnimated:NO];
 }
-
 
 - (IBAction)yesButtonPressed:(id)sender
 {
-  [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupSameCodeVerified];
+  ChangeNameViewController *changeNameViewController = [[ChangeNameViewController alloc] init];
+  [[IAConnection sharedConnection] setDelegate:changeNameViewController];
+  [self.navigationController pushViewController:changeNameViewController animated:NO];
 }
 
 
@@ -92,7 +66,6 @@
         }
       } completion:NULL];
       NSLog(@"eventCenter: receivedEvent");
-      [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupCodeVerificationReceived];
 
       break;
     }

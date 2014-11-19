@@ -40,24 +40,6 @@
   if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
     self.edgesForExtendedLayout = UIRectEdgeNone;
   [passwordTextField becomeFirstResponder];
-  [self configureStateMachine];
-}
-
-- (void)configureStateMachine {
-  [[[IAStateMachine sharedStateMachine] stateNamed:kStateSameWifiAwaiting] setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
-    [SVProgressHUD showSuccessWithStatus:@"Connected"];
-    ConnectedConfirmationViewController *confirmationViewController = [[ConnectedConfirmationViewController alloc] init];
-    confirmationViewController.delegate = self;
-    confirmationViewController.networkSSID = self.networkSSID;
-    [self.navigationController pushViewController:confirmationViewController animated:NO];
-  }];
-
-  [[[IAStateMachine sharedStateMachine] stateNamed:kStateEnteringWifiPassword] setDidExitStateBlock:^(TKState *state, TKTransition *transition) {
-    if ([[IAStateMachine sharedStateMachine] isInState:kStateSetupWifiListing]) {
-      [self.navigationController popViewControllerAnimated:NO];
-    }
-  }];
-
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -76,7 +58,11 @@
         }];
 
       } else {
-        [[IAStateMachine sharedStateMachine] fireEvent:kEventUserConnectedToSecureWifi];
+        [SVProgressHUD showSuccessWithStatus:@"Connected"];
+        ConnectedConfirmationViewController *confirmationViewController = [[ConnectedConfirmationViewController alloc] init];
+        confirmationViewController.delegate = self;
+        confirmationViewController.networkSSID = self.networkSSID;
+        [self.navigationController pushViewController:confirmationViewController animated:NO];
       }
     }
       break;
@@ -107,7 +93,7 @@
 }
 
 - (IBAction)backButtonPressed:(id)sender {
-  [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupBackToWifiListing];
+  [self.navigationController popViewControllerAnimated:NO];
 }
 
 @end

@@ -38,34 +38,14 @@
   }
   textField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 30)];
   textField.leftViewMode = UITextFieldViewModeAlways;
-  [self configureStateMachine];
+
 }
 
-- (void)configureStateMachine {
-  [[[IAStateMachine sharedStateMachine] stateNamed:kStateSetupChangeName] setDidExitStateBlock:^(TKState *state, TKTransition *transition) {
-    if ([[IAStateMachine sharedStateMachine] isInState:kStateSetupWifiListing]) {
-      WiFiListViewController *wifiListVC = [[WiFiListViewController alloc] init];
-      [IAConnection sharedConnection].delegate = wifiListVC;
-      [self.navigationController pushViewController:wifiListVC animated:YES];
-    }
-  }];
-
-
-  [[[IAStateMachine sharedStateMachine] stateNamed:kStateSetupCodeVerification] setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
-    if ([[IAStateMachine sharedStateMachine] isInState:kStateSetupChangeName]) {
-      [self.navigationController popViewControllerAnimated:NO];
-    }
-  }];
-}
 
 - (void)viewDidAppear:(BOOL)animated {
   [IAConnection sharedConnection].delegate = self;
 }
 
-
-- (void)nextButtonPressed:(id)sender {
-  [self sendRenameRequestWithName:textField.text];
-}
 
 
 - (void)didReceiveMemoryWarning {
@@ -87,7 +67,9 @@
         [alert show];
       }
       else {
-        [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupNameChanged];
+        WiFiListViewController *wifiListVC = [[WiFiListViewController alloc] init];
+        [IAConnection sharedConnection].delegate = wifiListVC;
+        [self.navigationController pushViewController:wifiListVC animated:YES];
       }
       break;
     }
@@ -112,7 +94,7 @@
   }
 }
 - (IBAction)backPressed:(id)sender {
-  [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupBackToCodeVerification];
+  [self.navigationController popViewControllerAnimated:NO];
 }
 
 @end

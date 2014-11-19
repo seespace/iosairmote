@@ -42,6 +42,10 @@ static const uint8_t kMotionShakeTag = 6;
                                              object:nil];
 }
 
+- (BOOL)shouldConnectAutomatically
+{
+  return NO;
+}
 
 - (void)didStartScanning
 {

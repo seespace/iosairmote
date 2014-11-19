@@ -280,7 +280,7 @@
 
 - (void)sendEvent:(Event *)event withTag:(u_int8_t)tag
 {
-  DDLogDebug(@"Sending Event: ", event.description);
+  DDLogDebug(@"Sending Event: %@", event);
   if (eventCenter.isActive) {
     [eventCenter sendEvent:event withTag:tag];
 //    lastActiveTime = [NSDate date];

@@ -21,64 +21,33 @@
 
 @end
 
-@implementation WiFiListViewController {
+@implementation WiFiListViewController
+{
 
   __weak IBOutlet UITableView *tableView;
   NSArray *wifiNetworks;
   WifiNetwork *_selectedNetwork;
 }
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-  self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-  if (self) {
-    // Custom initialization
-  }
-  return self;
-}
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
   [super viewDidLoad];
   if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
     self.edgesForExtendedLayout = UIRectEdgeNone;
 
-  if ([[IAStateMachine sharedStateMachine].currentState.name isEqualToString:kStateSetupWifiListing]) {
-    Event *ev = [ProtoHelper setupWifiScanRequest];
-    [[IAConnection sharedConnection] sendEvent:ev withTag:0];
-    [SVProgressHUD showWithStatus:@"Loading..." maskType:SVProgressHUDMaskTypeGradient];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (30 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-      [SVProgressHUD dismiss];
-    });
-  }
-  [self configureStateMachine];
+  Event *ev = [ProtoHelper setupWifiScanRequest];
+  [[IAConnection sharedConnection] sendEvent:ev withTag:0];
+  [SVProgressHUD showWithStatus:@"Loading..." maskType:SVProgressHUDMaskTypeGradient];
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (30 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    [SVProgressHUD dismiss];
+  });
+
   tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
 }
 
-- (void)configureStateMachine {
-  [[[IAStateMachine sharedStateMachine] stateNamed:kStateEnteringWifiPassword] setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
-    EnterPasswordViewController *enterPasswordVC = [[EnterPasswordViewController alloc] init];
-    [IAConnection sharedConnection].delegate = enterPasswordVC;
-    enterPasswordVC.networkSSID = _selectedNetwork.ssid;
-    [self.navigationController pushViewController:enterPasswordVC animated:NO];
-  }];
-
-  [[[IAStateMachine sharedStateMachine] stateNamed:kStateSetupChangeName] setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
-    if ([[[[IAStateMachine sharedStateMachine] currentState] name] isEqualToString:kStateSetupWifiListing]) {
-      [self.navigationController popViewControllerAnimated:NO];
-    }
-  }];
-
-  [[[IAStateMachine sharedStateMachine] stateNamed:kStateSameWifiAwaiting] setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
-    if ([[IAStateMachine sharedStateMachine] isInState:kStateSetupWifiListing]) {
-      [SVProgressHUD showSuccessWithStatus:@"Connected"];
-      ConnectedConfirmationViewController *confirmationViewController = [[ConnectedConfirmationViewController alloc] init];
-      confirmationViewController.delegate = self;
-      confirmationViewController.networkSSID = _selectedNetwork.ssid;
-      [self.navigationController pushViewController:confirmationViewController animated:NO];
-    }
-  }];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
+- (void)viewDidAppear:(BOOL)animated
+{
   [IAConnection sharedConnection].delegate = self;
 }
 
@@ -97,7 +66,11 @@
       if (ev.error) {
         [SVProgressHUD dismiss];
       } else {
-        [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupUserSelectedOpenWifi];
+        [SVProgressHUD showSuccessWithStatus:@"Connected"];
+        ConnectedConfirmationViewController *confirmationViewController = [[ConnectedConfirmationViewController alloc] init];
+        confirmationViewController.delegate = self;
+        confirmationViewController.networkSSID = _selectedNetwork.ssid;
+        [self.navigationController pushViewController:confirmationViewController animated:NO];
       }
       break;
     }
@@ -107,48 +80,54 @@
   }
 }
 
-- (void)handleWifiScanEvent:(SetupResponseEvent *)ev {
+- (void)handleWifiScanEvent:(SetupResponseEvent *)ev
+{
   if (ev.error) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:ev.errorMessage
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alertView show];
-      } else {
-        if ([ev.wifiNetworks count] == 0) {
-          UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                              message:@"WiFi networks are not available."
-                                                             delegate:nil
-                                                    cancelButtonTitle:@"OK"
-                                                    otherButtonTitles:nil];
-          [alertView show];
-        }
-        else {
-          wifiNetworks = ev.wifiNetworks;
-          [tableView reloadData];
-        }
-      }
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:ev.errorMessage
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alertView show];
+  } else {
+    if ([ev.wifiNetworks count] == 0) {
+      UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                          message:@"WiFi networks are not available."
+                                                         delegate:nil
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles:nil];
+      [alertView show];
+    }
+    else {
+      wifiNetworks = ev.wifiNetworks;
+      [tableView reloadData];
+    }
+  }
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
   [super didReceiveMemoryWarning];
   // Dispose of any resources that can be recreated.
 }
 
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)aTableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)aTableView
+{
   return 1;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView1 heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat)tableView:(UITableView *)tableView1 heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
   return kWifiCellHeight;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView1 numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView1 numberOfRowsInSection:(NSInteger)section
+{
   return [wifiNetworks count];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView1 cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView1 cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
   static NSString *wifiCellIdentifier = @"WifiCellIdentifier";
 
   WifiCell *cell = [tableView1 dequeueReusableCellWithIdentifier:wifiCellIdentifier];
@@ -163,26 +142,31 @@
   return cell;
 }
 
-- (void)tableView:(UITableView *)tableView1 didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView1 didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
   _selectedNetwork = wifiNetworks[(NSUInteger) indexPath.row];
   [tableView1 deselectRowAtIndexPath:indexPath animated:YES];
+
   if (_selectedNetwork.requiredPassword) {
-    [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupUserSelectedSecureWifi];
+    EnterPasswordViewController *enterPasswordVC = [[EnterPasswordViewController alloc] init];
+    [IAConnection sharedConnection].delegate = enterPasswordVC;
+    enterPasswordVC.networkSSID = _selectedNetwork.ssid;
+    [self.navigationController pushViewController:enterPasswordVC animated:NO];
   } else {
-    if ([[IAStateMachine sharedStateMachine] isInState:kStateSetupWifiListing]) {
-      Event *ev = [ProtoHelper setupWifiConnectRequestWithSSID:_selectedNetwork.ssid password:@""];
-      [[IAConnection sharedConnection] sendEvent:ev withTag:0];
-      [SVProgressHUD showWithStatus:@"InAir device connecting..."];
-    }
+    Event *ev = [ProtoHelper setupWifiConnectRequestWithSSID:_selectedNetwork.ssid password:@""];
+    [[IAConnection sharedConnection] sendEvent:ev withTag:0];
+    [SVProgressHUD showWithStatus:@"InAir device connecting..."];
   }
 }
 
 
-- (IBAction)backButtonPressed:(id)sender {
-  [[IAStateMachine sharedStateMachine] fireEvent:kEventSetupBackToNameChanging];
+- (IBAction)backButtonPressed:(id)sender
+{
+  [self.navigationController popViewControllerAnimated:NO];
 }
 
-- (void)didConnectedToTheSameNetworkWithInAirDevice {
+- (void)didConnectedToTheSameNetworkWithInAirDevice
+{
   [self.parentViewController.presentingViewController dismissViewControllerAnimated:NO completion:NULL];
 }
 
