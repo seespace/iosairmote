@@ -86,19 +86,16 @@
   [foundServices addObject:aService];
   foundAllServices = !more;
   if (foundAllServices) {
-
+    isScanning = NO;
     if (foundServices.count > 1) {
       if ([self.delegate respondsToSelector:@selector(didFoundServices:)]) {
         [self.delegate didFoundServices:foundServices];
       }
     } else if (foundServices.count == 1) {
-      if (![self.delegate respondsToSelector:@selector(shouldConnectAutomatically)] || [self.delegate shouldConnectAutomatically]) {
         [self connectToService:foundServices[0]];
-      }
     }
 
     [browser stop];
-    isScanning = NO;
   }
 }
 
@@ -110,19 +107,20 @@
 
 - (void)netServiceBrowser:(NSNetServiceBrowser *)aNetServiceBrowser didNotSearch:(NSDictionary *)errorDict
 {
+  isScanning = NO;
   [timeOutTimer invalidate];
   [self notifyError:IAConnectionErrorDidNotSearch userInfo:nil];
-  isScanning = NO;
 }
 
 
 - (void)netServiceBrowserDidStopSearch:(NSNetServiceBrowser *)aNetServiceBrowser
 {
+  isScanning = NO;
   [timeOutTimer invalidate];
   if ([foundServices count] == 0) {
     [self notifyError:IAConnectionErrorServicesNotFound userInfo:nil];
   }
-  isScanning = NO;
+
 }
 
 
@@ -138,6 +136,7 @@
 - (void)appDidBecomeActive:(NSNotification *)notification
 {
   if (!self.isConnected && !self.isProcessing) {
+    if ([self.delegate respondsToSelector:@selector(shouldConnectAutomatically)] && [self.delegate shouldConnectAutomatically])
     [self start];
   }
 }
@@ -147,8 +146,8 @@
 - (void)startScanningServices
 {
   if ([Reachability reachabilityForLocalWiFi].isReachableViaWiFi) {
-    [browser searchForServicesOfType:kServiceType inDomain:@"local."];
     isScanning = YES;
+    [browser searchForServicesOfType:kServiceType inDomain:@"local."];
   } else {
     [self notifyError:IAConnectionErrorWifiNotAvailable userInfo:nil];
   }
@@ -182,9 +181,11 @@
   }
 
   if ([service.name isEqualToString:currentService.name]) {
-    [eventCenter connectToHost:currentService.hostName];
     isConnecting = YES;
+    [eventCenter connectToHost:currentService.hostName];
+
   } else {
+    isResolving = YES;
     if (currentService) {
       currentService.delegate = nil;
       [currentService stop];
@@ -192,7 +193,7 @@
     currentService = service;
     currentService.delegate = self;
     [currentService resolveWithTimeout:kMaxResolvingDuration];
-    isResolving = YES;
+
   }
 
   if ([self.delegate respondsToSelector:@selector(didStartConnecting)]) {
@@ -281,8 +282,8 @@
 
   if (currentService != nil) {
     if (currentService.hostName != nil) {
-      [eventCenter connectToHost:currentService.hostName];
       isConnecting = YES;
+      [eventCenter connectToHost:currentService.hostName];
       if ([self.delegate respondsToSelector:@selector(didStartConnecting)]) {
         [self.delegate didStartConnecting];
       }
@@ -319,10 +320,9 @@
 
 - (void)netService:(NSNetService *)sender didNotResolve:(NSDictionary *)errorDict
 {
+  isResolving = NO;
   [self notifyError:IAConnectionErrorServiceNotResolved userInfo:errorDict];
   [self invalidateCurrentService];
-
-  isResolving = NO;
 }
 
 - (void)invalidateCurrentService
@@ -337,32 +337,32 @@
 
 - (void)netServiceDidResolveAddress:(NSNetService *)sender
 {
+  isResolving = NO;
   if (currentService == sender) {
-    [eventCenter connectToHost:currentService.hostName];
     isConnecting = YES;
+    [eventCenter connectToHost:currentService.hostName];
     if ([self.delegate respondsToSelector:@selector(didStartConnecting)]) {
       [self.delegate didStartConnecting];
     }
   } else {
     NSLog(@"ERROR: Trying to connect to another host while connecting to %@", currentService.hostName);
   }
-  isResolving = NO;
 }
 
 - (void)eventCenterDidConnectToHost:(NSString *)hostName
 {
+  isConnecting = NO;
   if ([hostName isEqualToString:currentService.hostName]) {
     if ([self.delegate respondsToSelector:@selector(didConnect:)]) {
       [self.delegate didConnect:currentService.name];
     }
   }
-  isConnecting = NO;
 }
 
 - (void)eventCenterDidDisconnectFromHost:(NSString *)hostName withError:(NSError *)error
 {
-  [self notifyError:IAConnectionErrorSocketLost userInfo:nil];
   isConnecting = NO;
+  [self notifyError:IAConnectionErrorSocketLost userInfo:nil];
 //  currentService = nil;
 }
 
@@ -375,9 +375,9 @@
 
 - (void)eventCenterFailedToConnectToHost:(NSString *)hostName withError:(NSError *)error
 {
+  isConnecting = NO;
   [self notifyError:IAConnectionErrorFailToConnectSocket userInfo:[error userInfo]];
   [self invalidateCurrentService];
-  isConnecting = NO;
 }
 
 @end
