@@ -14,4 +14,8 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
     #import "AppDefines.h"
+    #import "CocoaLumberjack.h"
+#import "DDLegacy.h"
+
+static const int ddLogLevel = LOG_LEVEL_ALL;
 #endif

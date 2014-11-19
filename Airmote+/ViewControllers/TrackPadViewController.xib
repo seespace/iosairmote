@@ -29,28 +29,12 @@
                                 <constraint firstAttribute="width" constant="3" id="ZRf-e2-Tox"/>
                             </constraints>
                         </view>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VVv-W2-25p">
-                            <rect key="frame" x="269" y="1" width="50" height="50"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="50" id="KEz-w6-l8y"/>
-                                <constraint firstAttribute="height" constant="50" id="uKZ-yx-tes"/>
-                            </constraints>
-                            <inset key="imageEdgeInsets" minX="12" minY="12" maxX="12" maxY="12"/>
-                            <state key="normal" image="gear">
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="settingsButtonTapped:" destination="-1" eventType="touchUpInside" id="jnH-gv-2OO"/>
-                            </connections>
-                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.89967105263157909" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="5pv-oF-CEP" firstAttribute="top" secondItem="nKI-Hj-0zZ" secondAttribute="top" id="2ER-dj-PE3"/>
                         <constraint firstAttribute="centerX" secondItem="5pv-oF-CEP" secondAttribute="centerX" id="NMC-dg-ybL"/>
                         <constraint firstAttribute="bottom" secondItem="5pv-oF-CEP" secondAttribute="bottom" id="Zj1-0c-1MG"/>
-                        <constraint firstAttribute="trailing" secondItem="VVv-W2-25p" secondAttribute="trailing" constant="1" id="eEy-sK-KoC"/>
-                        <constraint firstItem="VVv-W2-25p" firstAttribute="top" secondItem="nKI-Hj-0zZ" secondAttribute="top" constant="1" id="zul-S0-Nbl"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sPp-Fi-YfW" userLabel="InputView">
@@ -102,12 +86,27 @@
                         <constraint firstItem="s1W-DB-Zyh" firstAttribute="top" secondItem="Ha1-OQ-f5c" secondAttribute="bottom" constant="8" symbolic="YES" id="zPT-LH-LMj"/>
                     </constraints>
                 </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VVv-W2-25p">
+                    <rect key="frame" x="265" y="5" width="50" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="50" id="KEz-w6-l8y"/>
+                        <constraint firstAttribute="height" constant="50" id="uKZ-yx-tes"/>
+                    </constraints>
+                    <state key="normal" image="gear">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="settingsButtonTapped:" destination="-1" eventType="touchUpInside" id="jnH-gv-2OO"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="nKI-Hj-0zZ" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="1Y3-eG-FUM"/>
                 <constraint firstItem="sPp-Fi-YfW" firstAttribute="centerX" secondItem="nKI-Hj-0zZ" secondAttribute="centerX" id="2IV-Xb-0S4"/>
                 <constraint firstAttribute="bottom" secondItem="nKI-Hj-0zZ" secondAttribute="bottom" id="8qd-sT-5q4"/>
+                <constraint firstItem="VVv-W2-25p" firstAttribute="top" secondItem="1" secondAttribute="top" constant="5" id="PvJ-Ua-ye0"/>
+                <constraint firstAttribute="trailing" secondItem="VVv-W2-25p" secondAttribute="trailing" constant="5" id="eVr-DK-OUS"/>
                 <constraint firstItem="sPp-Fi-YfW" firstAttribute="top" secondItem="1" secondAttribute="top" constant="-240" id="jqF-ct-LcE"/>
                 <constraint firstAttribute="trailing" secondItem="nKI-Hj-0zZ" secondAttribute="trailing" id="w5d-4o-g6T"/>
                 <constraint firstItem="nKI-Hj-0zZ" firstAttribute="top" secondItem="1" secondAttribute="top" id="wmL-Gc-bca"/>

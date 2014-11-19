@@ -7,7 +7,9 @@
 //
 
 #import "AppDelegate.h"
-#import "IAStateMachine.h"
+#import "InstructionViewController.h"
+#import "DDTTYLogger.h"
+#import "DDASLLogger.h"
 
 @implementation AppDelegate
 
@@ -20,12 +22,21 @@
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kRequireWifiSetup];
   }
   
-    TrackPadViewController *viewController  = [[TrackPadViewController alloc] init];
+    InstructionViewController *viewController  = [[InstructionViewController alloc] init];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+  navigationController.navigationBarHidden = YES;
     self.window.rootViewController = navigationController;
     
     [self.window makeKeyAndVisible];
+
+  [self setupLogger];
     return YES;
+}
+
+- (void)setupLogger
+{
+  [DDLog addLogger:[DDASLLogger sharedInstance]];
+  [DDLog addLogger:[DDTTYLogger sharedInstance]];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

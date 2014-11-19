@@ -75,6 +75,7 @@
 - (void)netServiceBrowserWillSearch:(NSNetServiceBrowser *)aNetServiceBrowser
 {
   isScanning = YES;
+  DDLogDebug(@"Start Scanning");
   if ([self.delegate respondsToSelector:@selector(didStartScanning)]) {
     [self.delegate didStartScanning];
   }
@@ -82,10 +83,12 @@
 
 - (void)netServiceBrowser:(NSNetServiceBrowser *)aBrowser didFindService:(NSNetService *)aService moreComing:(BOOL)more
 {
+  DDLogDebug(@"Found services: %@", aService.name );
   [timeOutTimer invalidate];
   [foundServices addObject:aService];
   foundAllServices = !more;
   if (foundAllServices) {
+    DDLogDebug(@"Found %d services", [foundServices count] );
     isScanning = NO;
     if (foundServices.count > 1) {
       if ([self.delegate respondsToSelector:@selector(didFoundServices:)]) {
@@ -102,11 +105,13 @@
 
 - (void)netServiceBrowser:(NSNetServiceBrowser *)aBrowser didRemoveService:(NSNetService *)aService moreComing:(BOOL)more
 {
+  DDLogDebug(@"Removing service: %@", aService.name);
   [foundServices removeObject:aService];
 }
 
 - (void)netServiceBrowser:(NSNetServiceBrowser *)aNetServiceBrowser didNotSearch:(NSDictionary *)errorDict
 {
+  DDLogDebug(@"NetServiceBrowser didNotSearch: %@", errorDict);
   isScanning = NO;
   [timeOutTimer invalidate];
   [self notifyError:IAConnectionErrorDidNotSearch userInfo:nil];
@@ -115,6 +120,7 @@
 
 - (void)netServiceBrowserDidStopSearch:(NSNetServiceBrowser *)aNetServiceBrowser
 {
+  DDLogDebug(@"netServiceBrowserDidStopSearch");
   isScanning = NO;
   [timeOutTimer invalidate];
   if ([foundServices count] == 0) {
@@ -135,9 +141,13 @@
 
 - (void)appDidBecomeActive:(NSNotification *)notification
 {
+  DDLogDebug(@"App Enter foreground");
   if (!self.isConnected && !self.isProcessing) {
-    if ([self.delegate respondsToSelector:@selector(shouldConnectAutomatically)] && [self.delegate shouldConnectAutomatically])
-    [self start];
+    DDLogDebug(@"Should start IAConnection");
+    if ([self.delegate respondsToSelector:@selector(shouldConnectAutomatically)] && [self.delegate shouldConnectAutomatically]) {
+      [self start];
+    }
+
   }
 }
 
@@ -145,10 +155,13 @@
 #pragma mark - Private methods
 - (void)startScanningServices
 {
+
   if ([Reachability reachabilityForLocalWiFi].isReachableViaWiFi) {
+    DDLogDebug(@"Start scanning for services");
     isScanning = YES;
     [browser searchForServicesOfType:kServiceType inDomain:@"local."];
   } else {
+    DDLogDebug(@"Failed to scan because no wifi available");
     [self notifyError:IAConnectionErrorWifiNotAvailable userInfo:nil];
   }
 }
@@ -176,9 +189,13 @@
 
 - (void)connectToService:(NSNetService *)service
 {
+
   if (isConnecting) {
+    DDLogError(@"Ignoring Connecting to service: %@", service.name);
     return;
   }
+
+  DDLogDebug(@"Connecting to service: %@", service.name);
 
   if ([service.name isEqualToString:currentService.name]) {
     isConnecting = YES;
@@ -204,6 +221,10 @@
 
 - (BOOL)isProcessing
 {
+  DDLogDebug(@"Connect: %@ - Scanning: %@ - Resolving: %@",
+      isConnecting? @"YES" : @"NO",
+      isScanning? @"YES" : @"NO",
+      isResolving? @"YES" : @"NO");
   return isConnecting || isScanning || isResolving;
 }
 
@@ -214,6 +235,7 @@
 
 - (void)start
 {
+  DDLogDebug(@"Starting IAConnection");
   if (foundServices.count > 0) {
     [self reconnect];
     return;
@@ -234,6 +256,7 @@
 
 - (void)stop
 {
+  DDLogDebug(@"STOP connection");
   if (timeOutTimer != nil) {
     [timeOutTimer invalidate];
     timeOutTimer = nil;
@@ -246,6 +269,7 @@
 
 - (void)resetStates
 {
+  DDLogDebug(@"Resetting states");
   timeOutTimer = [NSTimer scheduledTimerWithTimeInterval:kMaxScanningDuration target:self selector:@selector(timerFired:) userInfo:nil repeats:NO];
   [foundServices removeAllObjects];
   foundAllServices = NO;
@@ -256,10 +280,12 @@
 
 - (void)sendEvent:(Event *)event withTag:(u_int8_t)tag
 {
+  DDLogDebug(@"Sending Event: ", event.description);
   if (eventCenter.isActive) {
     [eventCenter sendEvent:event withTag:tag];
 //    lastActiveTime = [NSDate date];
   } else {
+    DDLogError(@"Cannot send event, event center is not connected");
     [self notifyError:IAConnectionErrorFailToSendEvent userInfo:nil];
   }
 
@@ -275,11 +301,15 @@
 
 - (void)reconnect
 {
+
   if ([self isConnected] || [self isProcessing]) {
+
     //TODO do we need to notify?
+    DDLogError(@"Attempting reconnect while is connected or isConnecting...");
     return;
   }
 
+  DDLogDebug(@"Reconnecting.....");
   if (currentService != nil) {
     if (currentService.hostName != nil) {
       isConnecting = YES;
@@ -320,6 +350,7 @@
 
 - (void)netService:(NSNetService *)sender didNotResolve:(NSDictionary *)errorDict
 {
+  DDLogError(@"Service: %@ DID Not resolve", sender.name);
   isResolving = NO;
   [self notifyError:IAConnectionErrorServiceNotResolved userInfo:errorDict];
   [self invalidateCurrentService];
@@ -327,6 +358,7 @@
 
 - (void)invalidateCurrentService
 {
+  DDLogDebug(@"Invalidate current service");
   if (currentService) {
     [foundServices removeObject:currentService];
   }
@@ -337,6 +369,7 @@
 
 - (void)netServiceDidResolveAddress:(NSNetService *)sender
 {
+  DDLogDebug(@"Did resolve service: %@ - IP Address: %@", sender.name, sender.addresses);
   isResolving = NO;
   if (currentService == sender) {
     isConnecting = YES;
@@ -345,12 +378,13 @@
       [self.delegate didStartConnecting];
     }
   } else {
-    NSLog(@"ERROR: Trying to connect to another host while connecting to %@", currentService.hostName);
+    DDLogError(@"ERROR: Trying to connect to another host while connecting to %@", currentService.hostName);
   }
 }
 
 - (void)eventCenterDidConnectToHost:(NSString *)hostName
 {
+  DDLogDebug(@"Did connect to host name", hostName);
   isConnecting = NO;
   if ([hostName isEqualToString:currentService.hostName]) {
     if ([self.delegate respondsToSelector:@selector(didConnect:)]) {
@@ -361,6 +395,7 @@
 
 - (void)eventCenterDidDisconnectFromHost:(NSString *)hostName withError:(NSError *)error
 {
+  DDLogError(@"Event did disconnect from host: %@ - Error %@", hostName, error);
   isConnecting = NO;
   [self notifyError:IAConnectionErrorSocketLost userInfo:nil];
 //  currentService = nil;
@@ -368,6 +403,7 @@
 
 - (void)eventCenter:(EventCenter *)eventCenter1 receivedEvent:(Event *)event
 {
+  DDLogDebug(@"Event center did received: %@", event);
   if ([self.delegate respondsToSelector:@selector(didReceiveEvent:)]) {
     [self.delegate didReceiveEvent:event];
   }
@@ -375,6 +411,7 @@
 
 - (void)eventCenterFailedToConnectToHost:(NSString *)hostName withError:(NSError *)error
 {
+  DDLogDebug(@"Failed to connect to host: %@ - error: %@", hostName, error );
   isConnecting = NO;
   [self notifyError:IAConnectionErrorFailToConnectSocket userInfo:[error userInfo]];
   [self invalidateCurrentService];

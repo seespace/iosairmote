@@ -42,12 +42,16 @@ static const uint8_t kSessionStartTag = 9;
 //  } else {
 //    //Do nothing
 //  }
-  
+
+  DDLogDebug(@"Connecting to host: %@", hostname);
   if (![_socket connectToHost:hostname onPort:kServicePort withTimeout:kMaxConnectingDuration error:&err]) {
-    NSLog(@"Could not connect to %@. Error: %@", hostname, err);
+    DDLogError(@"Cannot connect to hostname. Error: %@", err);
+//    NSLog(@"Could not connect to %@. Error: %@", hostname, err);
     if (err.code == 1) {
       //TODO investigate we should handle errorCode == 1 as below
+      DDLogDebug(@"Disconnect current socket!");
       [_socket disconnect];
+      DDLogDebug(@"Reconnect with new hostname: %@", hostname);
       [self connectToHost:hostname];
     } else {
       if ([self.delegate respondsToSelector:@selector(eventCenterFailedToConnectToHost:withError:)]) {
