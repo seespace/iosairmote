@@ -8,8 +8,7 @@
 
 #import "ConnectedConfirmationViewController.h"
 #import "WifiHelper.h"
-#import "IAStateMachine.h"
-#import "TKState.h"
+#import "Reachability.h"
 
 @interface ConnectedConfirmationViewController ()
 
@@ -18,6 +17,7 @@
 @implementation ConnectedConfirmationViewController {
   __weak IBOutlet UILabel *networkSSIDLabel;
 
+  Reachability *reachability;
 }
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -32,7 +32,12 @@
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
   [self updateNetworkStatus];
   networkSSIDLabel.text = self.networkSSID;
-
+  reachability = [Reachability reachabilityForLocalWiFi];
+  __weak ConnectedConfirmationViewController * weakSelf = self;
+  [reachability setReachableBlock:^(Reachability *r) {
+    [weakSelf updateNetworkStatus];
+  }];
+  [reachability startNotifier];
 }
 
 - (void)updateNetworkStatus {

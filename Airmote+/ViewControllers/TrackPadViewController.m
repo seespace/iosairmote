@@ -40,7 +40,13 @@ static const uint8_t kMotionShakeTag = 6;
                                            selector:@selector(keyboardWillHide:)
                                                name:UIKeyboardWillHideNotification
                                              object:nil];
+
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(didFinishWifiSetup:)
+                                               name:kInAirDeviceDidConnectToWifiNotification
+                                             object:nil];
 }
+
 
 - (BOOL)shouldConnectAutomatically
 {
@@ -247,6 +253,17 @@ static const uint8_t kMotionShakeTag = 6;
 
   return _webViewController;
 }
+
+#pragma mark - DidFinishWifiSetup
+
+- (void)didFinishWifiSetup:(id)didFinishWifiSetup
+{
+  [[IAConnection sharedConnection] setDelegate:self];
+  if (! [IAConnection sharedConnection].isConnected) {
+    [[IAConnection sharedConnection] start];
+  }
+}
+
 
 #pragma mark - Show/Hide Keyboard
 
