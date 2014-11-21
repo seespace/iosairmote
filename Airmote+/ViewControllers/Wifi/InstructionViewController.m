@@ -10,6 +10,7 @@
 #import "VerifyInAiRViewController.h"
 #import "SVProgressHUD.h"
 #import "WifiHelper.h"
+#import "ProtoHelper.h"
 
 @interface InstructionViewController ()
 
@@ -17,7 +18,6 @@
 
 @implementation InstructionViewController {
   __weak IBOutlet UILabel *instructionLabel;
-  BOOL viewDidAppear;
 }
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -31,10 +31,12 @@
   [super viewDidLoad];
   [IAConnection sharedConnection].delegate = self;
 
-//  [[IAConnection sharedConnection] stop];
-//  [[IAConnection sharedConnection] resetStates];
   if ([WifiHelper isConnectedToInAiRWiFi]) {
-    [[IAConnection sharedConnection] start];
+    if ([IAConnection sharedConnection].isConnected) {
+      [self requestConfirmationCode];
+    } else {
+      [[IAConnection sharedConnection] start];
+    }
   }
 }
 
@@ -57,9 +59,9 @@
 
 - (void)didConnect:(NSString *)hostName
 {
-  [SVProgressHUD dismiss];
-  [self showVerificationViewController];
+//  [SVProgressHUD dismiss];
 
+  [self requestConfirmationCode];
 }
 
 -(void)didFoundServices:(NSArray *)foundServices {
@@ -113,22 +115,29 @@
   }
 }
 
+- (void)didReceiveEvent:(Event *)event
+{
+  [SVProgressHUD dismiss];
+  SetupResponseEvent *ev = [event getExtension:[SetupResponseEvent event]];
+  NSString *confirmationCode = ev.code;
 
+  switch (ev.phase) {
+    case SetupPhaseRequestCode: {
+      VerifyInAiRViewController *verifyVC = [[VerifyInAiRViewController alloc] init];
+      verifyVC.confirmationCode = confirmationCode;
+      [self.navigationController pushViewController:verifyVC animated:NO];
+      break;
+    }
+    default:
+      NSLog(@"Event recevied - Phase: %d", ev.phase);
+  }
 
-
-- (void)connectIfNeeded {
 }
+
 
 
 - (void)viewDidAppear:(BOOL)animated {
   [IAConnection sharedConnection].delegate = self;
-  if (viewDidAppear) {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-      [self connectIfNeeded];
-    });
-
-  }
-  viewDidAppear = YES;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -136,13 +145,10 @@
   // Dispose of any resources that can be recreated.
 }
 
-
-
-- (void)showVerificationViewController {
-  VerifyInAiRViewController *verifyVC = [[VerifyInAiRViewController alloc] init];
-  [IAConnection sharedConnection].delegate = verifyVC;
-  [self.navigationController pushViewController:verifyVC animated:NO];
-
+- (void)requestConfirmationCode {
+  [SVProgressHUD showWithStatus:@"Requesting Code"];
+  Event *ev = [ProtoHelper setupCodeRequest];
+  [[IAConnection sharedConnection] sendEvent:ev withTag:0];
 }
 
 @end

@@ -10,5 +10,5 @@
 #import "IAConnection.h"
 
 @interface VerifyInAiRViewController : UIViewController <IAConnectionDelegate>
-
+@property (nonatomic, copy) NSString *confirmationCode;
 @end

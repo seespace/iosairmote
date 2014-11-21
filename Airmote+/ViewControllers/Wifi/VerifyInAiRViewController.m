@@ -18,15 +18,13 @@
 @end
 
 @implementation VerifyInAiRViewController{
-  
   __weak IBOutlet UILabel *confirmationCodeLabel;
-  IBOutletCollection(UIView) NSArray *views;
 }
 
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-  [self requestConfirmationCode];
+  confirmationCodeLabel.text = self.confirmationCode;
 }
 
 
@@ -44,35 +42,6 @@
   ChangeNameViewController *changeNameViewController = [[ChangeNameViewController alloc] init];
   [[IAConnection sharedConnection] setDelegate:changeNameViewController];
   [self.navigationController pushViewController:changeNameViewController animated:NO];
-}
-
-
-- (void)requestConfirmationCode {
-  Event *ev = [ProtoHelper setupCodeRequest];
-  [[IAConnection sharedConnection] sendEvent:ev withTag:0];
-}
-
-- (void)didReceiveEvent:(Event *)event
-{
-  SetupResponseEvent *ev = [event getExtension:[SetupResponseEvent event]];
-  NSString *confirmationCode = ev.code;
-
-  switch (ev.phase) {
-    case SetupPhaseRequestCode: {
-      confirmationCodeLabel.text = confirmationCode;
-      [UIView animateWithDuration:1.0 animations:^{
-        for (UIView *aView in views) {
-          aView.alpha = 1.0;
-        }
-      } completion:NULL];
-      NSLog(@"eventCenter: receivedEvent");
-
-      break;
-    }
-    default:
-      NSLog(@"Event recevied - Phase: %d", ev.phase);
-  }
-
 }
 
 @end
