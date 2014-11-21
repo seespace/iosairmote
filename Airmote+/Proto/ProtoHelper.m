@@ -274,6 +274,39 @@ static ProtoHelper *instance;
   return [builder build];
 }
 
++ (Event *)pinchGestureWithTimestamp:(SInt64)timestamp
+                           locationX:(Float32)locationX
+                           locationY:(Float32)locationY
+                      trackareaWidth:(Float32)width
+                     trackareaHeight:(Float32)height
+                               state:(GestureEventState)state
+                               scale:(Float32)scale
+                            velocity:(Float32)velocity {
+    
+    [self ensureInitialized];
+    
+    GestureEventBuilder *eBuilder = [[GestureEventBuilder alloc] init];
+    eBuilder.locationX = locationX;
+    eBuilder.locationY = locationY;
+    eBuilder.state = state;
+    eBuilder.type = GestureEventTypePinch;
+    
+    eBuilder.pinchScale = scale;
+    eBuilder.pinchVelocity = velocity;
+    
+    GestureEvent *event = [eBuilder build];
+    
+    // Build actual event
+    EventBuilder *builder = [[EventBuilder alloc] init];
+    builder.timestamp = timestamp;
+    builder.type = EventTypeGesture;
+    builder.trackingAreaWidth = width;
+    builder.trackingAreaHeight = height;
+    [builder setExtension:[GestureEvent event] value:event];
+    
+    return [builder build];
+}
+
 + (Event *)swipeGestureWithTimestamp:(SInt64)timestamp
                            locationX:(Float32)locationX
                            locationY:(Float32)locationY

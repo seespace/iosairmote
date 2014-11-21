@@ -57,6 +57,15 @@
                              state:(GestureEventState)state
                              count:(SInt32)tapCount;
 
++ (Event *)pinchGestureWithTimestamp:(SInt64)timestamp
+                           locationX:(Float32)locationX
+                           locationY:(Float32)locationY
+                      trackareaWidth:(Float32)width
+                     trackareaHeight:(Float32)height
+                               state:(GestureEventState)state
+                               scale:(Float32)scale
+                            velocity:(Float32)velocity;
+
 + (Event *)panGestureWithTimestamp:(SInt64)timestamp
                          locationX:(Float32)locationX
                          locationY:(Float32)locationY

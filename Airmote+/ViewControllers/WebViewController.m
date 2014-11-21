@@ -45,7 +45,7 @@ static const uint8_t kOAuthTag = 12;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self clearCookies];
+//    [self clearCookies];
 	// Do any additional setup after loading the view.
 }
 

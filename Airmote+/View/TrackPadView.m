@@ -61,10 +61,16 @@ static const uint8_t kGestureStateChanged = 11;
     pan.maximumNumberOfTouches = 1;
     pan.cancelsTouchesInView = NO;
     [self addGestureRecognizer:pan];
+  
+    UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchHandle:)];
+    [self addGestureRecognizer:pinch];
 
     [pan requireGestureRecognizerToFail:longPressGesture];
+    
+    [tapGesture requireGestureRecognizerToFail:pinch];
+    [pan requireGestureRecognizerToFail:pinch];
 
-    pan.delegate = tapGesture.delegate = doubleTapGesture.delegate = swipeDown.delegate = swipeUp.delegate = swipeUp.delegate = swipeDown.delegate = pan.delegate = self;
+    pinch.delegate = pan.delegate = tapGesture.delegate = doubleTapGesture.delegate = swipeDown.delegate = swipeUp.delegate = swipeUp.delegate = swipeDown.delegate = pan.delegate = self;
 }
 
 
@@ -123,6 +129,21 @@ static const uint8_t kGestureStateChanged = 11;
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
     return YES;
+}
+
+- (void)pinchHandle:(UIPinchGestureRecognizer *)sender
+{
+    CGPoint location = [sender locationInView:self];
+    Event *ev = [ProtoHelper pinchGestureWithTimestamp:[ProtoHelper now]
+                                             locationX:location.x
+                                             locationY:location.y
+                                        trackareaWidth:self.frame.size.width
+                                       trackareaHeight:self.frame.size.height
+                                                 state:[ProtoHelper stateFromUIGestureRecognizerState:sender.state]
+                                                 scale:sender.scale
+                                              velocity:sender.velocity];
+    
+    [[IAConnection sharedConnection] sendEvent:ev withTag:kGestureStateChanged];
 }
 
 - (void)tapHandle:(UITapGestureRecognizer *)sender
