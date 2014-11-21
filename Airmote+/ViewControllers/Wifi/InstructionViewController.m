@@ -46,6 +46,10 @@
 
 }
 
+- (IBAction)backTapped:(id)sender {
+  [self.navigationController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+  
+}
 
 -(void)didStartScanning
 {

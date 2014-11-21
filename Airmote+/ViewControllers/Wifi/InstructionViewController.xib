@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="14A361c" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1792" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="InstructionViewController">
@@ -57,16 +57,33 @@
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pF2-hv-4cs">
+                            <rect key="frame" x="114" y="453" width="92" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="44" id="Avo-8H-jQ2"/>
+                                <constraint firstAttribute="width" constant="92" id="YuM-F0-GyJ"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="24"/>
+                            <state key="normal" title="BACK">
+                                <color key="titleColor" red="0.56078431370000004" green="0.61568627450000002" blue="0.41568627450000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="backTapped:" destination="-1" eventType="touchUpInside" id="TdV-hg-8vR"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="centerY" secondItem="EoR-1c-t8l" secondAttribute="centerY" constant="13.5" id="0mT-nz-ATt"/>
                         <constraint firstItem="bA5-1l-f7M" firstAttribute="leading" secondItem="EoR-1c-t8l" secondAttribute="trailing" constant="4" id="DG4-Xl-TCP"/>
+                        <constraint firstAttribute="centerX" secondItem="pF2-hv-4cs" secondAttribute="centerX" id="FBo-GR-b0Q"/>
                         <constraint firstItem="y5X-h1-M8l" firstAttribute="leading" secondItem="EoR-1c-t8l" secondAttribute="trailing" constant="100" id="J41-QX-GsX"/>
                         <constraint firstItem="xyV-KK-sLB" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="30" id="MeY-hN-4Xl"/>
                         <constraint firstAttribute="centerY" secondItem="bA5-1l-f7M" secondAttribute="centerY" constant="13" id="gKN-3i-1zj"/>
                         <constraint firstAttribute="centerX" secondItem="xyV-KK-sLB" secondAttribute="centerX" constant="-70.5" id="je1-C3-igl"/>
                         <constraint firstItem="y5X-h1-M8l" firstAttribute="leading" secondItem="bA5-1l-f7M" secondAttribute="trailing" constant="16" id="lwM-OR-WH6"/>
+                        <constraint firstAttribute="bottom" secondItem="pF2-hv-4cs" secondAttribute="bottom" constant="71" id="nqB-p1-FN0"/>
                         <constraint firstAttribute="centerY" secondItem="y5X-h1-M8l" secondAttribute="centerY" constant="14" id="sFp-CW-5BB"/>
                         <constraint firstItem="EoR-1c-t8l" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="yZp-5P-yZe"/>
                     </constraints>
