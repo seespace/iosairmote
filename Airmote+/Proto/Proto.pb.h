@@ -46,28 +46,28 @@
   #endif
 #endif
 
-typedef enum {
+typedef NS_ENUM(SInt32, Phase) {
   PhaseBegan = 0,
   PhaseMoved = 1,
   PhaseStationary = 2,
   PhaseEnded = 3,
   PhaseCancelled = 4,
-} Phase;
+};
 
 BOOL PhaseIsValidValue(Phase value);
 
-typedef enum {
+typedef NS_ENUM(SInt32, SetupPhase) {
   SetupPhaseRequestCode = 0,
   SetupPhaseVerifyCode = 1,
   SetupPhaseRequestRename = 2,
   SetupPhaseRequestWifiScan = 3,
   SetupPhaseRequestWifiSelect = 4,
   SetupPhaseRequestWifiConnect = 5,
-} SetupPhase;
+};
 
 BOOL SetupPhaseIsValidValue(SetupPhase value);
 
-typedef enum {
+typedef NS_ENUM(SInt32, EventType) {
   EventTypeDevice = 0,
   EventTypeTouch = 1,
   EventTypeMotion = 2,
@@ -81,41 +81,41 @@ typedef enum {
   EventTypeSetupResponse = 10,
   EventTypeTextInputRequest = 11,
   EventTypeTextInputResponse = 12,
-} EventType;
+};
 
 BOOL EventTypeIsValidValue(EventType value);
 
-typedef enum {
+typedef NS_ENUM(SInt32, DeviceVendor) {
   DeviceVendorIos = 0,
   DeviceVendorAndroid = 1,
   DeviceVendorLeapmotion = 2,
   DeviceVendorKinect = 3,
   DeviceVendorOther = 4,
-} DeviceVendor;
+};
 
 BOOL DeviceVendorIsValidValue(DeviceVendor value);
 
-typedef enum {
+typedef NS_ENUM(SInt32, DeviceEventType) {
   DeviceEventTypeRegister = 0,
   DeviceEventTypeUnregister = 1,
-} DeviceEventType;
+};
 
 BOOL DeviceEventTypeIsValidValue(DeviceEventType value);
 
-typedef enum {
+typedef NS_ENUM(SInt32, MotionEventType) {
   MotionEventTypeShake = 0,
-} MotionEventType;
+};
 
 BOOL MotionEventTypeIsValidValue(MotionEventType value);
 
-typedef enum {
+typedef NS_ENUM(SInt32, KeypressEventState) {
   KeypressEventStateDown = 0,
   KeypressEventStateUp = 1,
-} KeypressEventState;
+};
 
 BOOL KeypressEventStateIsValidValue(KeypressEventState value);
 
-typedef enum {
+typedef NS_ENUM(SInt32, GestureEventType) {
   GestureEventTypeTap = 0,
   GestureEventTypePinch = 1,
   GestureEventTypePan = 2,
@@ -124,60 +124,60 @@ typedef enum {
   GestureEventTypeLongpress = 5,
   GestureEventTypeCircle = 6,
   GestureEventTypeWave = 7,
-} GestureEventType;
+};
 
 BOOL GestureEventTypeIsValidValue(GestureEventType value);
 
-typedef enum {
+typedef NS_ENUM(SInt32, GestureEventState) {
   GestureEventStatePossible = 0,
   GestureEventStateBegan = 1,
   GestureEventStateChanged = 2,
   GestureEventStateEnded = 3,
   GestureEventStateCancelled = 4,
   GestureEventStateFailed = 5,
-} GestureEventState;
+};
 
 BOOL GestureEventStateIsValidValue(GestureEventState value);
 
-typedef enum {
+typedef NS_ENUM(SInt32, GestureEventSwipeDirection) {
   GestureEventSwipeDirectionRight = 0,
   GestureEventSwipeDirectionLeft = 1,
   GestureEventSwipeDirectionUp = 2,
   GestureEventSwipeDirectionDown = 3,
   GestureEventSwipeDirectionForward = 4,
   GestureEventSwipeDirectionBackward = 5,
-} GestureEventSwipeDirection;
+};
 
 BOOL GestureEventSwipeDirectionIsValidValue(GestureEventSwipeDirection value);
 
-typedef enum {
+typedef NS_ENUM(SInt32, GestureEventCircleDirection) {
   GestureEventCircleDirectionClockwise = 0,
   GestureEventCircleDirectionCounterClockwise = 1,
-} GestureEventCircleDirection;
+};
 
 BOOL GestureEventCircleDirectionIsValidValue(GestureEventCircleDirection value);
 
-typedef enum {
+typedef NS_ENUM(SInt32, HandMotionEventState) {
   HandMotionEventStateOpen = 0,
   HandMotionEventStateGrab = 1,
   HandMotionEventStatePinch = 2,
-} HandMotionEventState;
+};
 
 BOOL HandMotionEventStateIsValidValue(HandMotionEventState value);
 
-typedef enum {
+typedef NS_ENUM(SInt32, TextInputRequestEventType) {
   TextInputRequestEventTypeText = 0,
   TextInputRequestEventTypePassword = 1,
-} TextInputRequestEventType;
+};
 
 BOOL TextInputRequestEventTypeIsValidValue(TextInputRequestEventType value);
 
-typedef enum {
+typedef NS_ENUM(SInt32, TextInputResponseEventState) {
   TextInputResponseEventStateBegan = 0,
   TextInputResponseEventStateChanged = 1,
   TextInputResponseEventStateEnded = 2,
   TextInputResponseEventStateCancelled = 3,
-} TextInputResponseEventState;
+};
 
 BOOL TextInputResponseEventStateIsValidValue(TextInputResponseEventState value);
 

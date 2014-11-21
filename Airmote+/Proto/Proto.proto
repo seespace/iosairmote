@@ -51,7 +51,7 @@ message Device {
 
 message DeviceEvent {
   extend Event {
-    required DeviceEvent event = 100;
+    optional DeviceEvent event = 100;
   }
 
   enum Type {
@@ -76,7 +76,7 @@ enum Phase {
 
 message TouchEvent {
   extend Event {
-    required TouchEvent event = 101;
+    optional TouchEvent event = 101;
   }
 
   required float location_x = 1;
@@ -88,7 +88,7 @@ message TouchEvent {
 
 message MotionEvent {
   extend Event {
-    required MotionEvent event = 102;
+    optional MotionEvent event = 102;
   }
 
   enum Type {
@@ -102,7 +102,7 @@ message MotionEvent {
 
 message KeypressEvent {
   extend Event {
-    required KeypressEvent event = 103;
+    optional KeypressEvent event = 103;
   }
 
   enum State {
@@ -118,7 +118,7 @@ message KeypressEvent {
 
 message GestureEvent {
   extend Event {
-    required GestureEvent event = 104;
+    optional GestureEvent event = 104;
   }
 
   enum Type {
@@ -184,7 +184,7 @@ message GestureEvent {
 
 message HandMotionEvent {
   extend Event {
-    required HandMotionEvent event = 105;
+    optional HandMotionEvent event = 105;
   }
 
   enum State {
@@ -206,7 +206,7 @@ message HandMotionEvent {
 
 message OAuthRequestEvent {
   extend Event {
-    required OAuthRequestEvent event = 106;
+    optional OAuthRequestEvent event = 106;
   }
 
   required string auth_url = 1;
@@ -214,7 +214,7 @@ message OAuthRequestEvent {
 
 message OAuthResponseEvent {
   extend Event {
-    required OAuthResponseEvent event = 107;
+    optional OAuthResponseEvent event = 107;
   }
 
   optional string auth_code = 1;
@@ -240,7 +240,7 @@ message WifiNetwork {
 
 message SetupRequestEvent {
   extend Event {
-    required SetupRequestEvent event = 108;
+    optional SetupRequestEvent event = 108;
   }
 
   required SetupPhase phase = 1;
@@ -258,7 +258,7 @@ message SetupRequestEvent {
 
 message SetupResponseEvent {
   extend Event {
-    required SetupResponseEvent event = 109;
+    optional SetupResponseEvent event = 109;
   }
 
   required SetupPhase phase = 1;
@@ -275,7 +275,7 @@ message SetupResponseEvent {
 
 message TextInputRequestEvent {
   extend Event {
-    required TextInputRequestEvent event = 110;
+    optional TextInputRequestEvent event = 110;
   }
 
   enum Type {
@@ -289,7 +289,7 @@ message TextInputRequestEvent {
 
 message TextInputResponseEvent {
   extend Event {
-    required TextInputResponseEvent event = 111;
+    optional TextInputResponseEvent event = 111;
   }
 
   enum State {

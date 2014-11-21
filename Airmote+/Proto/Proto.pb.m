@@ -230,10 +230,6 @@ BOOL SetupPhaseIsValidValue(SetupPhase value) {
   hasReplyTo_ = !!value_;
 }
 @synthesize replyTo;
-- (void) dealloc {
-  self.target = nil;
-  self.replyTo = nil;
-}
 - (id) init {
   if ((self = [super init])) {
     self.type = EventTypeDevice;
@@ -361,7 +357,7 @@ static Event* defaultEventInstance = nil;
 }
 - (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
   if (self.hasType) {
-    [output appendFormat:@"%@%@: %d\n", indent, @"type", self.type];
+    [output appendFormat:@"%@%@: %@\n", indent, @"type", [NSNumber numberWithInteger:self.type]];
   }
   if (self.hasTimestamp) {
     [output appendFormat:@"%@%@: %@\n", indent, @"timestamp", [NSNumber numberWithLongLong:self.timestamp]];
@@ -461,9 +457,6 @@ BOOL EventTypeIsValidValue(EventType value) {
 
 @implementation EventBuilder
 @synthesize result;
-- (void) dealloc {
-  self.result = nil;
-}
 - (id) init {
   if ((self = [super init])) {
     self.result = [[Event alloc] init];
@@ -716,10 +709,6 @@ BOOL EventTypeIsValidValue(EventType value) {
 - (void) setHasKeyboard:(BOOL) value_ {
   hasKeyboard_ = !!value_;
 }
-- (void) dealloc {
-  self.name = nil;
-  self.productId = nil;
-}
 - (id) init {
   if ((self = [super init])) {
     self.name = @"";
@@ -833,7 +822,7 @@ static Device* defaultDeviceInstance = nil;
     [output appendFormat:@"%@%@: %@\n", indent, @"name", self.name];
   }
   if (self.hasVendor) {
-    [output appendFormat:@"%@%@: %d\n", indent, @"vendor", self.vendor];
+    [output appendFormat:@"%@%@: %@\n", indent, @"vendor", [NSNumber numberWithInteger:self.vendor]];
   }
   if (self.hasVersion) {
     [output appendFormat:@"%@%@: %@\n", indent, @"version", [NSNumber numberWithInteger:self.version]];
@@ -907,9 +896,6 @@ BOOL DeviceVendorIsValidValue(DeviceVendor value) {
 
 @implementation DeviceBuilder
 @synthesize result;
-- (void) dealloc {
-  self.result = nil;
-}
 - (id) init {
   if ((self = [super init])) {
     self.result = [[Device alloc] init];
@@ -1109,9 +1095,6 @@ BOOL DeviceVendorIsValidValue(DeviceVendor value) {
   hasDevice_ = !!value_;
 }
 @synthesize device;
-- (void) dealloc {
-  self.device = nil;
-}
 - (id) init {
   if ((self = [super init])) {
     self.type = DeviceEventTypeRegister;
@@ -1204,7 +1187,7 @@ static DeviceEvent* defaultDeviceEventInstance = nil;
 }
 - (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
   if (self.hasType) {
-    [output appendFormat:@"%@%@: %d\n", indent, @"type", self.type];
+    [output appendFormat:@"%@%@: %@\n", indent, @"type", [NSNumber numberWithInteger:self.type]];
   }
   if (self.hasDevice) {
     [output appendFormat:@"%@%@ {\n", indent, @"device"];
@@ -1257,9 +1240,6 @@ BOOL DeviceEventTypeIsValidValue(DeviceEventType value) {
 
 @implementation DeviceEventBuilder
 @synthesize result;
-- (void) dealloc {
-  self.result = nil;
-}
 - (id) init {
   if ((self = [super init])) {
     self.result = [[DeviceEvent alloc] init];
@@ -1417,8 +1397,6 @@ BOOL DeviceEventTypeIsValidValue(DeviceEventType value) {
   hasPhase_ = !!value_;
 }
 @synthesize phase;
-- (void) dealloc {
-}
 - (id) init {
   if ((self = [super init])) {
     self.locationX = 0;
@@ -1524,7 +1502,7 @@ static TouchEvent* defaultTouchEventInstance = nil;
     [output appendFormat:@"%@%@: %@\n", indent, @"locationY", [NSNumber numberWithFloat:self.locationY]];
   }
   if (self.hasPhase) {
-    [output appendFormat:@"%@%@: %d\n", indent, @"phase", self.phase];
+    [output appendFormat:@"%@%@: %@\n", indent, @"phase", [NSNumber numberWithInteger:self.phase]];
   }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
@@ -1567,9 +1545,6 @@ static TouchEvent* defaultTouchEventInstance = nil;
 
 @implementation TouchEventBuilder
 @synthesize result;
-- (void) dealloc {
-  self.result = nil;
-}
 - (id) init {
   if ((self = [super init])) {
     self.result = [[TouchEvent alloc] init];
@@ -1715,8 +1690,6 @@ static TouchEvent* defaultTouchEventInstance = nil;
   hasType_ = !!value_;
 }
 @synthesize type;
-- (void) dealloc {
-}
 - (id) init {
   if ((self = [super init])) {
     self.type = MotionEventTypeShake;
@@ -1796,7 +1769,7 @@ static MotionEvent* defaultMotionEventInstance = nil;
 }
 - (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
   if (self.hasType) {
-    [output appendFormat:@"%@%@: %d\n", indent, @"type", self.type];
+    [output appendFormat:@"%@%@: %@\n", indent, @"type", [NSNumber numberWithInteger:self.type]];
   }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
@@ -1837,9 +1810,6 @@ BOOL MotionEventTypeIsValidValue(MotionEventType value) {
 
 @implementation MotionEventBuilder
 @synthesize result;
-- (void) dealloc {
-  self.result = nil;
-}
 - (id) init {
   if ((self = [super init])) {
     self.result = [[MotionEvent alloc] init];
@@ -1947,8 +1917,6 @@ BOOL MotionEventTypeIsValidValue(MotionEventType value) {
   hasKeycode_ = !!value_;
 }
 @synthesize keycode;
-- (void) dealloc {
-}
 - (id) init {
   if ((self = [super init])) {
     self.state = KeypressEventStateDown;
@@ -2038,7 +2006,7 @@ static KeypressEvent* defaultKeypressEventInstance = nil;
 }
 - (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
   if (self.hasState) {
-    [output appendFormat:@"%@%@: %d\n", indent, @"state", self.state];
+    [output appendFormat:@"%@%@: %@\n", indent, @"state", [NSNumber numberWithInteger:self.state]];
   }
   if (self.hasKeycode) {
     [output appendFormat:@"%@%@: %@\n", indent, @"keycode", [NSNumber numberWithInteger:self.keycode]];
@@ -2088,9 +2056,6 @@ BOOL KeypressEventStateIsValidValue(KeypressEventState value) {
 
 @implementation KeypressEventBuilder
 @synthesize result;
-- (void) dealloc {
-  self.result = nil;
-}
 - (id) init {
   if ((self = [super init])) {
     self.result = [[KeypressEvent alloc] init];
@@ -2333,8 +2298,6 @@ BOOL KeypressEventStateIsValidValue(KeypressEventState value) {
   hasCircleDirection_ = !!value_;
 }
 @synthesize circleDirection;
-- (void) dealloc {
-}
 - (id) init {
   if ((self = [super init])) {
     self.locationX = 0;
@@ -2534,10 +2497,10 @@ static GestureEvent* defaultGestureEventInstance = nil;
     [output appendFormat:@"%@%@: %@\n", indent, @"locationY", [NSNumber numberWithFloat:self.locationY]];
   }
   if (self.hasType) {
-    [output appendFormat:@"%@%@: %d\n", indent, @"type", self.type];
+    [output appendFormat:@"%@%@: %@\n", indent, @"type", [NSNumber numberWithInteger:self.type]];
   }
   if (self.hasState) {
-    [output appendFormat:@"%@%@: %d\n", indent, @"state", self.state];
+    [output appendFormat:@"%@%@: %@\n", indent, @"state", [NSNumber numberWithInteger:self.state]];
   }
   if (self.hasTapCount) {
     [output appendFormat:@"%@%@: %@\n", indent, @"tapCount", [NSNumber numberWithInteger:self.tapCount]];
@@ -2561,7 +2524,7 @@ static GestureEvent* defaultGestureEventInstance = nil;
     [output appendFormat:@"%@%@: %@\n", indent, @"panVelocityY", [NSNumber numberWithFloat:self.panVelocityY]];
   }
   if (self.hasSwipeDirection) {
-    [output appendFormat:@"%@%@: %d\n", indent, @"swipeDirection", self.swipeDirection];
+    [output appendFormat:@"%@%@: %@\n", indent, @"swipeDirection", [NSNumber numberWithInteger:self.swipeDirection]];
   }
   if (self.hasRotationAngle) {
     [output appendFormat:@"%@%@: %@\n", indent, @"rotationAngle", [NSNumber numberWithFloat:self.rotationAngle]];
@@ -2573,7 +2536,7 @@ static GestureEvent* defaultGestureEventInstance = nil;
     [output appendFormat:@"%@%@: %@\n", indent, @"pressDuration", [NSNumber numberWithLongLong:self.pressDuration]];
   }
   if (self.hasCircleDirection) {
-    [output appendFormat:@"%@%@: %d\n", indent, @"circleDirection", self.circleDirection];
+    [output appendFormat:@"%@%@: %@\n", indent, @"circleDirection", [NSNumber numberWithInteger:self.circleDirection]];
   }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
@@ -2731,9 +2694,6 @@ BOOL GestureEventCircleDirectionIsValidValue(GestureEventCircleDirection value) 
 
 @implementation GestureEventBuilder
 @synthesize result;
-- (void) dealloc {
-  self.result = nil;
-}
 - (id) init {
   if ((self = [super init])) {
     self.result = [[GestureEvent alloc] init];
@@ -3241,8 +3201,6 @@ BOOL GestureEventCircleDirectionIsValidValue(GestureEventCircleDirection value) 
   hasRoll_ = !!value_;
 }
 @synthesize roll;
-- (void) dealloc {
-}
 - (id) init {
   if ((self = [super init])) {
     self.locationX = 0;
@@ -3379,10 +3337,10 @@ static HandMotionEvent* defaultHandMotionEventInstance = nil;
     [output appendFormat:@"%@%@: %@\n", indent, @"locationY", [NSNumber numberWithFloat:self.locationY]];
   }
   if (self.hasState) {
-    [output appendFormat:@"%@%@: %d\n", indent, @"state", self.state];
+    [output appendFormat:@"%@%@: %@\n", indent, @"state", [NSNumber numberWithInteger:self.state]];
   }
   if (self.hasPhase) {
-    [output appendFormat:@"%@%@: %d\n", indent, @"phase", self.phase];
+    [output appendFormat:@"%@%@: %@\n", indent, @"phase", [NSNumber numberWithInteger:self.phase]];
   }
   if (self.hasPitch) {
     [output appendFormat:@"%@%@: %@\n", indent, @"pitch", [NSNumber numberWithFloat:self.pitch]];
@@ -3464,9 +3422,6 @@ BOOL HandMotionEventStateIsValidValue(HandMotionEventState value) {
 
 @implementation HandMotionEventBuilder
 @synthesize result;
-- (void) dealloc {
-  self.result = nil;
-}
 - (id) init {
   if ((self = [super init])) {
     self.result = [[HandMotionEvent alloc] init];
@@ -3709,9 +3664,6 @@ BOOL HandMotionEventStateIsValidValue(HandMotionEventState value) {
   hasAuthUrl_ = !!value_;
 }
 @synthesize authUrl;
-- (void) dealloc {
-  self.authUrl = nil;
-}
 - (id) init {
   if ((self = [super init])) {
     self.authUrl = @"";
@@ -3824,9 +3776,6 @@ static OAuthRequestEvent* defaultOAuthRequestEventInstance = nil;
 
 @implementation OAuthRequestEventBuilder
 @synthesize result;
-- (void) dealloc {
-  self.result = nil;
-}
 - (id) init {
   if ((self = [super init])) {
     self.result = [[OAuthRequestEvent alloc] init];
@@ -3921,9 +3870,6 @@ static OAuthRequestEvent* defaultOAuthRequestEventInstance = nil;
   hasAuthCode_ = !!value_;
 }
 @synthesize authCode;
-- (void) dealloc {
-  self.authCode = nil;
-}
 - (id) init {
   if ((self = [super init])) {
     self.authCode = @"";
@@ -4033,9 +3979,6 @@ static OAuthResponseEvent* defaultOAuthResponseEventInstance = nil;
 
 @implementation OAuthResponseEventBuilder
 @synthesize result;
-- (void) dealloc {
-  self.result = nil;
-}
 - (id) init {
   if ((self = [super init])) {
     self.result = [[OAuthResponseEvent alloc] init];
@@ -4154,11 +4097,6 @@ static OAuthResponseEvent* defaultOAuthResponseEventInstance = nil;
   hasCapabilities_ = !!value_;
 }
 @synthesize capabilities;
-- (void) dealloc {
-  self.ssid = nil;
-  self.bssid = nil;
-  self.capabilities = nil;
-}
 - (id) init {
   if ((self = [super init])) {
     self.ssid = @"";
@@ -4313,9 +4251,6 @@ static WifiNetwork* defaultWifiNetworkInstance = nil;
 
 @implementation WifiNetworkBuilder
 @synthesize result;
-- (void) dealloc {
-  self.result = nil;
-}
 - (id) init {
   if ((self = [super init])) {
     self.result = [[WifiNetwork alloc] init];
@@ -4516,11 +4451,6 @@ static WifiNetwork* defaultWifiNetworkInstance = nil;
 - (void) setBack:(BOOL) value_ {
   back_ = !!value_;
 }
-- (void) dealloc {
-  self.name = nil;
-  self.ssid = nil;
-  self.password = nil;
-}
 - (id) init {
   if ((self = [super init])) {
     self.phase = SetupPhaseRequestCode;
@@ -4628,7 +4558,7 @@ static SetupRequestEvent* defaultSetupRequestEventInstance = nil;
 }
 - (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
   if (self.hasPhase) {
-    [output appendFormat:@"%@%@: %d\n", indent, @"phase", self.phase];
+    [output appendFormat:@"%@%@: %@\n", indent, @"phase", [NSNumber numberWithInteger:self.phase]];
   }
   if (self.hasName) {
     [output appendFormat:@"%@%@: %@\n", indent, @"name", self.name];
@@ -4693,9 +4623,6 @@ static SetupRequestEvent* defaultSetupRequestEventInstance = nil;
 
 @implementation SetupRequestEventBuilder
 @synthesize result;
-- (void) dealloc {
-  self.result = nil;
-}
 - (id) init {
   if ((self = [super init])) {
     self.result = [[SetupRequestEvent alloc] init];
@@ -4919,11 +4846,6 @@ static SetupRequestEvent* defaultSetupRequestEventInstance = nil;
 @synthesize code;
 @synthesize wifiNetworksArray;
 @dynamic wifiNetworks;
-- (void) dealloc {
-  self.errorMessage = nil;
-  self.code = nil;
-  self.wifiNetworksArray = nil;
-}
 - (id) init {
   if ((self = [super init])) {
     self.phase = SetupPhaseRequestCode;
@@ -5047,7 +4969,7 @@ static SetupResponseEvent* defaultSetupResponseEventInstance = nil;
 }
 - (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
   if (self.hasPhase) {
-    [output appendFormat:@"%@%@: %d\n", indent, @"phase", self.phase];
+    [output appendFormat:@"%@%@: %@\n", indent, @"phase", [NSNumber numberWithInteger:self.phase]];
   }
   if (self.hasError) {
     [output appendFormat:@"%@%@: %@\n", indent, @"error", [NSNumber numberWithBool:self.error]];
@@ -5114,9 +5036,6 @@ static SetupResponseEvent* defaultSetupResponseEventInstance = nil;
 
 @implementation SetupResponseEventBuilder
 @synthesize result;
-- (void) dealloc {
-  self.result = nil;
-}
 - (id) init {
   if ((self = [super init])) {
     self.result = [[SetupResponseEvent alloc] init];
@@ -5327,8 +5246,6 @@ static SetupResponseEvent* defaultSetupResponseEventInstance = nil;
   hasMaxLength_ = !!value_;
 }
 @synthesize maxLength;
-- (void) dealloc {
-}
 - (id) init {
   if ((self = [super init])) {
     self.type = TextInputRequestEventTypeText;
@@ -5415,7 +5332,7 @@ static TextInputRequestEvent* defaultTextInputRequestEventInstance = nil;
 }
 - (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
   if (self.hasType) {
-    [output appendFormat:@"%@%@: %d\n", indent, @"type", self.type];
+    [output appendFormat:@"%@%@: %@\n", indent, @"type", [NSNumber numberWithInteger:self.type]];
   }
   if (self.hasMaxLength) {
     [output appendFormat:@"%@%@: %@\n", indent, @"maxLength", [NSNumber numberWithInteger:self.maxLength]];
@@ -5465,9 +5382,6 @@ BOOL TextInputRequestEventTypeIsValidValue(TextInputRequestEventType value) {
 
 @implementation TextInputRequestEventBuilder
 @synthesize result;
-- (void) dealloc {
-  self.result = nil;
-}
 - (id) init {
   if ((self = [super init])) {
     self.result = [[TextInputRequestEvent alloc] init];
@@ -5611,9 +5525,6 @@ BOOL TextInputRequestEventTypeIsValidValue(TextInputRequestEventType value) {
 - (void) setEncrypted:(BOOL) value_ {
   encrypted_ = !!value_;
 }
-- (void) dealloc {
-  self.text = nil;
-}
 - (id) init {
   if ((self = [super init])) {
     self.state = TextInputResponseEventStateBegan;
@@ -5710,7 +5621,7 @@ static TextInputResponseEvent* defaultTextInputResponseEventInstance = nil;
 }
 - (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
   if (self.hasState) {
-    [output appendFormat:@"%@%@: %d\n", indent, @"state", self.state];
+    [output appendFormat:@"%@%@: %@\n", indent, @"state", [NSNumber numberWithInteger:self.state]];
   }
   if (self.hasText) {
     [output appendFormat:@"%@%@: %@\n", indent, @"text", self.text];
@@ -5770,9 +5681,6 @@ BOOL TextInputResponseEventStateIsValidValue(TextInputResponseEventState value) 
 
 @implementation TextInputResponseEventBuilder
 @synthesize result;
-- (void) dealloc {
-  self.result = nil;
-}
 - (id) init {
   if ((self = [super init])) {
     self.result = [[TextInputResponseEvent alloc] init];
