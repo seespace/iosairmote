@@ -67,8 +67,8 @@ static const uint8_t kGestureStateChanged = 11;
 
     [pan requireGestureRecognizerToFail:longPressGesture];
     
-    [tapGesture requireGestureRecognizerToFail:pinch];
-    [pan requireGestureRecognizerToFail:pinch];
+//    [tapGesture requireGestureRecognizerToFail:pinch];
+//    [pan requireGestureRecognizerToFail:pinch];
 
     pinch.delegate = pan.delegate = tapGesture.delegate = doubleTapGesture.delegate = swipeDown.delegate = swipeUp.delegate = swipeUp.delegate = swipeDown.delegate = pan.delegate = self;
 }
