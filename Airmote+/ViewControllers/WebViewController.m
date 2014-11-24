@@ -91,7 +91,7 @@ static const uint8_t kOAuthTag = 12;
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
-    if ([request.URL.host isEqualToString:@"localhost"])
+    if ([request.URL.host isEqualToString:@"oauth.inair.tv"])
     {
         [self.navigationController popViewControllerAnimated:YES];
         DDURLParser *parser = [[DDURLParser alloc] initWithURLString:request.URL.absoluteString];
