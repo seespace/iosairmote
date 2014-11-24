@@ -27,7 +27,7 @@
 
 + (BOOL)isConnectedToInAiRWiFi {
   NSString *currentWifiSDID = [WifiHelper currentConnectedWiFiSSID];
-  if (currentWifiSDID != nil && [[currentWifiSDID lowercaseString] rangeOfString:@"inair"].location != NSNotFound)
+  if (currentWifiSDID != nil && [[currentWifiSDID lowercaseString] rangeOfString:@"direct"].location != NSNotFound)
   {
     return YES;
   }

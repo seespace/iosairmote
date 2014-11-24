@@ -70,7 +70,7 @@
         ConnectedConfirmationViewController *confirmationViewController = [[ConnectedConfirmationViewController alloc] init];
         confirmationViewController.delegate = self;
         confirmationViewController.networkSSID = _selectedNetwork.ssid;
-        [self.navigationController pushViewController:confirmationViewController animated:NO];
+        [self.navigationController pushViewController:confirmationViewController animated:YES];
       }
       break;
     }

@@ -34,14 +34,14 @@
 }
 
 - (IBAction)noButtonPressed:(id)sender {
-  [self.navigationController popViewControllerAnimated:NO];
+  [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (IBAction)yesButtonPressed:(id)sender
 {
   ChangeNameViewController *changeNameViewController = [[ChangeNameViewController alloc] init];
   [[IAConnection sharedConnection] setDelegate:changeNameViewController];
-  [self.navigationController pushViewController:changeNameViewController animated:NO];
+  [self.navigationController pushViewController:changeNameViewController animated:YES];
 }
 
 @end

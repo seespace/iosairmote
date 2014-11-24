@@ -45,7 +45,7 @@
   if ([self.networkSSID isEqualToString:currentSSID]) {
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kRequireWifiSetup];
     [[NSNotificationCenter defaultCenter] postNotificationName:kInAirDeviceDidConnectToWifiNotification object:nil userInfo:nil];
-    [self.navigationController.presentingViewController dismissViewControllerAnimated:NO completion:NULL];
+    [self.navigationController.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
 
   }
 }

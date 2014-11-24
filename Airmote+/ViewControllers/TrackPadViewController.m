@@ -80,7 +80,7 @@ static const uint8_t kMotionShakeTag = 6;
 
 - (void)didFailToConnect:(NSError *)error
 {
-  NSLog(@"ERROR: Code: %ld", error.code);
+  NSLog(@"ERROR: Code: %d", error.code);
   switch (error.code) {
     case IAConnectionErrorServicesNotFound:
       [SVProgressHUD showErrorWithStatus:@"Devices not found!"];
@@ -142,7 +142,10 @@ static const uint8_t kMotionShakeTag = 6;
 
 }
 
-
+-(void)viewDidAppear:(BOOL)animated
+{
+  [IAConnection sharedConnection].delegate = self;
+}
 
 - (void)showInputView {
   plainText.text = @"";
@@ -240,8 +243,9 @@ static const uint8_t kMotionShakeTag = 6;
   UINavigationController *navigationVC = [[UINavigationController alloc] initWithRootViewController:instructionViewController];
   navigationVC.navigationBarHidden = YES;
   [self.navigationController presentViewController:navigationVC
-                                          animated:NO
+                                          animated:YES
                                         completion:NULL];
+//  [self.navigationController transitionFromViewController:<#(UIViewController *)fromViewController#> toViewController:<#(UIViewController *)toViewController#> duration:<#(NSTimeInterval)duration#> options:<#(UIViewAnimationOptions)options#> animations:<#(void (^)(void))animations#> completion:<#(void (^)(BOOL finished))completion#>];
 }
 
 

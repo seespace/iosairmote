@@ -129,7 +129,7 @@
     case SetupPhaseRequestCode: {
       VerifyInAiRViewController *verifyVC = [[VerifyInAiRViewController alloc] init];
       verifyVC.confirmationCode = confirmationCode;
-      [self.navigationController pushViewController:verifyVC animated:NO];
+      [self.navigationController pushViewController:verifyVC animated:YES];
       break;
     }
     default:
