@@ -10,18 +10,22 @@
 
 #define kIAConnectionErrorDomain @"InAir.Error"
 
-enum IAConnectionError
-{
+
+typedef NS_ENUM(NSInteger, IAConnectionError) {
   IAConnectionErrorWifiNotAvailable,
   IAConnectionErrorDidNotSearch,
   IAConnectionErrorServicesNotFound,
   IAConnectionErrorDiscoveryTimedOut,
   IAConnectionErrorSocketInvalidData,
   IAConnectionErrorServiceNotResolved,
-  IAConnectionErrorSocketLost,
+  IAConnectionErrorSocketDisconnected,
   IAConnectionErrorFailToConnectSocket,
   IAConnectionErrorFailToSendEvent
+
 };
+//typedef enum IAConnectionError : NSInteger
+//{
+//};
 
 @protocol IAConnectionDelegate <NSObject>
 

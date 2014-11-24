@@ -78,43 +78,25 @@
 {
   switch (error.code) {
     case IAConnectionErrorServicesNotFound:
-      [SVProgressHUD showErrorWithStatus:@"Devices not found!"];
-      break;
-      
     case IAConnectionErrorDiscoveryTimedOut:
-      [SVProgressHUD showErrorWithStatus:@"Timed out"];
-      break;
-      
     case IAConnectionErrorDidNotSearch:
-      [SVProgressHUD showErrorWithStatus:@"Cannot start scanning"];
-      break;
-      
-    case IAConnectionErrorSocketLost:
-      [SVProgressHUD showErrorWithStatus:@"Socket is lost!"];
-      break;
-      
     case IAConnectionErrorServiceNotResolved:
-      [SVProgressHUD showErrorWithStatus:@"Cannot resolve service"];
-      break;
-      
     case IAConnectionErrorSocketInvalidData:
-      [SVProgressHUD showErrorWithStatus:@"Socket data is invalid"];
+    case IAConnectionErrorWifiNotAvailable:
+    case IAConnectionErrorFailToConnectSocket:
+      [SVProgressHUD showErrorWithStatus:[error localizedFailureReason]];
       break;
-      
+
+    case IAConnectionErrorSocketDisconnected:
+      [SVProgressHUD showErrorWithStatus:@"Connection is lost!"];
+      break;
+
     case IAConnectionErrorFailToSendEvent:
       NSLog(@"Failed to send event");
       break;
-      
-    case IAConnectionErrorWifiNotAvailable:
-      [SVProgressHUD showErrorWithStatus:@"Wifi is not available"];
-      break;
-      
-    case IAConnectionErrorFailToConnectSocket:
-      [SVProgressHUD showErrorWithStatus:@"Cannot connect to socket"];
-      break;
-      
+
     default:
-      [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"Unknown Error Code: %ld", (long)error.code]];
+      DDLogError(@"ERROR: %@", [error localizedFailureReason]);
       break;
   }
 }
@@ -137,7 +119,6 @@
   }
 
 }
-
 
 
 - (void)viewDidAppear:(BOOL)animated {

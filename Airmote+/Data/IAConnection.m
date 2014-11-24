@@ -114,7 +114,8 @@
   DDLogDebug(@"NetServiceBrowser didNotSearch: %@", errorDict);
   isScanning = NO;
   [timeOutTimer invalidate];
-  [self notifyError:IAConnectionErrorDidNotSearch userInfo:nil];
+  NSError *error = [self errorWithCode:IAConnectionErrorDidNotSearch withReason:@"Cannot start scanning"];
+  [self notifyError:error];
 }
 
 
@@ -124,9 +125,14 @@
   isScanning = NO;
   [timeOutTimer invalidate];
   if ([foundServices count] == 0) {
-    [self notifyError:IAConnectionErrorServicesNotFound userInfo:nil];
+    NSError *error = [self errorWithCode:IAConnectionErrorServicesNotFound withReason:@"Devices not found"];
+    [self notifyError:error];
   }
 
+}
+
+-(NSError *) errorWithCode:(IAConnectionError) errorCode withReason:(NSString *) reason {
+  return [NSError errorWithDomain:kIAConnectionErrorDomain code:errorCode userInfo:@{NSLocalizedFailureReasonErrorKey: reason}];
 }
 
 
@@ -162,14 +168,15 @@
     [browser searchForServicesOfType:kServiceType inDomain:@"local."];
   } else {
     DDLogDebug(@"Failed to scan because no wifi available");
-    [self notifyError:IAConnectionErrorWifiNotAvailable userInfo:nil];
+    NSError *error = [self errorWithCode:IAConnectionErrorWifiNotAvailable withReason:@"Wifi is not available"];
+    [self notifyError:error];
   }
 }
 
-- (void)notifyError:(int)errorCode userInfo:(NSDictionary *)userInfo
+
+- (void)notifyError:(NSError *)error
 {
   if ([self.delegate respondsToSelector:@selector(didFailToConnect:)]) {
-    NSError *error = [NSError errorWithDomain:kIAConnectionErrorDomain code:errorCode userInfo:userInfo];
     [self.delegate didFailToConnect:error];
   }
 }
@@ -179,7 +186,7 @@
 {
   [browser stop];
   if ([self.delegate respondsToSelector:@selector(didFailToConnect:)]) {
-    NSError *error = [NSError errorWithDomain:kIAConnectionErrorDomain code:IAConnectionErrorDiscoveryTimedOut userInfo:nil];
+    NSError *error = [self errorWithCode:IAConnectionErrorDiscoveryTimedOut withReason:@"Scanning timed out."];
     [self.delegate didFailToConnect:error];
   }
 }
@@ -286,7 +293,9 @@
 //    lastActiveTime = [NSDate date];
   } else {
     DDLogError(@"Cannot send event, event center is not connected");
-    [self notifyError:IAConnectionErrorFailToSendEvent userInfo:nil];
+    NSString *errorReason = [NSString stringWithFormat:@"Failed to send event: %@", event.description];
+    NSError *error = [self errorWithCode:IAConnectionErrorFailToSendEvent withReason:errorReason];
+    [self notifyError:error];
   }
 
 }
@@ -352,7 +361,8 @@
 {
   DDLogError(@"Service: %@ DID Not resolve", sender.name);
   isResolving = NO;
-  [self notifyError:IAConnectionErrorServiceNotResolved userInfo:errorDict];
+  NSError *error = [NSError errorWithDomain:kIAConnectionErrorDomain code:IAConnectionErrorServiceNotResolved userInfo:errorDict];
+  [self notifyError:error];
   [self invalidateCurrentService];
 }
 
@@ -384,7 +394,7 @@
 
 - (void)eventCenterDidConnectToHost:(NSString *)hostName
 {
-  DDLogDebug(@"Did connect to host name", hostName);
+  DDLogDebug(@"Did connect to host name %@", hostName);
   isConnecting = NO;
   if ([hostName isEqualToString:currentService.hostName]) {
     if ([self.delegate respondsToSelector:@selector(didConnect:)]) {
@@ -393,12 +403,12 @@
   }
 }
 
-- (void)eventCenterDidDisconnectFromHost:(NSString *)hostName withError:(NSError *)error
+- (void)eventCenterDidDisconnectFromHost:(NSString *)hostName withError:(NSError *)err
 {
-  DDLogError(@"Event did disconnect from host: %@ - Error %@", hostName, error);
+  DDLogError(@"Event did disconnect from host: %@ - Error %@", hostName, err);
   isConnecting = NO;
-  [self notifyError:IAConnectionErrorSocketLost userInfo:nil];
-//  currentService = nil;
+  NSError *error = [NSError errorWithDomain:kIAConnectionErrorDomain code:IAConnectionErrorSocketDisconnected userInfo:[err userInfo]];
+  [self notifyError:error];
 }
 
 - (void)eventCenter:(EventCenter *)eventCenter1 receivedEvent:(Event *)event
@@ -413,7 +423,10 @@
 {
   DDLogDebug(@"Failed to connect to host: %@ - error: %@", hostName, error );
   isConnecting = NO;
-  [self notifyError:IAConnectionErrorFailToConnectSocket userInfo:[error userInfo]];
+  NSError *tmpError = [NSError errorWithDomain:kIAConnectionErrorDomain
+                                          code:IAConnectionErrorFailToConnectSocket
+                                      userInfo:[error userInfo]];
+  [self notifyError:tmpError];
   [self invalidateCurrentService];
 }
 
