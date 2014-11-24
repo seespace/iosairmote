@@ -250,6 +250,12 @@ static const uint8_t kMotionShakeTag = 6;
 }
 
 
+- (void)didStopConnection
+{
+  [SVProgressHUD dismiss];
+}
+
+
 #pragma mark - Show/Hide Keyboard
 
 

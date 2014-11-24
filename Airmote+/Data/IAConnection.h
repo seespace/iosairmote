@@ -40,6 +40,8 @@ typedef NS_ENUM(NSInteger, IAConnectionError) {
 
 - (BOOL)shouldConnectAutomatically;
 -(void) didReceiveEvent:(Event *) event;
+
+- (void)didStopConnection;
 @end
 
 @interface IAConnection : NSObject <NSNetServiceBrowserDelegate, NSNetServiceDelegate, EventCenterDelegate>

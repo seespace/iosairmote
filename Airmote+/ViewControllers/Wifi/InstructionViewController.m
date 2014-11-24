@@ -101,6 +101,11 @@
   }
 }
 
+- (void)didStopConnection
+{
+  [SVProgressHUD dismiss];
+}
+
 - (void)didReceiveEvent:(Event *)event
 {
   [SVProgressHUD dismiss];

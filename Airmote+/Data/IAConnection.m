@@ -6,6 +6,7 @@
 #import "IAConnection.h"
 #import "Proto.pb.h"
 #import "Reachability.h"
+#import "WifiHelper.h"
 
 #define kServiceType @"_irpc._tcp."
 #define kMaxScanningDuration 5.0
@@ -22,6 +23,8 @@
   BOOL isConnecting;
   BOOL isResolving;
   BOOL isScanning;
+
+  NSString *lastConnectedWifi;
 }
 
 #pragma mark - Init
@@ -161,11 +164,15 @@
 #pragma mark - Private methods
 - (void)startScanningServices
 {
-
   if ([Reachability reachabilityForLocalWiFi].isReachableViaWiFi) {
     DDLogDebug(@"Start scanning for services");
     isScanning = YES;
     [browser searchForServicesOfType:kServiceType inDomain:@"local."];
+    timeOutTimer = [NSTimer scheduledTimerWithTimeInterval:kMaxScanningDuration
+                                                    target:self
+                                                  selector:@selector(timerFired:)
+                                                  userInfo:nil
+                                                   repeats:NO];
   } else {
     DDLogDebug(@"Failed to scan because no wifi available");
     NSError *error = [self errorWithCode:IAConnectionErrorWifiNotAvailable withReason:@"Wifi is not available"];
@@ -242,22 +249,29 @@
 
 - (void)start
 {
+
+  [self resetStatesIfRequired];
   DDLogDebug(@"Starting IAConnection");
   if (foundServices.count > 0) {
     [self reconnect];
     return;
   }
 
-  browser.delegate = nil;
-  [browser stop];
-  browser.delegate = self;
-
-  currentService.delegate = nil;
-  [currentService stop];
-
-  [self resetStates];
+  if (self.isConnected || self.isProcessing) {
+    return;
+  }
 
   [self startScanningServices];
+}
+
+- (void)resetStatesIfRequired
+{
+  BOOL wifiChanged = lastConnectedWifi != nil && [lastConnectedWifi isEqualToString:[WifiHelper currentConnectedWiFiSSID]];
+  BOOL connectionIsTooOld = NO;
+  if (wifiChanged || connectionIsTooOld) {
+    [self stop];
+    [self resetStates];
+  }
 }
 
 
@@ -268,20 +282,39 @@
     [timeOutTimer invalidate];
     timeOutTimer = nil;
   }
+  browser.delegate = nil;
+  eventCenter.delegate = nil;
+  currentService.delegate = nil;
 
   [eventCenter disconnect];
   [currentService stop];
   [browser stop];
+
+  browser = nil;
+  currentService = nil;
+  eventCenter = nil;
+
+  isConnecting = NO;
+  isScanning = NO;
+  isScanning = NO;
+  if ([self.delegate respondsToSelector:@selector(didStopConnection)]) {
+    [self.delegate didStopConnection];
+  }
 }
 
 - (void)resetStates
 {
   DDLogDebug(@"Resetting states");
-  timeOutTimer = [NSTimer scheduledTimerWithTimeInterval:kMaxScanningDuration target:self selector:@selector(timerFired:) userInfo:nil repeats:NO];
   [foundServices removeAllObjects];
   foundAllServices = NO;
   currentService = nil;
 
+  lastConnectedWifi = nil;
+  browser = [[NSNetServiceBrowser alloc] init];
+  browser.delegate = self;
+
+  eventCenter = [[EventCenter alloc] init];
+  eventCenter.delegate = self;
 }
 
 
@@ -394,6 +427,7 @@
 
 - (void)eventCenterDidConnectToHost:(NSString *)hostName
 {
+  lastConnectedWifi = [WifiHelper currentConnectedWiFiSSID];
   DDLogDebug(@"Did connect to host name %@", hostName);
   isConnecting = NO;
   if ([hostName isEqualToString:currentService.hostName]) {
