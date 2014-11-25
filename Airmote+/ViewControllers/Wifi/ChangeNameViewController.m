@@ -10,8 +10,6 @@
 #import "WiFiListViewController.h"
 #import "Proto.pb.h"
 #import "ProtoHelper.h"
-#import "IAStateMachine.h"
-#import "TKState.h"
 
 @interface ChangeNameViewController ()
 

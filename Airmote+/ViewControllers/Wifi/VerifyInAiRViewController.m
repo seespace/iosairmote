@@ -7,10 +7,6 @@
 //
 
 #import "VerifyInAiRViewController.h"
-#import "Proto.pb.h"
-#import "ProtoHelper.h"
-#import "TKState.h"
-#import "IAStateMachine.h"    ]
 #import "ChangeNameViewController.h"
 
 @interface VerifyInAiRViewController ()

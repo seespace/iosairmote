@@ -9,8 +9,6 @@
 #import <SVProgressHUD/SVProgressHUD.h>
 #import "EnterPasswordViewController.h"
 #import "ProtoHelper.h"
-#import "IAStateMachine.h"
-#import "TKState.h"
 
 @interface EnterPasswordViewController ()
 

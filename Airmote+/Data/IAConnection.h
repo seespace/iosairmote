@@ -23,9 +23,6 @@ typedef NS_ENUM(NSInteger, IAConnectionError) {
   IAConnectionErrorFailToSendEvent
 
 };
-//typedef enum IAConnectionError : NSInteger
-//{
-//};
 
 @protocol IAConnectionDelegate <NSObject>
 

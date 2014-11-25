@@ -12,8 +12,6 @@
 #import "EnterPasswordViewController.h"
 #import "ProtoHelper.h"
 #import "WifiNetwork+Extension.h"
-#import "IAStateMachine.h"
-#import "TKState.h"
 
 #define kWifiCellHeight 38
 

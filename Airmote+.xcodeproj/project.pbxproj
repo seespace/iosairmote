@@ -50,7 +50,6 @@
 		C5844A0B86EA15AA83BB1977 /* NSData+NetService.m in Sources */ = {isa = PBXBuildFile; fileRef = C5844A3ABF93BE55E57B1EB8 /* NSData+NetService.m */; };
 		C5844AB198B3D10C81FB020E /* Proto.proto in Resources */ = {isa = PBXBuildFile; fileRef = C584488EB37D152402FECCDD /* Proto.proto */; };
 		C5844B96C4F5A3E00AE2726A /* WifiNetwork+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = C58448D55F9A1DC3853DD753 /* WifiNetwork+Extension.m */; };
-		C5844CBAFA0DDC5AE4993D16 /* IAStateMachine.m in Sources */ = {isa = PBXBuildFile; fileRef = C5844342A82ABE053BC34B9A /* IAStateMachine.m */; };
 		C5844D863B1EFAC244C75EB8 /* IAConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = C5844072E0B87BC74BC615E0 /* IAConnection.m */; };
 		C5844F87624D1E90C002C719 /* EventCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = C58442F85EC1ECBA64716687 /* EventCenter.m */; };
 /* End PBXBuildFile section */
@@ -129,7 +128,6 @@
 		C584421B3AFAC90EE9EFDA78 /* TrackPadViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TrackPadViewController.xib; sourceTree = "<group>"; };
 		C584428433A94E0EC31817FB /* ProtoHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProtoHelper.h; sourceTree = "<group>"; };
 		C58442F85EC1ECBA64716687 /* EventCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventCenter.m; sourceTree = "<group>"; };
-		C5844342A82ABE053BC34B9A /* IAStateMachine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAStateMachine.m; sourceTree = "<group>"; };
 		C584435BDD4471829B24E14F /* TrackPadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackPadViewController.h; sourceTree = "<group>"; };
 		C58446B8812F646BE82E52DB /* ProtoHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProtoHelper.m; sourceTree = "<group>"; };
 		C584485FF4326A8E9B08B3A4 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
@@ -149,7 +147,6 @@
 		C5844E2561A6F310A6AB2A6E /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		C5844EA208CDA6A382AB9A98 /* AppDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDefines.h; sourceTree = "<group>"; };
 		C5844ED89441B78E5ED9D931 /* TrackPadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrackPadViewController.m; sourceTree = "<group>"; };
-		C5844F7BF68A9E3F9EA726FF /* IAStateMachine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAStateMachine.h; sourceTree = "<group>"; };
 		C5844F7CC173DFDDC8EF66C6 /* DDURLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDURLParser.h; sourceTree = "<group>"; };
 		E95074B5BA314146817E932C /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -363,8 +360,6 @@
 			children = (
 				C58442F85EC1ECBA64716687 /* EventCenter.m */,
 				C5844D3A171D285B6A5A09D2 /* EventCenter.h */,
-				C5844342A82ABE053BC34B9A /* IAStateMachine.m */,
-				C5844F7BF68A9E3F9EA726FF /* IAStateMachine.h */,
 				C5844072E0B87BC74BC615E0 /* IAConnection.m */,
 				C5844E141C3A2830491C7A78 /* IAConnection.h */,
 			);
@@ -543,7 +538,6 @@
 				C5844214A4CD8611C5BC8659 /* WifiHelper.m in Sources */,
 				B46889AA19AEE5ED0043A8A9 /* ConnectedConfirmationViewController.m in Sources */,
 				C5844B96C4F5A3E00AE2726A /* WifiNetwork+Extension.m in Sources */,
-				C5844CBAFA0DDC5AE4993D16 /* IAStateMachine.m in Sources */,
 				C5844D863B1EFAC244C75EB8 /* IAConnection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
