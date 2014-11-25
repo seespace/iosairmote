@@ -25,6 +25,7 @@
   BOOL isScanning;
 
   NSString *lastConnectedWifi;
+  Reachability *reachability;
 }
 
 #pragma mark - Init
@@ -48,8 +49,33 @@
                                              selector:@selector(appWillEnterBackground:)
                                                  name:UIApplicationWillResignActiveNotification
                                                object:nil];
+    reachability = [Reachability reachabilityForLocalWiFi];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(connectionDidChange:)
+                                                 name:kReachabilityChangedNotification
+                                               object:nil];
+    [reachability startNotifier];
   }
   return self;
+}
+
+
+-(void)dealloc {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  [reachability stopNotifier];
+  reachability = nil;
+}
+
+- (void)connectionDidChange:(NSNotification *)notification
+{
+  NSString *currentSSID = [WifiHelper currentConnectedWiFiSSID];
+  if (lastConnectedWifi != nil && ![currentSSID isEqualToString:lastConnectedWifi]) {
+    [self stop];
+    [self resetStates];
+    [self start];
+  }
+
+  lastConnectedWifi = currentSSID;
 }
 
 
@@ -151,10 +177,17 @@
 - (void)appDidBecomeActive:(NSNotification *)notification
 {
   DDLogDebug(@"App Enter foreground");
-  if (!self.isConnected && !self.isProcessing) {
+
+  if (!self.isConnected && ! self.isProcessing ) {
+    BOOL wifiChanged = lastConnectedWifi != nil && ![lastConnectedWifi isEqualToString:[WifiHelper currentConnectedWiFiSSID]];
+    if (wifiChanged) {
+      [self stop];
+      [self resetStates];
+    }
     DDLogDebug(@"Should start IAConnection");
     if ([self.delegate respondsToSelector:@selector(shouldConnectAutomatically)] && [self.delegate shouldConnectAutomatically]) {
       [self start];
+      lastConnectedWifi = [WifiHelper currentConnectedWiFiSSID];
     }
 
   }
@@ -250,7 +283,6 @@
 - (void)start
 {
 
-  [self resetStatesIfRequired];
   DDLogDebug(@"Starting IAConnection");
   if (foundServices.count > 0) {
     [self reconnect];
@@ -264,15 +296,6 @@
   [self startScanningServices];
 }
 
-- (void)resetStatesIfRequired
-{
-  BOOL wifiChanged = lastConnectedWifi != nil && [lastConnectedWifi isEqualToString:[WifiHelper currentConnectedWiFiSSID]];
-  BOOL connectionIsTooOld = NO;
-  if (wifiChanged || connectionIsTooOld) {
-    [self stop];
-    [self resetStates];
-  }
-}
 
 
 - (void)stop
@@ -427,7 +450,6 @@
 
 - (void)eventCenterDidConnectToHost:(NSString *)hostName
 {
-  lastConnectedWifi = [WifiHelper currentConnectedWiFiSSID];
   DDLogDebug(@"Did connect to host name %@", hostName);
   isConnecting = NO;
   if ([hostName isEqualToString:currentService.hostName]) {

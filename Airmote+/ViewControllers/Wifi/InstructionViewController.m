@@ -34,8 +34,6 @@
   if ([WifiHelper isConnectedToInAiRWiFi]) {
     if ([IAConnection sharedConnection].isConnected) {
       [self requestConfirmationCode];
-    } else {
-      [[IAConnection sharedConnection] start];
     }
   }
 }
