@@ -175,6 +175,7 @@ static const uint8_t kMotionShakeTag = 6;
       [self processOAuthRequest];
     }
   }
+  _oauthEvent = nil;
 }
 
 #pragma mark -
