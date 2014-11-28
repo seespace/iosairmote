@@ -1,8 +1,8 @@
 PODS:
   - CocoaAsyncSocket (7.3.5)
   - CocoaLumberjack (2.0.0-beta4):
-    - CocoaLumberjack/Default
-    - CocoaLumberjack/Extensions
+    - CocoaLumberjack/Default (= 2.0.0-beta4)
+    - CocoaLumberjack/Extensions (= 2.0.0-beta4)
   - CocoaLumberjack/Core (2.0.0-beta4)
   - CocoaLumberjack/Default (2.0.0-beta4):
     - CocoaLumberjack/Core
@@ -15,7 +15,7 @@ PODS:
 
 DEPENDENCIES:
   - CocoaAsyncSocket (~> 7.3)
-  - CocoaLumberjack
+  - CocoaLumberjack (= 2.0.0-beta4)
   - PBWebViewController
   - ProtocolBuffers (~> 1.9.2)
   - Reachability (~> 3.1)
@@ -29,4 +29,4 @@ SPEC CHECKSUMS:
   Reachability: 8e9635e3cb4f98e7f825e51147f677ecc694d0e7
   SVProgressHUD: 5034c6e22b8c2ca3e09402e48d41ed0340aa1c50
 
-COCOAPODS: 0.33.1
+COCOAPODS: 0.35.0

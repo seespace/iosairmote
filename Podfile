@@ -5,4 +5,4 @@ pod 'SVProgressHUD', :head
 pod 'PBWebViewController'
 pod 'ProtocolBuffers', '~> 1.9.2'
 pod 'Reachability', '~> 3.1'
-pod 'CocoaLumberjack'
+pod 'CocoaLumberjack', '= 2.0.0-beta4'
