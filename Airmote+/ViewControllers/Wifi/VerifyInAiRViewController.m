@@ -8,6 +8,7 @@
 
 #import "VerifyInAiRViewController.h"
 #import "ChangeNameViewController.h"
+#import "WiFiListViewController.h"
 
 @interface VerifyInAiRViewController ()
 
@@ -35,9 +36,11 @@
 
 - (IBAction)yesButtonPressed:(id)sender
 {
-  ChangeNameViewController *changeNameViewController = [[ChangeNameViewController alloc] init];
-  [[IAConnection sharedConnection] setDelegate:changeNameViewController];
-  [self.navigationController pushViewController:changeNameViewController animated:YES];
+  WiFiListViewController *wifiViewController = [[WiFiListViewController alloc] init];
+  [[IAConnection sharedConnection] setDelegate:wifiViewController];
+//  ChangeNameViewController *changeNameViewController = [[ChangeNameViewController alloc] init];
+//  [[IAConnection sharedConnection] setDelegate:changeNameViewController];
+  [self.navigationController pushViewController:wifiViewController animated:YES];
 }
 
 @end
