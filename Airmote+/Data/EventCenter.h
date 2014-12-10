@@ -11,7 +11,7 @@
 
 @protocol EventCenterDelegate <NSObject>
 @optional
-- (void)eventCenterDidConnectToHost:(NSString *)hostName;
+- (void)eventCenterDidConnectToService:(NSNetService *)netservice;
 
 - (void)eventCenterDidDisconnectFromHost:(NSString *)hostName withError:(NSError *)error;
 - (void)eventCenterFailedToConnectToHost:(NSString *)hostName withError:(NSError *)error;
@@ -24,7 +24,7 @@
 
 - (BOOL)isActive;
 
-- (BOOL)connectToHost:(NSString *)hostname;
+- (BOOL)connectToService:(NSNetService *)netService;
 - (BOOL)disconnect;
 
 - (void)sendEvent:(Event *)event withTag:(u_int8_t)tag;
