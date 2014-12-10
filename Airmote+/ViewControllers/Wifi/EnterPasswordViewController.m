@@ -50,11 +50,7 @@
   switch (ev.phase ) {
     case SetupPhaseRequestWifiConnect: {
       if (ev.error) {
-        [SVProgressHUD dismiss];
-        [UIView animateWithDuration:0.6 animations:^{
-          wrongPasswordLabel.alpha = 1.0;
-        }];
-
+        [SVProgressHUD showErrorWithStatus:@"Authentication Failed"];
       } else {
         [SVProgressHUD showSuccessWithStatus:@"Connected"];
         ConnectedConfirmationViewController *confirmationViewController = [[ConnectedConfirmationViewController alloc] init];
