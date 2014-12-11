@@ -246,7 +246,7 @@
 
   if ([service.name isEqualToString:currentService.name]) {
     isConnecting = YES;
-    [eventCenter connectToHost:currentService.hostName];
+    [eventCenter connectToService:currentService];
 
   } else {
     isResolving = YES;
@@ -378,7 +378,7 @@
   if (currentService != nil) {
     if (currentService.hostName != nil) {
       isConnecting = YES;
-      [eventCenter connectToHost:currentService.hostName];
+      [eventCenter connectToService:currentService];
       if ([self.delegate respondsToSelector:@selector(didStartConnecting)]) {
         [self.delegate didStartConnecting];
       }
@@ -439,7 +439,7 @@
   isResolving = NO;
   if (currentService == sender) {
     isConnecting = YES;
-    [eventCenter connectToHost:currentService.hostName];
+    [eventCenter connectToService:currentService];
     if ([self.delegate respondsToSelector:@selector(didStartConnecting)]) {
       [self.delegate didStartConnecting];
     }
@@ -448,11 +448,11 @@
   }
 }
 
-- (void)eventCenterDidConnectToHost:(NSString *)hostName
+- (void)eventCenterDidConnectToService:(NSNetService *)netService
 {
-  DDLogDebug(@"Did connect to host name %@", hostName);
+  DDLogDebug(@"Did connect to host name %@", netService);
   isConnecting = NO;
-  if ([hostName isEqualToString:currentService.hostName]) {
+  if ([netService.hostName isEqualToString:currentService.hostName]) {
     if ([self.delegate respondsToSelector:@selector(didConnect:)]) {
       [self.delegate didConnect:currentService.name];
     }
