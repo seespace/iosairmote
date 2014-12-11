@@ -206,6 +206,7 @@ static const uint8_t kMotionShakeTag = 6;
     return;
   }
 
+  self.webViewController = [[WebViewController alloc] init];
   if (self.navigationController.topViewController != self.webViewController) {
     OAuthRequestEvent *event = [_oauthEvent getExtension:[OAuthRequestEvent event]];
     self.webViewController.URL = [NSURL URLWithString:event.authUrl];
@@ -232,13 +233,13 @@ static const uint8_t kMotionShakeTag = 6;
 
 
 
-- (WebViewController *)webViewController {
-  if (_webViewController == nil) {
-    _webViewController = [[WebViewController alloc] init];
-  }
-
-  return _webViewController;
-}
+//- (WebViewController *)webViewController {
+//  if (_webViewController == nil) {
+//    _webViewController = [[WebViewController alloc] init];
+//  }
+//
+//  return _webViewController;
+//}
 
 #pragma mark - DidFinishWifiSetup
 
