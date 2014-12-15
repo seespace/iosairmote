@@ -105,8 +105,6 @@ static const uint8_t kOAuthTag = 12;
         {
             [self processOAuthResponse:code];
         }
-
-        return NO;
     }
 
     return YES;

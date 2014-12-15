@@ -16,6 +16,7 @@ static id<PBExtensionField> SetupRequestEvent_event = nil;
 static id<PBExtensionField> SetupResponseEvent_event = nil;
 static id<PBExtensionField> TextInputRequestEvent_event = nil;
 static id<PBExtensionField> TextInputResponseEvent_event = nil;
+static id<PBExtensionField> FunctionEvent_event = nil;
 static PBExtensionRegistry* extensionRegistry = nil;
 + (PBExtensionRegistry*) extensionRegistry {
   return extensionRegistry;
@@ -131,6 +132,15 @@ static PBExtensionRegistry* extensionRegistry = nil;
                                         isRepeated:NO
                                           isPacked:NO
                             isMessageSetWireFormat:NO];
+    FunctionEvent_event =
+      [PBConcreteExtensionField extensionWithType:PBExtensionTypeMessage
+                                     extendedClass:[Event class]
+                                       fieldNumber:112
+                                      defaultValue:[FunctionEvent defaultInstance]
+                               messageOrGroupClass:[FunctionEvent class]
+                                        isRepeated:NO
+                                          isPacked:NO
+                            isMessageSetWireFormat:NO];
     PBMutableExtensionRegistry* registry = [PBMutableExtensionRegistry registry];
     [self registerAllExtensions:registry];
     extensionRegistry = registry;
@@ -149,6 +159,7 @@ static PBExtensionRegistry* extensionRegistry = nil;
   [registry addExtension:SetupResponseEvent_event];
   [registry addExtension:TextInputRequestEvent_event];
   [registry addExtension:TextInputResponseEvent_event];
+  [registry addExtension:FunctionEvent_event];
 }
 @end
 
@@ -446,6 +457,7 @@ BOOL EventTypeIsValidValue(EventType value) {
     case EventTypeSetupResponse:
     case EventTypeTextInputRequest:
     case EventTypeTextInputResponse:
+    case EventTypeFunctionEvent:
       return YES;
     default:
       return NO;
@@ -884,6 +896,7 @@ BOOL DeviceVendorIsValidValue(DeviceVendor value) {
     case DeviceVendorAndroid:
     case DeviceVendorLeapmotion:
     case DeviceVendorKinect:
+    case DeviceVendorWindows:
     case DeviceVendorOther:
       return YES;
     default:
@@ -5809,6 +5822,228 @@ BOOL TextInputResponseEventStateIsValidValue(TextInputResponseEventState value) 
 - (TextInputResponseEventBuilder*) clearEncrypted {
   result.hasEncrypted = NO;
   result.encrypted = NO;
+  return self;
+}
+@end
+
+@interface FunctionEvent ()
+@property FunctionEventKey key;
+@end
+
+@implementation FunctionEvent
+
+- (BOOL) hasKey {
+  return !!hasKey_;
+}
+- (void) setHasKey:(BOOL) value_ {
+  hasKey_ = !!value_;
+}
+@synthesize key;
+- (id) init {
+  if ((self = [super init])) {
+    self.key = FunctionEventKeyF1;
+  }
+  return self;
+}
++ (id<PBExtensionField>) event {
+  return FunctionEvent_event;
+}
+static FunctionEvent* defaultFunctionEventInstance = nil;
++ (void) initialize {
+  if (self == [FunctionEvent class]) {
+    defaultFunctionEventInstance = [[FunctionEvent alloc] init];
+  }
+}
++ (FunctionEvent*) defaultInstance {
+  return defaultFunctionEventInstance;
+}
+- (FunctionEvent*) defaultInstance {
+  return defaultFunctionEventInstance;
+}
+- (BOOL) isInitialized {
+  if (!self.hasKey) {
+    return NO;
+  }
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasKey) {
+    [output writeEnum:1 value:self.key];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (SInt32) serializedSize {
+  __block SInt32 size_ = memoizedSerializedSize;
+  if (size_ != -1) {
+    return size_;
+  }
+
+  size_ = 0;
+  if (self.hasKey) {
+    size_ += computeEnumSize(1, self.key);
+  }
+  size_ += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size_;
+  return size_;
+}
++ (FunctionEvent*) parseFromData:(NSData*) data {
+  return (FunctionEvent*)[[[FunctionEvent builder] mergeFromData:data] build];
+}
++ (FunctionEvent*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (FunctionEvent*)[[[FunctionEvent builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (FunctionEvent*) parseFromInputStream:(NSInputStream*) input {
+  return (FunctionEvent*)[[[FunctionEvent builder] mergeFromInputStream:input] build];
+}
++ (FunctionEvent*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (FunctionEvent*)[[[FunctionEvent builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (FunctionEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (FunctionEvent*)[[[FunctionEvent builder] mergeFromCodedInputStream:input] build];
+}
++ (FunctionEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (FunctionEvent*)[[[FunctionEvent builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (FunctionEventBuilder*) builder {
+  return [[FunctionEventBuilder alloc] init];
+}
++ (FunctionEventBuilder*) builderWithPrototype:(FunctionEvent*) prototype {
+  return [[FunctionEvent builder] mergeFrom:prototype];
+}
+- (FunctionEventBuilder*) builder {
+  return [FunctionEvent builder];
+}
+- (FunctionEventBuilder*) toBuilder {
+  return [FunctionEvent builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasKey) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"key", [NSNumber numberWithInteger:self.key]];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[FunctionEvent class]]) {
+    return NO;
+  }
+  FunctionEvent *otherMessage = other;
+  return
+      self.hasKey == otherMessage.hasKey &&
+      (!self.hasKey || self.key == otherMessage.key) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  __block NSUInteger hashCode = 7;
+  if (self.hasKey) {
+    hashCode = hashCode * 31 + self.key;
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+BOOL FunctionEventKeyIsValidValue(FunctionEventKey value) {
+  switch (value) {
+    case FunctionEventKeyF1:
+    case FunctionEventKeyF2:
+    case FunctionEventKeyF3:
+    case FunctionEventKeyF4:
+      return YES;
+    default:
+      return NO;
+  }
+}
+@interface FunctionEventBuilder()
+@property (strong) FunctionEvent* result;
+@end
+
+@implementation FunctionEventBuilder
+@synthesize result;
+- (id) init {
+  if ((self = [super init])) {
+    self.result = [[FunctionEvent alloc] init];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return result;
+}
+- (FunctionEventBuilder*) clear {
+  self.result = [[FunctionEvent alloc] init];
+  return self;
+}
+- (FunctionEventBuilder*) clone {
+  return [FunctionEvent builderWithPrototype:result];
+}
+- (FunctionEvent*) defaultInstance {
+  return [FunctionEvent defaultInstance];
+}
+- (FunctionEvent*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (FunctionEvent*) buildPartial {
+  FunctionEvent* returnMe = result;
+  self.result = nil;
+  return returnMe;
+}
+- (FunctionEventBuilder*) mergeFrom:(FunctionEvent*) other {
+  if (other == [FunctionEvent defaultInstance]) {
+    return self;
+  }
+  if (other.hasKey) {
+    [self setKey:other.key];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (FunctionEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (FunctionEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    SInt32 tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 8: {
+        FunctionEventKey value = (FunctionEventKey)[input readEnum];
+        if (FunctionEventKeyIsValidValue(value)) {
+          [self setKey:value];
+        } else {
+          [unknownFields mergeVarintField:1 value:value];
+        }
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasKey {
+  return result.hasKey;
+}
+- (FunctionEventKey) key {
+  return result.key;
+}
+- (FunctionEventBuilder*) setKey:(FunctionEventKey) value {
+  result.hasKey = YES;
+  result.key = value;
+  return self;
+}
+- (FunctionEventBuilder*) clearKey {
+  result.hasKey = NO;
+  result.key = FunctionEventKeyF1;
   return self;
 }
 @end

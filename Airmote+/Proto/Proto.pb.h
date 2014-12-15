@@ -10,6 +10,8 @@
 @class DeviceEventBuilder;
 @class Event;
 @class EventBuilder;
+@class FunctionEvent;
+@class FunctionEventBuilder;
 @class GestureEvent;
 @class GestureEventBuilder;
 @class HandMotionEvent;
@@ -81,6 +83,7 @@ typedef NS_ENUM(SInt32, EventType) {
   EventTypeSetupResponse = 10,
   EventTypeTextInputRequest = 11,
   EventTypeTextInputResponse = 12,
+  EventTypeFunctionEvent = 13,
 };
 
 BOOL EventTypeIsValidValue(EventType value);
@@ -90,7 +93,8 @@ typedef NS_ENUM(SInt32, DeviceVendor) {
   DeviceVendorAndroid = 1,
   DeviceVendorLeapmotion = 2,
   DeviceVendorKinect = 3,
-  DeviceVendorOther = 4,
+  DeviceVendorWindows = 4,
+  DeviceVendorOther = 5,
 };
 
 BOOL DeviceVendorIsValidValue(DeviceVendor value);
@@ -180,6 +184,15 @@ typedef NS_ENUM(SInt32, TextInputResponseEventState) {
 };
 
 BOOL TextInputResponseEventStateIsValidValue(TextInputResponseEventState value);
+
+typedef NS_ENUM(SInt32, FunctionEventKey) {
+  FunctionEventKeyF1 = 0,
+  FunctionEventKeyF2 = 1,
+  FunctionEventKeyF3 = 2,
+  FunctionEventKeyF4 = 3,
+};
+
+BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 
 
 @interface ProtoRoot : NSObject {
@@ -1367,6 +1380,56 @@ BOOL TextInputResponseEventStateIsValidValue(TextInputResponseEventState value);
 - (BOOL) encrypted;
 - (TextInputResponseEventBuilder*) setEncrypted:(BOOL) value;
 - (TextInputResponseEventBuilder*) clearEncrypted;
+@end
+
+@interface FunctionEvent : PBGeneratedMessage {
+@private
+  BOOL hasKey_:1;
+  FunctionEventKey key;
+}
+- (BOOL) hasKey;
+@property (readonly) FunctionEventKey key;
+
++ (FunctionEvent*) defaultInstance;
+- (FunctionEvent*) defaultInstance;
+
++ (id<PBExtensionField>) event;
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (FunctionEventBuilder*) builder;
++ (FunctionEventBuilder*) builder;
++ (FunctionEventBuilder*) builderWithPrototype:(FunctionEvent*) prototype;
+- (FunctionEventBuilder*) toBuilder;
+
++ (FunctionEvent*) parseFromData:(NSData*) data;
++ (FunctionEvent*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (FunctionEvent*) parseFromInputStream:(NSInputStream*) input;
++ (FunctionEvent*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (FunctionEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (FunctionEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface FunctionEventBuilder : PBGeneratedMessageBuilder {
+@private
+  FunctionEvent* result;
+}
+
+- (FunctionEvent*) defaultInstance;
+
+- (FunctionEventBuilder*) clear;
+- (FunctionEventBuilder*) clone;
+
+- (FunctionEvent*) build;
+- (FunctionEvent*) buildPartial;
+
+- (FunctionEventBuilder*) mergeFrom:(FunctionEvent*) other;
+- (FunctionEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (FunctionEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasKey;
+- (FunctionEventKey) key;
+- (FunctionEventBuilder*) setKey:(FunctionEventKey) value;
+- (FunctionEventBuilder*) clearKey;
 @end
 
 
