@@ -21,6 +21,8 @@ message Event {
 
     TEXT_INPUT_REQUEST = 11;
     TEXT_INPUT_RESPONSE = 12;
+
+    FUNCTION_EVENT = 13;
   }
 
   required Type type = 1;
@@ -39,7 +41,8 @@ message Device {
     ANDROID = 1;
     LEAPMOTION = 2;
     KINECT = 3;
-    OTHER = 4;
+    WINDOWS = 4;
+    OTHER = 5;
   }
 
   required string name = 1;
@@ -302,4 +305,20 @@ message TextInputResponseEvent {
   required State state = 1;
   required string text = 2;
   optional bool encrypted = 3 [default = false];
+}
+
+// Function
+message FunctionEvent {
+  extend Event {
+    optional FunctionEvent event = 112;
+  }
+
+  enum Key {
+    F1 = 0;
+    F2 = 1;
+    F3 = 2;
+    F4 = 3;
+  }
+
+  required Key key = 1;
 }
