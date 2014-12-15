@@ -108,4 +108,5 @@
 + (Event *)textInputResponseWithState:(TextInputResponseEventState)state
                                  text:(NSString *)text;
 
++ (Event *)functionEventResponseWithState:(FunctionEventKey)key;
 @end

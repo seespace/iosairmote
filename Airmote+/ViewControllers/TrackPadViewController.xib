@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TrackPadViewController">
             <connections>
+                <outlet property="bottomControlsConstrain" destination="XCt-KT-qYC" id="Loy-FU-aZq"/>
                 <outlet property="inputView" destination="sPp-Fi-YfW" id="g4x-wA-vAM"/>
                 <outlet property="inputViewTopConstrain" destination="jqF-ct-LcE" id="SOD-fh-ITP"/>
                 <outlet property="plainText" destination="Ha1-OQ-f5c" id="Tcc-QW-Z8I"/>
@@ -23,20 +24,87 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5pv-oF-CEP" userLabel="Seperator">
-                            <rect key="frame" x="158.5" y="0.0" width="2" height="568"/>
+                            <rect key="frame" x="158" y="0.0" width="2" height="611"/>
                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="2" id="ZRf-e2-Tox"/>
-                            </constraints>
                         </view>
                     </subviews>
                     <color key="backgroundColor" white="0.89967105263157909" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="5pv-oF-CEP" firstAttribute="top" secondItem="nKI-Hj-0zZ" secondAttribute="top" id="2ER-dj-PE3"/>
-                        <constraint firstAttribute="centerX" secondItem="5pv-oF-CEP" secondAttribute="centerX" id="NMC-dg-ybL"/>
-                        <constraint firstAttribute="bottom" secondItem="5pv-oF-CEP" secondAttribute="bottom" id="Zj1-0c-1MG"/>
+                        <constraint firstAttribute="bottom" secondItem="5pv-oF-CEP" secondAttribute="bottom" constant="-43" id="8p6-qO-dLB"/>
+                        <constraint firstAttribute="trailing" secondItem="5pv-oF-CEP" secondAttribute="trailing" constant="160" id="gGa-pu-kCi"/>
+                        <constraint firstItem="5pv-oF-CEP" firstAttribute="leading" secondItem="nKI-Hj-0zZ" secondAttribute="leading" constant="158" id="jlj-le-Qkl"/>
+                        <constraint firstItem="5pv-oF-CEP" firstAttribute="top" secondItem="nKI-Hj-0zZ" secondAttribute="top" id="pJT-Cd-ZRn"/>
                     </constraints>
                 </view>
+                <view alpha="0.69999999999999996" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rKC-0i-yxh" userLabel="Controls">
+                    <rect key="frame" x="0.0" y="551" width="320" height="60"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mY6-3G-mfG" userLabel="More">
+                            <rect key="frame" x="274" y="-3" width="44" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="44" id="Exv-xc-o0A"/>
+                                <constraint firstAttribute="height" constant="44" id="eCF-gW-gL9"/>
+                            </constraints>
+                            <inset key="contentEdgeInsets" minX="0.0" minY="-20" maxX="-11" maxY="0.0"/>
+                            <state key="normal" image="more">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="moreButtonTapped:" destination="-1" eventType="touchUpInside" id="6mI-Im-bxi"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HbS-Vy-sFj" userLabel="Refresh">
+                            <rect key="frame" x="200" y="7" width="50" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="50" id="6iG-Z5-LHS"/>
+                                <constraint firstAttribute="width" constant="50" id="uvk-GI-8Mi"/>
+                            </constraints>
+                            <inset key="contentEdgeInsets" minX="4" minY="4" maxX="4" maxY="4"/>
+                            <inset key="imageEdgeInsets" minX="4" minY="4" maxX="4" maxY="3"/>
+                            <state key="normal" image="refresh">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="refreshButtonTapped:" destination="-1" eventType="touchUpInside" id="8ML-OP-wOS"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" reversesTitleShadowWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wxh-KG-TFE" userLabel="3D">
+                            <rect key="frame" x="70" y="8" width="50" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="50" id="DCA-6t-hWU"/>
+                                <constraint firstAttribute="height" constant="50" id="I3g-2Q-A2u"/>
+                            </constraints>
+                            <inset key="contentEdgeInsets" minX="1" minY="0.0" maxX="1" maxY="3"/>
+                            <inset key="imageEdgeInsets" minX="4" minY="4" maxX="4" maxY="4"/>
+                            <state key="normal" image="3d">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="screenModeButtonTapped:" destination="-1" eventType="touchUpInside" id="qnD-gm-DXa"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.94763275375939859" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="mY6-3G-mfG" firstAttribute="top" secondItem="rKC-0i-yxh" secondAttribute="top" constant="-3" id="9HG-g3-3G7"/>
+                        <constraint firstAttribute="height" constant="60" id="PcM-AI-Dvn"/>
+                        <constraint firstAttribute="trailing" secondItem="HbS-Vy-sFj" secondAttribute="trailing" constant="70" id="PfY-W8-eN1"/>
+                        <constraint firstAttribute="width" constant="320" id="jSW-Cd-yUy"/>
+                        <constraint firstItem="HbS-Vy-sFj" firstAttribute="top" secondItem="rKC-0i-yxh" secondAttribute="top" constant="7" id="vrX-li-mkg"/>
+                        <constraint firstAttribute="trailing" secondItem="mY6-3G-mfG" secondAttribute="trailing" constant="2" id="w56-v5-iS2"/>
+                        <constraint firstItem="Wxh-KG-TFE" firstAttribute="leading" secondItem="rKC-0i-yxh" secondAttribute="leading" constant="70" id="xBq-8F-jeu"/>
+                        <constraint firstItem="Wxh-KG-TFE" firstAttribute="top" secondItem="rKC-0i-yxh" secondAttribute="top" constant="8" id="zTh-OX-pHI"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eQM-Gq-fyX">
+                    <rect key="frame" x="261" y="496" width="55" height="55"/>
+                    <state key="normal">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="moreButtonTapped:" destination="-1" eventType="touchUpInside" id="kAw-cV-g2D"/>
+                    </connections>
+                </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sPp-Fi-YfW" userLabel="InputView">
                     <rect key="frame" x="10" y="-240" width="300" height="220"/>
                     <subviews>
@@ -86,38 +154,26 @@
                         <constraint firstItem="s1W-DB-Zyh" firstAttribute="top" secondItem="Ha1-OQ-f5c" secondAttribute="bottom" constant="8" symbolic="YES" id="zPT-LH-LMj"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VVv-W2-25p">
-                    <rect key="frame" x="272" y="-2" width="50" height="50"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="50" id="KEz-w6-l8y"/>
-                        <constraint firstAttribute="height" constant="50" id="uKZ-yx-tes"/>
-                    </constraints>
-                    <inset key="contentEdgeInsets" minX="12" minY="12" maxX="12" maxY="12"/>
-                    <state key="normal" image="gear">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="settingsButtonTapped:" destination="-1" eventType="touchUpInside" id="jnH-gv-2OO"/>
-                    </connections>
-                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="nKI-Hj-0zZ" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="1Y3-eG-FUM"/>
                 <constraint firstItem="sPp-Fi-YfW" firstAttribute="centerX" secondItem="nKI-Hj-0zZ" secondAttribute="centerX" id="2IV-Xb-0S4"/>
                 <constraint firstAttribute="bottom" secondItem="nKI-Hj-0zZ" secondAttribute="bottom" id="8qd-sT-5q4"/>
-                <constraint firstItem="VVv-W2-25p" firstAttribute="top" secondItem="1" secondAttribute="top" constant="-2" id="PvJ-Ua-ye0"/>
-                <constraint firstAttribute="trailing" secondItem="VVv-W2-25p" secondAttribute="trailing" constant="-2" id="eVr-DK-OUS"/>
+                <constraint firstAttribute="centerX" secondItem="rKC-0i-yxh" secondAttribute="centerX" id="MS5-9C-BC7"/>
+                <constraint firstAttribute="bottom" secondItem="rKC-0i-yxh" secondAttribute="bottom" constant="-43" id="XCt-KT-qYC"/>
                 <constraint firstItem="sPp-Fi-YfW" firstAttribute="top" secondItem="1" secondAttribute="top" constant="-240" id="jqF-ct-LcE"/>
                 <constraint firstAttribute="trailing" secondItem="nKI-Hj-0zZ" secondAttribute="trailing" id="w5d-4o-g6T"/>
                 <constraint firstItem="nKI-Hj-0zZ" firstAttribute="top" secondItem="1" secondAttribute="top" id="wmL-Gc-bca"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
-            <point key="canvasLocation" x="139" y="277"/>
+            <point key="canvasLocation" x="147" y="277"/>
         </view>
     </objects>
     <resources>
-        <image name="gear" width="32" height="32"/>
+        <image name="3d" width="96" height="109"/>
+        <image name="more" width="24" height="24"/>
+        <image name="refresh" width="64" height="64"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

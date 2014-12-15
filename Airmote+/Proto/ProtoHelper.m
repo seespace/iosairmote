@@ -476,4 +476,18 @@ static ProtoHelper *instance;
   return [builder build];
 }
 
++(Event *) functionEventResponseWithState:(FunctionEventKey) key {
+  [self ensureInitialized];
+  FunctionEvent *event = [[[[FunctionEventBuilder alloc] init] setKey:key] build];
+
+    // Build actual event
+  EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.timestamp = 0;
+  builder.trackingAreaWidth = 0;
+  builder.trackingAreaHeight = 0;
+  builder.type = EventTypeFunctionEvent;
+  [builder setExtension:[FunctionEvent event] value:event];
+
+  return [builder build];
+}
 @end

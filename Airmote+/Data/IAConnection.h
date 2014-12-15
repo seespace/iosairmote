@@ -51,5 +51,7 @@ typedef NS_ENUM(NSInteger, IAConnectionError) {
 - (void) start;
 - (void)sendEvent:(Event *)event withTag:(u_int8_t)tag;
 - (void) connectToServiceAtIndex:(NSUInteger) index;
+- (void) stop;
+- (void) resetStates;
 
 @end
