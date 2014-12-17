@@ -44,7 +44,8 @@ static const uint8_t kSessionStartTag = 9;
   DDLogDebug(@"Connecting to host: %@", netService);
 
   if ([netService.addresses count] > 0) {
-    if (![_socket connectToAddress:netService.addresses[0] error:&err]) {
+    
+    if (![_socket connectToAddress:netService.addresses[0] withTimeout:10 error:&err]) {
 
       if ([self.delegate respondsToSelector:@selector(eventCenterFailedToConnectToHost:withError:)]) {
         [self.delegate eventCenterFailedToConnectToHost:netService.hostName withError:err];

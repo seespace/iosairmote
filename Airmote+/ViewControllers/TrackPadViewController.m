@@ -333,9 +333,11 @@ static const uint8_t kMotionShakeTag = 6;
 }
 
 - (IBAction)refreshButtonTapped:(id)sender {
-  [[IAConnection sharedConnection] stop];
-  [[IAConnection sharedConnection] resetStates];
-  [[IAConnection sharedConnection] start];
   [self toggleControlsView];
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    [[IAConnection sharedConnection] stop];
+    [[IAConnection sharedConnection] resetStates];
+    [[IAConnection sharedConnection] start];
+  });
 }
 @end
