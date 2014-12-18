@@ -340,4 +340,10 @@ static const uint8_t kMotionShakeTag = 6;
     [[IAConnection sharedConnection] start];
   });
 }
+
+-(void) dismissControlsBarIfNeeded {
+  if (bottomControlsConstrain.constant == 0.0) {
+    [self toggleControlsView];
+  }
+}
 @end

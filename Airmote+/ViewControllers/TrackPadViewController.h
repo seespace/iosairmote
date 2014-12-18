@@ -21,4 +21,6 @@
 @property(strong, nonatomic) IBOutlet WebViewController *webViewController;
 
 - (void)reconnectToServiceIfNeeded;
+
+- (void)dismissControlsBarIfNeeded;
 @end

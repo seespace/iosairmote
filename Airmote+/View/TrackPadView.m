@@ -93,6 +93,7 @@ static const uint8_t kGestureStateChanged = 11;
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    [self.viewController dismissControlsBarIfNeeded];
     if (![[IAConnection sharedConnection] isConnected])
     {
       if (! [[IAConnection sharedConnection] isProcessing]) {
@@ -158,6 +159,7 @@ static const uint8_t kGestureStateChanged = 11;
                                                count:(int) sender.numberOfTapsRequired];
 
     [[IAConnection sharedConnection] sendEvent:ev withTag:kGestureStateChanged];
+
 }
 
 - (void)panHandle:(UIPanGestureRecognizer *)sender

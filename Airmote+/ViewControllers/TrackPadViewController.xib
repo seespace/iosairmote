@@ -36,7 +36,7 @@
                         <constraint firstItem="5pv-oF-CEP" firstAttribute="top" secondItem="nKI-Hj-0zZ" secondAttribute="top" id="pJT-Cd-ZRn"/>
                     </constraints>
                 </view>
-                <view alpha="0.69999999999999996" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rKC-0i-yxh" userLabel="Controls">
+                <view alpha="0.90000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rKC-0i-yxh" userLabel="Controls">
                     <rect key="frame" x="0.0" y="551" width="320" height="60"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mY6-3G-mfG" userLabel="More">
@@ -53,28 +53,27 @@
                                 <action selector="moreButtonTapped:" destination="-1" eventType="touchUpInside" id="6mI-Im-bxi"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HbS-Vy-sFj" userLabel="Refresh">
-                            <rect key="frame" x="200" y="7" width="50" height="50"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HbS-Vy-sFj" userLabel="WifiSetup">
+                            <rect key="frame" x="215" y="7" width="50" height="50"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="50" id="6iG-Z5-LHS"/>
                                 <constraint firstAttribute="width" constant="50" id="uvk-GI-8Mi"/>
                             </constraints>
-                            <inset key="contentEdgeInsets" minX="4" minY="4" maxX="4" maxY="4"/>
-                            <inset key="imageEdgeInsets" minX="4" minY="4" maxX="4" maxY="3"/>
-                            <state key="normal" image="refresh">
+                            <inset key="imageEdgeInsets" minX="16" minY="16" maxX="16" maxY="16"/>
+                            <state key="normal" image="wifi">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
                                 <action selector="refreshButtonTapped:" destination="-1" eventType="touchUpInside" id="8ML-OP-wOS"/>
+                                <action selector="settingsButtonTapped:" destination="-1" eventType="touchUpInside" id="790-9Y-gwn"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" reversesTitleShadowWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wxh-KG-TFE" userLabel="3D">
-                            <rect key="frame" x="70" y="8" width="50" height="50"/>
+                            <rect key="frame" x="55" y="8" width="50" height="50"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="50" id="DCA-6t-hWU"/>
                                 <constraint firstAttribute="height" constant="50" id="I3g-2Q-A2u"/>
                             </constraints>
-                            <inset key="contentEdgeInsets" minX="1" minY="0.0" maxX="1" maxY="3"/>
                             <inset key="imageEdgeInsets" minX="4" minY="4" maxX="4" maxY="4"/>
                             <state key="normal" image="3d">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -83,21 +82,36 @@
                                 <action selector="screenModeButtonTapped:" destination="-1" eventType="touchUpInside" id="qnD-gm-DXa"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NV6-te-Spb" userLabel="Refresh">
+                            <rect key="frame" x="135" y="7" width="50" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="50" id="LkE-L3-XTn"/>
+                                <constraint firstAttribute="width" constant="50" id="cAh-Yc-3Cx"/>
+                            </constraints>
+                            <state key="normal" image="refresh">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="refreshButtonTapped:" destination="-1" eventType="touchUpInside" id="32q-qo-fpy"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.94763275375939859" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstAttribute="centerX" secondItem="NV6-te-Spb" secondAttribute="centerX" id="1d1-5t-SU0"/>
                         <constraint firstItem="mY6-3G-mfG" firstAttribute="top" secondItem="rKC-0i-yxh" secondAttribute="top" constant="-3" id="9HG-g3-3G7"/>
                         <constraint firstAttribute="height" constant="60" id="PcM-AI-Dvn"/>
-                        <constraint firstAttribute="trailing" secondItem="HbS-Vy-sFj" secondAttribute="trailing" constant="70" id="PfY-W8-eN1"/>
+                        <constraint firstAttribute="trailing" secondItem="HbS-Vy-sFj" secondAttribute="trailing" constant="55" id="PfY-W8-eN1"/>
+                        <constraint firstAttribute="bottom" secondItem="NV6-te-Spb" secondAttribute="bottom" constant="3" id="ad8-9o-c8m"/>
                         <constraint firstAttribute="width" constant="320" id="jSW-Cd-yUy"/>
                         <constraint firstItem="HbS-Vy-sFj" firstAttribute="top" secondItem="rKC-0i-yxh" secondAttribute="top" constant="7" id="vrX-li-mkg"/>
                         <constraint firstAttribute="trailing" secondItem="mY6-3G-mfG" secondAttribute="trailing" constant="2" id="w56-v5-iS2"/>
-                        <constraint firstItem="Wxh-KG-TFE" firstAttribute="leading" secondItem="rKC-0i-yxh" secondAttribute="leading" constant="70" id="xBq-8F-jeu"/>
+                        <constraint firstItem="Wxh-KG-TFE" firstAttribute="leading" secondItem="rKC-0i-yxh" secondAttribute="leading" constant="55" id="xBq-8F-jeu"/>
                         <constraint firstItem="Wxh-KG-TFE" firstAttribute="top" secondItem="rKC-0i-yxh" secondAttribute="top" constant="8" id="zTh-OX-pHI"/>
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eQM-Gq-fyX">
-                    <rect key="frame" x="261" y="496" width="55" height="55"/>
+                    <rect key="frame" x="270" y="496" width="55" height="55"/>
                     <state key="normal">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -174,6 +188,7 @@
         <image name="3d" width="96" height="109"/>
         <image name="more" width="24" height="24"/>
         <image name="refresh" width="64" height="64"/>
+        <image name="wifi" width="32" height="32"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
