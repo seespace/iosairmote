@@ -323,7 +323,7 @@ static const uint8_t kMotionShakeTag = 6;
 {
   [UIView animateWithDuration:0.6 delay:0 usingSpringWithDamping:0.7 initialSpringVelocity:20 options:0
                    animations:^{
-                     bottomControlsConstrain.constant = bottomControlsConstrain.constant == 0 ? -43 : 0;
+                     bottomControlsConstrain.constant = bottomControlsConstrain.constant == 0 ? -54 : 0;
                      [self.view layoutIfNeeded];
                    } completion:NULL];
 }
