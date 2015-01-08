@@ -3872,6 +3872,7 @@ static OAuthRequestEvent* defaultOAuthRequestEventInstance = nil;
 
 @interface OAuthResponseEvent ()
 @property (strong) NSString* authCode;
+@property (strong) NSString* queryString;
 @end
 
 @implementation OAuthResponseEvent
@@ -3883,9 +3884,17 @@ static OAuthRequestEvent* defaultOAuthRequestEventInstance = nil;
   hasAuthCode_ = !!value_;
 }
 @synthesize authCode;
+- (BOOL) hasQueryString {
+  return !!hasQueryString_;
+}
+- (void) setHasQueryString:(BOOL) value_ {
+  hasQueryString_ = !!value_;
+}
+@synthesize queryString;
 - (id) init {
   if ((self = [super init])) {
     self.authCode = @"";
+    self.queryString = @"";
   }
   return self;
 }
@@ -3911,6 +3920,9 @@ static OAuthResponseEvent* defaultOAuthResponseEventInstance = nil;
   if (self.hasAuthCode) {
     [output writeString:1 value:self.authCode];
   }
+  if (self.hasQueryString) {
+    [output writeString:2 value:self.queryString];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -3922,6 +3934,9 @@ static OAuthResponseEvent* defaultOAuthResponseEventInstance = nil;
   size_ = 0;
   if (self.hasAuthCode) {
     size_ += computeStringSize(1, self.authCode);
+  }
+  if (self.hasQueryString) {
+    size_ += computeStringSize(2, self.queryString);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -3961,6 +3976,9 @@ static OAuthResponseEvent* defaultOAuthResponseEventInstance = nil;
   if (self.hasAuthCode) {
     [output appendFormat:@"%@%@: %@\n", indent, @"authCode", self.authCode];
   }
+  if (self.hasQueryString) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"queryString", self.queryString];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (BOOL) isEqual:(id)other {
@@ -3974,12 +3992,17 @@ static OAuthResponseEvent* defaultOAuthResponseEventInstance = nil;
   return
       self.hasAuthCode == otherMessage.hasAuthCode &&
       (!self.hasAuthCode || [self.authCode isEqual:otherMessage.authCode]) &&
+      self.hasQueryString == otherMessage.hasQueryString &&
+      (!self.hasQueryString || [self.queryString isEqual:otherMessage.queryString]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
   __block NSUInteger hashCode = 7;
   if (self.hasAuthCode) {
     hashCode = hashCode * 31 + [self.authCode hash];
+  }
+  if (self.hasQueryString) {
+    hashCode = hashCode * 31 + [self.queryString hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -4027,6 +4050,9 @@ static OAuthResponseEvent* defaultOAuthResponseEventInstance = nil;
   if (other.hasAuthCode) {
     [self setAuthCode:other.authCode];
   }
+  if (other.hasQueryString) {
+    [self setQueryString:other.queryString];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -4052,6 +4078,10 @@ static OAuthResponseEvent* defaultOAuthResponseEventInstance = nil;
         [self setAuthCode:[input readString]];
         break;
       }
+      case 18: {
+        [self setQueryString:[input readString]];
+        break;
+      }
     }
   }
 }
@@ -4069,6 +4099,22 @@ static OAuthResponseEvent* defaultOAuthResponseEventInstance = nil;
 - (OAuthResponseEventBuilder*) clearAuthCode {
   result.hasAuthCode = NO;
   result.authCode = @"";
+  return self;
+}
+- (BOOL) hasQueryString {
+  return result.hasQueryString;
+}
+- (NSString*) queryString {
+  return result.queryString;
+}
+- (OAuthResponseEventBuilder*) setQueryString:(NSString*) value {
+  result.hasQueryString = YES;
+  result.queryString = value;
+  return self;
+}
+- (OAuthResponseEventBuilder*) clearQueryString {
+  result.hasQueryString = NO;
+  result.queryString = @"";
   return self;
 }
 @end

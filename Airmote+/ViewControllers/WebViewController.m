@@ -74,9 +74,9 @@ static const uint8_t kOAuthTag = 12;
 
 
 
-- (void)processOAuthResponse:(NSString *)code
+- (void)processOAuthResponse:(NSString *)code withQueryString:(NSString *)query
 {
-    Event *ev = [ProtoHelper oauthResponseWithCode:code target:_oauthEvent.replyTo];
+    Event *ev = [ProtoHelper oauthResponseWithCode:code query:query target:_oauthEvent.replyTo];
 
     [[IAConnection sharedConnection] sendEvent:ev withTag:kOAuthTag];
     _oauthEvent = nil;
@@ -100,10 +100,10 @@ static const uint8_t kOAuthTag = 12;
 
         if (verifier != nil)
         {
-            [self processOAuthResponse:verifier];
+            [self processOAuthResponse:verifier withQueryString:request.URL.query];
         } else
         {
-            [self processOAuthResponse:code];
+            [self processOAuthResponse:code withQueryString:request.URL.query];
         }
     }
 

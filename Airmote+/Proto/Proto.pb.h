@@ -960,10 +960,14 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 @interface OAuthResponseEvent : PBGeneratedMessage {
 @private
   BOOL hasAuthCode_:1;
+  BOOL hasQueryString_:1;
   NSString* authCode;
+  NSString* queryString;
 }
 - (BOOL) hasAuthCode;
+- (BOOL) hasQueryString;
 @property (readonly, strong) NSString* authCode;
+@property (readonly, strong) NSString* queryString;
 
 + (OAuthResponseEvent*) defaultInstance;
 - (OAuthResponseEvent*) defaultInstance;
@@ -1005,6 +1009,11 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 - (NSString*) authCode;
 - (OAuthResponseEventBuilder*) setAuthCode:(NSString*) value;
 - (OAuthResponseEventBuilder*) clearAuthCode;
+
+- (BOOL) hasQueryString;
+- (NSString*) queryString;
+- (OAuthResponseEventBuilder*) setQueryString:(NSString*) value;
+- (OAuthResponseEventBuilder*) clearQueryString;
 @end
 
 @interface WifiNetwork : PBGeneratedMessage {

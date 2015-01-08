@@ -94,6 +94,7 @@
                                 duration:(SInt64)duration;
 
 + (Event *)oauthResponseWithCode:(NSString *)code
+                           query:(NSString *)query
                           target:(NSString *)target;
 
 + (Event *)setupCodeRequest;

@@ -221,6 +221,7 @@ message OAuthResponseEvent {
   }
 
   optional string auth_code = 1;
+  optional string query_string = 2;
 }
 
 // Setup
