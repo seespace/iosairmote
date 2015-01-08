@@ -46,80 +46,74 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ax5-8s-5Me" userLabel="ContentView">
                                     <rect key="frame" x="0.0" y="-6" width="640" height="60"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2IF-Vy-VUL" userLabel="WifiSetup">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2IF-Vy-VUL" userLabel="WifiSetup">
                                             <rect key="frame" x="214" y="4" width="50" height="50"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="50" id="2vd-nT-MRX"/>
                                                 <constraint firstAttribute="width" constant="50" id="gxj-Ff-Evk"/>
                                             </constraints>
-                                            <state key="normal" image="wifi">
-                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
+                                            <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            <state key="normal" image="wifi"/>
                                             <connections>
                                                 <action selector="settingsButtonTapped:" destination="-1" eventType="touchUpInside" id="hmY-YK-ZmA"/>
                                             </connections>
                                         </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dML-Kf-9wT" userLabel="3D">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dML-Kf-9wT" userLabel="3D">
                                             <rect key="frame" x="54" y="5" width="50" height="50"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="50" id="4wX-uw-RLP"/>
                                                 <constraint firstAttribute="height" constant="50" id="OYe-vf-Td1"/>
                                             </constraints>
-                                            <state key="normal" image="3d">
-                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
+                                            <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            <state key="normal" image="3d"/>
                                             <connections>
                                                 <action selector="screenModeButtonTapped:" destination="-1" eventType="touchUpInside" id="303-ae-dnd"/>
                                             </connections>
                                         </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ddF-Xf-VlY" userLabel="Play">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ddF-Xf-VlY" userLabel="Play">
                                             <rect key="frame" x="458" y="8" width="44" height="44"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="44" id="G0G-4h-g2c"/>
                                                 <constraint firstAttribute="width" constant="44" id="n9e-Iq-lRi"/>
                                             </constraints>
-                                            <state key="normal" image="play">
-                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
+                                            <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <state key="normal" image="play"/>
                                             <connections>
                                                 <action selector="playPauseButtonTapped:" destination="-1" eventType="touchUpInside" id="9Aj-6c-E0X"/>
                                             </connections>
                                         </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zo3-ig-OHS" userLabel="FF">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zo3-ig-OHS" userLabel="FF">
                                             <rect key="frame" x="536" y="8" width="44" height="44"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="44" id="KqD-SR-xNa"/>
                                                 <constraint firstAttribute="height" constant="44" id="Lts-K0-DsR"/>
                                             </constraints>
-                                            <state key="normal" image="ff">
-                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
+                                            <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <state key="normal" image="ff"/>
                                             <connections>
                                                 <action selector="fastForwardButtonTapped:" destination="-1" eventType="touchUpInside" id="P9B-Nw-hy5"/>
                                             </connections>
                                         </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vL5-aP-9F7" userLabel="Rewind">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vL5-aP-9F7" userLabel="Rewind">
                                             <rect key="frame" x="380" y="8" width="44" height="44"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="44" id="jt0-o0-UDJ"/>
                                                 <constraint firstAttribute="height" constant="44" id="u4v-cR-xAU"/>
                                             </constraints>
-                                            <state key="normal" image="rewind">
-                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
+                                            <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <state key="normal" image="rewind"/>
                                             <connections>
                                                 <action selector="rewindButtonTapped:" destination="-1" eventType="touchUpInside" id="Odp-q4-Ssw"/>
                                             </connections>
                                         </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qUX-ej-fLs" userLabel="Refresh">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qUX-ej-fLs" userLabel="Refresh">
                                             <rect key="frame" x="134" y="4" width="50" height="50"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="50" id="Wk5-v2-L5J"/>
                                                 <constraint firstAttribute="width" constant="50" id="jKE-mc-Rid"/>
                                             </constraints>
-                                            <state key="normal" image="refresh">
-                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
+                                            <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            <state key="normal" image="refresh"/>
                                             <connections>
                                                 <action selector="refreshButtonTapped:" destination="-1" eventType="touchUpInside" id="ysH-Tr-zba"/>
                                             </connections>
