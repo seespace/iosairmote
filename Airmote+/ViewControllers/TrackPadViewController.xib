@@ -95,6 +95,9 @@
                                 <action selector="refreshButtonTapped:" destination="-1" eventType="touchUpInside" id="32q-qo-fpy"/>
                             </connections>
                         </button>
+                        <pageControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="pmX-z6-JA0">
+                            <rect key="frame" x="140" y="12" width="39" height="37"/>
+                        </pageControl>
                     </subviews>
                     <color key="backgroundColor" white="0.94763275375939859" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
@@ -168,6 +171,33 @@
                         <constraint firstItem="s1W-DB-Zyh" firstAttribute="top" secondItem="Ha1-OQ-f5c" secondAttribute="bottom" constant="8" symbolic="YES" id="zPT-LH-LMj"/>
                     </constraints>
                 </view>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L6B-Ry-9VL">
+                    <rect key="frame" x="137" y="494" width="46" height="30"/>
+                    <state key="normal" title="Play">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="playPauseButtonTapped:" destination="-1" eventType="touchUpInside" id="dSv-Ku-0Ye"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Du3-DP-Imh">
+                    <rect key="frame" x="52" y="494" width="46" height="30"/>
+                    <state key="normal" title="FF">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="fastForwardButtonTapped:" destination="-1" eventType="touchUpInside" id="QMh-as-lCR"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J8b-MI-dgY">
+                    <rect key="frame" x="227" y="494" width="46" height="30"/>
+                    <state key="normal" title="RW">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="rewindButtonTapped:" destination="-1" eventType="touchUpInside" id="E6c-XV-Osn"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>

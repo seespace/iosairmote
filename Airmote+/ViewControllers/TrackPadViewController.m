@@ -327,6 +327,17 @@ static const uint8_t kMotionShakeTag = 6;
                      [self.view layoutIfNeeded];
                    } completion:NULL];
 }
+- (IBAction)fastForwardButtonTapped:(id)sender {
+  [[IAConnection sharedConnection] sendEvent:[ProtoHelper functionEventResponseWithState:FunctionEventKeyMediaFastForward] withTag:0];
+  
+}
+- (IBAction)playPauseButtonTapped:(id)sender {
+  [[IAConnection sharedConnection] sendEvent:[ProtoHelper functionEventResponseWithState:FunctionEventKeyMediaPlay] withTag:0];
+}
+- (IBAction)rewindButtonTapped:(id)sender {
+  [[IAConnection sharedConnection] sendEvent:[ProtoHelper functionEventResponseWithState:FunctionEventKeyMediaRewind] withTag:0];
+}
+
 
 - (IBAction)screenModeButtonTapped:(id)sender {
   [[IAConnection sharedConnection] sendEvent:[ProtoHelper functionEventResponseWithState:FunctionEventKeyF4] withTag:0];
