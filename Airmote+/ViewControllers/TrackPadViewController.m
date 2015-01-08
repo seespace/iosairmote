@@ -18,6 +18,7 @@
   __weak IBOutlet NSLayoutConstraint *inputViewTopConstrain;
   __weak IBOutlet UITextView *plainText;
   __weak IBOutlet NSLayoutConstraint *bottomControlsConstrain;
+  __weak IBOutlet UIPageControl *pageControl;
 }
 
 static const uint8_t kMotionShakeTag = 6;
@@ -350,6 +351,13 @@ static const uint8_t kMotionShakeTag = 6;
     [[IAConnection sharedConnection] resetStates];
     [[IAConnection sharedConnection] start];
   });
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    CGFloat pageWidth = scrollView.frame.size.width;
+    float fractionalPage = scrollView.contentOffset.x / pageWidth;
+    NSInteger page = lround(fractionalPage);
+    pageControl.currentPage = page; // you need to have a **iVar** with getter for pageControl
 }
 
 -(void) dismissControlsBarIfNeeded {
