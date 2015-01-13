@@ -5997,6 +5997,11 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value) {
     case FunctionEventKeyF2:
     case FunctionEventKeyF3:
     case FunctionEventKeyF4:
+    case FunctionEventKeyMediaPlay:
+    case FunctionEventKeyMediaPause:
+    case FunctionEventKeyMediaFastForward:
+    case FunctionEventKeyMediaRewind:
+    case FunctionEventKeyMediaStop:
       return YES;
     default:
       return NO;

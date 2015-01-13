@@ -319,6 +319,11 @@ message FunctionEvent {
     F2 = 1;
     F3 = 2;
     F4 = 3;
+    MediaPlay = 4;
+    MediaPause = 5;
+    MediaFastForward= 6;
+    MediaRewind = 7;
+    MediaStop = 8;
   }
 
   required Key key = 1;

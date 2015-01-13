@@ -190,6 +190,11 @@ typedef NS_ENUM(SInt32, FunctionEventKey) {
   FunctionEventKeyF2 = 1,
   FunctionEventKeyF3 = 2,
   FunctionEventKeyF4 = 3,
+  FunctionEventKeyMediaPlay = 4,
+  FunctionEventKeyMediaPause = 5,
+  FunctionEventKeyMediaFastForward = 6,
+  FunctionEventKeyMediaRewind = 7,
+  FunctionEventKeyMediaStop = 8,
 };
 
 BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);

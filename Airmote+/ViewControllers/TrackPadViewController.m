@@ -18,6 +18,7 @@
   __weak IBOutlet NSLayoutConstraint *inputViewTopConstrain;
   __weak IBOutlet UITextView *plainText;
   __weak IBOutlet NSLayoutConstraint *bottomControlsConstrain;
+  __weak IBOutlet UIPageControl *pageControl;
 }
 
 static const uint8_t kMotionShakeTag = 6;
@@ -323,10 +324,21 @@ static const uint8_t kMotionShakeTag = 6;
 {
   [UIView animateWithDuration:0.6 delay:0 usingSpringWithDamping:0.7 initialSpringVelocity:20 options:0
                    animations:^{
-                     bottomControlsConstrain.constant = bottomControlsConstrain.constant == 0 ? -43 : 0;
+                     bottomControlsConstrain.constant = bottomControlsConstrain.constant == 0 ? -54 : 0;
                      [self.view layoutIfNeeded];
                    } completion:NULL];
 }
+- (IBAction)fastForwardButtonTapped:(id)sender {
+  [[IAConnection sharedConnection] sendEvent:[ProtoHelper functionEventResponseWithState:FunctionEventKeyMediaFastForward] withTag:0];
+  
+}
+- (IBAction)playPauseButtonTapped:(id)sender {
+  [[IAConnection sharedConnection] sendEvent:[ProtoHelper functionEventResponseWithState:FunctionEventKeyMediaPlay] withTag:0];
+}
+- (IBAction)rewindButtonTapped:(id)sender {
+  [[IAConnection sharedConnection] sendEvent:[ProtoHelper functionEventResponseWithState:FunctionEventKeyMediaRewind] withTag:0];
+}
+
 
 - (IBAction)screenModeButtonTapped:(id)sender {
   [[IAConnection sharedConnection] sendEvent:[ProtoHelper functionEventResponseWithState:FunctionEventKeyF4] withTag:0];
@@ -339,6 +351,13 @@ static const uint8_t kMotionShakeTag = 6;
     [[IAConnection sharedConnection] resetStates];
     [[IAConnection sharedConnection] start];
   });
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    CGFloat pageWidth = scrollView.frame.size.width;
+    float fractionalPage = scrollView.contentOffset.x / pageWidth;
+    NSInteger page = lround(fractionalPage);
+    pageControl.currentPage = page; // you need to have a **iVar** with getter for pageControl
 }
 
 -(void) dismissControlsBarIfNeeded {
