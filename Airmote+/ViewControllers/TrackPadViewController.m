@@ -155,8 +155,10 @@ static const uint8_t kMotionShakeTag = 6;
     [_actionSheet addButtonWithTitle:title];
   }
 
+  [_actionSheet addButtonWithTitle:@"Other"];
+
   [_actionSheet addButtonWithTitle:@"Cancel"];
-  _actionSheet.cancelButtonIndex = services.count;
+  _actionSheet.cancelButtonIndex = services.count + 1;
 
   [_actionSheet showInView:self.view];
 }
@@ -165,7 +167,17 @@ static const uint8_t kMotionShakeTag = 6;
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
   if (buttonIndex != actionSheet.cancelButtonIndex) {
-    [[IAConnection sharedConnection] connectToServiceAtIndex:(NSUInteger) buttonIndex];
+    if (buttonIndex == actionSheet.numberOfButtons - 2) {
+      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"IP Address"
+                                                      message:@"Message"
+                                                     delegate:self
+                                            cancelButtonTitle:@"Done"
+                                            otherButtonTitles:nil];
+      alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+      [alert show];
+    } else {
+      [[IAConnection sharedConnection] connectToServiceAtIndex:(NSUInteger) buttonIndex];
+    }
   }
 }
 
@@ -176,6 +188,10 @@ static const uint8_t kMotionShakeTag = 6;
     if (buttonIndex != alertView.cancelButtonIndex) {
       [self processOAuthRequest];
     }
+  } else if ([alertView.title isEqualToString:@"IP Address"]) {
+    [[IAConnection sharedConnection] stop];
+    [[IAConnection sharedConnection] resetStates];
+    [[IAConnection sharedConnection] connectToHost:[alertView textFieldAtIndex:0].text];
   }
   _oauthEvent = nil;
 }

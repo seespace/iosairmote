@@ -28,4 +28,6 @@
 - (BOOL)disconnect;
 
 - (void)sendEvent:(Event *)event withTag:(u_int8_t)tag;
+
+- (void)connectToHost:(NSString *)address;
 @end

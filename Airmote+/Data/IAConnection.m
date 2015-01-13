@@ -325,6 +325,14 @@
   }
 }
 
+- (void)connectToHost:(NSString *)ipAddress
+{
+  isConnecting = YES;
+  currentService = [[NSNetService alloc] initWithDomain:@"tv.inair" type:kManualIPAddress name:ipAddress port:0];
+  [eventCenter connectToHost:ipAddress];
+}
+
+
 - (void)resetStates
 {
   DDLogDebug(@"Resetting states");
@@ -452,7 +460,7 @@
 {
   DDLogDebug(@"Did connect to host name %@", netService);
   isConnecting = NO;
-  if ([netService.hostName isEqualToString:currentService.hostName]) {
+  if ([netService.hostName isEqualToString:currentService.hostName] || [netService.type isEqualToString:kManualIPAddress]) {
     if ([self.delegate respondsToSelector:@selector(didConnect:)]) {
       [self.delegate didConnect:currentService.name];
     }
