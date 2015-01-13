@@ -12,6 +12,8 @@
 #import "TrackPadView.h"
 #import "InstructionViewController.h"
 
+#define kIPAddressAlertTitle @"Manual Connect"
+
 @implementation TrackPadViewController {
   Event *_oauthEvent;
   __weak IBOutlet UIView *inputView;
@@ -19,6 +21,7 @@
   __weak IBOutlet UITextView *plainText;
   __weak IBOutlet NSLayoutConstraint *bottomControlsConstrain;
   __weak IBOutlet UIPageControl *pageControl;
+  NSString *lastManuallyConnectedIP;
 }
 
 static const uint8_t kMotionShakeTag = 6;
@@ -168,12 +171,14 @@ static const uint8_t kMotionShakeTag = 6;
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
   if (buttonIndex != actionSheet.cancelButtonIndex) {
     if (buttonIndex == actionSheet.numberOfButtons - 2) {
-      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"IP Address"
-                                                      message:@"Message"
+      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:kIPAddressAlertTitle
+                                                      message:@"Please enter your InAir box IP Address."
                                                      delegate:self
                                             cancelButtonTitle:@"Done"
                                             otherButtonTitles:nil];
       alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+      UITextField *textField = [alert textFieldAtIndex:0];
+      textField.placeholder = @"192.168.1.1";
       [alert show];
     } else {
       [[IAConnection sharedConnection] connectToServiceAtIndex:(NSUInteger) buttonIndex];
@@ -188,7 +193,7 @@ static const uint8_t kMotionShakeTag = 6;
     if (buttonIndex != alertView.cancelButtonIndex) {
       [self processOAuthRequest];
     }
-  } else if ([alertView.title isEqualToString:@"IP Address"]) {
+  } else if ([alertView.title isEqualToString:kIPAddressAlertTitle]) {
     [[IAConnection sharedConnection] stop];
     [[IAConnection sharedConnection] resetStates];
     [[IAConnection sharedConnection] connectToHost:[alertView textFieldAtIndex:0].text];
