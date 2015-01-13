@@ -38,7 +38,7 @@
                     </constraints>
                 </view>
                 <view alpha="0.90000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rKC-0i-yxh" userLabel="Controls">
-                    <rect key="frame" x="0.0" y="494" width="320" height="74"/>
+                    <rect key="frame" x="0.0" y="548" width="320" height="74"/>
                     <subviews>
                         <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g8g-75-Nix">
                             <rect key="frame" x="0.0" y="14" width="320" height="60"/>
@@ -248,7 +248,7 @@
                 <constraint firstItem="sPp-Fi-YfW" firstAttribute="centerX" secondItem="nKI-Hj-0zZ" secondAttribute="centerX" id="2IV-Xb-0S4"/>
                 <constraint firstAttribute="bottom" secondItem="nKI-Hj-0zZ" secondAttribute="bottom" id="8qd-sT-5q4"/>
                 <constraint firstAttribute="centerX" secondItem="rKC-0i-yxh" secondAttribute="centerX" id="MS5-9C-BC7"/>
-                <constraint firstAttribute="bottom" secondItem="rKC-0i-yxh" secondAttribute="bottom" id="XCt-KT-qYC"/>
+                <constraint firstAttribute="bottom" secondItem="rKC-0i-yxh" secondAttribute="bottom" constant="-54" id="XCt-KT-qYC"/>
                 <constraint firstItem="sPp-Fi-YfW" firstAttribute="top" secondItem="1" secondAttribute="top" constant="-240" id="jqF-ct-LcE"/>
                 <constraint firstAttribute="trailing" secondItem="nKI-Hj-0zZ" secondAttribute="trailing" id="w5d-4o-g6T"/>
                 <constraint firstItem="nKI-Hj-0zZ" firstAttribute="top" secondItem="1" secondAttribute="top" id="wmL-Gc-bca"/>
