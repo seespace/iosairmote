@@ -282,6 +282,9 @@ static const uint8_t kMotionShakeTag = 6;
 
 
 - (void)keyboardWillHide:(NSNotification *)notification {
+  if (! plainText.isFirstResponder)
+    return;
+
   NSDictionary *userInfo = [notification userInfo];
   float duration = [userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue];
   UIViewAnimationCurve curve = (UIViewAnimationCurve) [userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue];
@@ -297,6 +300,9 @@ static const uint8_t kMotionShakeTag = 6;
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification {
+  if (! plainText.isFirstResponder)
+    return;
+
   NSDictionary *userInfo = [notification userInfo];
   float duration = [userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue];
   UIViewAnimationCurve curve = (UIViewAnimationCurve) [userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue];
