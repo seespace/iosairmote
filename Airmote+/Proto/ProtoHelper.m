@@ -370,10 +370,13 @@ static ProtoHelper *instance;
 }
 
 + (Event *)oauthResponseWithCode:(NSString *)code
+                           query:(NSString *)query
                           target:(NSString *)target {
   [self ensureInitialized];
 
-  OAuthResponseEvent *event = [[[[OAuthResponseEventBuilder alloc] init] setAuthCode:code] build];
+  OAuthResponseEvent *event = [[[[[OAuthResponseEventBuilder alloc] init] setAuthCode:code] setQueryString:query] build];
+    
+  NSLog(@"Query %@", query);
 
   // Build actual event
   EventBuilder *builder = [[EventBuilder alloc] init];

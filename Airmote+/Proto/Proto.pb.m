@@ -241,7 +241,7 @@ BOOL SetupPhaseIsValidValue(SetupPhase value) {
   hasReplyTo_ = !!value_;
 }
 @synthesize replyTo;
-- (instancetype) init {
+- (id) init {
   if ((self = [super init])) {
     self.type = EventTypeDevice;
     self.timestamp = 0L;
@@ -258,10 +258,10 @@ static Event* defaultEventInstance = nil;
     defaultEventInstance = [[Event alloc] init];
   }
 }
-+ (instancetype) defaultInstance {
++ (Event*) defaultInstance {
   return defaultEventInstance;
 }
-- (instancetype) defaultInstance {
+- (Event*) defaultInstance {
   return defaultEventInstance;
 }
 - (BOOL) isInitialized {
@@ -464,26 +464,26 @@ BOOL EventTypeIsValidValue(EventType value) {
   }
 }
 @interface EventBuilder()
-@property (strong) Event* resultEvent;
+@property (strong) Event* result;
 @end
 
 @implementation EventBuilder
-@synthesize resultEvent;
-- (instancetype) init {
+@synthesize result;
+- (id) init {
   if ((self = [super init])) {
-    self.resultEvent = [[Event alloc] init];
+    self.result = [[Event alloc] init];
   }
   return self;
 }
 - (PBExtendableMessage*) internalGetResult {
-  return resultEvent;
+  return result;
 }
 - (EventBuilder*) clear {
-  self.resultEvent = [[Event alloc] init];
+  self.result = [[Event alloc] init];
   return self;
 }
 - (EventBuilder*) clone {
-  return [Event builderWithPrototype:resultEvent];
+  return [Event builderWithPrototype:result];
 }
 - (Event*) defaultInstance {
   return [Event defaultInstance];
@@ -493,8 +493,8 @@ BOOL EventTypeIsValidValue(EventType value) {
   return [self buildPartial];
 }
 - (Event*) buildPartial {
-  Event* returnMe = resultEvent;
-  self.resultEvent = nil;
+  Event* returnMe = result;
+  self.result = nil;
   return returnMe;
 }
 - (EventBuilder*) mergeFrom:(Event*) other {
@@ -574,99 +574,99 @@ BOOL EventTypeIsValidValue(EventType value) {
   }
 }
 - (BOOL) hasType {
-  return resultEvent.hasType;
+  return result.hasType;
 }
 - (EventType) type {
-  return resultEvent.type;
+  return result.type;
 }
 - (EventBuilder*) setType:(EventType) value {
-  resultEvent.hasType = YES;
-  resultEvent.type = value;
+  result.hasType = YES;
+  result.type = value;
   return self;
 }
 - (EventBuilder*) clearType {
-  resultEvent.hasType = NO;
-  resultEvent.type = EventTypeDevice;
+  result.hasType = NO;
+  result.type = EventTypeDevice;
   return self;
 }
 - (BOOL) hasTimestamp {
-  return resultEvent.hasTimestamp;
+  return result.hasTimestamp;
 }
 - (SInt64) timestamp {
-  return resultEvent.timestamp;
+  return result.timestamp;
 }
 - (EventBuilder*) setTimestamp:(SInt64) value {
-  resultEvent.hasTimestamp = YES;
-  resultEvent.timestamp = value;
+  result.hasTimestamp = YES;
+  result.timestamp = value;
   return self;
 }
 - (EventBuilder*) clearTimestamp {
-  resultEvent.hasTimestamp = NO;
-  resultEvent.timestamp = 0L;
+  result.hasTimestamp = NO;
+  result.timestamp = 0L;
   return self;
 }
 - (BOOL) hasTrackingAreaWidth {
-  return resultEvent.hasTrackingAreaWidth;
+  return result.hasTrackingAreaWidth;
 }
 - (SInt32) trackingAreaWidth {
-  return resultEvent.trackingAreaWidth;
+  return result.trackingAreaWidth;
 }
 - (EventBuilder*) setTrackingAreaWidth:(SInt32) value {
-  resultEvent.hasTrackingAreaWidth = YES;
-  resultEvent.trackingAreaWidth = value;
+  result.hasTrackingAreaWidth = YES;
+  result.trackingAreaWidth = value;
   return self;
 }
 - (EventBuilder*) clearTrackingAreaWidth {
-  resultEvent.hasTrackingAreaWidth = NO;
-  resultEvent.trackingAreaWidth = 0;
+  result.hasTrackingAreaWidth = NO;
+  result.trackingAreaWidth = 0;
   return self;
 }
 - (BOOL) hasTrackingAreaHeight {
-  return resultEvent.hasTrackingAreaHeight;
+  return result.hasTrackingAreaHeight;
 }
 - (SInt32) trackingAreaHeight {
-  return resultEvent.trackingAreaHeight;
+  return result.trackingAreaHeight;
 }
 - (EventBuilder*) setTrackingAreaHeight:(SInt32) value {
-  resultEvent.hasTrackingAreaHeight = YES;
-  resultEvent.trackingAreaHeight = value;
+  result.hasTrackingAreaHeight = YES;
+  result.trackingAreaHeight = value;
   return self;
 }
 - (EventBuilder*) clearTrackingAreaHeight {
-  resultEvent.hasTrackingAreaHeight = NO;
-  resultEvent.trackingAreaHeight = 0;
+  result.hasTrackingAreaHeight = NO;
+  result.trackingAreaHeight = 0;
   return self;
 }
 - (BOOL) hasTarget {
-  return resultEvent.hasTarget;
+  return result.hasTarget;
 }
 - (NSString*) target {
-  return resultEvent.target;
+  return result.target;
 }
 - (EventBuilder*) setTarget:(NSString*) value {
-  resultEvent.hasTarget = YES;
-  resultEvent.target = value;
+  result.hasTarget = YES;
+  result.target = value;
   return self;
 }
 - (EventBuilder*) clearTarget {
-  resultEvent.hasTarget = NO;
-  resultEvent.target = @"";
+  result.hasTarget = NO;
+  result.target = @"";
   return self;
 }
 - (BOOL) hasReplyTo {
-  return resultEvent.hasReplyTo;
+  return result.hasReplyTo;
 }
 - (NSString*) replyTo {
-  return resultEvent.replyTo;
+  return result.replyTo;
 }
 - (EventBuilder*) setReplyTo:(NSString*) value {
-  resultEvent.hasReplyTo = YES;
-  resultEvent.replyTo = value;
+  result.hasReplyTo = YES;
+  result.replyTo = value;
   return self;
 }
 - (EventBuilder*) clearReplyTo {
-  resultEvent.hasReplyTo = NO;
-  resultEvent.replyTo = @"";
+  result.hasReplyTo = NO;
+  result.replyTo = @"";
   return self;
 }
 @end
@@ -721,7 +721,7 @@ BOOL EventTypeIsValidValue(EventType value) {
 - (void) setHasKeyboard:(BOOL) value_ {
   hasKeyboard_ = !!value_;
 }
-- (instancetype) init {
+- (id) init {
   if ((self = [super init])) {
     self.name = @"";
     self.vendor = DeviceVendorIos;
@@ -737,10 +737,10 @@ static Device* defaultDeviceInstance = nil;
     defaultDeviceInstance = [[Device alloc] init];
   }
 }
-+ (instancetype) defaultInstance {
++ (Device*) defaultInstance {
   return defaultDeviceInstance;
 }
-- (instancetype) defaultInstance {
+- (Device*) defaultInstance {
   return defaultDeviceInstance;
 }
 - (BOOL) isInitialized {
@@ -904,26 +904,26 @@ BOOL DeviceVendorIsValidValue(DeviceVendor value) {
   }
 }
 @interface DeviceBuilder()
-@property (strong) Device* resultDevice;
+@property (strong) Device* result;
 @end
 
 @implementation DeviceBuilder
-@synthesize resultDevice;
-- (instancetype) init {
+@synthesize result;
+- (id) init {
   if ((self = [super init])) {
-    self.resultDevice = [[Device alloc] init];
+    self.result = [[Device alloc] init];
   }
   return self;
 }
 - (PBGeneratedMessage*) internalGetResult {
-  return resultDevice;
+  return result;
 }
 - (DeviceBuilder*) clear {
-  self.resultDevice = [[Device alloc] init];
+  self.result = [[Device alloc] init];
   return self;
 }
 - (DeviceBuilder*) clone {
-  return [Device builderWithPrototype:resultDevice];
+  return [Device builderWithPrototype:result];
 }
 - (Device*) defaultInstance {
   return [Device defaultInstance];
@@ -933,8 +933,8 @@ BOOL DeviceVendorIsValidValue(DeviceVendor value) {
   return [self buildPartial];
 }
 - (Device*) buildPartial {
-  Device* returnMe = resultDevice;
-  self.resultDevice = nil;
+  Device* returnMe = result;
+  self.result = nil;
   return returnMe;
 }
 - (DeviceBuilder*) mergeFrom:(Device*) other {
@@ -1006,83 +1006,83 @@ BOOL DeviceVendorIsValidValue(DeviceVendor value) {
   }
 }
 - (BOOL) hasName {
-  return resultDevice.hasName;
+  return result.hasName;
 }
 - (NSString*) name {
-  return resultDevice.name;
+  return result.name;
 }
 - (DeviceBuilder*) setName:(NSString*) value {
-  resultDevice.hasName = YES;
-  resultDevice.name = value;
+  result.hasName = YES;
+  result.name = value;
   return self;
 }
 - (DeviceBuilder*) clearName {
-  resultDevice.hasName = NO;
-  resultDevice.name = @"";
+  result.hasName = NO;
+  result.name = @"";
   return self;
 }
 - (BOOL) hasVendor {
-  return resultDevice.hasVendor;
+  return result.hasVendor;
 }
 - (DeviceVendor) vendor {
-  return resultDevice.vendor;
+  return result.vendor;
 }
 - (DeviceBuilder*) setVendor:(DeviceVendor) value {
-  resultDevice.hasVendor = YES;
-  resultDevice.vendor = value;
+  result.hasVendor = YES;
+  result.vendor = value;
   return self;
 }
 - (DeviceBuilder*) clearVendor {
-  resultDevice.hasVendor = NO;
-  resultDevice.vendor = DeviceVendorIos;
+  result.hasVendor = NO;
+  result.vendor = DeviceVendorIos;
   return self;
 }
 - (BOOL) hasVersion {
-  return resultDevice.hasVersion;
+  return result.hasVersion;
 }
 - (SInt32) version {
-  return resultDevice.version;
+  return result.version;
 }
 - (DeviceBuilder*) setVersion:(SInt32) value {
-  resultDevice.hasVersion = YES;
-  resultDevice.version = value;
+  result.hasVersion = YES;
+  result.version = value;
   return self;
 }
 - (DeviceBuilder*) clearVersion {
-  resultDevice.hasVersion = NO;
-  resultDevice.version = 0;
+  result.hasVersion = NO;
+  result.version = 0;
   return self;
 }
 - (BOOL) hasProductId {
-  return resultDevice.hasProductId;
+  return result.hasProductId;
 }
 - (NSString*) productId {
-  return resultDevice.productId;
+  return result.productId;
 }
 - (DeviceBuilder*) setProductId:(NSString*) value {
-  resultDevice.hasProductId = YES;
-  resultDevice.productId = value;
+  result.hasProductId = YES;
+  result.productId = value;
   return self;
 }
 - (DeviceBuilder*) clearProductId {
-  resultDevice.hasProductId = NO;
-  resultDevice.productId = @"";
+  result.hasProductId = NO;
+  result.productId = @"";
   return self;
 }
 - (BOOL) hasHasKeyboard {
-  return resultDevice.hasHasKeyboard;
+  return result.hasHasKeyboard;
 }
 - (BOOL) hasKeyboard {
-  return resultDevice.hasKeyboard;
+  return result.hasKeyboard;
 }
 - (DeviceBuilder*) setHasKeyboard:(BOOL) value {
-  resultDevice.hasHasKeyboard = YES;
-  resultDevice.hasKeyboard = value;
+  result.hasHasKeyboard = YES;
+  result.hasKeyboard = value;
   return self;
 }
 - (DeviceBuilder*) clearHasKeyboard {
-  resultDevice.hasHasKeyboard = NO;
-  resultDevice.hasKeyboard = NO;
+  result.hasHasKeyboard = NO;
+  result.hasKeyboard = NO;
   return self;
 }
 @end
@@ -1108,7 +1108,7 @@ BOOL DeviceVendorIsValidValue(DeviceVendor value) {
   hasDevice_ = !!value_;
 }
 @synthesize device;
-- (instancetype) init {
+- (id) init {
   if ((self = [super init])) {
     self.type = DeviceEventTypeRegister;
     self.device = [Device defaultInstance];
@@ -1124,10 +1124,10 @@ static DeviceEvent* defaultDeviceEventInstance = nil;
     defaultDeviceEventInstance = [[DeviceEvent alloc] init];
   }
 }
-+ (instancetype) defaultInstance {
++ (DeviceEvent*) defaultInstance {
   return defaultDeviceEventInstance;
 }
-- (instancetype) defaultInstance {
+- (DeviceEvent*) defaultInstance {
   return defaultDeviceEventInstance;
 }
 - (BOOL) isInitialized {
@@ -1248,26 +1248,26 @@ BOOL DeviceEventTypeIsValidValue(DeviceEventType value) {
   }
 }
 @interface DeviceEventBuilder()
-@property (strong) DeviceEvent* resultDeviceEvent;
+@property (strong) DeviceEvent* result;
 @end
 
 @implementation DeviceEventBuilder
-@synthesize resultDeviceEvent;
-- (instancetype) init {
+@synthesize result;
+- (id) init {
   if ((self = [super init])) {
-    self.resultDeviceEvent = [[DeviceEvent alloc] init];
+    self.result = [[DeviceEvent alloc] init];
   }
   return self;
 }
 - (PBGeneratedMessage*) internalGetResult {
-  return resultDeviceEvent;
+  return result;
 }
 - (DeviceEventBuilder*) clear {
-  self.resultDeviceEvent = [[DeviceEvent alloc] init];
+  self.result = [[DeviceEvent alloc] init];
   return self;
 }
 - (DeviceEventBuilder*) clone {
-  return [DeviceEvent builderWithPrototype:resultDeviceEvent];
+  return [DeviceEvent builderWithPrototype:result];
 }
 - (DeviceEvent*) defaultInstance {
   return [DeviceEvent defaultInstance];
@@ -1277,8 +1277,8 @@ BOOL DeviceEventTypeIsValidValue(DeviceEventType value) {
   return [self buildPartial];
 }
 - (DeviceEvent*) buildPartial {
-  DeviceEvent* returnMe = resultDeviceEvent;
-  self.resultDeviceEvent = nil;
+  DeviceEvent* returnMe = result;
+  self.result = nil;
   return returnMe;
 }
 - (DeviceEventBuilder*) mergeFrom:(DeviceEvent*) other {
@@ -1334,49 +1334,49 @@ BOOL DeviceEventTypeIsValidValue(DeviceEventType value) {
   }
 }
 - (BOOL) hasType {
-  return resultDeviceEvent.hasType;
+  return result.hasType;
 }
 - (DeviceEventType) type {
-  return resultDeviceEvent.type;
+  return result.type;
 }
 - (DeviceEventBuilder*) setType:(DeviceEventType) value {
-  resultDeviceEvent.hasType = YES;
-  resultDeviceEvent.type = value;
+  result.hasType = YES;
+  result.type = value;
   return self;
 }
 - (DeviceEventBuilder*) clearType {
-  resultDeviceEvent.hasType = NO;
-  resultDeviceEvent.type = DeviceEventTypeRegister;
+  result.hasType = NO;
+  result.type = DeviceEventTypeRegister;
   return self;
 }
 - (BOOL) hasDevice {
-  return resultDeviceEvent.hasDevice;
+  return result.hasDevice;
 }
 - (Device*) device {
-  return resultDeviceEvent.device;
+  return result.device;
 }
 - (DeviceEventBuilder*) setDevice:(Device*) value {
-  resultDeviceEvent.hasDevice = YES;
-  resultDeviceEvent.device = value;
+  result.hasDevice = YES;
+  result.device = value;
   return self;
 }
 - (DeviceEventBuilder*) setDeviceBuilder:(DeviceBuilder*) builderForValue {
   return [self setDevice:[builderForValue build]];
 }
 - (DeviceEventBuilder*) mergeDevice:(Device*) value {
-  if (resultDeviceEvent.hasDevice &&
-      resultDeviceEvent.device != [Device defaultInstance]) {
-    resultDeviceEvent.device =
-      [[[Device builderWithPrototype:resultDeviceEvent.device] mergeFrom:value] buildPartial];
+  if (result.hasDevice &&
+      result.device != [Device defaultInstance]) {
+    result.device =
+      [[[Device builderWithPrototype:result.device] mergeFrom:value] buildPartial];
   } else {
-    resultDeviceEvent.device = value;
+    result.device = value;
   }
-  resultDeviceEvent.hasDevice = YES;
+  result.hasDevice = YES;
   return self;
 }
 - (DeviceEventBuilder*) clearDevice {
-  resultDeviceEvent.hasDevice = NO;
-  resultDeviceEvent.device = [Device defaultInstance];
+  result.hasDevice = NO;
+  result.device = [Device defaultInstance];
   return self;
 }
 @end
@@ -1410,7 +1410,7 @@ BOOL DeviceEventTypeIsValidValue(DeviceEventType value) {
   hasPhase_ = !!value_;
 }
 @synthesize phase;
-- (instancetype) init {
+- (id) init {
   if ((self = [super init])) {
     self.locationX = 0;
     self.locationY = 0;
@@ -1427,10 +1427,10 @@ static TouchEvent* defaultTouchEventInstance = nil;
     defaultTouchEventInstance = [[TouchEvent alloc] init];
   }
 }
-+ (instancetype) defaultInstance {
++ (TouchEvent*) defaultInstance {
   return defaultTouchEventInstance;
 }
-- (instancetype) defaultInstance {
+- (TouchEvent*) defaultInstance {
   return defaultTouchEventInstance;
 }
 - (BOOL) isInitialized {
@@ -1553,26 +1553,26 @@ static TouchEvent* defaultTouchEventInstance = nil;
 @end
 
 @interface TouchEventBuilder()
-@property (strong) TouchEvent* resultTouchEvent;
+@property (strong) TouchEvent* result;
 @end
 
 @implementation TouchEventBuilder
-@synthesize resultTouchEvent;
-- (instancetype) init {
+@synthesize result;
+- (id) init {
   if ((self = [super init])) {
-    self.resultTouchEvent = [[TouchEvent alloc] init];
+    self.result = [[TouchEvent alloc] init];
   }
   return self;
 }
 - (PBGeneratedMessage*) internalGetResult {
-  return resultTouchEvent;
+  return result;
 }
 - (TouchEventBuilder*) clear {
-  self.resultTouchEvent = [[TouchEvent alloc] init];
+  self.result = [[TouchEvent alloc] init];
   return self;
 }
 - (TouchEventBuilder*) clone {
-  return [TouchEvent builderWithPrototype:resultTouchEvent];
+  return [TouchEvent builderWithPrototype:result];
 }
 - (TouchEvent*) defaultInstance {
   return [TouchEvent defaultInstance];
@@ -1582,8 +1582,8 @@ static TouchEvent* defaultTouchEventInstance = nil;
   return [self buildPartial];
 }
 - (TouchEvent*) buildPartial {
-  TouchEvent* returnMe = resultTouchEvent;
-  self.resultTouchEvent = nil;
+  TouchEvent* returnMe = result;
+  self.result = nil;
   return returnMe;
 }
 - (TouchEventBuilder*) mergeFrom:(TouchEvent*) other {
@@ -1641,51 +1641,51 @@ static TouchEvent* defaultTouchEventInstance = nil;
   }
 }
 - (BOOL) hasLocationX {
-  return resultTouchEvent.hasLocationX;
+  return result.hasLocationX;
 }
 - (Float32) locationX {
-  return resultTouchEvent.locationX;
+  return result.locationX;
 }
 - (TouchEventBuilder*) setLocationX:(Float32) value {
-  resultTouchEvent.hasLocationX = YES;
-  resultTouchEvent.locationX = value;
+  result.hasLocationX = YES;
+  result.locationX = value;
   return self;
 }
 - (TouchEventBuilder*) clearLocationX {
-  resultTouchEvent.hasLocationX = NO;
-  resultTouchEvent.locationX = 0;
+  result.hasLocationX = NO;
+  result.locationX = 0;
   return self;
 }
 - (BOOL) hasLocationY {
-  return resultTouchEvent.hasLocationY;
+  return result.hasLocationY;
 }
 - (Float32) locationY {
-  return resultTouchEvent.locationY;
+  return result.locationY;
 }
 - (TouchEventBuilder*) setLocationY:(Float32) value {
-  resultTouchEvent.hasLocationY = YES;
-  resultTouchEvent.locationY = value;
+  result.hasLocationY = YES;
+  result.locationY = value;
   return self;
 }
 - (TouchEventBuilder*) clearLocationY {
-  resultTouchEvent.hasLocationY = NO;
-  resultTouchEvent.locationY = 0;
+  result.hasLocationY = NO;
+  result.locationY = 0;
   return self;
 }
 - (BOOL) hasPhase {
-  return resultTouchEvent.hasPhase;
+  return result.hasPhase;
 }
 - (Phase) phase {
-  return resultTouchEvent.phase;
+  return result.phase;
 }
 - (TouchEventBuilder*) setPhase:(Phase) value {
-  resultTouchEvent.hasPhase = YES;
-  resultTouchEvent.phase = value;
+  result.hasPhase = YES;
+  result.phase = value;
   return self;
 }
 - (TouchEventBuilder*) clearPhase {
-  resultTouchEvent.hasPhase = NO;
-  resultTouchEvent.phase = PhaseBegan;
+  result.hasPhase = NO;
+  result.phase = PhaseBegan;
   return self;
 }
 @end
@@ -1703,7 +1703,7 @@ static TouchEvent* defaultTouchEventInstance = nil;
   hasType_ = !!value_;
 }
 @synthesize type;
-- (instancetype) init {
+- (id) init {
   if ((self = [super init])) {
     self.type = MotionEventTypeShake;
   }
@@ -1718,10 +1718,10 @@ static MotionEvent* defaultMotionEventInstance = nil;
     defaultMotionEventInstance = [[MotionEvent alloc] init];
   }
 }
-+ (instancetype) defaultInstance {
++ (MotionEvent*) defaultInstance {
   return defaultMotionEventInstance;
 }
-- (instancetype) defaultInstance {
+- (MotionEvent*) defaultInstance {
   return defaultMotionEventInstance;
 }
 - (BOOL) isInitialized {
@@ -1818,26 +1818,26 @@ BOOL MotionEventTypeIsValidValue(MotionEventType value) {
   }
 }
 @interface MotionEventBuilder()
-@property (strong) MotionEvent* resultMotionEvent;
+@property (strong) MotionEvent* result;
 @end
 
 @implementation MotionEventBuilder
-@synthesize resultMotionEvent;
-- (instancetype) init {
+@synthesize result;
+- (id) init {
   if ((self = [super init])) {
-    self.resultMotionEvent = [[MotionEvent alloc] init];
+    self.result = [[MotionEvent alloc] init];
   }
   return self;
 }
 - (PBGeneratedMessage*) internalGetResult {
-  return resultMotionEvent;
+  return result;
 }
 - (MotionEventBuilder*) clear {
-  self.resultMotionEvent = [[MotionEvent alloc] init];
+  self.result = [[MotionEvent alloc] init];
   return self;
 }
 - (MotionEventBuilder*) clone {
-  return [MotionEvent builderWithPrototype:resultMotionEvent];
+  return [MotionEvent builderWithPrototype:result];
 }
 - (MotionEvent*) defaultInstance {
   return [MotionEvent defaultInstance];
@@ -1847,8 +1847,8 @@ BOOL MotionEventTypeIsValidValue(MotionEventType value) {
   return [self buildPartial];
 }
 - (MotionEvent*) buildPartial {
-  MotionEvent* returnMe = resultMotionEvent;
-  self.resultMotionEvent = nil;
+  MotionEvent* returnMe = result;
+  self.result = nil;
   return returnMe;
 }
 - (MotionEventBuilder*) mergeFrom:(MotionEvent*) other {
@@ -1892,19 +1892,19 @@ BOOL MotionEventTypeIsValidValue(MotionEventType value) {
   }
 }
 - (BOOL) hasType {
-  return resultMotionEvent.hasType;
+  return result.hasType;
 }
 - (MotionEventType) type {
-  return resultMotionEvent.type;
+  return result.type;
 }
 - (MotionEventBuilder*) setType:(MotionEventType) value {
-  resultMotionEvent.hasType = YES;
-  resultMotionEvent.type = value;
+  result.hasType = YES;
+  result.type = value;
   return self;
 }
 - (MotionEventBuilder*) clearType {
-  resultMotionEvent.hasType = NO;
-  resultMotionEvent.type = MotionEventTypeShake;
+  result.hasType = NO;
+  result.type = MotionEventTypeShake;
   return self;
 }
 @end
@@ -1930,7 +1930,7 @@ BOOL MotionEventTypeIsValidValue(MotionEventType value) {
   hasKeycode_ = !!value_;
 }
 @synthesize keycode;
-- (instancetype) init {
+- (id) init {
   if ((self = [super init])) {
     self.state = KeypressEventStateDown;
     self.keycode = 0;
@@ -1946,10 +1946,10 @@ static KeypressEvent* defaultKeypressEventInstance = nil;
     defaultKeypressEventInstance = [[KeypressEvent alloc] init];
   }
 }
-+ (instancetype) defaultInstance {
++ (KeypressEvent*) defaultInstance {
   return defaultKeypressEventInstance;
 }
-- (instancetype) defaultInstance {
+- (KeypressEvent*) defaultInstance {
   return defaultKeypressEventInstance;
 }
 - (BOOL) isInitialized {
@@ -2064,26 +2064,26 @@ BOOL KeypressEventStateIsValidValue(KeypressEventState value) {
   }
 }
 @interface KeypressEventBuilder()
-@property (strong) KeypressEvent* resultKeypressEvent;
+@property (strong) KeypressEvent* result;
 @end
 
 @implementation KeypressEventBuilder
-@synthesize resultKeypressEvent;
-- (instancetype) init {
+@synthesize result;
+- (id) init {
   if ((self = [super init])) {
-    self.resultKeypressEvent = [[KeypressEvent alloc] init];
+    self.result = [[KeypressEvent alloc] init];
   }
   return self;
 }
 - (PBGeneratedMessage*) internalGetResult {
-  return resultKeypressEvent;
+  return result;
 }
 - (KeypressEventBuilder*) clear {
-  self.resultKeypressEvent = [[KeypressEvent alloc] init];
+  self.result = [[KeypressEvent alloc] init];
   return self;
 }
 - (KeypressEventBuilder*) clone {
-  return [KeypressEvent builderWithPrototype:resultKeypressEvent];
+  return [KeypressEvent builderWithPrototype:result];
 }
 - (KeypressEvent*) defaultInstance {
   return [KeypressEvent defaultInstance];
@@ -2093,8 +2093,8 @@ BOOL KeypressEventStateIsValidValue(KeypressEventState value) {
   return [self buildPartial];
 }
 - (KeypressEvent*) buildPartial {
-  KeypressEvent* returnMe = resultKeypressEvent;
-  self.resultKeypressEvent = nil;
+  KeypressEvent* returnMe = result;
+  self.result = nil;
   return returnMe;
 }
 - (KeypressEventBuilder*) mergeFrom:(KeypressEvent*) other {
@@ -2145,35 +2145,35 @@ BOOL KeypressEventStateIsValidValue(KeypressEventState value) {
   }
 }
 - (BOOL) hasState {
-  return resultKeypressEvent.hasState;
+  return result.hasState;
 }
 - (KeypressEventState) state {
-  return resultKeypressEvent.state;
+  return result.state;
 }
 - (KeypressEventBuilder*) setState:(KeypressEventState) value {
-  resultKeypressEvent.hasState = YES;
-  resultKeypressEvent.state = value;
+  result.hasState = YES;
+  result.state = value;
   return self;
 }
 - (KeypressEventBuilder*) clearState {
-  resultKeypressEvent.hasState = NO;
-  resultKeypressEvent.state = KeypressEventStateDown;
+  result.hasState = NO;
+  result.state = KeypressEventStateDown;
   return self;
 }
 - (BOOL) hasKeycode {
-  return resultKeypressEvent.hasKeycode;
+  return result.hasKeycode;
 }
 - (SInt32) keycode {
-  return resultKeypressEvent.keycode;
+  return result.keycode;
 }
 - (KeypressEventBuilder*) setKeycode:(SInt32) value {
-  resultKeypressEvent.hasKeycode = YES;
-  resultKeypressEvent.keycode = value;
+  result.hasKeycode = YES;
+  result.keycode = value;
   return self;
 }
 - (KeypressEventBuilder*) clearKeycode {
-  resultKeypressEvent.hasKeycode = NO;
-  resultKeypressEvent.keycode = 0;
+  result.hasKeycode = NO;
+  result.keycode = 0;
   return self;
 }
 @end
@@ -2311,7 +2311,7 @@ BOOL KeypressEventStateIsValidValue(KeypressEventState value) {
   hasCircleDirection_ = !!value_;
 }
 @synthesize circleDirection;
-- (instancetype) init {
+- (id) init {
   if ((self = [super init])) {
     self.locationX = 0;
     self.locationY = 0;
@@ -2341,10 +2341,10 @@ static GestureEvent* defaultGestureEventInstance = nil;
     defaultGestureEventInstance = [[GestureEvent alloc] init];
   }
 }
-+ (instancetype) defaultInstance {
++ (GestureEvent*) defaultInstance {
   return defaultGestureEventInstance;
 }
-- (instancetype) defaultInstance {
+- (GestureEvent*) defaultInstance {
   return defaultGestureEventInstance;
 }
 - (BOOL) isInitialized {
@@ -2702,26 +2702,26 @@ BOOL GestureEventCircleDirectionIsValidValue(GestureEventCircleDirection value) 
   }
 }
 @interface GestureEventBuilder()
-@property (strong) GestureEvent* resultGestureEvent;
+@property (strong) GestureEvent* result;
 @end
 
 @implementation GestureEventBuilder
-@synthesize resultGestureEvent;
-- (instancetype) init {
+@synthesize result;
+- (id) init {
   if ((self = [super init])) {
-    self.resultGestureEvent = [[GestureEvent alloc] init];
+    self.result = [[GestureEvent alloc] init];
   }
   return self;
 }
 - (PBGeneratedMessage*) internalGetResult {
-  return resultGestureEvent;
+  return result;
 }
 - (GestureEventBuilder*) clear {
-  self.resultGestureEvent = [[GestureEvent alloc] init];
+  self.result = [[GestureEvent alloc] init];
   return self;
 }
 - (GestureEventBuilder*) clone {
-  return [GestureEvent builderWithPrototype:resultGestureEvent];
+  return [GestureEvent builderWithPrototype:result];
 }
 - (GestureEvent*) defaultInstance {
   return [GestureEvent defaultInstance];
@@ -2731,8 +2731,8 @@ BOOL GestureEventCircleDirectionIsValidValue(GestureEventCircleDirection value) 
   return [self buildPartial];
 }
 - (GestureEvent*) buildPartial {
-  GestureEvent* returnMe = resultGestureEvent;
-  self.resultGestureEvent = nil;
+  GestureEvent* returnMe = result;
+  self.result = nil;
   return returnMe;
 }
 - (GestureEventBuilder*) mergeFrom:(GestureEvent*) other {
@@ -2896,259 +2896,259 @@ BOOL GestureEventCircleDirectionIsValidValue(GestureEventCircleDirection value) 
   }
 }
 - (BOOL) hasLocationX {
-  return resultGestureEvent.hasLocationX;
+  return result.hasLocationX;
 }
 - (Float32) locationX {
-  return resultGestureEvent.locationX;
+  return result.locationX;
 }
 - (GestureEventBuilder*) setLocationX:(Float32) value {
-  resultGestureEvent.hasLocationX = YES;
-  resultGestureEvent.locationX = value;
+  result.hasLocationX = YES;
+  result.locationX = value;
   return self;
 }
 - (GestureEventBuilder*) clearLocationX {
-  resultGestureEvent.hasLocationX = NO;
-  resultGestureEvent.locationX = 0;
+  result.hasLocationX = NO;
+  result.locationX = 0;
   return self;
 }
 - (BOOL) hasLocationY {
-  return resultGestureEvent.hasLocationY;
+  return result.hasLocationY;
 }
 - (Float32) locationY {
-  return resultGestureEvent.locationY;
+  return result.locationY;
 }
 - (GestureEventBuilder*) setLocationY:(Float32) value {
-  resultGestureEvent.hasLocationY = YES;
-  resultGestureEvent.locationY = value;
+  result.hasLocationY = YES;
+  result.locationY = value;
   return self;
 }
 - (GestureEventBuilder*) clearLocationY {
-  resultGestureEvent.hasLocationY = NO;
-  resultGestureEvent.locationY = 0;
+  result.hasLocationY = NO;
+  result.locationY = 0;
   return self;
 }
 - (BOOL) hasType {
-  return resultGestureEvent.hasType;
+  return result.hasType;
 }
 - (GestureEventType) type {
-  return resultGestureEvent.type;
+  return result.type;
 }
 - (GestureEventBuilder*) setType:(GestureEventType) value {
-  resultGestureEvent.hasType = YES;
-  resultGestureEvent.type = value;
+  result.hasType = YES;
+  result.type = value;
   return self;
 }
 - (GestureEventBuilder*) clearType {
-  resultGestureEvent.hasType = NO;
-  resultGestureEvent.type = GestureEventTypeTap;
+  result.hasType = NO;
+  result.type = GestureEventTypeTap;
   return self;
 }
 - (BOOL) hasState {
-  return resultGestureEvent.hasState;
+  return result.hasState;
 }
 - (GestureEventState) state {
-  return resultGestureEvent.state;
+  return result.state;
 }
 - (GestureEventBuilder*) setState:(GestureEventState) value {
-  resultGestureEvent.hasState = YES;
-  resultGestureEvent.state = value;
+  result.hasState = YES;
+  result.state = value;
   return self;
 }
 - (GestureEventBuilder*) clearState {
-  resultGestureEvent.hasState = NO;
-  resultGestureEvent.state = GestureEventStatePossible;
+  result.hasState = NO;
+  result.state = GestureEventStatePossible;
   return self;
 }
 - (BOOL) hasTapCount {
-  return resultGestureEvent.hasTapCount;
+  return result.hasTapCount;
 }
 - (SInt32) tapCount {
-  return resultGestureEvent.tapCount;
+  return result.tapCount;
 }
 - (GestureEventBuilder*) setTapCount:(SInt32) value {
-  resultGestureEvent.hasTapCount = YES;
-  resultGestureEvent.tapCount = value;
+  result.hasTapCount = YES;
+  result.tapCount = value;
   return self;
 }
 - (GestureEventBuilder*) clearTapCount {
-  resultGestureEvent.hasTapCount = NO;
-  resultGestureEvent.tapCount = 0;
+  result.hasTapCount = NO;
+  result.tapCount = 0;
   return self;
 }
 - (BOOL) hasPinchScale {
-  return resultGestureEvent.hasPinchScale;
+  return result.hasPinchScale;
 }
 - (Float32) pinchScale {
-  return resultGestureEvent.pinchScale;
+  return result.pinchScale;
 }
 - (GestureEventBuilder*) setPinchScale:(Float32) value {
-  resultGestureEvent.hasPinchScale = YES;
-  resultGestureEvent.pinchScale = value;
+  result.hasPinchScale = YES;
+  result.pinchScale = value;
   return self;
 }
 - (GestureEventBuilder*) clearPinchScale {
-  resultGestureEvent.hasPinchScale = NO;
-  resultGestureEvent.pinchScale = 0;
+  result.hasPinchScale = NO;
+  result.pinchScale = 0;
   return self;
 }
 - (BOOL) hasPinchVelocity {
-  return resultGestureEvent.hasPinchVelocity;
+  return result.hasPinchVelocity;
 }
 - (Float32) pinchVelocity {
-  return resultGestureEvent.pinchVelocity;
+  return result.pinchVelocity;
 }
 - (GestureEventBuilder*) setPinchVelocity:(Float32) value {
-  resultGestureEvent.hasPinchVelocity = YES;
-  resultGestureEvent.pinchVelocity = value;
+  result.hasPinchVelocity = YES;
+  result.pinchVelocity = value;
   return self;
 }
 - (GestureEventBuilder*) clearPinchVelocity {
-  resultGestureEvent.hasPinchVelocity = NO;
-  resultGestureEvent.pinchVelocity = 0;
+  result.hasPinchVelocity = NO;
+  result.pinchVelocity = 0;
   return self;
 }
 - (BOOL) hasPanTranslationX {
-  return resultGestureEvent.hasPanTranslationX;
+  return result.hasPanTranslationX;
 }
 - (Float32) panTranslationX {
-  return resultGestureEvent.panTranslationX;
+  return result.panTranslationX;
 }
 - (GestureEventBuilder*) setPanTranslationX:(Float32) value {
-  resultGestureEvent.hasPanTranslationX = YES;
-  resultGestureEvent.panTranslationX = value;
+  result.hasPanTranslationX = YES;
+  result.panTranslationX = value;
   return self;
 }
 - (GestureEventBuilder*) clearPanTranslationX {
-  resultGestureEvent.hasPanTranslationX = NO;
-  resultGestureEvent.panTranslationX = 0;
+  result.hasPanTranslationX = NO;
+  result.panTranslationX = 0;
   return self;
 }
 - (BOOL) hasPanTranslationY {
-  return resultGestureEvent.hasPanTranslationY;
+  return result.hasPanTranslationY;
 }
 - (Float32) panTranslationY {
-  return resultGestureEvent.panTranslationY;
+  return result.panTranslationY;
 }
 - (GestureEventBuilder*) setPanTranslationY:(Float32) value {
-  resultGestureEvent.hasPanTranslationY = YES;
-  resultGestureEvent.panTranslationY = value;
+  result.hasPanTranslationY = YES;
+  result.panTranslationY = value;
   return self;
 }
 - (GestureEventBuilder*) clearPanTranslationY {
-  resultGestureEvent.hasPanTranslationY = NO;
-  resultGestureEvent.panTranslationY = 0;
+  result.hasPanTranslationY = NO;
+  result.panTranslationY = 0;
   return self;
 }
 - (BOOL) hasPanVelocityX {
-  return resultGestureEvent.hasPanVelocityX;
+  return result.hasPanVelocityX;
 }
 - (Float32) panVelocityX {
-  return resultGestureEvent.panVelocityX;
+  return result.panVelocityX;
 }
 - (GestureEventBuilder*) setPanVelocityX:(Float32) value {
-  resultGestureEvent.hasPanVelocityX = YES;
-  resultGestureEvent.panVelocityX = value;
+  result.hasPanVelocityX = YES;
+  result.panVelocityX = value;
   return self;
 }
 - (GestureEventBuilder*) clearPanVelocityX {
-  resultGestureEvent.hasPanVelocityX = NO;
-  resultGestureEvent.panVelocityX = 0;
+  result.hasPanVelocityX = NO;
+  result.panVelocityX = 0;
   return self;
 }
 - (BOOL) hasPanVelocityY {
-  return resultGestureEvent.hasPanVelocityY;
+  return result.hasPanVelocityY;
 }
 - (Float32) panVelocityY {
-  return resultGestureEvent.panVelocityY;
+  return result.panVelocityY;
 }
 - (GestureEventBuilder*) setPanVelocityY:(Float32) value {
-  resultGestureEvent.hasPanVelocityY = YES;
-  resultGestureEvent.panVelocityY = value;
+  result.hasPanVelocityY = YES;
+  result.panVelocityY = value;
   return self;
 }
 - (GestureEventBuilder*) clearPanVelocityY {
-  resultGestureEvent.hasPanVelocityY = NO;
-  resultGestureEvent.panVelocityY = 0;
+  result.hasPanVelocityY = NO;
+  result.panVelocityY = 0;
   return self;
 }
 - (BOOL) hasSwipeDirection {
-  return resultGestureEvent.hasSwipeDirection;
+  return result.hasSwipeDirection;
 }
 - (GestureEventSwipeDirection) swipeDirection {
-  return resultGestureEvent.swipeDirection;
+  return result.swipeDirection;
 }
 - (GestureEventBuilder*) setSwipeDirection:(GestureEventSwipeDirection) value {
-  resultGestureEvent.hasSwipeDirection = YES;
-  resultGestureEvent.swipeDirection = value;
+  result.hasSwipeDirection = YES;
+  result.swipeDirection = value;
   return self;
 }
 - (GestureEventBuilder*) clearSwipeDirection {
-  resultGestureEvent.hasSwipeDirection = NO;
-  resultGestureEvent.swipeDirection = GestureEventSwipeDirectionRight;
+  result.hasSwipeDirection = NO;
+  result.swipeDirection = GestureEventSwipeDirectionRight;
   return self;
 }
 - (BOOL) hasRotationAngle {
-  return resultGestureEvent.hasRotationAngle;
+  return result.hasRotationAngle;
 }
 - (Float32) rotationAngle {
-  return resultGestureEvent.rotationAngle;
+  return result.rotationAngle;
 }
 - (GestureEventBuilder*) setRotationAngle:(Float32) value {
-  resultGestureEvent.hasRotationAngle = YES;
-  resultGestureEvent.rotationAngle = value;
+  result.hasRotationAngle = YES;
+  result.rotationAngle = value;
   return self;
 }
 - (GestureEventBuilder*) clearRotationAngle {
-  resultGestureEvent.hasRotationAngle = NO;
-  resultGestureEvent.rotationAngle = 0;
+  result.hasRotationAngle = NO;
+  result.rotationAngle = 0;
   return self;
 }
 - (BOOL) hasRotationVelocity {
-  return resultGestureEvent.hasRotationVelocity;
+  return result.hasRotationVelocity;
 }
 - (Float32) rotationVelocity {
-  return resultGestureEvent.rotationVelocity;
+  return result.rotationVelocity;
 }
 - (GestureEventBuilder*) setRotationVelocity:(Float32) value {
-  resultGestureEvent.hasRotationVelocity = YES;
-  resultGestureEvent.rotationVelocity = value;
+  result.hasRotationVelocity = YES;
+  result.rotationVelocity = value;
   return self;
 }
 - (GestureEventBuilder*) clearRotationVelocity {
-  resultGestureEvent.hasRotationVelocity = NO;
-  resultGestureEvent.rotationVelocity = 0;
+  result.hasRotationVelocity = NO;
+  result.rotationVelocity = 0;
   return self;
 }
 - (BOOL) hasPressDuration {
-  return resultGestureEvent.hasPressDuration;
+  return result.hasPressDuration;
 }
 - (SInt64) pressDuration {
-  return resultGestureEvent.pressDuration;
+  return result.pressDuration;
 }
 - (GestureEventBuilder*) setPressDuration:(SInt64) value {
-  resultGestureEvent.hasPressDuration = YES;
-  resultGestureEvent.pressDuration = value;
+  result.hasPressDuration = YES;
+  result.pressDuration = value;
   return self;
 }
 - (GestureEventBuilder*) clearPressDuration {
-  resultGestureEvent.hasPressDuration = NO;
-  resultGestureEvent.pressDuration = 0L;
+  result.hasPressDuration = NO;
+  result.pressDuration = 0L;
   return self;
 }
 - (BOOL) hasCircleDirection {
-  return resultGestureEvent.hasCircleDirection;
+  return result.hasCircleDirection;
 }
 - (GestureEventCircleDirection) circleDirection {
-  return resultGestureEvent.circleDirection;
+  return result.circleDirection;
 }
 - (GestureEventBuilder*) setCircleDirection:(GestureEventCircleDirection) value {
-  resultGestureEvent.hasCircleDirection = YES;
-  resultGestureEvent.circleDirection = value;
+  result.hasCircleDirection = YES;
+  result.circleDirection = value;
   return self;
 }
 - (GestureEventBuilder*) clearCircleDirection {
-  resultGestureEvent.hasCircleDirection = NO;
-  resultGestureEvent.circleDirection = GestureEventCircleDirectionClockwise;
+  result.hasCircleDirection = NO;
+  result.circleDirection = GestureEventCircleDirectionClockwise;
   return self;
 }
 @end
@@ -3214,7 +3214,7 @@ BOOL GestureEventCircleDirectionIsValidValue(GestureEventCircleDirection value) 
   hasRoll_ = !!value_;
 }
 @synthesize roll;
-- (instancetype) init {
+- (id) init {
   if ((self = [super init])) {
     self.locationX = 0;
     self.locationY = 0;
@@ -3235,10 +3235,10 @@ static HandMotionEvent* defaultHandMotionEventInstance = nil;
     defaultHandMotionEventInstance = [[HandMotionEvent alloc] init];
   }
 }
-+ (instancetype) defaultInstance {
++ (HandMotionEvent*) defaultInstance {
   return defaultHandMotionEventInstance;
 }
-- (instancetype) defaultInstance {
+- (HandMotionEvent*) defaultInstance {
   return defaultHandMotionEventInstance;
 }
 - (BOOL) isInitialized {
@@ -3430,26 +3430,26 @@ BOOL HandMotionEventStateIsValidValue(HandMotionEventState value) {
   }
 }
 @interface HandMotionEventBuilder()
-@property (strong) HandMotionEvent* resultHandMotionEvent;
+@property (strong) HandMotionEvent* result;
 @end
 
 @implementation HandMotionEventBuilder
-@synthesize resultHandMotionEvent;
-- (instancetype) init {
+@synthesize result;
+- (id) init {
   if ((self = [super init])) {
-    self.resultHandMotionEvent = [[HandMotionEvent alloc] init];
+    self.result = [[HandMotionEvent alloc] init];
   }
   return self;
 }
 - (PBGeneratedMessage*) internalGetResult {
-  return resultHandMotionEvent;
+  return result;
 }
 - (HandMotionEventBuilder*) clear {
-  self.resultHandMotionEvent = [[HandMotionEvent alloc] init];
+  self.result = [[HandMotionEvent alloc] init];
   return self;
 }
 - (HandMotionEventBuilder*) clone {
-  return [HandMotionEvent builderWithPrototype:resultHandMotionEvent];
+  return [HandMotionEvent builderWithPrototype:result];
 }
 - (HandMotionEvent*) defaultInstance {
   return [HandMotionEvent defaultInstance];
@@ -3459,8 +3459,8 @@ BOOL HandMotionEventStateIsValidValue(HandMotionEventState value) {
   return [self buildPartial];
 }
 - (HandMotionEvent*) buildPartial {
-  HandMotionEvent* returnMe = resultHandMotionEvent;
-  self.resultHandMotionEvent = nil;
+  HandMotionEvent* returnMe = result;
+  self.result = nil;
   return returnMe;
 }
 - (HandMotionEventBuilder*) mergeFrom:(HandMotionEvent*) other {
@@ -3551,115 +3551,115 @@ BOOL HandMotionEventStateIsValidValue(HandMotionEventState value) {
   }
 }
 - (BOOL) hasLocationX {
-  return resultHandMotionEvent.hasLocationX;
+  return result.hasLocationX;
 }
 - (Float32) locationX {
-  return resultHandMotionEvent.locationX;
+  return result.locationX;
 }
 - (HandMotionEventBuilder*) setLocationX:(Float32) value {
-  resultHandMotionEvent.hasLocationX = YES;
-  resultHandMotionEvent.locationX = value;
+  result.hasLocationX = YES;
+  result.locationX = value;
   return self;
 }
 - (HandMotionEventBuilder*) clearLocationX {
-  resultHandMotionEvent.hasLocationX = NO;
-  resultHandMotionEvent.locationX = 0;
+  result.hasLocationX = NO;
+  result.locationX = 0;
   return self;
 }
 - (BOOL) hasLocationY {
-  return resultHandMotionEvent.hasLocationY;
+  return result.hasLocationY;
 }
 - (Float32) locationY {
-  return resultHandMotionEvent.locationY;
+  return result.locationY;
 }
 - (HandMotionEventBuilder*) setLocationY:(Float32) value {
-  resultHandMotionEvent.hasLocationY = YES;
-  resultHandMotionEvent.locationY = value;
+  result.hasLocationY = YES;
+  result.locationY = value;
   return self;
 }
 - (HandMotionEventBuilder*) clearLocationY {
-  resultHandMotionEvent.hasLocationY = NO;
-  resultHandMotionEvent.locationY = 0;
+  result.hasLocationY = NO;
+  result.locationY = 0;
   return self;
 }
 - (BOOL) hasState {
-  return resultHandMotionEvent.hasState;
+  return result.hasState;
 }
 - (HandMotionEventState) state {
-  return resultHandMotionEvent.state;
+  return result.state;
 }
 - (HandMotionEventBuilder*) setState:(HandMotionEventState) value {
-  resultHandMotionEvent.hasState = YES;
-  resultHandMotionEvent.state = value;
+  result.hasState = YES;
+  result.state = value;
   return self;
 }
 - (HandMotionEventBuilder*) clearState {
-  resultHandMotionEvent.hasState = NO;
-  resultHandMotionEvent.state = HandMotionEventStateOpen;
+  result.hasState = NO;
+  result.state = HandMotionEventStateOpen;
   return self;
 }
 - (BOOL) hasPhase {
-  return resultHandMotionEvent.hasPhase;
+  return result.hasPhase;
 }
 - (Phase) phase {
-  return resultHandMotionEvent.phase;
+  return result.phase;
 }
 - (HandMotionEventBuilder*) setPhase:(Phase) value {
-  resultHandMotionEvent.hasPhase = YES;
-  resultHandMotionEvent.phase = value;
+  result.hasPhase = YES;
+  result.phase = value;
   return self;
 }
 - (HandMotionEventBuilder*) clearPhase {
-  resultHandMotionEvent.hasPhase = NO;
-  resultHandMotionEvent.phase = PhaseBegan;
+  result.hasPhase = NO;
+  result.phase = PhaseBegan;
   return self;
 }
 - (BOOL) hasPitch {
-  return resultHandMotionEvent.hasPitch;
+  return result.hasPitch;
 }
 - (Float32) pitch {
-  return resultHandMotionEvent.pitch;
+  return result.pitch;
 }
 - (HandMotionEventBuilder*) setPitch:(Float32) value {
-  resultHandMotionEvent.hasPitch = YES;
-  resultHandMotionEvent.pitch = value;
+  result.hasPitch = YES;
+  result.pitch = value;
   return self;
 }
 - (HandMotionEventBuilder*) clearPitch {
-  resultHandMotionEvent.hasPitch = NO;
-  resultHandMotionEvent.pitch = 0;
+  result.hasPitch = NO;
+  result.pitch = 0;
   return self;
 }
 - (BOOL) hasYaw {
-  return resultHandMotionEvent.hasYaw;
+  return result.hasYaw;
 }
 - (Float32) yaw {
-  return resultHandMotionEvent.yaw;
+  return result.yaw;
 }
 - (HandMotionEventBuilder*) setYaw:(Float32) value {
-  resultHandMotionEvent.hasYaw = YES;
-  resultHandMotionEvent.yaw = value;
+  result.hasYaw = YES;
+  result.yaw = value;
   return self;
 }
 - (HandMotionEventBuilder*) clearYaw {
-  resultHandMotionEvent.hasYaw = NO;
-  resultHandMotionEvent.yaw = 0;
+  result.hasYaw = NO;
+  result.yaw = 0;
   return self;
 }
 - (BOOL) hasRoll {
-  return resultHandMotionEvent.hasRoll;
+  return result.hasRoll;
 }
 - (Float32) roll {
-  return resultHandMotionEvent.roll;
+  return result.roll;
 }
 - (HandMotionEventBuilder*) setRoll:(Float32) value {
-  resultHandMotionEvent.hasRoll = YES;
-  resultHandMotionEvent.roll = value;
+  result.hasRoll = YES;
+  result.roll = value;
   return self;
 }
 - (HandMotionEventBuilder*) clearRoll {
-  resultHandMotionEvent.hasRoll = NO;
-  resultHandMotionEvent.roll = 0;
+  result.hasRoll = NO;
+  result.roll = 0;
   return self;
 }
 @end
@@ -3677,7 +3677,7 @@ BOOL HandMotionEventStateIsValidValue(HandMotionEventState value) {
   hasAuthUrl_ = !!value_;
 }
 @synthesize authUrl;
-- (instancetype) init {
+- (id) init {
   if ((self = [super init])) {
     self.authUrl = @"";
   }
@@ -3692,10 +3692,10 @@ static OAuthRequestEvent* defaultOAuthRequestEventInstance = nil;
     defaultOAuthRequestEventInstance = [[OAuthRequestEvent alloc] init];
   }
 }
-+ (instancetype) defaultInstance {
++ (OAuthRequestEvent*) defaultInstance {
   return defaultOAuthRequestEventInstance;
 }
-- (instancetype) defaultInstance {
+- (OAuthRequestEvent*) defaultInstance {
   return defaultOAuthRequestEventInstance;
 }
 - (BOOL) isInitialized {
@@ -3784,26 +3784,26 @@ static OAuthRequestEvent* defaultOAuthRequestEventInstance = nil;
 @end
 
 @interface OAuthRequestEventBuilder()
-@property (strong) OAuthRequestEvent* resultOauthRequestEvent;
+@property (strong) OAuthRequestEvent* result;
 @end
 
 @implementation OAuthRequestEventBuilder
-@synthesize resultOauthRequestEvent;
-- (instancetype) init {
+@synthesize result;
+- (id) init {
   if ((self = [super init])) {
-    self.resultOauthRequestEvent = [[OAuthRequestEvent alloc] init];
+    self.result = [[OAuthRequestEvent alloc] init];
   }
   return self;
 }
 - (PBGeneratedMessage*) internalGetResult {
-  return resultOauthRequestEvent;
+  return result;
 }
 - (OAuthRequestEventBuilder*) clear {
-  self.resultOauthRequestEvent = [[OAuthRequestEvent alloc] init];
+  self.result = [[OAuthRequestEvent alloc] init];
   return self;
 }
 - (OAuthRequestEventBuilder*) clone {
-  return [OAuthRequestEvent builderWithPrototype:resultOauthRequestEvent];
+  return [OAuthRequestEvent builderWithPrototype:result];
 }
 - (OAuthRequestEvent*) defaultInstance {
   return [OAuthRequestEvent defaultInstance];
@@ -3813,8 +3813,8 @@ static OAuthRequestEvent* defaultOAuthRequestEventInstance = nil;
   return [self buildPartial];
 }
 - (OAuthRequestEvent*) buildPartial {
-  OAuthRequestEvent* returnMe = resultOauthRequestEvent;
-  self.resultOauthRequestEvent = nil;
+  OAuthRequestEvent* returnMe = result;
+  self.result = nil;
   return returnMe;
 }
 - (OAuthRequestEventBuilder*) mergeFrom:(OAuthRequestEvent*) other {
@@ -3853,25 +3853,26 @@ static OAuthRequestEvent* defaultOAuthRequestEventInstance = nil;
   }
 }
 - (BOOL) hasAuthUrl {
-  return resultOauthRequestEvent.hasAuthUrl;
+  return result.hasAuthUrl;
 }
 - (NSString*) authUrl {
-  return resultOauthRequestEvent.authUrl;
+  return result.authUrl;
 }
 - (OAuthRequestEventBuilder*) setAuthUrl:(NSString*) value {
-  resultOauthRequestEvent.hasAuthUrl = YES;
-  resultOauthRequestEvent.authUrl = value;
+  result.hasAuthUrl = YES;
+  result.authUrl = value;
   return self;
 }
 - (OAuthRequestEventBuilder*) clearAuthUrl {
-  resultOauthRequestEvent.hasAuthUrl = NO;
-  resultOauthRequestEvent.authUrl = @"";
+  result.hasAuthUrl = NO;
+  result.authUrl = @"";
   return self;
 }
 @end
 
 @interface OAuthResponseEvent ()
 @property (strong) NSString* authCode;
+@property (strong) NSString* queryString;
 @end
 
 @implementation OAuthResponseEvent
@@ -3883,9 +3884,17 @@ static OAuthRequestEvent* defaultOAuthRequestEventInstance = nil;
   hasAuthCode_ = !!value_;
 }
 @synthesize authCode;
-- (instancetype) init {
+- (BOOL) hasQueryString {
+  return !!hasQueryString_;
+}
+- (void) setHasQueryString:(BOOL) value_ {
+  hasQueryString_ = !!value_;
+}
+@synthesize queryString;
+- (id) init {
   if ((self = [super init])) {
     self.authCode = @"";
+    self.queryString = @"";
   }
   return self;
 }
@@ -3898,10 +3907,10 @@ static OAuthResponseEvent* defaultOAuthResponseEventInstance = nil;
     defaultOAuthResponseEventInstance = [[OAuthResponseEvent alloc] init];
   }
 }
-+ (instancetype) defaultInstance {
++ (OAuthResponseEvent*) defaultInstance {
   return defaultOAuthResponseEventInstance;
 }
-- (instancetype) defaultInstance {
+- (OAuthResponseEvent*) defaultInstance {
   return defaultOAuthResponseEventInstance;
 }
 - (BOOL) isInitialized {
@@ -3910,6 +3919,9 @@ static OAuthResponseEvent* defaultOAuthResponseEventInstance = nil;
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
   if (self.hasAuthCode) {
     [output writeString:1 value:self.authCode];
+  }
+  if (self.hasQueryString) {
+    [output writeString:2 value:self.queryString];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -3922,6 +3934,9 @@ static OAuthResponseEvent* defaultOAuthResponseEventInstance = nil;
   size_ = 0;
   if (self.hasAuthCode) {
     size_ += computeStringSize(1, self.authCode);
+  }
+  if (self.hasQueryString) {
+    size_ += computeStringSize(2, self.queryString);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -3961,6 +3976,9 @@ static OAuthResponseEvent* defaultOAuthResponseEventInstance = nil;
   if (self.hasAuthCode) {
     [output appendFormat:@"%@%@: %@\n", indent, @"authCode", self.authCode];
   }
+  if (self.hasQueryString) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"queryString", self.queryString];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (BOOL) isEqual:(id)other {
@@ -3974,6 +3992,8 @@ static OAuthResponseEvent* defaultOAuthResponseEventInstance = nil;
   return
       self.hasAuthCode == otherMessage.hasAuthCode &&
       (!self.hasAuthCode || [self.authCode isEqual:otherMessage.authCode]) &&
+      self.hasQueryString == otherMessage.hasQueryString &&
+      (!self.hasQueryString || [self.queryString isEqual:otherMessage.queryString]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -3981,32 +4001,35 @@ static OAuthResponseEvent* defaultOAuthResponseEventInstance = nil;
   if (self.hasAuthCode) {
     hashCode = hashCode * 31 + [self.authCode hash];
   }
+  if (self.hasQueryString) {
+    hashCode = hashCode * 31 + [self.queryString hash];
+  }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
 }
 @end
 
 @interface OAuthResponseEventBuilder()
-@property (strong) OAuthResponseEvent* resultOauthResponseEvent;
+@property (strong) OAuthResponseEvent* result;
 @end
 
 @implementation OAuthResponseEventBuilder
-@synthesize resultOauthResponseEvent;
-- (instancetype) init {
+@synthesize result;
+- (id) init {
   if ((self = [super init])) {
-    self.resultOauthResponseEvent = [[OAuthResponseEvent alloc] init];
+    self.result = [[OAuthResponseEvent alloc] init];
   }
   return self;
 }
 - (PBGeneratedMessage*) internalGetResult {
-  return resultOauthResponseEvent;
+  return result;
 }
 - (OAuthResponseEventBuilder*) clear {
-  self.resultOauthResponseEvent = [[OAuthResponseEvent alloc] init];
+  self.result = [[OAuthResponseEvent alloc] init];
   return self;
 }
 - (OAuthResponseEventBuilder*) clone {
-  return [OAuthResponseEvent builderWithPrototype:resultOauthResponseEvent];
+  return [OAuthResponseEvent builderWithPrototype:result];
 }
 - (OAuthResponseEvent*) defaultInstance {
   return [OAuthResponseEvent defaultInstance];
@@ -4016,8 +4039,8 @@ static OAuthResponseEvent* defaultOAuthResponseEventInstance = nil;
   return [self buildPartial];
 }
 - (OAuthResponseEvent*) buildPartial {
-  OAuthResponseEvent* returnMe = resultOauthResponseEvent;
-  self.resultOauthResponseEvent = nil;
+  OAuthResponseEvent* returnMe = result;
+  self.result = nil;
   return returnMe;
 }
 - (OAuthResponseEventBuilder*) mergeFrom:(OAuthResponseEvent*) other {
@@ -4026,6 +4049,9 @@ static OAuthResponseEvent* defaultOAuthResponseEventInstance = nil;
   }
   if (other.hasAuthCode) {
     [self setAuthCode:other.authCode];
+  }
+  if (other.hasQueryString) {
+    [self setQueryString:other.queryString];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -4052,23 +4078,43 @@ static OAuthResponseEvent* defaultOAuthResponseEventInstance = nil;
         [self setAuthCode:[input readString]];
         break;
       }
+      case 18: {
+        [self setQueryString:[input readString]];
+        break;
+      }
     }
   }
 }
 - (BOOL) hasAuthCode {
-  return resultOauthResponseEvent.hasAuthCode;
+  return result.hasAuthCode;
 }
 - (NSString*) authCode {
-  return resultOauthResponseEvent.authCode;
+  return result.authCode;
 }
 - (OAuthResponseEventBuilder*) setAuthCode:(NSString*) value {
-  resultOauthResponseEvent.hasAuthCode = YES;
-  resultOauthResponseEvent.authCode = value;
+  result.hasAuthCode = YES;
+  result.authCode = value;
   return self;
 }
 - (OAuthResponseEventBuilder*) clearAuthCode {
-  resultOauthResponseEvent.hasAuthCode = NO;
-  resultOauthResponseEvent.authCode = @"";
+  result.hasAuthCode = NO;
+  result.authCode = @"";
+  return self;
+}
+- (BOOL) hasQueryString {
+  return result.hasQueryString;
+}
+- (NSString*) queryString {
+  return result.queryString;
+}
+- (OAuthResponseEventBuilder*) setQueryString:(NSString*) value {
+  result.hasQueryString = YES;
+  result.queryString = value;
+  return self;
+}
+- (OAuthResponseEventBuilder*) clearQueryString {
+  result.hasQueryString = NO;
+  result.queryString = @"";
   return self;
 }
 @end
@@ -4110,7 +4156,7 @@ static OAuthResponseEvent* defaultOAuthResponseEventInstance = nil;
   hasCapabilities_ = !!value_;
 }
 @synthesize capabilities;
-- (instancetype) init {
+- (id) init {
   if ((self = [super init])) {
     self.ssid = @"";
     self.strength = 0;
@@ -4125,10 +4171,10 @@ static WifiNetwork* defaultWifiNetworkInstance = nil;
     defaultWifiNetworkInstance = [[WifiNetwork alloc] init];
   }
 }
-+ (instancetype) defaultInstance {
++ (WifiNetwork*) defaultInstance {
   return defaultWifiNetworkInstance;
 }
-- (instancetype) defaultInstance {
+- (WifiNetwork*) defaultInstance {
   return defaultWifiNetworkInstance;
 }
 - (BOOL) isInitialized {
@@ -4259,26 +4305,26 @@ static WifiNetwork* defaultWifiNetworkInstance = nil;
 @end
 
 @interface WifiNetworkBuilder()
-@property (strong) WifiNetwork* resultWifiNetwork;
+@property (strong) WifiNetwork* result;
 @end
 
 @implementation WifiNetworkBuilder
-@synthesize resultWifiNetwork;
-- (instancetype) init {
+@synthesize result;
+- (id) init {
   if ((self = [super init])) {
-    self.resultWifiNetwork = [[WifiNetwork alloc] init];
+    self.result = [[WifiNetwork alloc] init];
   }
   return self;
 }
 - (PBGeneratedMessage*) internalGetResult {
-  return resultWifiNetwork;
+  return result;
 }
 - (WifiNetworkBuilder*) clear {
-  self.resultWifiNetwork = [[WifiNetwork alloc] init];
+  self.result = [[WifiNetwork alloc] init];
   return self;
 }
 - (WifiNetworkBuilder*) clone {
-  return [WifiNetwork builderWithPrototype:resultWifiNetwork];
+  return [WifiNetwork builderWithPrototype:result];
 }
 - (WifiNetwork*) defaultInstance {
   return [WifiNetwork defaultInstance];
@@ -4288,8 +4334,8 @@ static WifiNetwork* defaultWifiNetworkInstance = nil;
   return [self buildPartial];
 }
 - (WifiNetwork*) buildPartial {
-  WifiNetwork* returnMe = resultWifiNetwork;
-  self.resultWifiNetwork = nil;
+  WifiNetwork* returnMe = result;
+  self.result = nil;
   return returnMe;
 }
 - (WifiNetworkBuilder*) mergeFrom:(WifiNetwork*) other {
@@ -4349,67 +4395,67 @@ static WifiNetwork* defaultWifiNetworkInstance = nil;
   }
 }
 - (BOOL) hasSsid {
-  return resultWifiNetwork.hasSsid;
+  return result.hasSsid;
 }
 - (NSString*) ssid {
-  return resultWifiNetwork.ssid;
+  return result.ssid;
 }
 - (WifiNetworkBuilder*) setSsid:(NSString*) value {
-  resultWifiNetwork.hasSsid = YES;
-  resultWifiNetwork.ssid = value;
+  result.hasSsid = YES;
+  result.ssid = value;
   return self;
 }
 - (WifiNetworkBuilder*) clearSsid {
-  resultWifiNetwork.hasSsid = NO;
-  resultWifiNetwork.ssid = @"";
+  result.hasSsid = NO;
+  result.ssid = @"";
   return self;
 }
 - (BOOL) hasStrength {
-  return resultWifiNetwork.hasStrength;
+  return result.hasStrength;
 }
 - (SInt32) strength {
-  return resultWifiNetwork.strength;
+  return result.strength;
 }
 - (WifiNetworkBuilder*) setStrength:(SInt32) value {
-  resultWifiNetwork.hasStrength = YES;
-  resultWifiNetwork.strength = value;
+  result.hasStrength = YES;
+  result.strength = value;
   return self;
 }
 - (WifiNetworkBuilder*) clearStrength {
-  resultWifiNetwork.hasStrength = NO;
-  resultWifiNetwork.strength = 0;
+  result.hasStrength = NO;
+  result.strength = 0;
   return self;
 }
 - (BOOL) hasBssid {
-  return resultWifiNetwork.hasBssid;
+  return result.hasBssid;
 }
 - (NSString*) bssid {
-  return resultWifiNetwork.bssid;
+  return result.bssid;
 }
 - (WifiNetworkBuilder*) setBssid:(NSString*) value {
-  resultWifiNetwork.hasBssid = YES;
-  resultWifiNetwork.bssid = value;
+  result.hasBssid = YES;
+  result.bssid = value;
   return self;
 }
 - (WifiNetworkBuilder*) clearBssid {
-  resultWifiNetwork.hasBssid = NO;
-  resultWifiNetwork.bssid = @"";
+  result.hasBssid = NO;
+  result.bssid = @"";
   return self;
 }
 - (BOOL) hasCapabilities {
-  return resultWifiNetwork.hasCapabilities;
+  return result.hasCapabilities;
 }
 - (NSString*) capabilities {
-  return resultWifiNetwork.capabilities;
+  return result.capabilities;
 }
 - (WifiNetworkBuilder*) setCapabilities:(NSString*) value {
-  resultWifiNetwork.hasCapabilities = YES;
-  resultWifiNetwork.capabilities = value;
+  result.hasCapabilities = YES;
+  result.capabilities = value;
   return self;
 }
 - (WifiNetworkBuilder*) clearCapabilities {
-  resultWifiNetwork.hasCapabilities = NO;
-  resultWifiNetwork.capabilities = @"";
+  result.hasCapabilities = NO;
+  result.capabilities = @"";
   return self;
 }
 @end
@@ -4464,7 +4510,7 @@ static WifiNetwork* defaultWifiNetworkInstance = nil;
 - (void) setBack:(BOOL) value_ {
   back_ = !!value_;
 }
-- (instancetype) init {
+- (id) init {
   if ((self = [super init])) {
     self.phase = SetupPhaseRequestCode;
     self.name = @"";
@@ -4483,10 +4529,10 @@ static SetupRequestEvent* defaultSetupRequestEventInstance = nil;
     defaultSetupRequestEventInstance = [[SetupRequestEvent alloc] init];
   }
 }
-+ (instancetype) defaultInstance {
++ (SetupRequestEvent*) defaultInstance {
   return defaultSetupRequestEventInstance;
 }
-- (instancetype) defaultInstance {
+- (SetupRequestEvent*) defaultInstance {
   return defaultSetupRequestEventInstance;
 }
 - (BOOL) isInitialized {
@@ -4631,26 +4677,26 @@ static SetupRequestEvent* defaultSetupRequestEventInstance = nil;
 @end
 
 @interface SetupRequestEventBuilder()
-@property (strong) SetupRequestEvent* resultSetupRequestEvent;
+@property (strong) SetupRequestEvent* result;
 @end
 
 @implementation SetupRequestEventBuilder
-@synthesize resultSetupRequestEvent;
-- (instancetype) init {
+@synthesize result;
+- (id) init {
   if ((self = [super init])) {
-    self.resultSetupRequestEvent = [[SetupRequestEvent alloc] init];
+    self.result = [[SetupRequestEvent alloc] init];
   }
   return self;
 }
 - (PBGeneratedMessage*) internalGetResult {
-  return resultSetupRequestEvent;
+  return result;
 }
 - (SetupRequestEventBuilder*) clear {
-  self.resultSetupRequestEvent = [[SetupRequestEvent alloc] init];
+  self.result = [[SetupRequestEvent alloc] init];
   return self;
 }
 - (SetupRequestEventBuilder*) clone {
-  return [SetupRequestEvent builderWithPrototype:resultSetupRequestEvent];
+  return [SetupRequestEvent builderWithPrototype:result];
 }
 - (SetupRequestEvent*) defaultInstance {
   return [SetupRequestEvent defaultInstance];
@@ -4660,8 +4706,8 @@ static SetupRequestEvent* defaultSetupRequestEventInstance = nil;
   return [self buildPartial];
 }
 - (SetupRequestEvent*) buildPartial {
-  SetupRequestEvent* returnMe = resultSetupRequestEvent;
-  self.resultSetupRequestEvent = nil;
+  SetupRequestEvent* returnMe = result;
+  self.result = nil;
   return returnMe;
 }
 - (SetupRequestEventBuilder*) mergeFrom:(SetupRequestEvent*) other {
@@ -4733,83 +4779,83 @@ static SetupRequestEvent* defaultSetupRequestEventInstance = nil;
   }
 }
 - (BOOL) hasPhase {
-  return resultSetupRequestEvent.hasPhase;
+  return result.hasPhase;
 }
 - (SetupPhase) phase {
-  return resultSetupRequestEvent.phase;
+  return result.phase;
 }
 - (SetupRequestEventBuilder*) setPhase:(SetupPhase) value {
-  resultSetupRequestEvent.hasPhase = YES;
-  resultSetupRequestEvent.phase = value;
+  result.hasPhase = YES;
+  result.phase = value;
   return self;
 }
 - (SetupRequestEventBuilder*) clearPhase {
-  resultSetupRequestEvent.hasPhase = NO;
-  resultSetupRequestEvent.phase = SetupPhaseRequestCode;
+  result.hasPhase = NO;
+  result.phase = SetupPhaseRequestCode;
   return self;
 }
 - (BOOL) hasName {
-  return resultSetupRequestEvent.hasName;
+  return result.hasName;
 }
 - (NSString*) name {
-  return resultSetupRequestEvent.name;
+  return result.name;
 }
 - (SetupRequestEventBuilder*) setName:(NSString*) value {
-  resultSetupRequestEvent.hasName = YES;
-  resultSetupRequestEvent.name = value;
+  result.hasName = YES;
+  result.name = value;
   return self;
 }
 - (SetupRequestEventBuilder*) clearName {
-  resultSetupRequestEvent.hasName = NO;
-  resultSetupRequestEvent.name = @"";
+  result.hasName = NO;
+  result.name = @"";
   return self;
 }
 - (BOOL) hasSsid {
-  return resultSetupRequestEvent.hasSsid;
+  return result.hasSsid;
 }
 - (NSString*) ssid {
-  return resultSetupRequestEvent.ssid;
+  return result.ssid;
 }
 - (SetupRequestEventBuilder*) setSsid:(NSString*) value {
-  resultSetupRequestEvent.hasSsid = YES;
-  resultSetupRequestEvent.ssid = value;
+  result.hasSsid = YES;
+  result.ssid = value;
   return self;
 }
 - (SetupRequestEventBuilder*) clearSsid {
-  resultSetupRequestEvent.hasSsid = NO;
-  resultSetupRequestEvent.ssid = @"";
+  result.hasSsid = NO;
+  result.ssid = @"";
   return self;
 }
 - (BOOL) hasPassword {
-  return resultSetupRequestEvent.hasPassword;
+  return result.hasPassword;
 }
 - (NSString*) password {
-  return resultSetupRequestEvent.password;
+  return result.password;
 }
 - (SetupRequestEventBuilder*) setPassword:(NSString*) value {
-  resultSetupRequestEvent.hasPassword = YES;
-  resultSetupRequestEvent.password = value;
+  result.hasPassword = YES;
+  result.password = value;
   return self;
 }
 - (SetupRequestEventBuilder*) clearPassword {
-  resultSetupRequestEvent.hasPassword = NO;
-  resultSetupRequestEvent.password = @"";
+  result.hasPassword = NO;
+  result.password = @"";
   return self;
 }
 - (BOOL) hasBack {
-  return resultSetupRequestEvent.hasBack;
+  return result.hasBack;
 }
 - (BOOL) back {
-  return resultSetupRequestEvent.back;
+  return result.back;
 }
 - (SetupRequestEventBuilder*) setBack:(BOOL) value {
-  resultSetupRequestEvent.hasBack = YES;
-  resultSetupRequestEvent.back = value;
+  result.hasBack = YES;
+  result.back = value;
   return self;
 }
 - (SetupRequestEventBuilder*) clearBack {
-  resultSetupRequestEvent.hasBack = NO;
-  resultSetupRequestEvent.back = NO;
+  result.hasBack = NO;
+  result.back = NO;
   return self;
 }
 @end
@@ -4859,7 +4905,7 @@ static SetupRequestEvent* defaultSetupRequestEventInstance = nil;
 @synthesize code;
 @synthesize wifiNetworksArray;
 @dynamic wifiNetworks;
-- (instancetype) init {
+- (id) init {
   if ((self = [super init])) {
     self.phase = SetupPhaseRequestCode;
     self.error = NO;
@@ -4877,10 +4923,10 @@ static SetupResponseEvent* defaultSetupResponseEventInstance = nil;
     defaultSetupResponseEventInstance = [[SetupResponseEvent alloc] init];
   }
 }
-+ (instancetype) defaultInstance {
++ (SetupResponseEvent*) defaultInstance {
   return defaultSetupResponseEventInstance;
 }
-- (instancetype) defaultInstance {
+- (SetupResponseEvent*) defaultInstance {
   return defaultSetupResponseEventInstance;
 }
 - (NSArray *)wifiNetworks {
@@ -5044,26 +5090,26 @@ static SetupResponseEvent* defaultSetupResponseEventInstance = nil;
 @end
 
 @interface SetupResponseEventBuilder()
-@property (strong) SetupResponseEvent* resultSetupResponseEvent;
+@property (strong) SetupResponseEvent* result;
 @end
 
 @implementation SetupResponseEventBuilder
-@synthesize resultSetupResponseEvent;
-- (instancetype) init {
+@synthesize result;
+- (id) init {
   if ((self = [super init])) {
-    self.resultSetupResponseEvent = [[SetupResponseEvent alloc] init];
+    self.result = [[SetupResponseEvent alloc] init];
   }
   return self;
 }
 - (PBGeneratedMessage*) internalGetResult {
-  return resultSetupResponseEvent;
+  return result;
 }
 - (SetupResponseEventBuilder*) clear {
-  self.resultSetupResponseEvent = [[SetupResponseEvent alloc] init];
+  self.result = [[SetupResponseEvent alloc] init];
   return self;
 }
 - (SetupResponseEventBuilder*) clone {
-  return [SetupResponseEvent builderWithPrototype:resultSetupResponseEvent];
+  return [SetupResponseEvent builderWithPrototype:result];
 }
 - (SetupResponseEvent*) defaultInstance {
   return [SetupResponseEvent defaultInstance];
@@ -5073,8 +5119,8 @@ static SetupResponseEvent* defaultSetupResponseEventInstance = nil;
   return [self buildPartial];
 }
 - (SetupResponseEvent*) buildPartial {
-  SetupResponseEvent* returnMe = resultSetupResponseEvent;
-  self.resultSetupResponseEvent = nil;
+  SetupResponseEvent* returnMe = result;
+  self.result = nil;
   return returnMe;
 }
 - (SetupResponseEventBuilder*) mergeFrom:(SetupResponseEvent*) other {
@@ -5094,10 +5140,10 @@ static SetupResponseEvent* defaultSetupResponseEventInstance = nil;
     [self setCode:other.code];
   }
   if (other.wifiNetworksArray.count > 0) {
-    if (resultSetupResponseEvent.wifiNetworksArray == nil) {
-      resultSetupResponseEvent.wifiNetworksArray = [[NSMutableArray alloc] initWithArray:other.wifiNetworksArray];
+    if (result.wifiNetworksArray == nil) {
+      result.wifiNetworksArray = [[NSMutableArray alloc] initWithArray:other.wifiNetworksArray];
     } else {
-      [resultSetupResponseEvent.wifiNetworksArray addObjectsFromArray:other.wifiNetworksArray];
+      [result.wifiNetworksArray addObjectsFromArray:other.wifiNetworksArray];
     }
   }
   [self mergeUnknownFields:other.unknownFields];
@@ -5152,88 +5198,88 @@ static SetupResponseEvent* defaultSetupResponseEventInstance = nil;
   }
 }
 - (BOOL) hasPhase {
-  return resultSetupResponseEvent.hasPhase;
+  return result.hasPhase;
 }
 - (SetupPhase) phase {
-  return resultSetupResponseEvent.phase;
+  return result.phase;
 }
 - (SetupResponseEventBuilder*) setPhase:(SetupPhase) value {
-  resultSetupResponseEvent.hasPhase = YES;
-  resultSetupResponseEvent.phase = value;
+  result.hasPhase = YES;
+  result.phase = value;
   return self;
 }
 - (SetupResponseEventBuilder*) clearPhase {
-  resultSetupResponseEvent.hasPhase = NO;
-  resultSetupResponseEvent.phase = SetupPhaseRequestCode;
+  result.hasPhase = NO;
+  result.phase = SetupPhaseRequestCode;
   return self;
 }
 - (BOOL) hasError {
-  return resultSetupResponseEvent.hasError;
+  return result.hasError;
 }
 - (BOOL) error {
-  return resultSetupResponseEvent.error;
+  return result.error;
 }
 - (SetupResponseEventBuilder*) setError:(BOOL) value {
-  resultSetupResponseEvent.hasError = YES;
-  resultSetupResponseEvent.error = value;
+  result.hasError = YES;
+  result.error = value;
   return self;
 }
 - (SetupResponseEventBuilder*) clearError {
-  resultSetupResponseEvent.hasError = NO;
-  resultSetupResponseEvent.error = NO;
+  result.hasError = NO;
+  result.error = NO;
   return self;
 }
 - (BOOL) hasErrorMessage {
-  return resultSetupResponseEvent.hasErrorMessage;
+  return result.hasErrorMessage;
 }
 - (NSString*) errorMessage {
-  return resultSetupResponseEvent.errorMessage;
+  return result.errorMessage;
 }
 - (SetupResponseEventBuilder*) setErrorMessage:(NSString*) value {
-  resultSetupResponseEvent.hasErrorMessage = YES;
-  resultSetupResponseEvent.errorMessage = value;
+  result.hasErrorMessage = YES;
+  result.errorMessage = value;
   return self;
 }
 - (SetupResponseEventBuilder*) clearErrorMessage {
-  resultSetupResponseEvent.hasErrorMessage = NO;
-  resultSetupResponseEvent.errorMessage = @"";
+  result.hasErrorMessage = NO;
+  result.errorMessage = @"";
   return self;
 }
 - (BOOL) hasCode {
-  return resultSetupResponseEvent.hasCode;
+  return result.hasCode;
 }
 - (NSString*) code {
-  return resultSetupResponseEvent.code;
+  return result.code;
 }
 - (SetupResponseEventBuilder*) setCode:(NSString*) value {
-  resultSetupResponseEvent.hasCode = YES;
-  resultSetupResponseEvent.code = value;
+  result.hasCode = YES;
+  result.code = value;
   return self;
 }
 - (SetupResponseEventBuilder*) clearCode {
-  resultSetupResponseEvent.hasCode = NO;
-  resultSetupResponseEvent.code = @"";
+  result.hasCode = NO;
+  result.code = @"";
   return self;
 }
 - (NSMutableArray *)wifiNetworks {
-  return resultSetupResponseEvent.wifiNetworksArray;
+  return result.wifiNetworksArray;
 }
 - (WifiNetwork*)wifiNetworksAtIndex:(NSUInteger)index {
-  return [resultSetupResponseEvent wifiNetworksAtIndex:index];
+  return [result wifiNetworksAtIndex:index];
 }
 - (SetupResponseEventBuilder *)addWifiNetworks:(WifiNetwork*)value {
-  if (resultSetupResponseEvent.wifiNetworksArray == nil) {
-    resultSetupResponseEvent.wifiNetworksArray = [[NSMutableArray alloc]init];
+  if (result.wifiNetworksArray == nil) {
+    result.wifiNetworksArray = [[NSMutableArray alloc]init];
   }
-  [resultSetupResponseEvent.wifiNetworksArray addObject:value];
+  [result.wifiNetworksArray addObject:value];
   return self;
 }
 - (SetupResponseEventBuilder *)setWifiNetworksArray:(NSArray *)array {
-  resultSetupResponseEvent.wifiNetworksArray = [[NSMutableArray alloc]initWithArray:array];
+  result.wifiNetworksArray = [[NSMutableArray alloc]initWithArray:array];
   return self;
 }
 - (SetupResponseEventBuilder *)clearWifiNetworks {
-  resultSetupResponseEvent.wifiNetworksArray = nil;
+  result.wifiNetworksArray = nil;
   return self;
 }
 @end
@@ -5259,7 +5305,7 @@ static SetupResponseEvent* defaultSetupResponseEventInstance = nil;
   hasMaxLength_ = !!value_;
 }
 @synthesize maxLength;
-- (instancetype) init {
+- (id) init {
   if ((self = [super init])) {
     self.type = TextInputRequestEventTypeText;
     self.maxLength = 0;
@@ -5275,10 +5321,10 @@ static TextInputRequestEvent* defaultTextInputRequestEventInstance = nil;
     defaultTextInputRequestEventInstance = [[TextInputRequestEvent alloc] init];
   }
 }
-+ (instancetype) defaultInstance {
++ (TextInputRequestEvent*) defaultInstance {
   return defaultTextInputRequestEventInstance;
 }
-- (instancetype) defaultInstance {
+- (TextInputRequestEvent*) defaultInstance {
   return defaultTextInputRequestEventInstance;
 }
 - (BOOL) isInitialized {
@@ -5390,26 +5436,26 @@ BOOL TextInputRequestEventTypeIsValidValue(TextInputRequestEventType value) {
   }
 }
 @interface TextInputRequestEventBuilder()
-@property (strong) TextInputRequestEvent* resultTextInputRequestEvent;
+@property (strong) TextInputRequestEvent* result;
 @end
 
 @implementation TextInputRequestEventBuilder
-@synthesize resultTextInputRequestEvent;
-- (instancetype) init {
+@synthesize result;
+- (id) init {
   if ((self = [super init])) {
-    self.resultTextInputRequestEvent = [[TextInputRequestEvent alloc] init];
+    self.result = [[TextInputRequestEvent alloc] init];
   }
   return self;
 }
 - (PBGeneratedMessage*) internalGetResult {
-  return resultTextInputRequestEvent;
+  return result;
 }
 - (TextInputRequestEventBuilder*) clear {
-  self.resultTextInputRequestEvent = [[TextInputRequestEvent alloc] init];
+  self.result = [[TextInputRequestEvent alloc] init];
   return self;
 }
 - (TextInputRequestEventBuilder*) clone {
-  return [TextInputRequestEvent builderWithPrototype:resultTextInputRequestEvent];
+  return [TextInputRequestEvent builderWithPrototype:result];
 }
 - (TextInputRequestEvent*) defaultInstance {
   return [TextInputRequestEvent defaultInstance];
@@ -5419,8 +5465,8 @@ BOOL TextInputRequestEventTypeIsValidValue(TextInputRequestEventType value) {
   return [self buildPartial];
 }
 - (TextInputRequestEvent*) buildPartial {
-  TextInputRequestEvent* returnMe = resultTextInputRequestEvent;
-  self.resultTextInputRequestEvent = nil;
+  TextInputRequestEvent* returnMe = result;
+  self.result = nil;
   return returnMe;
 }
 - (TextInputRequestEventBuilder*) mergeFrom:(TextInputRequestEvent*) other {
@@ -5471,35 +5517,35 @@ BOOL TextInputRequestEventTypeIsValidValue(TextInputRequestEventType value) {
   }
 }
 - (BOOL) hasType {
-  return resultTextInputRequestEvent.hasType;
+  return result.hasType;
 }
 - (TextInputRequestEventType) type {
-  return resultTextInputRequestEvent.type;
+  return result.type;
 }
 - (TextInputRequestEventBuilder*) setType:(TextInputRequestEventType) value {
-  resultTextInputRequestEvent.hasType = YES;
-  resultTextInputRequestEvent.type = value;
+  result.hasType = YES;
+  result.type = value;
   return self;
 }
 - (TextInputRequestEventBuilder*) clearType {
-  resultTextInputRequestEvent.hasType = NO;
-  resultTextInputRequestEvent.type = TextInputRequestEventTypeText;
+  result.hasType = NO;
+  result.type = TextInputRequestEventTypeText;
   return self;
 }
 - (BOOL) hasMaxLength {
-  return resultTextInputRequestEvent.hasMaxLength;
+  return result.hasMaxLength;
 }
 - (SInt32) maxLength {
-  return resultTextInputRequestEvent.maxLength;
+  return result.maxLength;
 }
 - (TextInputRequestEventBuilder*) setMaxLength:(SInt32) value {
-  resultTextInputRequestEvent.hasMaxLength = YES;
-  resultTextInputRequestEvent.maxLength = value;
+  result.hasMaxLength = YES;
+  result.maxLength = value;
   return self;
 }
 - (TextInputRequestEventBuilder*) clearMaxLength {
-  resultTextInputRequestEvent.hasMaxLength = NO;
-  resultTextInputRequestEvent.maxLength = 0;
+  result.hasMaxLength = NO;
+  result.maxLength = 0;
   return self;
 }
 @end
@@ -5538,7 +5584,7 @@ BOOL TextInputRequestEventTypeIsValidValue(TextInputRequestEventType value) {
 - (void) setEncrypted:(BOOL) value_ {
   encrypted_ = !!value_;
 }
-- (instancetype) init {
+- (id) init {
   if ((self = [super init])) {
     self.state = TextInputResponseEventStateBegan;
     self.text = @"";
@@ -5555,10 +5601,10 @@ static TextInputResponseEvent* defaultTextInputResponseEventInstance = nil;
     defaultTextInputResponseEventInstance = [[TextInputResponseEvent alloc] init];
   }
 }
-+ (instancetype) defaultInstance {
++ (TextInputResponseEvent*) defaultInstance {
   return defaultTextInputResponseEventInstance;
 }
-- (instancetype) defaultInstance {
+- (TextInputResponseEvent*) defaultInstance {
   return defaultTextInputResponseEventInstance;
 }
 - (BOOL) isInitialized {
@@ -5689,26 +5735,26 @@ BOOL TextInputResponseEventStateIsValidValue(TextInputResponseEventState value) 
   }
 }
 @interface TextInputResponseEventBuilder()
-@property (strong) TextInputResponseEvent* resultTextInputResponseEvent;
+@property (strong) TextInputResponseEvent* result;
 @end
 
 @implementation TextInputResponseEventBuilder
-@synthesize resultTextInputResponseEvent;
-- (instancetype) init {
+@synthesize result;
+- (id) init {
   if ((self = [super init])) {
-    self.resultTextInputResponseEvent = [[TextInputResponseEvent alloc] init];
+    self.result = [[TextInputResponseEvent alloc] init];
   }
   return self;
 }
 - (PBGeneratedMessage*) internalGetResult {
-  return resultTextInputResponseEvent;
+  return result;
 }
 - (TextInputResponseEventBuilder*) clear {
-  self.resultTextInputResponseEvent = [[TextInputResponseEvent alloc] init];
+  self.result = [[TextInputResponseEvent alloc] init];
   return self;
 }
 - (TextInputResponseEventBuilder*) clone {
-  return [TextInputResponseEvent builderWithPrototype:resultTextInputResponseEvent];
+  return [TextInputResponseEvent builderWithPrototype:result];
 }
 - (TextInputResponseEvent*) defaultInstance {
   return [TextInputResponseEvent defaultInstance];
@@ -5718,8 +5764,8 @@ BOOL TextInputResponseEventStateIsValidValue(TextInputResponseEventState value) 
   return [self buildPartial];
 }
 - (TextInputResponseEvent*) buildPartial {
-  TextInputResponseEvent* returnMe = resultTextInputResponseEvent;
-  self.resultTextInputResponseEvent = nil;
+  TextInputResponseEvent* returnMe = result;
+  self.result = nil;
   return returnMe;
 }
 - (TextInputResponseEventBuilder*) mergeFrom:(TextInputResponseEvent*) other {
@@ -5777,51 +5823,51 @@ BOOL TextInputResponseEventStateIsValidValue(TextInputResponseEventState value) 
   }
 }
 - (BOOL) hasState {
-  return resultTextInputResponseEvent.hasState;
+  return result.hasState;
 }
 - (TextInputResponseEventState) state {
-  return resultTextInputResponseEvent.state;
+  return result.state;
 }
 - (TextInputResponseEventBuilder*) setState:(TextInputResponseEventState) value {
-  resultTextInputResponseEvent.hasState = YES;
-  resultTextInputResponseEvent.state = value;
+  result.hasState = YES;
+  result.state = value;
   return self;
 }
 - (TextInputResponseEventBuilder*) clearState {
-  resultTextInputResponseEvent.hasState = NO;
-  resultTextInputResponseEvent.state = TextInputResponseEventStateBegan;
+  result.hasState = NO;
+  result.state = TextInputResponseEventStateBegan;
   return self;
 }
 - (BOOL) hasText {
-  return resultTextInputResponseEvent.hasText;
+  return result.hasText;
 }
 - (NSString*) text {
-  return resultTextInputResponseEvent.text;
+  return result.text;
 }
 - (TextInputResponseEventBuilder*) setText:(NSString*) value {
-  resultTextInputResponseEvent.hasText = YES;
-  resultTextInputResponseEvent.text = value;
+  result.hasText = YES;
+  result.text = value;
   return self;
 }
 - (TextInputResponseEventBuilder*) clearText {
-  resultTextInputResponseEvent.hasText = NO;
-  resultTextInputResponseEvent.text = @"";
+  result.hasText = NO;
+  result.text = @"";
   return self;
 }
 - (BOOL) hasEncrypted {
-  return resultTextInputResponseEvent.hasEncrypted;
+  return result.hasEncrypted;
 }
 - (BOOL) encrypted {
-  return resultTextInputResponseEvent.encrypted;
+  return result.encrypted;
 }
 - (TextInputResponseEventBuilder*) setEncrypted:(BOOL) value {
-  resultTextInputResponseEvent.hasEncrypted = YES;
-  resultTextInputResponseEvent.encrypted = value;
+  result.hasEncrypted = YES;
+  result.encrypted = value;
   return self;
 }
 - (TextInputResponseEventBuilder*) clearEncrypted {
-  resultTextInputResponseEvent.hasEncrypted = NO;
-  resultTextInputResponseEvent.encrypted = NO;
+  result.hasEncrypted = NO;
+  result.encrypted = NO;
   return self;
 }
 @end
@@ -5839,7 +5885,7 @@ BOOL TextInputResponseEventStateIsValidValue(TextInputResponseEventState value) 
   hasKey_ = !!value_;
 }
 @synthesize key;
-- (instancetype) init {
+- (id) init {
   if ((self = [super init])) {
     self.key = FunctionEventKeyF1;
   }
@@ -5854,10 +5900,10 @@ static FunctionEvent* defaultFunctionEventInstance = nil;
     defaultFunctionEventInstance = [[FunctionEvent alloc] init];
   }
 }
-+ (instancetype) defaultInstance {
++ (FunctionEvent*) defaultInstance {
   return defaultFunctionEventInstance;
 }
-- (instancetype) defaultInstance {
+- (FunctionEvent*) defaultInstance {
   return defaultFunctionEventInstance;
 }
 - (BOOL) isInitialized {
@@ -5962,26 +6008,26 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value) {
   }
 }
 @interface FunctionEventBuilder()
-@property (strong) FunctionEvent* resultFunctionEvent;
+@property (strong) FunctionEvent* result;
 @end
 
 @implementation FunctionEventBuilder
-@synthesize resultFunctionEvent;
-- (instancetype) init {
+@synthesize result;
+- (id) init {
   if ((self = [super init])) {
-    self.resultFunctionEvent = [[FunctionEvent alloc] init];
+    self.result = [[FunctionEvent alloc] init];
   }
   return self;
 }
 - (PBGeneratedMessage*) internalGetResult {
-  return resultFunctionEvent;
+  return result;
 }
 - (FunctionEventBuilder*) clear {
-  self.resultFunctionEvent = [[FunctionEvent alloc] init];
+  self.result = [[FunctionEvent alloc] init];
   return self;
 }
 - (FunctionEventBuilder*) clone {
-  return [FunctionEvent builderWithPrototype:resultFunctionEvent];
+  return [FunctionEvent builderWithPrototype:result];
 }
 - (FunctionEvent*) defaultInstance {
   return [FunctionEvent defaultInstance];
@@ -5991,8 +6037,8 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value) {
   return [self buildPartial];
 }
 - (FunctionEvent*) buildPartial {
-  FunctionEvent* returnMe = resultFunctionEvent;
-  self.resultFunctionEvent = nil;
+  FunctionEvent* returnMe = result;
+  self.result = nil;
   return returnMe;
 }
 - (FunctionEventBuilder*) mergeFrom:(FunctionEvent*) other {
@@ -6036,19 +6082,19 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value) {
   }
 }
 - (BOOL) hasKey {
-  return resultFunctionEvent.hasKey;
+  return result.hasKey;
 }
 - (FunctionEventKey) key {
-  return resultFunctionEvent.key;
+  return result.key;
 }
 - (FunctionEventBuilder*) setKey:(FunctionEventKey) value {
-  resultFunctionEvent.hasKey = YES;
-  resultFunctionEvent.key = value;
+  result.hasKey = YES;
+  result.key = value;
   return self;
 }
 - (FunctionEventBuilder*) clearKey {
-  resultFunctionEvent.hasKey = NO;
-  resultFunctionEvent.key = FunctionEventKeyF1;
+  result.hasKey = NO;
+  result.key = FunctionEventKeyF1;
   return self;
 }
 @end

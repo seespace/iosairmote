@@ -234,8 +234,8 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 @property (readonly, strong) NSString* target;
 @property (readonly, strong) NSString* replyTo;
 
-+ (instancetype) defaultInstance;
-- (instancetype) defaultInstance;
++ (Event*) defaultInstance;
+- (Event*) defaultInstance;
 
 - (BOOL) isInitialized;
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
@@ -254,7 +254,7 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 
 @interface EventBuilder : PBExtendableMessageBuilder {
 @private
-  Event* resultEvent;
+  Event* result;
 }
 
 - (Event*) defaultInstance;
@@ -324,8 +324,8 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 @property (readonly, strong) NSString* productId;
 - (BOOL) hasKeyboard;
 
-+ (instancetype) defaultInstance;
-- (instancetype) defaultInstance;
++ (Device*) defaultInstance;
+- (Device*) defaultInstance;
 
 - (BOOL) isInitialized;
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
@@ -344,7 +344,7 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 
 @interface DeviceBuilder : PBGeneratedMessageBuilder {
 @private
-  Device* resultDevice;
+  Device* result;
 }
 
 - (Device*) defaultInstance;
@@ -397,8 +397,8 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 @property (readonly) DeviceEventType type;
 @property (readonly, strong) Device* device;
 
-+ (instancetype) defaultInstance;
-- (instancetype) defaultInstance;
++ (DeviceEvent*) defaultInstance;
+- (DeviceEvent*) defaultInstance;
 
 + (id<PBExtensionField>) event;
 - (BOOL) isInitialized;
@@ -418,7 +418,7 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 
 @interface DeviceEventBuilder : PBGeneratedMessageBuilder {
 @private
-  DeviceEvent* resultDeviceEvent;
+  DeviceEvent* result;
 }
 
 - (DeviceEvent*) defaultInstance;
@@ -462,8 +462,8 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 @property (readonly) Float32 locationY;
 @property (readonly) Phase phase;
 
-+ (instancetype) defaultInstance;
-- (instancetype) defaultInstance;
++ (TouchEvent*) defaultInstance;
+- (TouchEvent*) defaultInstance;
 
 + (id<PBExtensionField>) event;
 - (BOOL) isInitialized;
@@ -483,7 +483,7 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 
 @interface TouchEventBuilder : PBGeneratedMessageBuilder {
 @private
-  TouchEvent* resultTouchEvent;
+  TouchEvent* result;
 }
 
 - (TouchEvent*) defaultInstance;
@@ -522,8 +522,8 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 - (BOOL) hasType;
 @property (readonly) MotionEventType type;
 
-+ (instancetype) defaultInstance;
-- (instancetype) defaultInstance;
++ (MotionEvent*) defaultInstance;
+- (MotionEvent*) defaultInstance;
 
 + (id<PBExtensionField>) event;
 - (BOOL) isInitialized;
@@ -543,7 +543,7 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 
 @interface MotionEventBuilder : PBGeneratedMessageBuilder {
 @private
-  MotionEvent* resultMotionEvent;
+  MotionEvent* result;
 }
 
 - (MotionEvent*) defaultInstance;
@@ -576,8 +576,8 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 @property (readonly) KeypressEventState state;
 @property (readonly) SInt32 keycode;
 
-+ (instancetype) defaultInstance;
-- (instancetype) defaultInstance;
++ (KeypressEvent*) defaultInstance;
+- (KeypressEvent*) defaultInstance;
 
 + (id<PBExtensionField>) event;
 - (BOOL) isInitialized;
@@ -597,7 +597,7 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 
 @interface KeypressEventBuilder : PBGeneratedMessageBuilder {
 @private
-  KeypressEvent* resultKeypressEvent;
+  KeypressEvent* result;
 }
 
 - (KeypressEvent*) defaultInstance;
@@ -691,8 +691,8 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 @property (readonly) SInt64 pressDuration;
 @property (readonly) GestureEventCircleDirection circleDirection;
 
-+ (instancetype) defaultInstance;
-- (instancetype) defaultInstance;
++ (GestureEvent*) defaultInstance;
+- (GestureEvent*) defaultInstance;
 
 + (id<PBExtensionField>) event;
 - (BOOL) isInitialized;
@@ -712,7 +712,7 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 
 @interface GestureEventBuilder : PBGeneratedMessageBuilder {
 @private
-  GestureEvent* resultGestureEvent;
+  GestureEvent* result;
 }
 
 - (GestureEvent*) defaultInstance;
@@ -840,8 +840,8 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 @property (readonly) Float32 yaw;
 @property (readonly) Float32 roll;
 
-+ (instancetype) defaultInstance;
-- (instancetype) defaultInstance;
++ (HandMotionEvent*) defaultInstance;
+- (HandMotionEvent*) defaultInstance;
 
 + (id<PBExtensionField>) event;
 - (BOOL) isInitialized;
@@ -861,7 +861,7 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 
 @interface HandMotionEventBuilder : PBGeneratedMessageBuilder {
 @private
-  HandMotionEvent* resultHandMotionEvent;
+  HandMotionEvent* result;
 }
 
 - (HandMotionEvent*) defaultInstance;
@@ -920,8 +920,8 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 - (BOOL) hasAuthUrl;
 @property (readonly, strong) NSString* authUrl;
 
-+ (instancetype) defaultInstance;
-- (instancetype) defaultInstance;
++ (OAuthRequestEvent*) defaultInstance;
+- (OAuthRequestEvent*) defaultInstance;
 
 + (id<PBExtensionField>) event;
 - (BOOL) isInitialized;
@@ -941,7 +941,7 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 
 @interface OAuthRequestEventBuilder : PBGeneratedMessageBuilder {
 @private
-  OAuthRequestEvent* resultOauthRequestEvent;
+  OAuthRequestEvent* result;
 }
 
 - (OAuthRequestEvent*) defaultInstance;
@@ -965,13 +965,17 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 @interface OAuthResponseEvent : PBGeneratedMessage {
 @private
   BOOL hasAuthCode_:1;
+  BOOL hasQueryString_:1;
   NSString* authCode;
+  NSString* queryString;
 }
 - (BOOL) hasAuthCode;
+- (BOOL) hasQueryString;
 @property (readonly, strong) NSString* authCode;
+@property (readonly, strong) NSString* queryString;
 
-+ (instancetype) defaultInstance;
-- (instancetype) defaultInstance;
++ (OAuthResponseEvent*) defaultInstance;
+- (OAuthResponseEvent*) defaultInstance;
 
 + (id<PBExtensionField>) event;
 - (BOOL) isInitialized;
@@ -991,7 +995,7 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 
 @interface OAuthResponseEventBuilder : PBGeneratedMessageBuilder {
 @private
-  OAuthResponseEvent* resultOauthResponseEvent;
+  OAuthResponseEvent* result;
 }
 
 - (OAuthResponseEvent*) defaultInstance;
@@ -1010,6 +1014,11 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 - (NSString*) authCode;
 - (OAuthResponseEventBuilder*) setAuthCode:(NSString*) value;
 - (OAuthResponseEventBuilder*) clearAuthCode;
+
+- (BOOL) hasQueryString;
+- (NSString*) queryString;
+- (OAuthResponseEventBuilder*) setQueryString:(NSString*) value;
+- (OAuthResponseEventBuilder*) clearQueryString;
 @end
 
 @interface WifiNetwork : PBGeneratedMessage {
@@ -1032,8 +1041,8 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 @property (readonly, strong) NSString* bssid;
 @property (readonly, strong) NSString* capabilities;
 
-+ (instancetype) defaultInstance;
-- (instancetype) defaultInstance;
++ (WifiNetwork*) defaultInstance;
+- (WifiNetwork*) defaultInstance;
 
 - (BOOL) isInitialized;
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
@@ -1052,7 +1061,7 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 
 @interface WifiNetworkBuilder : PBGeneratedMessageBuilder {
 @private
-  WifiNetwork* resultWifiNetwork;
+  WifiNetwork* result;
 }
 
 - (WifiNetwork*) defaultInstance;
@@ -1112,8 +1121,8 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 @property (readonly, strong) NSString* password;
 - (BOOL) back;
 
-+ (instancetype) defaultInstance;
-- (instancetype) defaultInstance;
++ (SetupRequestEvent*) defaultInstance;
+- (SetupRequestEvent*) defaultInstance;
 
 + (id<PBExtensionField>) event;
 - (BOOL) isInitialized;
@@ -1133,7 +1142,7 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 
 @interface SetupRequestEventBuilder : PBGeneratedMessageBuilder {
 @private
-  SetupRequestEvent* resultSetupRequestEvent;
+  SetupRequestEvent* result;
 }
 
 - (SetupRequestEvent*) defaultInstance;
@@ -1197,8 +1206,8 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 @property (readonly, strong) NSArray * wifiNetworks;
 - (WifiNetwork*)wifiNetworksAtIndex:(NSUInteger)index;
 
-+ (instancetype) defaultInstance;
-- (instancetype) defaultInstance;
++ (SetupResponseEvent*) defaultInstance;
+- (SetupResponseEvent*) defaultInstance;
 
 + (id<PBExtensionField>) event;
 - (BOOL) isInitialized;
@@ -1218,7 +1227,7 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 
 @interface SetupResponseEventBuilder : PBGeneratedMessageBuilder {
 @private
-  SetupResponseEvent* resultSetupResponseEvent;
+  SetupResponseEvent* result;
 }
 
 - (SetupResponseEvent*) defaultInstance;
@@ -1272,8 +1281,8 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 @property (readonly) TextInputRequestEventType type;
 @property (readonly) SInt32 maxLength;
 
-+ (instancetype) defaultInstance;
-- (instancetype) defaultInstance;
++ (TextInputRequestEvent*) defaultInstance;
+- (TextInputRequestEvent*) defaultInstance;
 
 + (id<PBExtensionField>) event;
 - (BOOL) isInitialized;
@@ -1293,7 +1302,7 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 
 @interface TextInputRequestEventBuilder : PBGeneratedMessageBuilder {
 @private
-  TextInputRequestEvent* resultTextInputRequestEvent;
+  TextInputRequestEvent* result;
 }
 
 - (TextInputRequestEvent*) defaultInstance;
@@ -1335,8 +1344,8 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 @property (readonly, strong) NSString* text;
 - (BOOL) encrypted;
 
-+ (instancetype) defaultInstance;
-- (instancetype) defaultInstance;
++ (TextInputResponseEvent*) defaultInstance;
+- (TextInputResponseEvent*) defaultInstance;
 
 + (id<PBExtensionField>) event;
 - (BOOL) isInitialized;
@@ -1356,7 +1365,7 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 
 @interface TextInputResponseEventBuilder : PBGeneratedMessageBuilder {
 @private
-  TextInputResponseEvent* resultTextInputResponseEvent;
+  TextInputResponseEvent* result;
 }
 
 - (TextInputResponseEvent*) defaultInstance;
@@ -1395,8 +1404,8 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 - (BOOL) hasKey;
 @property (readonly) FunctionEventKey key;
 
-+ (instancetype) defaultInstance;
-- (instancetype) defaultInstance;
++ (FunctionEvent*) defaultInstance;
+- (FunctionEvent*) defaultInstance;
 
 + (id<PBExtensionField>) event;
 - (BOOL) isInitialized;
@@ -1416,7 +1425,7 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 
 @interface FunctionEventBuilder : PBGeneratedMessageBuilder {
 @private
-  FunctionEvent* resultFunctionEvent;
+  FunctionEvent* result;
 }
 
 - (FunctionEvent*) defaultInstance;
