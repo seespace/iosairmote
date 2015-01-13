@@ -330,6 +330,9 @@
   isConnecting = YES;
   currentService = [[NSNetService alloc] initWithDomain:@"tv.inair" type:kManualIPAddress name:ipAddress port:0];
   [eventCenter connectToHost:ipAddress];
+  if ([self.delegate respondsToSelector:@selector(didStartConnecting)]) {
+    [self.delegate didStartConnecting];
+  }
 }
 
 
