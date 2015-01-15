@@ -158,7 +158,7 @@
                                 <outlet property="delegate" destination="-1" id="R2N-dt-rdm"/>
                             </connections>
                         </scrollView>
-                        <pageControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="2" translatesAutoresizingMaskIntoConstraints="NO" id="LkG-fm-8dG">
+                        <pageControl opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="2" translatesAutoresizingMaskIntoConstraints="NO" id="LkG-fm-8dG">
                             <rect key="frame" x="140" y="50" width="39" height="37"/>
                             <color key="pageIndicatorTintColor" white="0.75886983082706783" alpha="0.5" colorSpace="calibratedWhite"/>
                             <color key="currentPageIndicatorTintColor" white="0.50825305451127822" alpha="1" colorSpace="calibratedWhite"/>
