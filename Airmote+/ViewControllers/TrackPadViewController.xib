@@ -38,7 +38,7 @@
                     </constraints>
                 </view>
                 <view alpha="0.90000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rKC-0i-yxh" userLabel="Controls">
-                    <rect key="frame" x="0.0" y="548" width="320" height="74"/>
+                    <rect key="frame" x="0.0" y="494" width="320" height="74"/>
                     <subviews>
                         <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g8g-75-Nix">
                             <rect key="frame" x="0.0" y="14" width="320" height="60"/>
@@ -46,13 +46,14 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ax5-8s-5Me" userLabel="ContentView">
                                     <rect key="frame" x="0.0" y="-6" width="640" height="60"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2IF-Vy-VUL" userLabel="WifiSetup">
+                                        <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2IF-Vy-VUL" userLabel="WifiSetup">
                                             <rect key="frame" x="214" y="4" width="50" height="50"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="50" id="2vd-nT-MRX"/>
                                                 <constraint firstAttribute="width" constant="50" id="gxj-Ff-Evk"/>
                                             </constraints>
                                             <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            <inset key="imageEdgeInsets" minX="11" minY="11" maxX="11" maxY="11"/>
                                             <state key="normal" image="wifi"/>
                                             <connections>
                                                 <action selector="settingsButtonTapped:" destination="-1" eventType="touchUpInside" id="hmY-YK-ZmA"/>
@@ -77,6 +78,7 @@
                                                 <constraint firstAttribute="width" constant="44" id="n9e-Iq-lRi"/>
                                             </constraints>
                                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <inset key="imageEdgeInsets" minX="8" minY="8" maxX="8" maxY="9"/>
                                             <state key="normal" image="play"/>
                                             <connections>
                                                 <action selector="playPauseButtonTapped:" destination="-1" eventType="touchUpInside" id="9Aj-6c-E0X"/>
@@ -89,6 +91,7 @@
                                                 <constraint firstAttribute="height" constant="44" id="Lts-K0-DsR"/>
                                             </constraints>
                                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <inset key="imageEdgeInsets" minX="8" minY="8" maxX="8" maxY="9"/>
                                             <state key="normal" image="ff"/>
                                             <connections>
                                                 <action selector="fastForwardButtonTapped:" destination="-1" eventType="touchUpInside" id="P9B-Nw-hy5"/>
@@ -101,6 +104,7 @@
                                                 <constraint firstAttribute="height" constant="44" id="u4v-cR-xAU"/>
                                             </constraints>
                                             <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <inset key="imageEdgeInsets" minX="8" minY="8" maxX="8" maxY="9"/>
                                             <state key="normal" image="rewind"/>
                                             <connections>
                                                 <action selector="rewindButtonTapped:" destination="-1" eventType="touchUpInside" id="Odp-q4-Ssw"/>
@@ -113,6 +117,7 @@
                                                 <constraint firstAttribute="width" constant="50" id="jKE-mc-Rid"/>
                                             </constraints>
                                             <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            <inset key="imageEdgeInsets" minX="2" minY="2" maxX="2" maxY="2"/>
                                             <state key="normal" image="refresh"/>
                                             <connections>
                                                 <action selector="refreshButtonTapped:" destination="-1" eventType="touchUpInside" id="ysH-Tr-zba"/>
@@ -248,7 +253,7 @@
                 <constraint firstItem="sPp-Fi-YfW" firstAttribute="centerX" secondItem="nKI-Hj-0zZ" secondAttribute="centerX" id="2IV-Xb-0S4"/>
                 <constraint firstAttribute="bottom" secondItem="nKI-Hj-0zZ" secondAttribute="bottom" id="8qd-sT-5q4"/>
                 <constraint firstAttribute="centerX" secondItem="rKC-0i-yxh" secondAttribute="centerX" id="MS5-9C-BC7"/>
-                <constraint firstAttribute="bottom" secondItem="rKC-0i-yxh" secondAttribute="bottom" constant="-54" id="XCt-KT-qYC"/>
+                <constraint firstAttribute="bottom" secondItem="rKC-0i-yxh" secondAttribute="bottom" id="XCt-KT-qYC"/>
                 <constraint firstItem="sPp-Fi-YfW" firstAttribute="top" secondItem="1" secondAttribute="top" constant="-240" id="jqF-ct-LcE"/>
                 <constraint firstAttribute="trailing" secondItem="nKI-Hj-0zZ" secondAttribute="trailing" id="w5d-4o-g6T"/>
                 <constraint firstItem="nKI-Hj-0zZ" firstAttribute="top" secondItem="1" secondAttribute="top" id="wmL-Gc-bca"/>
