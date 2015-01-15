@@ -10,6 +10,7 @@
 #import "Proto.pb.h"
 #import "ProtoHelper.h"
 #import "Event+Extension.h"
+#import "IAConnection.h"
 
 static const int kServicePort = 8989;
 static const uint8_t kSessionStartTag = 9;
@@ -44,7 +45,7 @@ static const uint8_t kSessionStartTag = 9;
   DDLogDebug(@"Connecting to host: %@", netService);
 
   if ([netService.addresses count] > 0) {
-    
+
     if (![_socket connectToAddress:netService.addresses[0] withTimeout:10 error:&err]) {
 
       if ([self.delegate respondsToSelector:@selector(eventCenterFailedToConnectToHost:withError:)]) {
@@ -147,4 +148,21 @@ static const uint8_t kSessionStartTag = 9;
   [_socket writeData:data withTimeout:0 tag:kSessionStartTag];
 }
 
+- (void)connectToHost:(NSString *)address
+{
+  NSError *err = nil;
+
+  lastConnectedService = [[NSNetService alloc] initWithDomain:@"tv.inair" type:kManualIPAddress name:address port:0];
+
+  DDLogDebug(@"Connecting to host: %@", address);
+
+  if ([address length] > 0) {
+
+    if (![_socket connectToHost:address onPort:kServicePort withTimeout:10 error:&err]) {
+      if ([self.delegate respondsToSelector:@selector(eventCenterFailedToConnectToHost:withError:)]) {
+        [self.delegate eventCenterFailedToConnectToHost:address withError:err];
+      }
+    }
+  }
+}
 @end
