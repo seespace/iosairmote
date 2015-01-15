@@ -11,6 +11,7 @@
 #import "ProtoHelper.h"
 #import "TrackPadView.h"
 #import "InstructionViewController.h"
+#import "NSString+IPAddress.h"
 
 #define kIPAddressAlertTitle @"Manual Connect"
 
@@ -50,8 +51,17 @@ static const uint8_t kMotionShakeTag = 6;
                                            selector:@selector(didFinishWifiSetup:)
                                                name:kInAirDeviceDidConnectToWifiNotification
                                              object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(appWillBecomeInactive:) name:UIApplicationWillResignActiveNotification
+                                             object:nil];
+  
+
 }
 
+
+-(void) appWillBecomeInactive:(NSNotification *) notification {
+  [SVProgressHUD dismiss];  
+}
 
 - (BOOL)shouldConnectAutomatically
 {
@@ -93,7 +103,9 @@ static const uint8_t kMotionShakeTag = 6;
     case IAConnectionErrorSocketInvalidData:
     case IAConnectionErrorWifiNotAvailable:
     case IAConnectionErrorFailToConnectSocket:
-      [SVProgressHUD showErrorWithStatus:[error localizedFailureReason]];
+        [SVProgressHUD showErrorWithStatus:[error localizedFailureReason]];
+        [self showActionSheetForServices:[[IAConnection sharedConnection] foundServices]];
+
       break;
 
     case IAConnectionErrorSocketDisconnected:
@@ -149,10 +161,14 @@ static const uint8_t kMotionShakeTag = 6;
 
 
 - (void)showActionSheetForServices:(NSArray *) services {
+
+  if ([_actionSheet isVisible] == YES)
+    return;
+  
   _actionSheet = [[UIActionSheet alloc] init];
   [_actionSheet setTitle:@"Choose a device"];
   [_actionSheet setDelegate:self];
-
+  
   for (NSNetService *service in services) {
     NSString *title = service.name;
     [_actionSheet addButtonWithTitle:title];
@@ -194,9 +210,20 @@ static const uint8_t kMotionShakeTag = 6;
       [self processOAuthRequest];
     }
   } else if ([alertView.title isEqualToString:kIPAddressAlertTitle]) {
-    [[IAConnection sharedConnection] stop];
-    [[IAConnection sharedConnection] resetStates];
-    [[IAConnection sharedConnection] connectToHost:[alertView textFieldAtIndex:0].text];
+    NSString *ipaddress = [alertView textFieldAtIndex:0].text;
+    
+    if ([ipaddress length] == 0 || ![ipaddress isValidIPAddress]) {
+      UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                          message:@"Invalid IP Address. Please try again."
+                                                         delegate:nil
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles:nil];
+      [alertView show];
+    } else {
+      [[IAConnection sharedConnection] stop];
+      [[IAConnection sharedConnection] resetStates];
+      [[IAConnection sharedConnection] connectToHost:ipaddress];
+    }
   }
   _oauthEvent = nil;
 }

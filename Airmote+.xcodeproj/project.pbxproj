@@ -64,6 +64,7 @@
 		01B3040F1A52C7AC009D7417 /* Proto.proto in Resources */ = {isa = PBXBuildFile; fileRef = C584488EB37D152402FECCDD /* Proto.proto */; };
 		01F415611871DA4300029AFE /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 01F415601871DA4300029AFE /* Settings.bundle */; };
 		37347075505D4DBDB2B7D0D4 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B16347417AEC44FE911F15C2 /* libPods.a */; };
+		B43A5FCD1A675DB300105F55 /* NSString+IPAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = B43A5FCC1A675DB300105F55 /* NSString+IPAddress.m */; };
 		B46889AA19AEE5ED0043A8A9 /* ConnectedConfirmationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B46889A819AEE5ED0043A8A9 /* ConnectedConfirmationViewController.m */; };
 		B46889AB19AEE5ED0043A8A9 /* ConnectedConfirmationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B46889A919AEE5ED0043A8A9 /* ConnectedConfirmationViewController.xib */; };
 		B4B87A8119A20A5400E2BDD0 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B4B87A8019A20A5400E2BDD0 /* libz.dylib */; };
@@ -143,6 +144,8 @@
 		01F415601871DA4300029AFE /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		4776BA18CF18092B62E2AA53 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		B16347417AEC44FE911F15C2 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		B43A5FCB1A675DB300105F55 /* NSString+IPAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+IPAddress.h"; sourceTree = "<group>"; };
+		B43A5FCC1A675DB300105F55 /* NSString+IPAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+IPAddress.m"; sourceTree = "<group>"; };
 		B46889A719AEE5ED0043A8A9 /* ConnectedConfirmationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectedConfirmationViewController.h; sourceTree = "<group>"; };
 		B46889A819AEE5ED0043A8A9 /* ConnectedConfirmationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectedConfirmationViewController.m; sourceTree = "<group>"; };
 		B46889A919AEE5ED0043A8A9 /* ConnectedConfirmationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConnectedConfirmationViewController.xib; sourceTree = "<group>"; };
@@ -358,6 +361,8 @@
 				C58449D8A0EA2DEB85384596 /* DDURLParser.m */,
 				C5844AEC7D865AC3656EC804 /* WifiHelper.m */,
 				C5844C3C3E765B9D9015EA81 /* WifiHelper.h */,
+				B43A5FCB1A675DB300105F55 /* NSString+IPAddress.h */,
+				B43A5FCC1A675DB300105F55 /* NSString+IPAddress.m */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -672,6 +677,7 @@
 				C5844336C46484FF8281DEA2 /* TrackPadView.m in Sources */,
 				C5844A0B86EA15AA83BB1977 /* NSData+NetService.m in Sources */,
 				C58444AF7A720078B3CB7669 /* DDURLParser.m in Sources */,
+				B43A5FCD1A675DB300105F55 /* NSString+IPAddress.m in Sources */,
 				C5844157B336B00A1022EA6A /* ProtoHelper.m in Sources */,
 				C58440858C2E4C0D850E5583 /* Proto.pb.m in Sources */,
 				C5844214A4CD8611C5BC8659 /* WifiHelper.m in Sources */,
