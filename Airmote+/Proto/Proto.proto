@@ -31,22 +31,25 @@ message Event {
   required int32 tracking_area_height = 4;
   optional string target = 5;
   optional string reply_to = 6;
+  optional Device.Type device_type = 7;
 }
 
 // Device events
 
 message Device {
-  enum Vendor {
+  enum Type {
     IOS = 0;
     ANDROID = 1;
     LEAPMOTION = 2;
     KINECT = 3;
     WINDOWS = 4;
-    OTHER = 5;
+    IR_REMOTE = 5;
+    EMULATED = 6;
+    OTHER = 30;
   }
 
   required string name = 1;
-  required Vendor vendor = 2;
+  required Type type = 2;
   optional int32 version = 3;
   required string product_id = 4;
   optional bool has_keyboard = 5;

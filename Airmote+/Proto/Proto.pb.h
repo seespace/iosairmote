@@ -88,16 +88,18 @@ typedef NS_ENUM(SInt32, EventType) {
 
 BOOL EventTypeIsValidValue(EventType value);
 
-typedef NS_ENUM(SInt32, DeviceVendor) {
-  DeviceVendorIos = 0,
-  DeviceVendorAndroid = 1,
-  DeviceVendorLeapmotion = 2,
-  DeviceVendorKinect = 3,
-  DeviceVendorWindows = 4,
-  DeviceVendorOther = 5,
+typedef NS_ENUM(SInt32, DeviceType) {
+  DeviceTypeIos = 0,
+  DeviceTypeAndroid = 1,
+  DeviceTypeLeapmotion = 2,
+  DeviceTypeKinect = 3,
+  DeviceTypeWindows = 4,
+  DeviceTypeIrRemote = 5,
+  DeviceTypeEmulated = 6,
+  DeviceTypeOther = 30,
 };
 
-BOOL DeviceVendorIsValidValue(DeviceVendor value);
+BOOL DeviceTypeIsValidValue(DeviceType value);
 
 typedef NS_ENUM(SInt32, DeviceEventType) {
   DeviceEventTypeRegister = 0,
@@ -214,12 +216,14 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
   BOOL hasTarget_:1;
   BOOL hasReplyTo_:1;
   BOOL hasType_:1;
+  BOOL hasDeviceType_:1;
   SInt64 timestamp;
   SInt32 trackingAreaWidth;
   SInt32 trackingAreaHeight;
   NSString* target;
   NSString* replyTo;
   EventType type;
+  DeviceType deviceType;
 }
 - (BOOL) hasType;
 - (BOOL) hasTimestamp;
@@ -227,12 +231,14 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 - (BOOL) hasTrackingAreaHeight;
 - (BOOL) hasTarget;
 - (BOOL) hasReplyTo;
+- (BOOL) hasDeviceType;
 @property (readonly) EventType type;
 @property (readonly) SInt64 timestamp;
 @property (readonly) SInt32 trackingAreaWidth;
 @property (readonly) SInt32 trackingAreaHeight;
 @property (readonly, strong) NSString* target;
 @property (readonly, strong) NSString* replyTo;
+@property (readonly) DeviceType deviceType;
 
 + (Event*) defaultInstance;
 - (Event*) defaultInstance;
@@ -298,6 +304,11 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 - (NSString*) replyTo;
 - (EventBuilder*) setReplyTo:(NSString*) value;
 - (EventBuilder*) clearReplyTo;
+
+- (BOOL) hasDeviceType;
+- (DeviceType) deviceType;
+- (EventBuilder*) setDeviceType:(DeviceType) value;
+- (EventBuilder*) clearDeviceType;
 @end
 
 @interface Device : PBGeneratedMessage {
@@ -306,20 +317,20 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
   BOOL hasVersion_:1;
   BOOL hasName_:1;
   BOOL hasProductId_:1;
-  BOOL hasVendor_:1;
+  BOOL hasType_:1;
   BOOL hasKeyboard_:1;
   SInt32 version;
   NSString* name;
   NSString* productId;
-  DeviceVendor vendor;
+  DeviceType type;
 }
 - (BOOL) hasName;
-- (BOOL) hasVendor;
+- (BOOL) hasType;
 - (BOOL) hasVersion;
 - (BOOL) hasProductId;
 - (BOOL) hasHasKeyboard;
 @property (readonly, strong) NSString* name;
-@property (readonly) DeviceVendor vendor;
+@property (readonly) DeviceType type;
 @property (readonly) SInt32 version;
 @property (readonly, strong) NSString* productId;
 - (BOOL) hasKeyboard;
@@ -364,10 +375,10 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 - (DeviceBuilder*) setName:(NSString*) value;
 - (DeviceBuilder*) clearName;
 
-- (BOOL) hasVendor;
-- (DeviceVendor) vendor;
-- (DeviceBuilder*) setVendor:(DeviceVendor) value;
-- (DeviceBuilder*) clearVendor;
+- (BOOL) hasType;
+- (DeviceType) type;
+- (DeviceBuilder*) setType:(DeviceType) value;
+- (DeviceBuilder*) clearType;
 
 - (BOOL) hasVersion;
 - (SInt32) version;

@@ -114,7 +114,7 @@ static ProtoHelper *instance;
 + (Device *)currentDevice {
   DeviceBuilder *builder = [[DeviceBuilder alloc] init];
   builder.name = [[UIDevice currentDevice] name];
-  builder.vendor = DeviceVendorIos;
+  builder.type = DeviceTypeIos;
   builder.productId = [NSString
       stringWithFormat:@"%@", [[UIDevice currentDevice] identifierForVendor]];
   builder.version = (SInt32) [[[[NSBundle mainBundle] infoDictionary]
@@ -135,6 +135,7 @@ static ProtoHelper *instance;
 
   // Build actual event
   EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.deviceType = DeviceTypeIos;
   builder.timestamp = timestamp;
   builder.type = EventTypeDevice;
   builder.trackingAreaWidth = builder.trackingAreaHeight = 0;
@@ -161,6 +162,7 @@ static ProtoHelper *instance;
 
   // Build actual event
   EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.deviceType = DeviceTypeIos;
   builder.timestamp = timestamp;
   builder.trackingAreaWidth = width;
   builder.trackingAreaHeight = height;
@@ -180,6 +182,7 @@ static ProtoHelper *instance;
 
   // Build actual event
   EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.deviceType = DeviceTypeIos;
   builder.timestamp = timestamp;
   builder.type = EventTypeMotion;
   builder.trackingAreaWidth = builder.trackingAreaHeight = 0;
@@ -199,6 +202,7 @@ static ProtoHelper *instance;
 
   // Build actual event
   EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.deviceType = DeviceTypeIos;
   builder.timestamp = timestamp;
   builder.type = EventTypeKeypress;
   builder.trackingAreaWidth = builder.trackingAreaHeight = 0;
@@ -228,6 +232,7 @@ static ProtoHelper *instance;
 
   // Build actual event
   EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.deviceType = DeviceTypeIos;
   builder.timestamp = timestamp;
   builder.trackingAreaWidth = width;
   builder.trackingAreaHeight = height;
@@ -265,6 +270,7 @@ static ProtoHelper *instance;
 
   // Build actual event
   EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.deviceType = DeviceTypeIos;
   builder.timestamp = timestamp;
   builder.type = EventTypeGesture;
   builder.trackingAreaWidth = width;
@@ -298,6 +304,7 @@ static ProtoHelper *instance;
     
     // Build actual event
     EventBuilder *builder = [[EventBuilder alloc] init];
+    builder.deviceType = DeviceTypeIos;
     builder.timestamp = timestamp;
     builder.type = EventTypeGesture;
     builder.trackingAreaWidth = width;
@@ -329,6 +336,7 @@ static ProtoHelper *instance;
 
   // Build actual event
   EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.deviceType = DeviceTypeIos;
   builder.timestamp = timestamp;
   builder.trackingAreaWidth = width;
   builder.trackingAreaHeight = height;
@@ -360,6 +368,7 @@ static ProtoHelper *instance;
 
   // Build actual event
   EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.deviceType = DeviceTypeIos;
   builder.timestamp = timestamp;
   builder.trackingAreaWidth = width;
   builder.trackingAreaHeight = height;
@@ -380,6 +389,7 @@ static ProtoHelper *instance;
 
   // Build actual event
   EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.deviceType = DeviceTypeIos;
   builder.target = target;
   builder.timestamp = 0;
   builder.trackingAreaWidth = 0;
@@ -397,6 +407,7 @@ static ProtoHelper *instance;
 
   // Build actual event
   EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.deviceType = DeviceTypeIos;
   builder.timestamp = 0;
   builder.trackingAreaWidth = 0;
   builder.trackingAreaHeight = 0;
@@ -413,6 +424,7 @@ static ProtoHelper *instance;
 
   // Build actual event
   EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.deviceType = DeviceTypeIos;
   builder.timestamp = 0;
   builder.trackingAreaWidth = 0;
   builder.trackingAreaHeight = 0;
@@ -429,6 +441,7 @@ static ProtoHelper *instance;
 
   // Build actual event
   EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.deviceType = DeviceTypeIos;
   builder.timestamp = 0;
   builder.trackingAreaWidth = 0;
   builder.trackingAreaHeight = 0;
@@ -450,6 +463,7 @@ static ProtoHelper *instance;
 
   // Build actual event
   EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.deviceType = DeviceTypeIos;
   builder.timestamp = 0;
   builder.trackingAreaWidth = 0;
   builder.trackingAreaHeight = 0;
@@ -470,6 +484,7 @@ static ProtoHelper *instance;
   
   // Build actual event
   EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.deviceType = DeviceTypeIos;
   builder.timestamp = 0;
   builder.trackingAreaWidth = 0;
   builder.trackingAreaHeight = 0;
@@ -485,6 +500,7 @@ static ProtoHelper *instance;
 
     // Build actual event
   EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.deviceType = DeviceTypeIos;
   builder.timestamp = 0;
   builder.trackingAreaWidth = 0;
   builder.trackingAreaHeight = 0;
