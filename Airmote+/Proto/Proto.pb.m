@@ -163,6 +163,14 @@ static PBExtensionRegistry* extensionRegistry = nil;
 }
 @end
 
+BOOL VersionIsValidValue(Version value) {
+  switch (value) {
+    case VersionCurrent:
+      return YES;
+    default:
+      return NO;
+  }
+}
 BOOL PhaseIsValidValue(Phase value) {
   switch (value) {
     case PhaseBegan:
@@ -196,6 +204,7 @@ BOOL SetupPhaseIsValidValue(SetupPhase value) {
 @property (strong) NSString* target;
 @property (strong) NSString* replyTo;
 @property DeviceType deviceType;
+@property Version version;
 @end
 
 @implementation Event
@@ -249,6 +258,13 @@ BOOL SetupPhaseIsValidValue(SetupPhase value) {
   hasDeviceType_ = !!value_;
 }
 @synthesize deviceType;
+- (BOOL) hasVersion {
+  return !!hasVersion_;
+}
+- (void) setHasVersion:(BOOL) value_ {
+  hasVersion_ = !!value_;
+}
+@synthesize version;
 - (id) init {
   if ((self = [super init])) {
     self.type = EventTypeDevice;
@@ -258,6 +274,7 @@ BOOL SetupPhaseIsValidValue(SetupPhase value) {
     self.target = @"";
     self.replyTo = @"";
     self.deviceType = DeviceTypeIos;
+    self.version = VersionCurrent;
   }
   return self;
 }
@@ -280,10 +297,7 @@ static Event* defaultEventInstance = nil;
   if (!self.hasTimestamp) {
     return NO;
   }
-  if (!self.hasTrackingAreaWidth) {
-    return NO;
-  }
-  if (!self.hasTrackingAreaHeight) {
+  if (!self.hasVersion) {
     return NO;
   }
   if (!self.extensionsAreInitialized) {
@@ -312,6 +326,9 @@ static Event* defaultEventInstance = nil;
   }
   if (self.hasDeviceType) {
     [output writeEnum:7 value:self.deviceType];
+  }
+  if (self.hasVersion) {
+    [output writeEnum:8 value:self.version];
   }
   [self writeExtensionsToCodedOutputStream:output
                                       from:100
@@ -345,6 +362,9 @@ static Event* defaultEventInstance = nil;
   }
   if (self.hasDeviceType) {
     size_ += computeEnumSize(7, self.deviceType);
+  }
+  if (self.hasVersion) {
+    size_ += computeEnumSize(8, self.version);
   }
   size_ += [self extensionsSerializedSize];
   size_ += self.unknownFields.serializedSize;
@@ -403,6 +423,9 @@ static Event* defaultEventInstance = nil;
   if (self.hasDeviceType) {
     [output appendFormat:@"%@%@: %@\n", indent, @"deviceType", [NSNumber numberWithInteger:self.deviceType]];
   }
+  if (self.hasVersion) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"version", [NSNumber numberWithInteger:self.version]];
+  }
   [self writeExtensionDescriptionToMutableString:(NSMutableString*)output
                                             from:100
                                               to:536870912
@@ -432,6 +455,8 @@ static Event* defaultEventInstance = nil;
       (!self.hasReplyTo || [self.replyTo isEqual:otherMessage.replyTo]) &&
       self.hasDeviceType == otherMessage.hasDeviceType &&
       (!self.hasDeviceType || self.deviceType == otherMessage.deviceType) &&
+      self.hasVersion == otherMessage.hasVersion &&
+      (!self.hasVersion || self.version == otherMessage.version) &&
       [self isEqualExtensionsInOther:otherMessage from:100 to:536870912] &&
 
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
@@ -458,6 +483,9 @@ static Event* defaultEventInstance = nil;
   }
   if (self.hasDeviceType) {
     hashCode = hashCode * 31 + self.deviceType;
+  }
+  if (self.hasVersion) {
+    hashCode = hashCode * 31 + self.version;
   }
   hashCode = hashCode * 31 + [self hashExtensionsFrom:100 to:536870912];
   hashCode = hashCode * 31 + [self.unknownFields hash];
@@ -545,6 +573,9 @@ BOOL EventTypeIsValidValue(EventType value) {
   if (other.hasDeviceType) {
     [self setDeviceType:other.deviceType];
   }
+  if (other.hasVersion) {
+    [self setVersion:other.version];
+  }
   [self mergeExtensionFields:other];
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -602,6 +633,15 @@ BOOL EventTypeIsValidValue(EventType value) {
           [self setDeviceType:value];
         } else {
           [unknownFields mergeVarintField:7 value:value];
+        }
+        break;
+      }
+      case 64: {
+        Version value = (Version)[input readEnum];
+        if (VersionIsValidValue(value)) {
+          [self setVersion:value];
+        } else {
+          [unknownFields mergeVarintField:8 value:value];
         }
         break;
       }
@@ -718,6 +758,22 @@ BOOL EventTypeIsValidValue(EventType value) {
 - (EventBuilder*) clearDeviceType {
   result.hasDeviceType = NO;
   result.deviceType = DeviceTypeIos;
+  return self;
+}
+- (BOOL) hasVersion {
+  return result.hasVersion;
+}
+- (Version) version {
+  return result.version;
+}
+- (EventBuilder*) setVersion:(Version) value {
+  result.hasVersion = YES;
+  result.version = value;
+  return self;
+}
+- (EventBuilder*) clearVersion {
+  result.hasVersion = NO;
+  result.version = VersionCurrent;
   return self;
 }
 @end
@@ -1143,6 +1199,8 @@ BOOL DeviceTypeIsValidValue(DeviceType value) {
 @interface DeviceEvent ()
 @property DeviceEventType type;
 @property (strong) Device* device;
+@property BOOL error;
+@property (strong) NSString* reason;
 @end
 
 @implementation DeviceEvent
@@ -1161,10 +1219,31 @@ BOOL DeviceTypeIsValidValue(DeviceType value) {
   hasDevice_ = !!value_;
 }
 @synthesize device;
+- (BOOL) hasError {
+  return !!hasError_;
+}
+- (void) setHasError:(BOOL) value_ {
+  hasError_ = !!value_;
+}
+- (BOOL) error {
+  return !!error_;
+}
+- (void) setError:(BOOL) value_ {
+  error_ = !!value_;
+}
+- (BOOL) hasReason {
+  return !!hasReason_;
+}
+- (void) setHasReason:(BOOL) value_ {
+  hasReason_ = !!value_;
+}
+@synthesize reason;
 - (id) init {
   if ((self = [super init])) {
     self.type = DeviceEventTypeRegister;
     self.device = [Device defaultInstance];
+    self.error = NO;
+    self.reason = @"";
   }
   return self;
 }
@@ -1187,11 +1266,10 @@ static DeviceEvent* defaultDeviceEventInstance = nil;
   if (!self.hasType) {
     return NO;
   }
-  if (!self.hasDevice) {
-    return NO;
-  }
-  if (!self.device.isInitialized) {
-    return NO;
+  if (self.hasDevice) {
+    if (!self.device.isInitialized) {
+      return NO;
+    }
   }
   return YES;
 }
@@ -1201,6 +1279,12 @@ static DeviceEvent* defaultDeviceEventInstance = nil;
   }
   if (self.hasDevice) {
     [output writeMessage:2 value:self.device];
+  }
+  if (self.hasError) {
+    [output writeBool:3 value:self.error];
+  }
+  if (self.hasReason) {
+    [output writeString:4 value:self.reason];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -1216,6 +1300,12 @@ static DeviceEvent* defaultDeviceEventInstance = nil;
   }
   if (self.hasDevice) {
     size_ += computeMessageSize(2, self.device);
+  }
+  if (self.hasError) {
+    size_ += computeBoolSize(3, self.error);
+  }
+  if (self.hasReason) {
+    size_ += computeStringSize(4, self.reason);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -1261,6 +1351,12 @@ static DeviceEvent* defaultDeviceEventInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasError) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"error", [NSNumber numberWithBool:self.error]];
+  }
+  if (self.hasReason) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"reason", self.reason];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (BOOL) isEqual:(id)other {
@@ -1276,6 +1372,10 @@ static DeviceEvent* defaultDeviceEventInstance = nil;
       (!self.hasType || self.type == otherMessage.type) &&
       self.hasDevice == otherMessage.hasDevice &&
       (!self.hasDevice || [self.device isEqual:otherMessage.device]) &&
+      self.hasError == otherMessage.hasError &&
+      (!self.hasError || self.error == otherMessage.error) &&
+      self.hasReason == otherMessage.hasReason &&
+      (!self.hasReason || [self.reason isEqual:otherMessage.reason]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -1286,6 +1386,12 @@ static DeviceEvent* defaultDeviceEventInstance = nil;
   if (self.hasDevice) {
     hashCode = hashCode * 31 + [self.device hash];
   }
+  if (self.hasError) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.error] hash];
+  }
+  if (self.hasReason) {
+    hashCode = hashCode * 31 + [self.reason hash];
+  }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
 }
@@ -1295,6 +1401,7 @@ BOOL DeviceEventTypeIsValidValue(DeviceEventType value) {
   switch (value) {
     case DeviceEventTypeRegister:
     case DeviceEventTypeUnregister:
+    case DeviceEventTypeResponse:
       return YES;
     default:
       return NO;
@@ -1344,6 +1451,12 @@ BOOL DeviceEventTypeIsValidValue(DeviceEventType value) {
   if (other.hasDevice) {
     [self mergeDevice:other.device];
   }
+  if (other.hasError) {
+    [self setError:other.error];
+  }
+  if (other.hasReason) {
+    [self setReason:other.reason];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -1381,6 +1494,14 @@ BOOL DeviceEventTypeIsValidValue(DeviceEventType value) {
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setDevice:[subBuilder buildPartial]];
+        break;
+      }
+      case 24: {
+        [self setError:[input readBool]];
+        break;
+      }
+      case 34: {
+        [self setReason:[input readString]];
         break;
       }
     }
@@ -1430,6 +1551,38 @@ BOOL DeviceEventTypeIsValidValue(DeviceEventType value) {
 - (DeviceEventBuilder*) clearDevice {
   result.hasDevice = NO;
   result.device = [Device defaultInstance];
+  return self;
+}
+- (BOOL) hasError {
+  return result.hasError;
+}
+- (BOOL) error {
+  return result.error;
+}
+- (DeviceEventBuilder*) setError:(BOOL) value {
+  result.hasError = YES;
+  result.error = value;
+  return self;
+}
+- (DeviceEventBuilder*) clearError {
+  result.hasError = NO;
+  result.error = NO;
+  return self;
+}
+- (BOOL) hasReason {
+  return result.hasReason;
+}
+- (NSString*) reason {
+  return result.reason;
+}
+- (DeviceEventBuilder*) setReason:(NSString*) value {
+  result.hasReason = YES;
+  result.reason = value;
+  return self;
+}
+- (DeviceEventBuilder*) clearReason {
+  result.hasReason = NO;
+  result.reason = @"";
   return self;
 }
 @end

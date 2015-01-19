@@ -61,7 +61,6 @@
 		01B3040C1A52C7AC009D7417 /* WiFiListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4F9933619A487EA006FC9C2 /* WiFiListViewController.xib */; };
 		01B3040D1A52C7AC009D7417 /* InstructionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4BBD95219A3661500156A92 /* InstructionViewController.xib */; };
 		01B3040E1A52C7AC009D7417 /* ConnectedConfirmationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B46889A919AEE5ED0043A8A9 /* ConnectedConfirmationViewController.xib */; };
-		01B3040F1A52C7AC009D7417 /* Proto.proto in Resources */ = {isa = PBXBuildFile; fileRef = C584488EB37D152402FECCDD /* Proto.proto */; };
 		01F415611871DA4300029AFE /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 01F415601871DA4300029AFE /* Settings.bundle */; };
 		37347075505D4DBDB2B7D0D4 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B16347417AEC44FE911F15C2 /* libPods.a */; };
 		B43A5FCD1A675DB300105F55 /* NSString+IPAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = B43A5FCC1A675DB300105F55 /* NSString+IPAddress.m */; };
@@ -90,7 +89,6 @@
 		C58444AF7A720078B3CB7669 /* DDURLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = C58449D8A0EA2DEB85384596 /* DDURLParser.m */; };
 		C584471B49D0CE130B025D7F /* Event+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = C584418E08FB8FB0F1DDF896 /* Event+Extension.m */; };
 		C5844A0B86EA15AA83BB1977 /* NSData+NetService.m in Sources */ = {isa = PBXBuildFile; fileRef = C5844A3ABF93BE55E57B1EB8 /* NSData+NetService.m */; };
-		C5844AB198B3D10C81FB020E /* Proto.proto in Resources */ = {isa = PBXBuildFile; fileRef = C584488EB37D152402FECCDD /* Proto.proto */; };
 		C5844B96C4F5A3E00AE2726A /* WifiNetwork+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = C58448D55F9A1DC3853DD753 /* WifiNetwork+Extension.m */; };
 		C5844D863B1EFAC244C75EB8 /* IAConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = C5844072E0B87BC74BC615E0 /* IAConnection.m */; };
 		C5844F87624D1E90C002C719 /* EventCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = C58442F85EC1ECBA64716687 /* EventCenter.m */; };
@@ -178,7 +176,6 @@
 		C584435BDD4471829B24E14F /* TrackPadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackPadViewController.h; sourceTree = "<group>"; };
 		C58446B8812F646BE82E52DB /* ProtoHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProtoHelper.m; sourceTree = "<group>"; };
 		C584485FF4326A8E9B08B3A4 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
-		C584488EB37D152402FECCDD /* Proto.proto */ = {isa = PBXFileReference; lastKnownFileType = file.proto; path = Proto.proto; sourceTree = "<group>"; };
 		C58448D55F9A1DC3853DD753 /* WifiNetwork+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WifiNetwork+Extension.m"; sourceTree = "<group>"; };
 		C58448D5F1B330194444A5F2 /* Event+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Event+Extension.h"; sourceTree = "<group>"; };
 		C58449999B7324E698D6643F /* Proto.pb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Proto.pb.m; sourceTree = "<group>"; };
@@ -387,7 +384,6 @@
 				C58446B8812F646BE82E52DB /* ProtoHelper.m */,
 				C584428433A94E0EC31817FB /* ProtoHelper.h */,
 				C58449999B7324E698D6643F /* Proto.pb.m */,
-				C584488EB37D152402FECCDD /* Proto.proto */,
 			);
 			path = Proto;
 			sourceTree = "<group>";
@@ -560,7 +556,6 @@
 				B4F9933819A487EA006FC9C2 /* WiFiListViewController.xib in Resources */,
 				B4BBD95419A3661500156A92 /* InstructionViewController.xib in Resources */,
 				B46889AB19AEE5ED0043A8A9 /* ConnectedConfirmationViewController.xib in Resources */,
-				C5844AB198B3D10C81FB020E /* Proto.proto in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -588,7 +583,6 @@
 				01B3040C1A52C7AC009D7417 /* WiFiListViewController.xib in Resources */,
 				01B3040D1A52C7AC009D7417 /* InstructionViewController.xib in Resources */,
 				01B3040E1A52C7AC009D7417 /* ConnectedConfirmationViewController.xib in Resources */,
-				01B3040F1A52C7AC009D7417 /* Proto.proto in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

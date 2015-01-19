@@ -48,6 +48,12 @@
   #endif
 #endif
 
+typedef NS_ENUM(SInt32, Version) {
+  VersionCurrent = 2,
+};
+
+BOOL VersionIsValidValue(Version value);
+
 typedef NS_ENUM(SInt32, Phase) {
   PhaseBegan = 0,
   PhaseMoved = 1,
@@ -104,6 +110,7 @@ BOOL DeviceTypeIsValidValue(DeviceType value);
 typedef NS_ENUM(SInt32, DeviceEventType) {
   DeviceEventTypeRegister = 0,
   DeviceEventTypeUnregister = 1,
+  DeviceEventTypeResponse = 2,
 };
 
 BOOL DeviceEventTypeIsValidValue(DeviceEventType value);
@@ -217,6 +224,7 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
   BOOL hasReplyTo_:1;
   BOOL hasType_:1;
   BOOL hasDeviceType_:1;
+  BOOL hasVersion_:1;
   SInt64 timestamp;
   SInt32 trackingAreaWidth;
   SInt32 trackingAreaHeight;
@@ -224,6 +232,7 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
   NSString* replyTo;
   EventType type;
   DeviceType deviceType;
+  Version version;
 }
 - (BOOL) hasType;
 - (BOOL) hasTimestamp;
@@ -232,6 +241,7 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 - (BOOL) hasTarget;
 - (BOOL) hasReplyTo;
 - (BOOL) hasDeviceType;
+- (BOOL) hasVersion;
 @property (readonly) EventType type;
 @property (readonly) SInt64 timestamp;
 @property (readonly) SInt32 trackingAreaWidth;
@@ -239,6 +249,7 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 @property (readonly, strong) NSString* target;
 @property (readonly, strong) NSString* replyTo;
 @property (readonly) DeviceType deviceType;
+@property (readonly) Version version;
 
 + (Event*) defaultInstance;
 - (Event*) defaultInstance;
@@ -309,6 +320,11 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 - (DeviceType) deviceType;
 - (EventBuilder*) setDeviceType:(DeviceType) value;
 - (EventBuilder*) clearDeviceType;
+
+- (BOOL) hasVersion;
+- (Version) version;
+- (EventBuilder*) setVersion:(Version) value;
+- (EventBuilder*) clearVersion;
 @end
 
 @interface Device : PBGeneratedMessage {
@@ -398,15 +414,23 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 
 @interface DeviceEvent : PBGeneratedMessage {
 @private
+  BOOL hasError_:1;
+  BOOL hasReason_:1;
   BOOL hasDevice_:1;
   BOOL hasType_:1;
+  BOOL error_:1;
+  NSString* reason;
   Device* device;
   DeviceEventType type;
 }
 - (BOOL) hasType;
 - (BOOL) hasDevice;
+- (BOOL) hasError;
+- (BOOL) hasReason;
 @property (readonly) DeviceEventType type;
 @property (readonly, strong) Device* device;
+- (BOOL) error;
+@property (readonly, strong) NSString* reason;
 
 + (DeviceEvent*) defaultInstance;
 - (DeviceEvent*) defaultInstance;
@@ -455,6 +479,16 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 - (DeviceEventBuilder*) setDeviceBuilder:(DeviceBuilder*) builderForValue;
 - (DeviceEventBuilder*) mergeDevice:(Device*) value;
 - (DeviceEventBuilder*) clearDevice;
+
+- (BOOL) hasError;
+- (BOOL) error;
+- (DeviceEventBuilder*) setError:(BOOL) value;
+- (DeviceEventBuilder*) clearError;
+
+- (BOOL) hasReason;
+- (NSString*) reason;
+- (DeviceEventBuilder*) setReason:(NSString*) value;
+- (DeviceEventBuilder*) clearReason;
 @end
 
 @interface TouchEvent : PBGeneratedMessage {
