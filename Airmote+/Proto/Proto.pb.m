@@ -195,6 +195,7 @@ BOOL SetupPhaseIsValidValue(SetupPhase value) {
 @property SInt32 trackingAreaHeight;
 @property (strong) NSString* target;
 @property (strong) NSString* replyTo;
+@property DeviceType deviceType;
 @end
 
 @implementation Event
@@ -241,6 +242,13 @@ BOOL SetupPhaseIsValidValue(SetupPhase value) {
   hasReplyTo_ = !!value_;
 }
 @synthesize replyTo;
+- (BOOL) hasDeviceType {
+  return !!hasDeviceType_;
+}
+- (void) setHasDeviceType:(BOOL) value_ {
+  hasDeviceType_ = !!value_;
+}
+@synthesize deviceType;
 - (id) init {
   if ((self = [super init])) {
     self.type = EventTypeDevice;
@@ -249,6 +257,7 @@ BOOL SetupPhaseIsValidValue(SetupPhase value) {
     self.trackingAreaHeight = 0;
     self.target = @"";
     self.replyTo = @"";
+    self.deviceType = DeviceTypeIos;
   }
   return self;
 }
@@ -301,6 +310,9 @@ static Event* defaultEventInstance = nil;
   if (self.hasReplyTo) {
     [output writeString:6 value:self.replyTo];
   }
+  if (self.hasDeviceType) {
+    [output writeEnum:7 value:self.deviceType];
+  }
   [self writeExtensionsToCodedOutputStream:output
                                       from:100
                                         to:536870912];
@@ -330,6 +342,9 @@ static Event* defaultEventInstance = nil;
   }
   if (self.hasReplyTo) {
     size_ += computeStringSize(6, self.replyTo);
+  }
+  if (self.hasDeviceType) {
+    size_ += computeEnumSize(7, self.deviceType);
   }
   size_ += [self extensionsSerializedSize];
   size_ += self.unknownFields.serializedSize;
@@ -385,6 +400,9 @@ static Event* defaultEventInstance = nil;
   if (self.hasReplyTo) {
     [output appendFormat:@"%@%@: %@\n", indent, @"replyTo", self.replyTo];
   }
+  if (self.hasDeviceType) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"deviceType", [NSNumber numberWithInteger:self.deviceType]];
+  }
   [self writeExtensionDescriptionToMutableString:(NSMutableString*)output
                                             from:100
                                               to:536870912
@@ -412,6 +430,8 @@ static Event* defaultEventInstance = nil;
       (!self.hasTarget || [self.target isEqual:otherMessage.target]) &&
       self.hasReplyTo == otherMessage.hasReplyTo &&
       (!self.hasReplyTo || [self.replyTo isEqual:otherMessage.replyTo]) &&
+      self.hasDeviceType == otherMessage.hasDeviceType &&
+      (!self.hasDeviceType || self.deviceType == otherMessage.deviceType) &&
       [self isEqualExtensionsInOther:otherMessage from:100 to:536870912] &&
 
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
@@ -435,6 +455,9 @@ static Event* defaultEventInstance = nil;
   }
   if (self.hasReplyTo) {
     hashCode = hashCode * 31 + [self.replyTo hash];
+  }
+  if (self.hasDeviceType) {
+    hashCode = hashCode * 31 + self.deviceType;
   }
   hashCode = hashCode * 31 + [self hashExtensionsFrom:100 to:536870912];
   hashCode = hashCode * 31 + [self.unknownFields hash];
@@ -519,6 +542,9 @@ BOOL EventTypeIsValidValue(EventType value) {
   if (other.hasReplyTo) {
     [self setReplyTo:other.replyTo];
   }
+  if (other.hasDeviceType) {
+    [self setDeviceType:other.deviceType];
+  }
   [self mergeExtensionFields:other];
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -568,6 +594,15 @@ BOOL EventTypeIsValidValue(EventType value) {
       }
       case 50: {
         [self setReplyTo:[input readString]];
+        break;
+      }
+      case 56: {
+        DeviceType value = (DeviceType)[input readEnum];
+        if (DeviceTypeIsValidValue(value)) {
+          [self setDeviceType:value];
+        } else {
+          [unknownFields mergeVarintField:7 value:value];
+        }
         break;
       }
     }
@@ -669,11 +704,27 @@ BOOL EventTypeIsValidValue(EventType value) {
   result.replyTo = @"";
   return self;
 }
+- (BOOL) hasDeviceType {
+  return result.hasDeviceType;
+}
+- (DeviceType) deviceType {
+  return result.deviceType;
+}
+- (EventBuilder*) setDeviceType:(DeviceType) value {
+  result.hasDeviceType = YES;
+  result.deviceType = value;
+  return self;
+}
+- (EventBuilder*) clearDeviceType {
+  result.hasDeviceType = NO;
+  result.deviceType = DeviceTypeIos;
+  return self;
+}
 @end
 
 @interface Device ()
 @property (strong) NSString* name;
-@property DeviceVendor vendor;
+@property DeviceType type;
 @property SInt32 version;
 @property (strong) NSString* productId;
 @property BOOL hasKeyboard;
@@ -688,13 +739,13 @@ BOOL EventTypeIsValidValue(EventType value) {
   hasName_ = !!value_;
 }
 @synthesize name;
-- (BOOL) hasVendor {
-  return !!hasVendor_;
+- (BOOL) hasType {
+  return !!hasType_;
 }
-- (void) setHasVendor:(BOOL) value_ {
-  hasVendor_ = !!value_;
+- (void) setHasType:(BOOL) value_ {
+  hasType_ = !!value_;
 }
-@synthesize vendor;
+@synthesize type;
 - (BOOL) hasVersion {
   return !!hasVersion_;
 }
@@ -724,7 +775,7 @@ BOOL EventTypeIsValidValue(EventType value) {
 - (id) init {
   if ((self = [super init])) {
     self.name = @"";
-    self.vendor = DeviceVendorIos;
+    self.type = DeviceTypeIos;
     self.version = 0;
     self.productId = @"";
     self.hasKeyboard = NO;
@@ -747,7 +798,7 @@ static Device* defaultDeviceInstance = nil;
   if (!self.hasName) {
     return NO;
   }
-  if (!self.hasVendor) {
+  if (!self.hasType) {
     return NO;
   }
   if (!self.hasProductId) {
@@ -759,8 +810,8 @@ static Device* defaultDeviceInstance = nil;
   if (self.hasName) {
     [output writeString:1 value:self.name];
   }
-  if (self.hasVendor) {
-    [output writeEnum:2 value:self.vendor];
+  if (self.hasType) {
+    [output writeEnum:2 value:self.type];
   }
   if (self.hasVersion) {
     [output writeInt32:3 value:self.version];
@@ -783,8 +834,8 @@ static Device* defaultDeviceInstance = nil;
   if (self.hasName) {
     size_ += computeStringSize(1, self.name);
   }
-  if (self.hasVendor) {
-    size_ += computeEnumSize(2, self.vendor);
+  if (self.hasType) {
+    size_ += computeEnumSize(2, self.type);
   }
   if (self.hasVersion) {
     size_ += computeInt32Size(3, self.version);
@@ -833,8 +884,8 @@ static Device* defaultDeviceInstance = nil;
   if (self.hasName) {
     [output appendFormat:@"%@%@: %@\n", indent, @"name", self.name];
   }
-  if (self.hasVendor) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"vendor", [NSNumber numberWithInteger:self.vendor]];
+  if (self.hasType) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"type", [NSNumber numberWithInteger:self.type]];
   }
   if (self.hasVersion) {
     [output appendFormat:@"%@%@: %@\n", indent, @"version", [NSNumber numberWithInteger:self.version]];
@@ -858,8 +909,8 @@ static Device* defaultDeviceInstance = nil;
   return
       self.hasName == otherMessage.hasName &&
       (!self.hasName || [self.name isEqual:otherMessage.name]) &&
-      self.hasVendor == otherMessage.hasVendor &&
-      (!self.hasVendor || self.vendor == otherMessage.vendor) &&
+      self.hasType == otherMessage.hasType &&
+      (!self.hasType || self.type == otherMessage.type) &&
       self.hasVersion == otherMessage.hasVersion &&
       (!self.hasVersion || self.version == otherMessage.version) &&
       self.hasProductId == otherMessage.hasProductId &&
@@ -873,8 +924,8 @@ static Device* defaultDeviceInstance = nil;
   if (self.hasName) {
     hashCode = hashCode * 31 + [self.name hash];
   }
-  if (self.hasVendor) {
-    hashCode = hashCode * 31 + self.vendor;
+  if (self.hasType) {
+    hashCode = hashCode * 31 + self.type;
   }
   if (self.hasVersion) {
     hashCode = hashCode * 31 + [[NSNumber numberWithInteger:self.version] hash];
@@ -890,14 +941,16 @@ static Device* defaultDeviceInstance = nil;
 }
 @end
 
-BOOL DeviceVendorIsValidValue(DeviceVendor value) {
+BOOL DeviceTypeIsValidValue(DeviceType value) {
   switch (value) {
-    case DeviceVendorIos:
-    case DeviceVendorAndroid:
-    case DeviceVendorLeapmotion:
-    case DeviceVendorKinect:
-    case DeviceVendorWindows:
-    case DeviceVendorOther:
+    case DeviceTypeIos:
+    case DeviceTypeAndroid:
+    case DeviceTypeLeapmotion:
+    case DeviceTypeKinect:
+    case DeviceTypeWindows:
+    case DeviceTypeIrRemote:
+    case DeviceTypeEmulated:
+    case DeviceTypeOther:
       return YES;
     default:
       return NO;
@@ -944,8 +997,8 @@ BOOL DeviceVendorIsValidValue(DeviceVendor value) {
   if (other.hasName) {
     [self setName:other.name];
   }
-  if (other.hasVendor) {
-    [self setVendor:other.vendor];
+  if (other.hasType) {
+    [self setType:other.type];
   }
   if (other.hasVersion) {
     [self setVersion:other.version];
@@ -982,9 +1035,9 @@ BOOL DeviceVendorIsValidValue(DeviceVendor value) {
         break;
       }
       case 16: {
-        DeviceVendor value = (DeviceVendor)[input readEnum];
-        if (DeviceVendorIsValidValue(value)) {
-          [self setVendor:value];
+        DeviceType value = (DeviceType)[input readEnum];
+        if (DeviceTypeIsValidValue(value)) {
+          [self setType:value];
         } else {
           [unknownFields mergeVarintField:2 value:value];
         }
@@ -1021,20 +1074,20 @@ BOOL DeviceVendorIsValidValue(DeviceVendor value) {
   result.name = @"";
   return self;
 }
-- (BOOL) hasVendor {
-  return result.hasVendor;
+- (BOOL) hasType {
+  return result.hasType;
 }
-- (DeviceVendor) vendor {
-  return result.vendor;
+- (DeviceType) type {
+  return result.type;
 }
-- (DeviceBuilder*) setVendor:(DeviceVendor) value {
-  result.hasVendor = YES;
-  result.vendor = value;
+- (DeviceBuilder*) setType:(DeviceType) value {
+  result.hasType = YES;
+  result.type = value;
   return self;
 }
-- (DeviceBuilder*) clearVendor {
-  result.hasVendor = NO;
-  result.vendor = DeviceVendorIos;
+- (DeviceBuilder*) clearType {
+  result.hasType = NO;
+  result.type = DeviceTypeIos;
   return self;
 }
 - (BOOL) hasVersion {

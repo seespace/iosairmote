@@ -11,6 +11,9 @@
 #import "ProtoHelper.h"
 #import "TrackPadView.h"
 #import "InstructionViewController.h"
+#import "NSString+IPAddress.h"
+
+#define kIPAddressAlertTitle @"Manual Connect"
 
 @implementation TrackPadViewController {
   Event *_oauthEvent;
@@ -19,6 +22,7 @@
   __weak IBOutlet UITextView *plainText;
   __weak IBOutlet NSLayoutConstraint *bottomControlsConstrain;
   __weak IBOutlet UIPageControl *pageControl;
+  NSString *lastManuallyConnectedIP;
 }
 
 static const uint8_t kMotionShakeTag = 6;
@@ -47,8 +51,18 @@ static const uint8_t kMotionShakeTag = 6;
                                            selector:@selector(didFinishWifiSetup:)
                                                name:kInAirDeviceDidConnectToWifiNotification
                                              object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(appWillBecomeInactive:) name:UIApplicationWillResignActiveNotification
+                                             object:nil];
+  
+
+  bottomControlsConstrain.constant = -54;
 }
 
+
+-(void) appWillBecomeInactive:(NSNotification *) notification {
+  [SVProgressHUD dismiss];  
+}
 
 - (BOOL)shouldConnectAutomatically
 {
@@ -90,7 +104,9 @@ static const uint8_t kMotionShakeTag = 6;
     case IAConnectionErrorSocketInvalidData:
     case IAConnectionErrorWifiNotAvailable:
     case IAConnectionErrorFailToConnectSocket:
-      [SVProgressHUD showErrorWithStatus:[error localizedFailureReason]];
+        [SVProgressHUD showErrorWithStatus:[error localizedFailureReason]];
+        [self showActionSheetForServices:[[IAConnection sharedConnection] foundServices]];
+
       break;
 
     case IAConnectionErrorSocketDisconnected:
@@ -146,17 +162,23 @@ static const uint8_t kMotionShakeTag = 6;
 
 
 - (void)showActionSheetForServices:(NSArray *) services {
+
+  if ([_actionSheet isVisible] == YES)
+    return;
+  
   _actionSheet = [[UIActionSheet alloc] init];
   [_actionSheet setTitle:@"Choose a device"];
   [_actionSheet setDelegate:self];
-
+  
   for (NSNetService *service in services) {
     NSString *title = service.name;
     [_actionSheet addButtonWithTitle:title];
   }
 
+  [_actionSheet addButtonWithTitle:@"Other"];
+
   [_actionSheet addButtonWithTitle:@"Cancel"];
-  _actionSheet.cancelButtonIndex = services.count;
+  _actionSheet.cancelButtonIndex = services.count + 1;
 
   [_actionSheet showInView:self.view];
 }
@@ -165,7 +187,19 @@ static const uint8_t kMotionShakeTag = 6;
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
   if (buttonIndex != actionSheet.cancelButtonIndex) {
-    [[IAConnection sharedConnection] connectToServiceAtIndex:(NSUInteger) buttonIndex];
+    if (buttonIndex == actionSheet.numberOfButtons - 2) {
+      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:kIPAddressAlertTitle
+                                                      message:@"Please enter your InAir box IP Address."
+                                                     delegate:self
+                                            cancelButtonTitle:@"Done"
+                                            otherButtonTitles:nil];
+      alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+      UITextField *textField = [alert textFieldAtIndex:0];
+      textField.placeholder = @"192.168.1.1";
+      [alert show];
+    } else {
+      [[IAConnection sharedConnection] connectToServiceAtIndex:(NSUInteger) buttonIndex];
+    }
   }
 }
 
@@ -175,6 +209,21 @@ static const uint8_t kMotionShakeTag = 6;
   if ([alertView.title isEqualToString:@"OAuth"]) {
     if (buttonIndex != alertView.cancelButtonIndex) {
       [self processOAuthRequest];
+    }
+  } else if ([alertView.title isEqualToString:kIPAddressAlertTitle]) {
+    NSString *ipaddress = [alertView textFieldAtIndex:0].text;
+    
+    if ([ipaddress length] == 0 || ![ipaddress isValidIPAddress]) {
+      UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                          message:@"Invalid IP Address. Please try again."
+                                                         delegate:nil
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles:nil];
+      [alertView show];
+    } else {
+      [[IAConnection sharedConnection] stop];
+      [[IAConnection sharedConnection] resetStates];
+      [[IAConnection sharedConnection] connectToHost:ipaddress];
     }
   }
   _oauthEvent = nil;
@@ -261,6 +310,9 @@ static const uint8_t kMotionShakeTag = 6;
 
 
 - (void)keyboardWillHide:(NSNotification *)notification {
+  if (! plainText.isFirstResponder)
+    return;
+
   NSDictionary *userInfo = [notification userInfo];
   float duration = [userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue];
   UIViewAnimationCurve curve = (UIViewAnimationCurve) [userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue];
@@ -276,6 +328,9 @@ static const uint8_t kMotionShakeTag = 6;
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification {
+  if (! plainText.isFirstResponder)
+    return;
+
   NSDictionary *userInfo = [notification userInfo];
   float duration = [userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue];
   UIViewAnimationCurve curve = (UIViewAnimationCurve) [userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue];

@@ -9,7 +9,7 @@
 @class Event;
 
 #define kIAConnectionErrorDomain @"InAir.Error"
-
+#define kManualIPAddress @"Manual"
 
 typedef NS_ENUM(NSInteger, IAConnectionError) {
   IAConnectionErrorWifiNotAvailable,
@@ -52,6 +52,7 @@ typedef NS_ENUM(NSInteger, IAConnectionError) {
 - (void)sendEvent:(Event *)event withTag:(u_int8_t)tag;
 - (void) connectToServiceAtIndex:(NSUInteger) index;
 - (void) stop;
+- (void) connectToHost:(NSString *) ipAddress;
 - (void) resetStates;
 
 @end
