@@ -114,6 +114,7 @@ static ProtoHelper *instance;
 + (Device *)currentDevice {
   DeviceBuilder *builder = [[DeviceBuilder alloc] init];
   builder.name = [[UIDevice currentDevice] name];
+  builder.version = VersionCurrent;
   builder.type = DeviceTypeIos;
   builder.productId = [NSString
       stringWithFormat:@"%@", [[UIDevice currentDevice] identifierForVendor]];
@@ -135,6 +136,7 @@ static ProtoHelper *instance;
 
   // Build actual event
   EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.version = VersionCurrent;
   builder.deviceType = DeviceTypeIos;
   builder.timestamp = timestamp;
   builder.type = EventTypeDevice;
@@ -162,6 +164,7 @@ static ProtoHelper *instance;
 
   // Build actual event
   EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.version = VersionCurrent;
   builder.deviceType = DeviceTypeIos;
   builder.timestamp = timestamp;
   builder.trackingAreaWidth = width;
@@ -182,6 +185,7 @@ static ProtoHelper *instance;
 
   // Build actual event
   EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.version = VersionCurrent;
   builder.deviceType = DeviceTypeIos;
   builder.timestamp = timestamp;
   builder.type = EventTypeMotion;
@@ -202,6 +206,7 @@ static ProtoHelper *instance;
 
   // Build actual event
   EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.version = VersionCurrent;
   builder.deviceType = DeviceTypeIos;
   builder.timestamp = timestamp;
   builder.type = EventTypeKeypress;
@@ -232,6 +237,7 @@ static ProtoHelper *instance;
 
   // Build actual event
   EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.version = VersionCurrent;
   builder.deviceType = DeviceTypeIos;
   builder.timestamp = timestamp;
   builder.trackingAreaWidth = width;
@@ -270,6 +276,7 @@ static ProtoHelper *instance;
 
   // Build actual event
   EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.version = VersionCurrent;
   builder.deviceType = DeviceTypeIos;
   builder.timestamp = timestamp;
   builder.type = EventTypeGesture;
@@ -289,27 +296,28 @@ static ProtoHelper *instance;
                                scale:(Float32)scale
                             velocity:(Float32)velocity {
     
-    [self ensureInitialized];
-    
-    GestureEventBuilder *eBuilder = [[GestureEventBuilder alloc] init];
-    eBuilder.locationX = locationX;
-    eBuilder.locationY = locationY;
-    eBuilder.state = state;
-    eBuilder.type = GestureEventTypePinch;
-    
-    eBuilder.pinchScale = scale;
-    eBuilder.pinchVelocity = velocity;
-    
-    GestureEvent *event = [eBuilder build];
-    
-    // Build actual event
-    EventBuilder *builder = [[EventBuilder alloc] init];
-    builder.deviceType = DeviceTypeIos;
-    builder.timestamp = timestamp;
-    builder.type = EventTypeGesture;
-    builder.trackingAreaWidth = width;
-    builder.trackingAreaHeight = height;
-    [builder setExtension:[GestureEvent event] value:event];
+  [self ensureInitialized];
+  
+  GestureEventBuilder *eBuilder = [[GestureEventBuilder alloc] init];
+  eBuilder.locationX = locationX;
+  eBuilder.locationY = locationY;
+  eBuilder.state = state;
+  eBuilder.type = GestureEventTypePinch;
+  
+  eBuilder.pinchScale = scale;
+  eBuilder.pinchVelocity = velocity;
+  
+  GestureEvent *event = [eBuilder build];
+  
+  // Build actual event
+  EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.version = VersionCurrent;
+  builder.deviceType = DeviceTypeIos;
+  builder.timestamp = timestamp;
+  builder.type = EventTypeGesture;
+  builder.trackingAreaWidth = width;
+  builder.trackingAreaHeight = height;
+  [builder setExtension:[GestureEvent event] value:event];
     
     return [builder build];
 }
@@ -336,6 +344,7 @@ static ProtoHelper *instance;
 
   // Build actual event
   EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.version = VersionCurrent;
   builder.deviceType = DeviceTypeIos;
   builder.timestamp = timestamp;
   builder.trackingAreaWidth = width;
@@ -368,6 +377,7 @@ static ProtoHelper *instance;
 
   // Build actual event
   EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.version = VersionCurrent;
   builder.deviceType = DeviceTypeIos;
   builder.timestamp = timestamp;
   builder.trackingAreaWidth = width;
@@ -389,6 +399,7 @@ static ProtoHelper *instance;
 
   // Build actual event
   EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.version = VersionCurrent;
   builder.deviceType = DeviceTypeIos;
   builder.target = target;
   builder.timestamp = 0;
@@ -407,6 +418,7 @@ static ProtoHelper *instance;
 
   // Build actual event
   EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.version = VersionCurrent;
   builder.deviceType = DeviceTypeIos;
   builder.timestamp = 0;
   builder.trackingAreaWidth = 0;
@@ -424,6 +436,7 @@ static ProtoHelper *instance;
 
   // Build actual event
   EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.version = VersionCurrent;
   builder.deviceType = DeviceTypeIos;
   builder.timestamp = 0;
   builder.trackingAreaWidth = 0;
@@ -441,6 +454,7 @@ static ProtoHelper *instance;
 
   // Build actual event
   EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.version = VersionCurrent;
   builder.deviceType = DeviceTypeIos;
   builder.timestamp = 0;
   builder.trackingAreaWidth = 0;
@@ -463,6 +477,7 @@ static ProtoHelper *instance;
 
   // Build actual event
   EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.version = VersionCurrent;
   builder.deviceType = DeviceTypeIos;
   builder.timestamp = 0;
   builder.trackingAreaWidth = 0;
@@ -484,6 +499,7 @@ static ProtoHelper *instance;
   
   // Build actual event
   EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.version = VersionCurrent;
   builder.deviceType = DeviceTypeIos;
   builder.timestamp = 0;
   builder.trackingAreaWidth = 0;
@@ -500,6 +516,7 @@ static ProtoHelper *instance;
 
     // Build actual event
   EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.version = VersionCurrent;
   builder.deviceType = DeviceTypeIos;
   builder.timestamp = 0;
   builder.trackingAreaWidth = 0;
