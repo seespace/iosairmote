@@ -847,8 +847,8 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Nhan Dang (UF35BNRQU9)";
-				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer: Nhan Dang (UF35BNRQU9)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Airmote+-bnterijyewazbxeoxmsfsvinvpuz/Build/Products",
@@ -906,7 +906,7 @@
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Airmote+-bnterijyewazbxeoxmsfsvinvpuz/Build/Products/Debug-iphoneos",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "e62c7ea4-d4c8-41d2-b234-7a66baa49802";
+				PROVISIONING_PROFILE = "d22ccee5-1749-42d3-85da-f2e9e48ad773";
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/Pods\"/**";
 				WRAPPER_EXTENSION = app;
