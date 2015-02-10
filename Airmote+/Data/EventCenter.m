@@ -91,9 +91,27 @@ static const uint8_t kSessionStartTag = 9;
 #pragma mark Socket methods
 
 - (void)socket:(GCDAsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag {
-  if (sock == _socket) {
-    [self wifiSocketDidReadData:data withTag:tag];
+  NSLog(@"Did read data");
+
+  if (data.length < 4) {
+    return;
   }
+
+  NSData *lengthData = [data subdataWithRange:NSMakeRange(0, 4)];
+  int length = CFSwapInt32BigToHost(*(int *) ([lengthData bytes]));
+  if (length > data.length) {
+    NSLog(@"ERROR: Length value is bigger than actual data length");
+    return;
+  }
+
+  NSData *msg = [data subdataWithRange:NSMakeRange(4, length)];
+
+  Event *event = [ProtoHelper parseFromData:msg];
+
+  if (self.delegate && [self.delegate respondsToSelector:@selector(eventCenter:receivedEvent:)]) {
+    [self.delegate eventCenter:self receivedEvent:event];
+  }
+  [sock readDataWithTimeout:-1 tag:0];
 }
 
 - (void)socketDidDisconnect:(GCDAsyncSocket *)sock withError:(NSError *)error {
@@ -115,9 +133,9 @@ static const uint8_t kSessionStartTag = 9;
   NSLog(@"New socket %@", newSocket);
   [newSocket readDataWithTimeout:-1 tag:0];
 
-  if (_clientSocket != nil) {
-    [_clientSocket disconnect];
-  }
+//  if (_clientSocket != nil) {
+//    [_clientSocket disconnect];
+//  }
 
   _clientSocket = newSocket;
 
@@ -132,30 +150,6 @@ static const uint8_t kSessionStartTag = 9;
 }
 
 #pragma mark - Wifi Socket Methods
-
-- (void)wifiSocketDidReadData:(NSData *)data withTag:(long)tag {
-  NSLog(@"Did read data");
-
-  if (data.length < 4) {
-    return;
-  }
-
-  NSData *lengthData = [data subdataWithRange:NSMakeRange(0, 4)];
-  int length = CFSwapInt32BigToHost(*(int *) ([lengthData bytes]));
-  if (length > data.length) {
-    NSLog(@"ERROR: Length value is bigger than actual data length");
-    return;
-  }
-
-  NSData *msg = [data subdataWithRange:NSMakeRange(4, length)];
-
-  Event *event = [ProtoHelper parseFromData:msg];
-
-  if (self.delegate && [self.delegate respondsToSelector:@selector(eventCenter:receivedEvent:)]) {
-    [self.delegate eventCenter:self receivedEvent:event];
-  }
-  [_socket readDataWithTimeout:-1 tag:0];
-}
 
 - (void)wifiSocketDidDisconnectWithError:(NSError *)error {
   if (self.delegate && [self.delegate respondsToSelector:@selector(eventCenterDidDisconnectFromHost:withError:)]) {
