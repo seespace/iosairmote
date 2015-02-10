@@ -54,6 +54,9 @@ static const uint8_t kMotionShakeTag = 6;
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(appWillBecomeInactive:) name:UIApplicationWillResignActiveNotification
                                              object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(appDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification
+                                             object:nil];
   
 
   bottomControlsConstrain.constant = -54;
@@ -61,7 +64,12 @@ static const uint8_t kMotionShakeTag = 6;
 
 
 -(void) appWillBecomeInactive:(NSNotification *) notification {
-  [SVProgressHUD dismiss];  
+  [SVProgressHUD dismiss];
+  [[IAConnection sharedConnection] stopServer];
+}
+
+-(void) appDidBecomeActive:(NSNotification *) notification {
+  [[IAConnection sharedConnection] startServer];
 }
 
 - (BOOL)shouldConnectAutomatically
@@ -163,8 +171,9 @@ static const uint8_t kMotionShakeTag = 6;
 
 - (void)showActionSheetForServices:(NSArray *) services {
 
-  if ([_actionSheet isVisible] == YES)
+  if ([_actionSheet isVisible]) {
     return;
+  }
   
   _actionSheet = [[UIActionSheet alloc] init];
   [_actionSheet setTitle:@"Choose a device"];

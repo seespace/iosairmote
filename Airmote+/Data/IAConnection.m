@@ -207,9 +207,12 @@
                                                   userInfo:nil
                                                    repeats:NO];
   } else {
-    DDLogDebug(@"Failed to scan because no wifi available");
-    NSError *error = [self errorWithCode:IAConnectionErrorWifiNotAvailable withReason:@"Wifi is not available"];
-    [self notifyError:error];
+    if (![eventCenter isActive]) {
+      // usb not connected
+      DDLogDebug(@"Failed to scan because no wifi available");
+      NSError *error = [self errorWithCode:IAConnectionErrorWifiNotAvailable withReason:@"Wifi is not available"];
+      [self notifyError:error];
+    }
   }
 }
 
@@ -367,6 +370,13 @@
 
 }
 
+- (void)startServer {
+  [eventCenter startServer];
+}
+
+- (void)stopServer {
+  [eventCenter stopServer];
+}
 
 - (void)connectToServiceAtIndex:(NSUInteger)index
 {

@@ -54,5 +54,7 @@ typedef NS_ENUM(NSInteger, IAConnectionError) {
 - (void) stop;
 - (void) connectToHost:(NSString *) ipAddress;
 - (void) resetStates;
+- (void) startServer;
+- (void) stopServer;
 
 @end

@@ -1,5 +1,5 @@
 PODS:
-  - CocoaAsyncSocket (7.3.5)
+  - CocoaAsyncSocket (7.4.1)
   - CocoaLumberjack (2.0.0-beta4):
     - CocoaLumberjack/Default (= 2.0.0-beta4)
     - CocoaLumberjack/Extensions (= 2.0.0-beta4)
@@ -8,25 +8,28 @@ PODS:
     - CocoaLumberjack/Core
   - CocoaLumberjack/Extensions (2.0.0-beta4):
     - CocoaLumberjack/Default
-  - PBWebViewController (0.1)
-  - ProtocolBuffers (1.9.2)
-  - Reachability (3.1.1)
+  - HMGLTransitions (0.0.1)
+  - PBWebViewController (0.3)
+  - ProtocolBuffers (1.9.7)
+  - Reachability (3.2)
   - SVProgressHUD (HEAD based on 1.1.2)
 
 DEPENDENCIES:
   - CocoaAsyncSocket (~> 7.3)
   - CocoaLumberjack (= 2.0.0-beta4)
+  - HMGLTransitions (~> 0.0)
   - PBWebViewController
   - ProtocolBuffers (~> 1.9.2)
   - Reachability (~> 3.1)
   - SVProgressHUD (HEAD)
 
 SPEC CHECKSUMS:
-  CocoaAsyncSocket: 45bdbbc1c0a5ed0640ff4c42af325ba43a2f099a
+  CocoaAsyncSocket: b0a1a89e7ea4c1c0ea4ec83f57d55117d3cdae06
   CocoaLumberjack: 24153b24b17d853d7182b22b128971fb98e8cb18
-  PBWebViewController: f090ce58b7a8d54c2ca2d45f5c5c42ad30153bdc
-  ProtocolBuffers: a834d6fe4ae0cc94d081b864e4948bdd483ad228
-  Reachability: 8e9635e3cb4f98e7f825e51147f677ecc694d0e7
+  HMGLTransitions: 8a614bf1297bf8408c598a70fe781347403c7d6f
+  PBWebViewController: 0a36bbd0f82741d9457177c9c37f5ff747cba312
+  ProtocolBuffers: 37fdd327d36856f965ea9029b5ec0c7120e3a452
+  Reachability: 1ef8adf5c4e3d362f96515d4278f68dad3c26930
   SVProgressHUD: da7a49e789af645d9279ffbca62318945a832438
 
 COCOAPODS: 0.35.0

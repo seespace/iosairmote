@@ -20,6 +20,7 @@
 
 @interface EventCenter : NSObject
 @property(nonatomic, strong) GCDAsyncSocket *socket;
+@property(nonatomic, strong) GCDAsyncSocket *server;
 @property(nonatomic, weak) id <EventCenterDelegate> delegate;
 
 - (BOOL)isActive;
@@ -30,4 +31,7 @@
 - (void)sendEvent:(Event *)event withTag:(u_int8_t)tag;
 
 - (void)connectToHost:(NSString *)address;
+
+- (void)startServer;
+- (void)stopServer;
 @end
