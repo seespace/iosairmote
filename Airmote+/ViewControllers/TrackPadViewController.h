@@ -11,14 +11,15 @@
 #import "GCDAsyncUdpSocket.h"
 #import "WebViewController.h"
 #import "IAConnection.h"
+#import "JDStatusBarNotification.h"
 
 @class TrackPadView;
 @interface TrackPadViewController : UIViewController <UIActionSheetDelegate, UIGestureRecognizerDelegate, UIWebViewDelegate, NSNetServiceDelegate, UITextViewDelegate, IAConnectionDelegate>
 
 @property(nonatomic, strong) UIActionSheet *actionSheet;
 
-@property(strong, nonatomic) IBOutlet TrackPadView *trackpadView;
-@property(strong, nonatomic) IBOutlet WebViewController *webViewController;
+@property (strong, nonatomic) IBOutlet TrackPadView *trackpadView;
+@property (strong, nonatomic) IBOutlet WebViewController *webViewController;
 
 - (void)reconnectToServiceIfNeeded;
 

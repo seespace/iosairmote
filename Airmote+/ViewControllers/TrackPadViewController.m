@@ -12,6 +12,7 @@
 #import "TrackPadView.h"
 #import "InstructionViewController.h"
 #import "NSString+IPAddress.h"
+#import "JDStatusBarNotification+Extension.h"
 
 #define kIPAddressAlertTitle @"Manual Connect"
 
@@ -57,53 +58,53 @@ static const uint8_t kMotionShakeTag = 6;
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(appDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification
                                              object:nil];
-  
+
 
   bottomControlsConstrain.constant = -54;
+
+  [JDStatusBarNotification inAirInit];
 }
 
 
--(void) appWillBecomeInactive:(NSNotification *) notification {
+- (void)appWillBecomeInactive:(NSNotification *)notification {
   [SVProgressHUD dismiss];
+  [JDStatusBarNotification dismiss];
   [[IAConnection sharedConnection] stopServer];
 }
 
--(void) appDidBecomeActive:(NSNotification *) notification {
+- (void)appDidBecomeActive:(NSNotification *)notification {
   [[IAConnection sharedConnection] startServer];
 }
 
-- (BOOL)shouldConnectAutomatically
-{
+- (BOOL)shouldConnectAutomatically {
   return YES;
 }
 
-- (void)didStartScanning
-{
-  [SVProgressHUD showWithStatus:@"Scanning..."];
+- (void)didStartScanning {
+//  [SVProgressHUD showWithStatus:@"Scanning..."];
+  [JDStatusBarNotification showWithStatus:@"Scanning..."];
 }
 
--(void)didStartConnecting
-{
-  [SVProgressHUD showWithStatus:@"Connecting..."];
+- (void)didStartConnecting {
+//  [SVProgressHUD showWithStatus:@"Connecting..."];
+  [JDStatusBarNotification showWithStatus:@"Connecting..."];
 }
 
 
-- (void)didConnect:(NSString *)hostName
-{
+- (void)didConnect:(NSString *)hostName {
   NSString *message = [NSString stringWithFormat:@"Connected to %@", hostName];
-  [SVProgressHUD showSuccessWithStatus:message];
+//  [SVProgressHUD showSuccessWithStatus:message];
+  [JDStatusBarNotification showWithStatus:message dismissAfter:1.0f];
 }
 
 
-- (void)didFoundServices:(NSArray *)foundServices
-{
-  [SVProgressHUD dismiss];
+- (void)didFoundServices:(NSArray *)foundServices {
+  [JDStatusBarNotification dismiss];
   [self showActionSheetForServices:foundServices];
 }
 
 
-- (void)didFailToConnect:(NSError *)error
-{
+- (void)didFailToConnect:(NSError *)error {
   switch (error.code) {
     case IAConnectionErrorServicesNotFound:
     case IAConnectionErrorDiscoveryTimedOut:
@@ -112,13 +113,14 @@ static const uint8_t kMotionShakeTag = 6;
     case IAConnectionErrorSocketInvalidData:
     case IAConnectionErrorWifiNotAvailable:
     case IAConnectionErrorFailToConnectSocket:
-        [SVProgressHUD showErrorWithStatus:[error localizedFailureReason]];
-        [self showActionSheetForServices:[[IAConnection sharedConnection] foundServices]];
+      [JDStatusBarNotification showErrorWithStatus:[error localizedFailureReason]];
+      [self showActionSheetForServices:[[IAConnection sharedConnection] foundServices]];
 
       break;
 
     case IAConnectionErrorSocketDisconnected:
-      [SVProgressHUD showErrorWithStatus:@"Connection is lost!"];
+//      [JDStatusBarNotification showWithStatus:@"Connection is lost!" styleName:@"InAirError"];
+      [JDStatusBarNotification showErrorWithStatus:[error localizedDescription]];
       break;
 
     case IAConnectionErrorFailToSendEvent:
@@ -132,8 +134,7 @@ static const uint8_t kMotionShakeTag = 6;
 }
 
 
-- (void)didReceiveEvent:(Event *)event
-{
+- (void)didReceiveEvent:(Event *)event {
   NSLog(@"%@", event);
 
   switch (event.type) {
@@ -149,8 +150,7 @@ static const uint8_t kMotionShakeTag = 6;
 
 }
 
--(void)viewDidAppear:(BOOL)animated
-{
+- (void)viewDidAppear:(BOOL)animated {
   [IAConnection sharedConnection].delegate = self;
 }
 
@@ -169,16 +169,16 @@ static const uint8_t kMotionShakeTag = 6;
 #pragma mark - Action sheets
 
 
-- (void)showActionSheetForServices:(NSArray *) services {
+- (void)showActionSheetForServices:(NSArray *)services {
 
   if ([_actionSheet isVisible]) {
     return;
   }
-  
+
   _actionSheet = [[UIActionSheet alloc] init];
   [_actionSheet setTitle:@"Choose a device"];
   [_actionSheet setDelegate:self];
-  
+
   for (NSNetService *service in services) {
     NSString *title = service.name;
     [_actionSheet addButtonWithTitle:title];
@@ -221,7 +221,7 @@ static const uint8_t kMotionShakeTag = 6;
     }
   } else if ([alertView.title isEqualToString:kIPAddressAlertTitle]) {
     NSString *ipaddress = [alertView textFieldAtIndex:0].text;
-    
+
     if ([ipaddress length] == 0 || ![ipaddress isValidIPAddress]) {
       UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
                                                           message:@"Invalid IP Address. Please try again."
@@ -303,14 +303,12 @@ static const uint8_t kMotionShakeTag = 6;
 
 #pragma mark - DidFinishWifiSetup
 
-- (void)didFinishWifiSetup:(id)didFinishWifiSetup
-{
+- (void)didFinishWifiSetup:(id)didFinishWifiSetup {
   [[IAConnection sharedConnection] setDelegate:self];
 }
 
 
-- (void)didStopConnection
-{
+- (void)didStopConnection {
   [SVProgressHUD dismiss];
 }
 
@@ -319,7 +317,7 @@ static const uint8_t kMotionShakeTag = 6;
 
 
 - (void)keyboardWillHide:(NSNotification *)notification {
-  if (! plainText.isFirstResponder)
+  if (!plainText.isFirstResponder)
     return;
 
   NSDictionary *userInfo = [notification userInfo];
@@ -330,14 +328,14 @@ static const uint8_t kMotionShakeTag = 6;
                         delay:0
                       options:curveOption
                    animations:^{
-                      inputViewTopConstrain.constant = - inputView.frame.size.height - 20;
-                     [[self view] layoutIfNeeded];
+                       inputViewTopConstrain.constant = -inputView.frame.size.height - 20;
+                       [[self view] layoutIfNeeded];
 
                    } completion:NULL];
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification {
-  if (! plainText.isFirstResponder)
+  if (!plainText.isFirstResponder)
     return;
 
   NSDictionary *userInfo = [notification userInfo];
@@ -348,8 +346,8 @@ static const uint8_t kMotionShakeTag = 6;
                         delay:0
                       options:curveOption
                    animations:^{
-                     inputViewTopConstrain.constant = 40;
-                     [[self view] layoutIfNeeded];
+                       inputViewTopConstrain.constant = 40;
+                       [[self view] layoutIfNeeded];
                    } completion:NULL];
 
 }
@@ -367,6 +365,7 @@ static const uint8_t kMotionShakeTag = 6;
   Event *event = [ProtoHelper textInputResponseWithState:TextInputResponseEventStateEnded text:plainText.text];
   [[IAConnection sharedConnection] sendEvent:event withTag:0];
 }
+
 - (IBAction)settingsButtonTapped:(id)sender {
   [self startWifiSetupWorkFlow];
 }
@@ -384,21 +383,23 @@ static const uint8_t kMotionShakeTag = 6;
   [self toggleControlsView];
 }
 
-- (void)toggleControlsView
-{
+- (void)toggleControlsView {
   [UIView animateWithDuration:0.6 delay:0 usingSpringWithDamping:0.7 initialSpringVelocity:20 options:0
                    animations:^{
-                     bottomControlsConstrain.constant = bottomControlsConstrain.constant == 0 ? -54 : 0;
-                     [self.view layoutIfNeeded];
+                       bottomControlsConstrain.constant = bottomControlsConstrain.constant == 0 ? -54 : 0;
+                       [self.view layoutIfNeeded];
                    } completion:NULL];
 }
+
 - (IBAction)fastForwardButtonTapped:(id)sender {
   [[IAConnection sharedConnection] sendEvent:[ProtoHelper functionEventResponseWithState:FunctionEventKeyMediaFastForward] withTag:0];
-  
+
 }
+
 - (IBAction)playPauseButtonTapped:(id)sender {
   [[IAConnection sharedConnection] sendEvent:[ProtoHelper functionEventResponseWithState:FunctionEventKeyMediaPlay] withTag:0];
 }
+
 - (IBAction)rewindButtonTapped:(id)sender {
   [[IAConnection sharedConnection] sendEvent:[ProtoHelper functionEventResponseWithState:FunctionEventKeyMediaRewind] withTag:0];
 }
@@ -410,21 +411,21 @@ static const uint8_t kMotionShakeTag = 6;
 
 - (IBAction)refreshButtonTapped:(id)sender {
   [self toggleControlsView];
-  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-    [[IAConnection sharedConnection] stop];
-    [[IAConnection sharedConnection] resetStates];
-    [[IAConnection sharedConnection] start];
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+      [[IAConnection sharedConnection] stop];
+      [[IAConnection sharedConnection] resetStates];
+      [[IAConnection sharedConnection] start];
   });
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    CGFloat pageWidth = scrollView.frame.size.width;
-    float fractionalPage = scrollView.contentOffset.x / pageWidth;
-    NSInteger page = lround(fractionalPage);
-    pageControl.currentPage = page; // you need to have a **iVar** with getter for pageControl
+  CGFloat pageWidth = scrollView.frame.size.width;
+  float fractionalPage = scrollView.contentOffset.x / pageWidth;
+  NSInteger page = lround(fractionalPage);
+  pageControl.currentPage = page; // you need to have a **iVar** with getter for pageControl
 }
 
--(void) dismissControlsBarIfNeeded {
+- (void)dismissControlsBarIfNeeded {
   if (bottomControlsConstrain.constant == 0.0) {
     [self toggleControlsView];
   }

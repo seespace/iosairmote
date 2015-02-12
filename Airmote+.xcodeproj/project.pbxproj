@@ -79,6 +79,8 @@
 		B4F9934719A4E097006FC9C2 /* ChangeNameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4F9934519A4E097006FC9C2 /* ChangeNameViewController.xib */; };
 		B4F9934B19A4E925006FC9C2 /* EnterPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F9934919A4E925006FC9C2 /* EnterPasswordViewController.m */; };
 		B4F9934C19A4E925006FC9C2 /* EnterPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4F9934A19A4E925006FC9C2 /* EnterPasswordViewController.xib */; };
+		C07A41FAB34FCFF310832EC7 /* JDStatusBarNotification+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = C07A4042D59C4B3B2DA2B2CC /* JDStatusBarNotification+Extension.m */; };
+		C07A4D682E478C4678CC3AFB /* JDStatusBarNotification+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = C07A4042D59C4B3B2DA2B2CC /* JDStatusBarNotification+Extension.m */; };
 		C584401A066D1F1903B6A015 /* TrackPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5844ED89441B78E5ED9D931 /* TrackPadViewController.m */; };
 		C5844045E9501BBBDD32072C /* TrackPadViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C584421B3AFAC90EE9EFDA78 /* TrackPadViewController.xib */; };
 		C58440858C2E4C0D850E5583 /* Proto.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = C58449999B7324E698D6643F /* Proto.pb.m */; };
@@ -166,6 +168,8 @@
 		B4F9934819A4E925006FC9C2 /* EnterPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnterPasswordViewController.h; sourceTree = "<group>"; };
 		B4F9934919A4E925006FC9C2 /* EnterPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnterPasswordViewController.m; sourceTree = "<group>"; };
 		B4F9934A19A4E925006FC9C2 /* EnterPasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EnterPasswordViewController.xib; sourceTree = "<group>"; };
+		C07A4042D59C4B3B2DA2B2CC /* JDStatusBarNotification+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "JDStatusBarNotification+Extension.m"; sourceTree = "<group>"; };
+		C07A49C90AB18BB29F036484 /* JDStatusBarNotification+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "JDStatusBarNotification+Extension.h"; sourceTree = "<group>"; };
 		C584404E51B140564D994D4F /* NSData+NetService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+NetService.h"; sourceTree = "<group>"; };
 		C5844072E0B87BC74BC615E0 /* IAConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAConnection.m; sourceTree = "<group>"; };
 		C584418E08FB8FB0F1DDF896 /* Event+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Event+Extension.m"; sourceTree = "<group>"; };
@@ -347,6 +351,8 @@
 				C584404E51B140564D994D4F /* NSData+NetService.h */,
 				C58448D55F9A1DC3853DD753 /* WifiNetwork+Extension.m */,
 				C58441D73782F3A380E60FCC /* WifiNetwork+Extension.h */,
+				C07A4042D59C4B3B2DA2B2CC /* JDStatusBarNotification+Extension.m */,
+				C07A49C90AB18BB29F036484 /* JDStatusBarNotification+Extension.h */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -678,6 +684,7 @@
 				B46889AA19AEE5ED0043A8A9 /* ConnectedConfirmationViewController.m in Sources */,
 				C5844B96C4F5A3E00AE2726A /* WifiNetwork+Extension.m in Sources */,
 				C5844D863B1EFAC244C75EB8 /* IAConnection.m in Sources */,
+				C07A41FAB34FCFF310832EC7 /* JDStatusBarNotification+Extension.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -714,6 +721,7 @@
 				01B303F71A52C7AC009D7417 /* ConnectedConfirmationViewController.m in Sources */,
 				01B303F81A52C7AC009D7417 /* WifiNetwork+Extension.m in Sources */,
 				01B303F91A52C7AC009D7417 /* IAConnection.m in Sources */,
+				C07A4D682E478C4678CC3AFB /* JDStatusBarNotification+Extension.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,6 +9,7 @@ PODS:
   - CocoaLumberjack/Extensions (2.0.0-beta4):
     - CocoaLumberjack/Default
   - HMGLTransitions (0.0.1)
+  - JDStatusBarNotification (1.5.1)
   - PBWebViewController (0.3)
   - ProtocolBuffers (1.9.7)
   - Reachability (3.2)
@@ -18,6 +19,7 @@ DEPENDENCIES:
   - CocoaAsyncSocket (~> 7.3)
   - CocoaLumberjack (= 2.0.0-beta4)
   - HMGLTransitions (~> 0.0)
+  - JDStatusBarNotification (~> 1.5)
   - PBWebViewController
   - ProtocolBuffers (~> 1.9.2)
   - Reachability (~> 3.1)
@@ -27,6 +29,7 @@ SPEC CHECKSUMS:
   CocoaAsyncSocket: b0a1a89e7ea4c1c0ea4ec83f57d55117d3cdae06
   CocoaLumberjack: 24153b24b17d853d7182b22b128971fb98e8cb18
   HMGLTransitions: 8a614bf1297bf8408c598a70fe781347403c7d6f
+  JDStatusBarNotification: 46965cc93efa668fa9f1c31cb223df5c84b421d5
   PBWebViewController: 0a36bbd0f82741d9457177c9c37f5ff747cba312
   ProtocolBuffers: 37fdd327d36856f965ea9029b5ec0c7120e3a452
   Reachability: 1ef8adf5c4e3d362f96515d4278f68dad3c26930

@@ -26,6 +26,10 @@
   navigationController.navigationBarHidden = YES;
   self.window.rootViewController = navigationController;
 
+  UIView *view=[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 20)];
+  view.backgroundColor = RGBA(242, 242, 242, 0.9f);
+  [self.window.rootViewController.view addSubview:view];
+
   [self.window makeKeyAndVisible];
 
   [self setupLogger];
