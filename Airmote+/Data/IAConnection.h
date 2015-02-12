@@ -35,10 +35,13 @@ typedef NS_ENUM(NSInteger, IAConnectionError) {
 -(void) didFoundServices:(NSArray *) foundServices;
 -(void) didFailToConnect:(NSError *) error;
 
-- (BOOL)shouldConnectAutomatically;
+- (BOOL) shouldConnectAutomatically;
 -(void) didReceiveEvent:(Event *) event;
 
-- (void)didStopConnection;
+- (void) didStopConnection;
+
+- (void) didStartUSBConnection;
+- (void) didStopUSBConnection:(NSError *) error;
 @end
 
 @interface IAConnection : NSObject <NSNetServiceBrowserDelegate, NSNetServiceDelegate, EventCenterDelegate>
@@ -49,7 +52,7 @@ typedef NS_ENUM(NSInteger, IAConnectionError) {
 -(BOOL)isProcessing;
 -(BOOL) isConnected;
 - (void) start;
-- (void)sendEvent:(Event *)event withTag:(u_int8_t)tag;
+- (void) sendEvent:(Event *)event withTag:(u_int8_t)tag;
 - (void) connectToServiceAtIndex:(NSUInteger) index;
 - (void) stop;
 - (void) connectToHost:(NSString *) ipAddress;

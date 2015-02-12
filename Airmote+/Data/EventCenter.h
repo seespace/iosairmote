@@ -16,6 +16,9 @@
 - (void)eventCenterDidDisconnectFromHost:(NSString *)hostName withError:(NSError *)error;
 - (void)eventCenterFailedToConnectToHost:(NSString *)hostName withError:(NSError *)error;
 - (void)eventCenter:(EventCenter *)eventCenter receivedEvent:(Event *)event;
+
+- (void)eventCenterDidStartUSBConnection;
+- (void)eventCenterDidStopUSBConnectionWithError:(NSError *)error;
 @end
 
 @interface EventCenter : NSObject

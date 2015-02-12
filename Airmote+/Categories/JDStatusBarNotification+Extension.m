@@ -6,6 +6,7 @@
 #import "JDStatusBarNotification+Extension.h"
 
 #define kErrorStyleName @"InAirError"
+#define kUSBStyleName @"InAirUSB"
 
 @implementation JDStatusBarNotification (Extension)
 + (void)inAirInit {
@@ -16,9 +17,16 @@
                                      return style;
                                  }];
 
-  [JDStatusBarNotification addStyleNamed:@"InAirError"
+  [JDStatusBarNotification addStyleNamed:kErrorStyleName
                                  prepare:^JDStatusBarStyle *(JDStatusBarStyle *style) {
                                      style.barColor = RGBA(246, 71, 71, 1);
+                                     style.textColor = [UIColor whiteColor];
+                                     return style;
+                                 }];
+
+  [JDStatusBarNotification addStyleNamed:kUSBStyleName
+                                 prepare:^JDStatusBarStyle *(JDStatusBarStyle *style) {
+                                     style.barColor = RGBA(75, 119, 190, 1);
                                      style.textColor = [UIColor whiteColor];
                                      return style;
                                  }];
@@ -33,5 +41,10 @@
 + (JDStatusBarView *)showErrorWithStatus:(NSString *)status {
   return [JDStatusBarNotification showWithStatus:status styleName:kErrorStyleName];
 }
+
++ (JDStatusBarView *)showUSBConnection {
+  return [JDStatusBarNotification showWithStatus:@"USB Connection" styleName:kUSBStyleName];
+}
+
 
 @end

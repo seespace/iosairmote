@@ -8,6 +8,7 @@
 
 @interface JDStatusBarNotification (Extension)
 + (void)inAirInit;
-+ (JDStatusBarView*)showErrorWithStatus:(NSString *)status;
++ (JDStatusBarView *)showErrorWithStatus:(NSString *)status;
++ (JDStatusBarView *)showUSBConnection;
 //+ (JDStatusBarView*)showSuccessWithStatus:(NSString *)status;
 @end

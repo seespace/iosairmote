@@ -119,14 +119,18 @@ static const uint8_t kSessionStartTag = 9;
     [self wifiSocketDidDisconnectWithError:error];
   }
   if (sock == _server) {
-    [self lightningSocketDidDisconnectWithError:error];
+    [self usbSocketDidDisconnectWithError:error];
   }
 }
 
 #pragma mark - Server Socket Methods
 
-- (void)lightningSocketDidDisconnectWithError:(NSError *)error {
+- (void)usbSocketDidDisconnectWithError:(NSError *)error {
   _clientSocket = nil;
+
+  if (self.delegate && [self.delegate respondsToSelector:@selector(eventCenterDidStopUSBConnectionWithError:)]) {
+    [self.delegate eventCenterDidStopUSBConnectionWithError:error];
+  }
 }
 
 - (void)socket:(GCDAsyncSocket *)sock didAcceptNewSocket:(GCDAsyncSocket *)newSocket {
@@ -147,6 +151,10 @@ static const uint8_t kSessionStartTag = 9;
       NSLog(@"Could not set sock opt TCP_NODELAY: %s", strerror(errno));
     }
   }];
+
+  if (self.delegate && [self.delegate respondsToSelector:@selector(eventCenterDidStartUSBConnection)]) {
+    [self.delegate eventCenterDidStartUSBConnection];
+  }
 }
 
 #pragma mark - Wifi Socket Methods

@@ -152,6 +152,14 @@ static const uint8_t kMotionShakeTag = 6;
 
 }
 
+- (void)didStartUSBConnection {
+  [JDStatusBarNotification showUSBConnection];
+}
+
+- (void)didStopUSBConnection:(NSError *)error {
+  [JDStatusBarNotification dismiss];
+}
+
 - (void)viewDidAppear:(BOOL)animated {
   [IAConnection sharedConnection].delegate = self;
 }

@@ -117,7 +117,7 @@
   [foundServices addObject:aService];
   foundAllServices = !more;
   if (foundAllServices) {
-    DDLogDebug(@"Found %d services", [foundServices count] );
+    DDLogDebug(@"Found %ld services", [foundServices count]);
     isScanning = NO;
     if (foundServices.count > 1) {
       if ([self.delegate respondsToSelector:@selector(didFoundServices:)]) {
@@ -505,6 +505,20 @@
                                       userInfo:[error userInfo]];
   [self notifyError:tmpError];
   [self invalidateCurrentService];
+}
+
+#pragma mark USB Connection
+
+- (void)eventCenterDidStartUSBConnection {
+  if ([self.delegate respondsToSelector:@selector(didStartUSBConnection)]) {
+    [self.delegate didStartUSBConnection];
+  }
+}
+
+- (void)eventCenterDidStopUSBConnectionWithError:(NSError *)error {
+  if ([self.delegate respondsToSelector:@selector(didStopUSBConnection:)]) {
+    [self.delegate didStopUSBConnection:error];
+  }
 }
 
 @end
