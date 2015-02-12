@@ -15,6 +15,7 @@
 #import "JDStatusBarNotification+Extension.h"
 
 #define kIPAddressAlertTitle @"Manual Connect"
+#define kStatusDelayDuration 1.5f
 
 @implementation TrackPadViewController {
   Event *_oauthEvent;
@@ -28,6 +29,7 @@
 
 static const uint8_t kMotionShakeTag = 6;
 
+@synthesize ipAlertView = _ipAlertView;
 @synthesize trackpadView = _trackpadView;
 @synthesize webViewController = _webViewController;
 
@@ -94,7 +96,7 @@ static const uint8_t kMotionShakeTag = 6;
 - (void)didConnect:(NSString *)hostName {
   NSString *message = [NSString stringWithFormat:@"Connected to %@", hostName];
 //  [SVProgressHUD showSuccessWithStatus:message];
-  [JDStatusBarNotification showWithStatus:message dismissAfter:1.0f];
+  [JDStatusBarNotification showWithStatus:message dismissAfter:kStatusDelayDuration];
 }
 
 
@@ -197,15 +199,17 @@ static const uint8_t kMotionShakeTag = 6;
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
   if (buttonIndex != actionSheet.cancelButtonIndex) {
     if (buttonIndex == actionSheet.numberOfButtons - 2) {
-      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:kIPAddressAlertTitle
+      _ipAlertView = [[UIAlertView alloc] initWithTitle:kIPAddressAlertTitle
                                                       message:@"Please enter your InAir box IP Address."
                                                      delegate:self
                                             cancelButtonTitle:@"Done"
                                             otherButtonTitles:nil];
-      alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-      UITextField *textField = [alert textFieldAtIndex:0];
+      _ipAlertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+      UITextField *textField = [_ipAlertView textFieldAtIndex:0];
       textField.placeholder = @"192.168.1.1";
-      [alert show];
+      textField.returnKeyType = UIReturnKeyGo;
+      textField.delegate = self;
+      [_ipAlertView show];
     } else {
       [[IAConnection sharedConnection] connectToServiceAtIndex:(NSUInteger) buttonIndex];
     }
@@ -222,18 +226,19 @@ static const uint8_t kMotionShakeTag = 6;
   } else if ([alertView.title isEqualToString:kIPAddressAlertTitle]) {
     NSString *ipaddress = [alertView textFieldAtIndex:0].text;
 
-    if ([ipaddress length] == 0 || ![ipaddress isValidIPAddress]) {
-      UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                          message:@"Invalid IP Address. Please try again."
-                                                         delegate:nil
-                                                cancelButtonTitle:@"OK"
-                                                otherButtonTitles:nil];
-      [alertView show];
-    } else {
-      [[IAConnection sharedConnection] stop];
-      [[IAConnection sharedConnection] resetStates];
-      [[IAConnection sharedConnection] connectToHost:ipaddress];
-    }
+//    if ([ipaddress length] == 0 || ![ipaddress isValidIPAddress]) {
+//      UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+//                                                          message:@"Invalid IP Address. Please try again."
+//                                                         delegate:nil
+//                                                cancelButtonTitle:@"OK"
+//                                                otherButtonTitles:nil];
+//      [alertView show];
+//    } else {
+    [alertView dismissWithClickedButtonIndex:0 animated:true];
+    [[IAConnection sharedConnection] stop];
+    [[IAConnection sharedConnection] resetStates];
+    [[IAConnection sharedConnection] connectToHost:ipaddress];
+//    }
   }
   _oauthEvent = nil;
 }
@@ -310,6 +315,20 @@ static const uint8_t kMotionShakeTag = 6;
 
 - (void)didStopConnection {
   [SVProgressHUD dismiss];
+}
+
+#pragma mark - TextFieldDelegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+  [textField resignFirstResponder];
+  if ([_ipAlertView textFieldAtIndex:0] == textField) {
+    NSString *ipaddress = [_ipAlertView textFieldAtIndex:0].text;
+    [_ipAlertView dismissWithClickedButtonIndex:0 animated:true];
+    [[IAConnection sharedConnection] stop];
+    [[IAConnection sharedConnection] resetStates];
+    [[IAConnection sharedConnection] connectToHost:ipaddress];
+  }
+  return YES;
 }
 
 

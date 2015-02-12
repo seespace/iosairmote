@@ -14,9 +14,10 @@
 #import "JDStatusBarNotification.h"
 
 @class TrackPadView;
-@interface TrackPadViewController : UIViewController <UIActionSheetDelegate, UIGestureRecognizerDelegate, UIWebViewDelegate, NSNetServiceDelegate, UITextViewDelegate, IAConnectionDelegate>
+@interface TrackPadViewController : UIViewController <UIActionSheetDelegate, UIGestureRecognizerDelegate, UIWebViewDelegate, NSNetServiceDelegate, UITextViewDelegate, IAConnectionDelegate, UITextFieldDelegate>
 
 @property(nonatomic, strong) UIActionSheet *actionSheet;
+@property(nonatomic, strong) UIAlertView *ipAlertView;
 
 @property (strong, nonatomic) IBOutlet TrackPadView *trackpadView;
 @property (strong, nonatomic) IBOutlet WebViewController *webViewController;
