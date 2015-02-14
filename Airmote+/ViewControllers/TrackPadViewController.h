@@ -12,12 +12,14 @@
 #import "WebViewController.h"
 #import "IAConnection.h"
 #import "JDStatusBarNotification.h"
+#import "WifiSetupController.h"
 
 @class TrackPadView;
 @interface TrackPadViewController : UIViewController <UIActionSheetDelegate, UIGestureRecognizerDelegate, UIWebViewDelegate, NSNetServiceDelegate, UITextViewDelegate, IAConnectionDelegate, UITextFieldDelegate>
 
 @property(nonatomic, strong) UIActionSheet *actionSheet;
 @property(nonatomic, strong) UIAlertView *ipAlertView;
+@property(nonatomic, strong) WifiSetupController *setupController;
 
 @property (strong, nonatomic) IBOutlet TrackPadView *trackpadView;
 @property (strong, nonatomic) IBOutlet WebViewController *webViewController;

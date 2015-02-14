@@ -46,5 +46,9 @@
   return [JDStatusBarNotification showWithStatus:@"USB Connection" styleName:kUSBStyleName];
 }
 
++ (JDStatusBarView *)showUSBConnectionWithStatus:(NSString *)status {
+  return [JDStatusBarNotification showWithStatus:status styleName:kUSBStyleName];
+}
+
 
 @end

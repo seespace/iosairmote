@@ -22,8 +22,6 @@
 @end
 
 @interface EventCenter : NSObject
-@property(nonatomic, strong) GCDAsyncSocket *socket;
-@property(nonatomic, strong) GCDAsyncSocket *server;
 @property(nonatomic, weak) id <EventCenterDelegate> delegate;
 
 - (BOOL)isActive;

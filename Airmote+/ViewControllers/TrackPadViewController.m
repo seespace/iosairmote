@@ -13,9 +13,11 @@
 #import "InstructionViewController.h"
 #import "NSString+IPAddress.h"
 #import "JDStatusBarNotification+Extension.h"
+#import "WifiSetupController.h"
 
 #define kIPAddressAlertTitle @"Manual Connect"
-#define kStatusDelayDuration 1.5f
+#define kStatusDelay 1.5f
+#define kDismissDelay 1.0f
 
 @implementation TrackPadViewController {
   Event *_oauthEvent;
@@ -32,6 +34,7 @@ static const uint8_t kMotionShakeTag = 6;
 @synthesize ipAlertView = _ipAlertView;
 @synthesize trackpadView = _trackpadView;
 @synthesize webViewController = _webViewController;
+@synthesize setupController = _setupController;
 
 - (void)viewDidLoad {
   [super viewDidLoad];
@@ -67,6 +70,19 @@ static const uint8_t kMotionShakeTag = 6;
   [JDStatusBarNotification inAirInit];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HasLaunchedOnce"]) {
+    // app already launched
+  } else {
+//    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasLaunchedOnce"];
+//    [[NSUserDefaults standardUserDefaults] synchronize];
+    // This is the first launch ever
+
+    _setupController = [[WifiSetupController alloc] init];
+    _setupController.dataSource = _setupController;
+    [self presentViewController:_setupController animated:YES completion:nil];
+  }
+}
 
 - (void)appWillBecomeInactive:(NSNotification *)notification {
   [SVProgressHUD dismiss];
@@ -96,7 +112,7 @@ static const uint8_t kMotionShakeTag = 6;
 - (void)didConnect:(NSString *)hostName {
   NSString *message = [NSString stringWithFormat:@"Connected to %@", hostName];
 //  [SVProgressHUD showSuccessWithStatus:message];
-  [JDStatusBarNotification showWithStatus:message dismissAfter:kStatusDelayDuration];
+  [JDStatusBarNotification showWithStatus:message dismissAfter:kStatusDelay];
 }
 
 
@@ -157,11 +173,15 @@ static const uint8_t kMotionShakeTag = 6;
 }
 
 - (void)didStopUSBConnection:(NSError *)error {
-  [JDStatusBarNotification dismiss];
+  [JDStatusBarNotification dismissAfter:kDismissDelay];
+  if (_setupController != nil) {
+    [self dismissViewControllerAnimated:true completion:nil];
+  }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
   [IAConnection sharedConnection].delegate = self;
+//  [self didStartUSBConnection];
 }
 
 - (void)showInputView {
@@ -208,10 +228,10 @@ static const uint8_t kMotionShakeTag = 6;
   if (buttonIndex != actionSheet.cancelButtonIndex) {
     if (buttonIndex == actionSheet.numberOfButtons - 2) {
       _ipAlertView = [[UIAlertView alloc] initWithTitle:kIPAddressAlertTitle
-                                                      message:@"Please enter your InAir box IP Address."
-                                                     delegate:self
-                                            cancelButtonTitle:@"Done"
-                                            otherButtonTitles:nil];
+                                                message:@"Please enter your InAir box IP Address."
+                                               delegate:self
+                                      cancelButtonTitle:@"Done"
+                                      otherButtonTitles:nil];
       _ipAlertView.alertViewStyle = UIAlertViewStylePlainTextInput;
       UITextField *textField = [_ipAlertView textFieldAtIndex:0];
       textField.placeholder = @"192.168.1.1";
@@ -355,8 +375,8 @@ static const uint8_t kMotionShakeTag = 6;
                         delay:0
                       options:curveOption
                    animations:^{
-                       inputViewTopConstrain.constant = -inputView.frame.size.height - 20;
-                       [[self view] layoutIfNeeded];
+                     inputViewTopConstrain.constant = -inputView.frame.size.height - 20;
+                     [[self view] layoutIfNeeded];
 
                    } completion:NULL];
 }
@@ -373,8 +393,8 @@ static const uint8_t kMotionShakeTag = 6;
                         delay:0
                       options:curveOption
                    animations:^{
-                       inputViewTopConstrain.constant = 40;
-                       [[self view] layoutIfNeeded];
+                     inputViewTopConstrain.constant = 40;
+                     [[self view] layoutIfNeeded];
                    } completion:NULL];
 
 }
@@ -413,8 +433,8 @@ static const uint8_t kMotionShakeTag = 6;
 - (void)toggleControlsView {
   [UIView animateWithDuration:0.6 delay:0 usingSpringWithDamping:0.7 initialSpringVelocity:20 options:0
                    animations:^{
-                       bottomControlsConstrain.constant = bottomControlsConstrain.constant == 0 ? -54 : 0;
-                       [self.view layoutIfNeeded];
+                     bottomControlsConstrain.constant = bottomControlsConstrain.constant == 0 ? -54 : 0;
+                     [self.view layoutIfNeeded];
                    } completion:NULL];
 }
 
@@ -439,9 +459,9 @@ static const uint8_t kMotionShakeTag = 6;
 - (IBAction)refreshButtonTapped:(id)sender {
   [self toggleControlsView];
   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-      [[IAConnection sharedConnection] stop];
-      [[IAConnection sharedConnection] resetStates];
-      [[IAConnection sharedConnection] start];
+    [[IAConnection sharedConnection] stop];
+    [[IAConnection sharedConnection] resetStates];
+    [[IAConnection sharedConnection] start];
   });
 }
 

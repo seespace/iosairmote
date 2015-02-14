@@ -10,5 +10,6 @@
 + (void)inAirInit;
 + (JDStatusBarView *)showErrorWithStatus:(NSString *)status;
 + (JDStatusBarView *)showUSBConnection;
++ (JDStatusBarView *)showUSBConnectionWithStatus:(NSString *)status;
 //+ (JDStatusBarView*)showSuccessWithStatus:(NSString *)status;
 @end

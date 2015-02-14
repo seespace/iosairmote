@@ -16,16 +16,20 @@ static const int kServicePort = 8989;
 static const uint8_t kSessionStartTag = 9;
 //static const uint8_t kSessionEndTag = 10;
 
+#define DEBUG YES
+
 @implementation EventCenter {
   NSNetService *lastConnectedService;
-  GCDAsyncSocket *_clientSocket;
+  GCDAsyncSocket *_usbSocket;
+  GCDAsyncSocket *_wifiSocket;
+  GCDAsyncSocket *_serverSocket;
 }
 
 - (id)init {
   self = [super init];
   if (self) {
-    _socket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
-    _server = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
+    _wifiSocket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
+    _serverSocket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
   }
 
   return self;
@@ -33,7 +37,7 @@ static const uint8_t kSessionStartTag = 9;
 
 - (void)startServer {
   NSError *error = nil;
-  if (![_server acceptOnPort:kServicePort error:&error]) {
+  if (![_serverSocket acceptOnPort:kServicePort error:&error]) {
     NSLog(@"Could not listen on port %d. Error: %@", kServicePort, error);
   } else {
     NSLog(@"Listening on port %d", kServicePort);
@@ -41,12 +45,12 @@ static const uint8_t kSessionStartTag = 9;
 }
 
 - (void)stopServer {
-  [_server disconnect];
+  [_serverSocket disconnect];
 }
 
 
 - (BOOL)isActive {
-  return (_socket != nil && _socket.isConnected) || (_clientSocket != nil);
+  return (_wifiSocket != nil && _wifiSocket.isConnected) || (_usbSocket != nil);
 }
 
 - (BOOL)connectToService:(NSNetService *)netService {
@@ -57,7 +61,7 @@ static const uint8_t kSessionStartTag = 9;
 
   if ([netService.addresses count] > 0) {
 
-    if (![_socket connectToAddress:netService.addresses[0] withTimeout:10 error:&err]) {
+    if (![_wifiSocket connectToAddress:netService.addresses[0] withTimeout:10 error:&err]) {
 
       if ([self.delegate respondsToSelector:@selector(eventCenterFailedToConnectToHost:withError:)]) {
         [self.delegate eventCenterFailedToConnectToHost:netService.hostName withError:err];
@@ -72,19 +76,25 @@ static const uint8_t kSessionStartTag = 9;
 }
 
 - (BOOL)disconnect {
-  _socket.delegate = nil;
-  [_socket disconnect];
-  _socket.delegate = self;
+  _wifiSocket.delegate = nil;
+  [_wifiSocket disconnect];
+  _wifiSocket.delegate = self;
   return NO;
 }
 
 - (void)sendEvent:(Event *)event withTag:(u_int8_t)tag {
   NSData *data = [Event dataFromEvent:event];
-  if (_clientSocket != nil) {
-    [_clientSocket writeData:data withTimeout:0 tag:tag];
+  if (_usbSocket != nil) {
+    [_usbSocket writeData:data withTimeout:0 tag:tag];
   } else {
-    [_socket writeData:data withTimeout:0 tag:tag];
+    [_wifiSocket writeData:data withTimeout:0 tag:tag];
   }
+}
+
+- (void)disconnect:(GCDAsyncSocket *)socket {
+  socket.delegate = nil;
+  [socket disconnect];
+  socket.delegate = self;
 }
 
 #pragma mark -
@@ -94,6 +104,12 @@ static const uint8_t kSessionStartTag = 9;
   NSLog(@"Did read data");
 
   if (data.length < 4) {
+    if (DEBUG) {
+      [sock readDataWithTimeout:-1 tag:0];
+    } else {
+      [self disconnect:sock];
+    }
+
     return;
   }
 
@@ -101,6 +117,11 @@ static const uint8_t kSessionStartTag = 9;
   int length = CFSwapInt32BigToHost(*(int *) ([lengthData bytes]));
   if (length > data.length) {
     NSLog(@"ERROR: Length value is bigger than actual data length");
+    if (DEBUG) {
+      [sock readDataWithTimeout:-1 tag:0];
+    } else {
+      [self disconnect:sock];
+    }
     return;
   }
 
@@ -115,10 +136,10 @@ static const uint8_t kSessionStartTag = 9;
 }
 
 - (void)socketDidDisconnect:(GCDAsyncSocket *)sock withError:(NSError *)error {
-  if (sock == _socket) {
+  if (sock == _wifiSocket) {
     [self wifiSocketDidDisconnectWithError:error];
   }
-  if (sock == _server) {
+  if (sock == _usbSocket) {
     [self usbSocketDidDisconnectWithError:error];
   }
 }
@@ -126,7 +147,7 @@ static const uint8_t kSessionStartTag = 9;
 #pragma mark - Server Socket Methods
 
 - (void)usbSocketDidDisconnectWithError:(NSError *)error {
-  _clientSocket = nil;
+  _usbSocket = nil;
 
   if (self.delegate && [self.delegate respondsToSelector:@selector(eventCenterDidStopUSBConnectionWithError:)]) {
     [self.delegate eventCenterDidStopUSBConnectionWithError:error];
@@ -134,22 +155,22 @@ static const uint8_t kSessionStartTag = 9;
 }
 
 - (void)socket:(GCDAsyncSocket *)sock didAcceptNewSocket:(GCDAsyncSocket *)newSocket {
-  NSLog(@"New socket %@", newSocket);
+  DDLogDebug(@"New socket %@", newSocket);
   [newSocket readDataWithTimeout:-1 tag:0];
 
-//  if (_clientSocket != nil) {
-//    [_clientSocket disconnect];
+//  if (_usbSocket != nil) {
+//    [_usbSocket disconnect];
 //  }
 
-  _clientSocket = newSocket;
+  _usbSocket = newSocket;
 
   // TCP_NO_DELAY
-  [_clientSocket performBlock:^{
-    int fd = [_clientSocket socketFD];
-    int on = 1;
-    if (setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, (char *) &on, sizeof(on)) == -1) {
-      NSLog(@"Could not set sock opt TCP_NODELAY: %s", strerror(errno));
-    }
+  [_usbSocket performBlock:^{
+      int fd = [_usbSocket socketFD];
+      int on = 1;
+      if (setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, (char *) &on, sizeof(on)) == -1) {
+        DDLogDebug(@"Could not set sock opt TCP_NODELAY: %s", strerror(errno));
+      }
   }];
 
   if (self.delegate && [self.delegate respondsToSelector:@selector(eventCenterDidStartUSBConnection)]) {
@@ -169,11 +190,11 @@ static const uint8_t kSessionStartTag = 9;
 - (void)socket:(GCDAsyncSocket *)sock didConnectToHost:(NSString *)host port:(UInt16)port {
   NSLog(@"Connected to %@", host);
   // TCP_NO_DELAY
-  [_socket performBlock:^{
-      int fd = [_socket socketFD];
+  [_wifiSocket performBlock:^{
+      int fd = [_wifiSocket socketFD];
       int on = 1;
       if (setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, (char *) &on, sizeof(on)) == -1) {
-        NSLog(@"Could not set sock opt TCP_NODELAY: %s", strerror(errno));
+        DDLogDebug(@"Could not set sock opt TCP_NODELAY: %s", strerror(errno));
       }
   }];
 
@@ -184,7 +205,7 @@ static const uint8_t kSessionStartTag = 9;
   // Register this device
   [self registerDevice];
 
-  [_socket readDataWithTimeout:-1 tag:0];
+  [_wifiSocket readDataWithTimeout:-1 tag:0];
   if (self.delegate && [self.delegate respondsToSelector:@selector(eventCenterDidConnectToService:)]) {
     [self.delegate eventCenterDidConnectToService:lastConnectedService];
   }
@@ -196,7 +217,7 @@ static const uint8_t kSessionStartTag = 9;
 - (void)registerDevice {
   Event *ev = [ProtoHelper deviceEventWithTimestamp:[ProtoHelper now] type:DeviceEventTypeRegister];
   NSData *data = [Event dataFromEvent:ev];
-  [_socket writeData:data withTimeout:0 tag:kSessionStartTag];
+  [_wifiSocket writeData:data withTimeout:0 tag:kSessionStartTag];
 }
 
 - (void)connectToHost:(NSString *)address {
@@ -208,7 +229,7 @@ static const uint8_t kSessionStartTag = 9;
 
   if ([address length] > 0) {
 
-    if (![_socket connectToHost:address onPort:kServicePort withTimeout:10 error:&err]) {
+    if (![_wifiSocket connectToHost:address onPort:kServicePort withTimeout:10 error:&err]) {
       if ([self.delegate respondsToSelector:@selector(eventCenterFailedToConnectToHost:withError:)]) {
         [self.delegate eventCenterFailedToConnectToHost:address withError:err];
       }

@@ -13,6 +13,7 @@ PODS:
   - PBWebViewController (0.3)
   - ProtocolBuffers (1.9.7)
   - Reachability (3.2)
+  - SetupController (0.1.2)
   - SVProgressHUD (HEAD based on 1.1.2)
 
 DEPENDENCIES:
@@ -23,6 +24,7 @@ DEPENDENCIES:
   - PBWebViewController
   - ProtocolBuffers (~> 1.9.2)
   - Reachability (~> 3.1)
+  - SetupController (~> 0.1)
   - SVProgressHUD (HEAD)
 
 SPEC CHECKSUMS:
@@ -33,6 +35,7 @@ SPEC CHECKSUMS:
   PBWebViewController: 0a36bbd0f82741d9457177c9c37f5ff747cba312
   ProtocolBuffers: 37fdd327d36856f965ea9029b5ec0c7120e3a452
   Reachability: 1ef8adf5c4e3d362f96515d4278f68dad3c26930
+  SetupController: 4118ec0ff60a90d082027b7cc296cf72949efd83
   SVProgressHUD: da7a49e789af645d9279ffbca62318945a832438
 
 COCOAPODS: 0.35.0
