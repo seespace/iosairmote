@@ -42,12 +42,21 @@
   return [JDStatusBarNotification showWithStatus:status styleName:kErrorStyleName];
 }
 
++ (JDStatusBarView *)showErrorWithStatus:(NSString *)status dismissAfter:(NSTimeInterval)timeInterval {
+  return [JDStatusBarNotification showWithStatus:status dismissAfter:timeInterval styleName:kErrorStyleName];
+}
+
+
 + (JDStatusBarView *)showUSBConnection {
   return [JDStatusBarNotification showWithStatus:@"USB Connection" styleName:kUSBStyleName];
 }
 
-+ (JDStatusBarView *)showUSBConnectionWithStatus:(NSString *)status {
++ (JDStatusBarView *)showSuccessWithStatus:(NSString *)status {
   return [JDStatusBarNotification showWithStatus:status styleName:kUSBStyleName];
+}
+
++ (JDStatusBarView *)showSuccessWithStatus:(NSString *)status dismissAfter:(NSTimeInterval)timeInterval {
+  return [JDStatusBarNotification showWithStatus:status dismissAfter:timeInterval styleName:kUSBStyleName];
 }
 
 

@@ -9,7 +9,9 @@
 @interface JDStatusBarNotification (Extension)
 + (void)inAirInit;
 + (JDStatusBarView *)showErrorWithStatus:(NSString *)status;
++ (JDStatusBarView *)showErrorWithStatus:(NSString *)status dismissAfter:(NSTimeInterval)timeInterval;
 + (JDStatusBarView *)showUSBConnection;
-+ (JDStatusBarView *)showUSBConnectionWithStatus:(NSString *)status;
++ (JDStatusBarView *)showSuccessWithStatus:(NSString *)status;
++ (JDStatusBarView *)showSuccessWithStatus:(NSString *)status dismissAfter:(NSTimeInterval)timeInterval;
 //+ (JDStatusBarView*)showSuccessWithStatus:(NSString *)status;
 @end

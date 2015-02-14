@@ -74,20 +74,24 @@ static const uint8_t kMotionShakeTag = 6;
   if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HasLaunchedOnce"]) {
     // app already launched
   } else {
-//    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasLaunchedOnce"];
-//    [[NSUserDefaults standardUserDefaults] synchronize];
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasLaunchedOnce"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     // This is the first launch ever
 
-    _setupController = [[WifiSetupController alloc] init];
-    _setupController.dataSource = _setupController;
-    [self presentViewController:_setupController animated:YES completion:nil];
+    [self startWifiSetup];
   }
+}
+
+- (void)startWifiSetup {
+  _setupController = [[WifiSetupController alloc] init];
+  _setupController.dataSource = _setupController;
+  [self presentViewController:_setupController animated:YES completion:nil];
 }
 
 - (void)appWillBecomeInactive:(NSNotification *)notification {
   [SVProgressHUD dismiss];
   [JDStatusBarNotification dismiss];
-  [[IAConnection sharedConnection] stopServer];
+//  [[IAConnection sharedConnection] stopServer];
 }
 
 - (void)appDidBecomeActive:(NSNotification *)notification {
@@ -414,7 +418,7 @@ static const uint8_t kMotionShakeTag = 6;
 }
 
 - (IBAction)settingsButtonTapped:(id)sender {
-  [self startWifiSetupWorkFlow];
+  [self startWifiSetup];
 }
 
 - (void)dismissInputView {

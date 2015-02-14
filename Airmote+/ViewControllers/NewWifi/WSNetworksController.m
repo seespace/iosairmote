@@ -14,9 +14,11 @@
 #import "MBLabelCell.h"
 #import "Proto.pb.h"
 #import "JDStatusBarNotification+Extension.h"
+#import "AppDelegate.h"
 
 @interface WSNetworksController () {
   NSArray *_wifiNetworks;
+  UIActivityIndicatorView *_activityView;
 }
 
 @end
@@ -60,7 +62,9 @@
 
 - (void)viewDidAppear:(BOOL)animated {
   [IAConnection sharedConnection].delegate = self;
-
+  if (_wifiNetworks.count == 0) {
+    [self showActivityViewer];
+  }
   Event *ev = [ProtoHelper setupWifiScanRequest];
   [[IAConnection sharedConnection] sendEvent:ev withTag:0];
 }
@@ -68,6 +72,28 @@
 - (void)didReceiveMemoryWarning {
   [super didReceiveMemoryWarning];
   // Dispose of any resources that can be recreated.
+}
+
+#pragma mark ActivityView
+
+-(void)showActivityViewer {
+  _activityView = [[UIActivityIndicatorView alloc] initWithFrame: CGRectMake(self.tableView.bounds.size.width / 2 - 18, self.tableView.bounds.size.height / 2 - 18, 36, 36)];
+  _activityView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+  _activityView.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin |
+      UIViewAutoresizingFlexibleRightMargin |
+      UIViewAutoresizingFlexibleTopMargin |
+      UIViewAutoresizingFlexibleBottomMargin);
+  [self.tableView addSubview:_activityView];
+
+  [_activityView startAnimating];
+}
+
+-(void)hideActivityViewer {
+  if (_activityView != nil) {
+    [_activityView stopAnimating];
+    [_activityView removeFromSuperview];
+    _activityView = nil;
+  }
 }
 
 #pragma mark TableView
@@ -175,6 +201,7 @@
     } else {
       _wifiNetworks = ev.wifiNetworks;
       [self.tableView reloadData];
+      [self hideActivityViewer];
     }
   }
 }

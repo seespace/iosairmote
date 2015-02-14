@@ -16,6 +16,7 @@
 
 @interface WSEnterPasswordController () {
   MBTextFieldItem *_passwordItem;
+  BOOL _hasError;
 }
 
 @end
@@ -25,6 +26,7 @@
 - (id)initWithNetwork:(WifiNetwork *)network {
   if (self = [super init]) {
     self.selectedNetwork = network;
+    _hasError = NO;
   }
   return self;
 }
@@ -121,8 +123,11 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-  [JDStatusBarNotification dismiss];
+  if (_hasError) {
+    [JDStatusBarNotification dismiss];
+  }
 }
+
 
 - (void)didReceiveEvent:(Event *)event {
   SetupResponseEvent *ev = [event getExtension:[SetupResponseEvent event]];
@@ -132,9 +137,12 @@
 //        [SVProgressHUD showErrorWithStatus:@"Authentication Failed"];
         DDLogDebug(@"Authentication Failed");
         [JDStatusBarNotification showErrorWithStatus:@"Authentication Failed"];
+        _hasError = YES;
       } else {
 //        [SVProgressHUD showSuccessWithStatus:@"Connected"];
-        [JDStatusBarNotification showUSBConnectionWithStatus:@"Connected"];
+        [JDStatusBarNotification showSuccessWithStatus:@"Connected" dismissAfter:3.0f];
+        _hasError = NO;
+        [self dismissViewControllerAnimated:true completion:nil];
       }
 
       [SVProgressHUD dismiss];

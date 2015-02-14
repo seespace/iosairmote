@@ -26,13 +26,14 @@
   __weak WSInstructionController *weakSelf = self;
 
   weakSelf.nextButtonItem.enabled = [[IAConnection sharedConnection] isConnected];
-}
 
-- (void)viewDidAppear:(BOOL)animated {
-  [IAConnection sharedConnection].delegate = self;
+  if ([IAConnection sharedConnection].isConnected) {
+    [self proceedToNextPage];
+  }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+  [IAConnection sharedConnection].delegate = self;
   [self.navigationController setNavigationBarHidden:true];
 }
 
