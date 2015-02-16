@@ -245,6 +245,8 @@ static const uint8_t kMotionShakeTag = 6;
     } else {
       [[IAConnection sharedConnection] connectToServiceAtIndex:(NSUInteger) buttonIndex];
     }
+  } else {
+    [JDStatusBarNotification showErrorWithStatus:@"No Connection"];
   }
 }
 
