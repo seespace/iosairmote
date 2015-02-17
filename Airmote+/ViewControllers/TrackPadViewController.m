@@ -293,11 +293,11 @@ static const uint8_t kMotionShakeTag = 6;
 #pragma mark OAuth
 
 - (void)processOAuthRequest:(Event *)event {
-  if (_oauthEvent == nil) {
-    _oauthEvent = event;
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"OAuth" message:@"InAir would like to open webview for OAuth authentication." delegate:self cancelButtonTitle:@"Don't Allow" otherButtonTitles:@"OK", nil];
-    [alertView show];
-  }
+  _oauthEvent = event;
+
+  [self processOAuthRequest];
+//    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"OAuth" message:@"InAir would like to open webview for OAuth authentication." delegate:self cancelButtonTitle:@"Don't Allow" otherButtonTitles:@"OK", nil];
+//    [alertView show];
 }
 
 - (void)processOAuthRequest {
@@ -305,15 +305,17 @@ static const uint8_t kMotionShakeTag = 6;
     return;
   }
 
-  self.webViewController = [[WebViewController alloc] init];
-  if (self.navigationController.topViewController != self.webViewController) {
-    OAuthRequestEvent *event = [_oauthEvent getExtension:[OAuthRequestEvent event]];
-    self.webViewController.URL = [NSURL URLWithString:event.authUrl];
-    self.webViewController.delegate = self;
+  OAuthRequestEvent *event = [_oauthEvent getExtension:[OAuthRequestEvent event]];
+  if (self.webViewController == nil) {
+    self.webViewController = [[WebViewController alloc] initWithUrl:[NSURL URLWithString:event.authUrl]];
     self.webViewController.oauthEvent = _oauthEvent;
-    [self.webViewController load];
-
-    [self.navigationController pushViewController:self.webViewController animated:YES];
+    [self.webViewController showFromController:self];
+  } else if (self.webViewController.presentingViewController == nil) {
+    self.webViewController.oauthEvent = _oauthEvent;
+    [self.webViewController navigateToURL:[NSURL URLWithString:event.authUrl]];
+    [self.webViewController showFromController:self];
+  } else {
+    // busy
   }
 }
 

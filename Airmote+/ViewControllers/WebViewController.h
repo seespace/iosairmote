@@ -6,14 +6,12 @@
 //  Copyright (c) 2013 Long Nguyen. All rights reserved.
 //
 
-#import "PBWebViewController.h"
+#import "JBWebViewController.h"
 
 @class OAuthRequestEvent;
 @class Event;
 
-@interface WebViewController : PBWebViewController
-
-@property (strong, nonatomic) id<UIWebViewDelegate> delegate;
+@interface WebViewController : JBWebViewController
 
 @property(nonatomic, strong) Event *oauthEvent;
 @end

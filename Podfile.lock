@@ -1,4 +1,6 @@
 PODS:
+  - ARChromeActivity (1.0.0)
+  - ARSafariActivity (0.0.1)
   - CocoaAsyncSocket (7.4.1)
   - CocoaLumberjack (2.0.0-beta4):
     - CocoaLumberjack/Default (= 2.0.0-beta4)
@@ -8,9 +10,16 @@ PODS:
     - CocoaLumberjack/Core
   - CocoaLumberjack/Extensions (2.0.0-beta4):
     - CocoaLumberjack/Default
-  - HMGLTransitions (0.0.1)
+  - JBWebViewController (HEAD based on 1.0.6):
+    - ARChromeActivity (= 1.0)
+    - ARSafariActivity (= 0.0.1)
+    - NJKWebViewProgress (= 0.2)
   - JDStatusBarNotification (1.5.1)
-  - PBWebViewController (0.3)
+  - NJKWebViewProgress (0.2):
+    - NJKWebViewProgress/Core (= 0.2)
+    - NJKWebViewProgress/ProgressView (= 0.2)
+  - NJKWebViewProgress/Core (0.2)
+  - NJKWebViewProgress/ProgressView (0.2)
   - ProtocolBuffers (1.9.7)
   - Reachability (3.2)
   - SetupController (0.1.2)
@@ -19,20 +28,21 @@ PODS:
 DEPENDENCIES:
   - CocoaAsyncSocket (~> 7.3)
   - CocoaLumberjack (= 2.0.0-beta4)
-  - HMGLTransitions (~> 0.0)
+  - JBWebViewController (HEAD)
   - JDStatusBarNotification (~> 1.5)
-  - PBWebViewController
   - ProtocolBuffers (~> 1.9.2)
   - Reachability (~> 3.1)
   - SetupController (~> 0.1)
   - SVProgressHUD (HEAD)
 
 SPEC CHECKSUMS:
+  ARChromeActivity: cd029ef96efc46257f6fd28c69039fa4dd5907fd
+  ARSafariActivity: fe7568751149f1e19deaf9e62f4bfa1a29344ffe
   CocoaAsyncSocket: b0a1a89e7ea4c1c0ea4ec83f57d55117d3cdae06
   CocoaLumberjack: 24153b24b17d853d7182b22b128971fb98e8cb18
-  HMGLTransitions: 8a614bf1297bf8408c598a70fe781347403c7d6f
+  JBWebViewController: 04b393d1636e3cdbcdaa73a292476e4758c5cb60
   JDStatusBarNotification: 46965cc93efa668fa9f1c31cb223df5c84b421d5
-  PBWebViewController: 0a36bbd0f82741d9457177c9c37f5ff747cba312
+  NJKWebViewProgress: 2c15e5bab985f89198259e6d8681b67e792784ca
   ProtocolBuffers: 37fdd327d36856f965ea9029b5ec0c7120e3a452
   Reachability: 1ef8adf5c4e3d362f96515d4278f68dad3c26930
   SetupController: 4118ec0ff60a90d082027b7cc296cf72949efd83
