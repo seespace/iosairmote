@@ -25,9 +25,9 @@
 
   __weak WSInstructionController *weakSelf = self;
 
-  weakSelf.nextButtonItem.enabled = [[IAConnection sharedConnection] isConnected];
+  weakSelf.nextButtonItem.enabled = [[IAConnection sharedConnection] isUSBConnected];
 
-  if ([IAConnection sharedConnection].isConnected) {
+  if ([IAConnection sharedConnection].isUSBConnected) {
     [self proceedToNextPage];
   }
 }
@@ -45,9 +45,10 @@
   [self proceedToNextPage];
 }
 
-- (void)didConnect:(NSString *)hostName {
-  [self proceedToNextPage];
-}
+// For debugging purpose only
+//- (void)didConnect:(NSString *)hostName {
+//  [self proceedToNextPage];
+//}
 
 - (IBAction)cancel:(id)sender {
   [self dismissViewControllerAnimated:true completion:nil];

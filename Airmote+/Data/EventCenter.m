@@ -240,4 +240,8 @@ static const uint8_t kSessionStartTag = 9;
     }
   }
 }
+
+- (BOOL)isUSBConnected {
+  return _usbSocket != nil && _usbSocket.isConnected;
+}
 @end

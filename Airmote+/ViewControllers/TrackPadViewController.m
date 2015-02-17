@@ -16,8 +16,6 @@
 #import "WifiSetupController.h"
 
 #define kIPAddressAlertTitle @"Manual Connect"
-#define kStatusDelay 1.5f
-#define kDismissDelay 1.0f
 
 @implementation TrackPadViewController {
   Event *_oauthEvent;
@@ -105,18 +103,20 @@ static const uint8_t kMotionShakeTag = 6;
 - (void)didStartScanning {
 //  [SVProgressHUD showWithStatus:@"Scanning..."];
   [JDStatusBarNotification showWithStatus:@"Scanning..."];
+  [JDStatusBarNotification showActivityIndicator:YES indicatorStyle:UIActivityIndicatorViewStyleGray];
 }
 
 - (void)didStartConnecting {
 //  [SVProgressHUD showWithStatus:@"Connecting..."];
   [JDStatusBarNotification showWithStatus:@"Connecting..."];
+  [JDStatusBarNotification showActivityIndicator:YES indicatorStyle:UIActivityIndicatorViewStyleGray];
 }
 
 
 - (void)didConnect:(NSString *)hostName {
   NSString *message = [NSString stringWithFormat:@"Connected to %@", hostName];
 //  [SVProgressHUD showSuccessWithStatus:message];
-  [JDStatusBarNotification showWithStatus:message dismissAfter:kStatusDelay];
+  [JDStatusBarNotification showSuccessWithStatus:message dismissAfter:kAnimationSlow];
 }
 
 
@@ -177,7 +177,7 @@ static const uint8_t kMotionShakeTag = 6;
 }
 
 - (void)didStopUSBConnection:(NSError *)error {
-  [JDStatusBarNotification dismissAfter:kDismissDelay];
+  [JDStatusBarNotification dismissAfter:kAnimationFast];
   if (_setupController != nil) {
     [self dismissViewControllerAnimated:true completion:nil];
   }

@@ -12,7 +12,7 @@
 #import "SVProgressHUD.h"
 #import "JDStatusBarNotification+Extension.h"
 
-#define kDismissDelay 1.5f
+#define kAnimationFast 1.5f
 
 @interface WSEnterPasswordController () {
   MBTextFieldItem *_passwordItem;
@@ -155,7 +155,7 @@
 }
 
 - (void)didStopUSBConnection:(NSError *)error {
-  [JDStatusBarNotification dismissAfter:kDismissDelay];
+  [JDStatusBarNotification showErrorWithStatus:@"Connection closed by remote peer" dismissAfter:kAnimationSlow];
   [self dismissViewControllerAnimated:true completion:nil];
 }
 

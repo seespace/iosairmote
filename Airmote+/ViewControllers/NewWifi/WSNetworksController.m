@@ -156,7 +156,7 @@
 #pragma mark IAConnection
 
 - (void)didStopUSBConnection:(NSError *)error {
-  [JDStatusBarNotification dismissAfter:kDismissDelay];
+  [JDStatusBarNotification showErrorWithStatus:@"Connection closed by remote peer" dismissAfter:kAnimationSlow];
   [self dismissViewControllerAnimated:true completion:nil];
 }
 

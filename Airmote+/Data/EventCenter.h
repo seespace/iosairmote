@@ -35,4 +35,6 @@
 
 - (void)startServer;
 - (void)stopServer;
+
+- (BOOL)isUSBConnected;
 @end

@@ -378,6 +378,11 @@
   [eventCenter stopServer];
 }
 
+- (BOOL)isUSBConnected {
+  return [eventCenter isUSBConnected];
+}
+
+
 - (void)connectToServiceAtIndex:(NSUInteger)index
 {
   if (index < foundServices.count) {
