@@ -13,7 +13,9 @@
 
 static const uint8_t kOAuthTag = 12;
 
-@interface WebViewController ()
+@interface WebViewController () {
+  BOOL _success;
+}
 
 @end
 
@@ -21,7 +23,7 @@ static const uint8_t kOAuthTag = 12;
 
 - (id)initWithUrl:(NSURL *)url {
   if (self = [super initWithUrl:url]) {
-//    self.webViewProxyDelegate = self;
+    _success = NO;
   }
   return self;
 }
@@ -75,7 +77,6 @@ static const uint8_t kOAuthTag = 12;
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
   [super webView:webView shouldStartLoadWithRequest:request navigationType:navigationType];
   if ([request.URL.host isEqualToString:@"oauth.inair.tv"]) {
-    [self.navigationController popViewControllerAnimated:YES];
     DDURLParser *parser = [[DDURLParser alloc] initWithURLString:request.URL.absoluteString];
     NSString *code = [parser valueForVariable:@"code"];
     NSString *verifier = [parser valueForVariable:@"oauth_verifier"];
@@ -85,6 +86,10 @@ static const uint8_t kOAuthTag = 12;
     } else {
       [self processOAuthResponse:code withQueryString:request.URL.query];
     }
+
+    // dismiss
+    _success = YES;
+    [self dismiss];
   }
 
   return YES;
@@ -100,8 +105,10 @@ static const uint8_t kOAuthTag = 12;
 
 - (void)dismiss {
   [self dismissViewControllerAnimated:YES completion:^{
-    Event *ev = [ProtoHelper oauthResponseWithCode:@"" query:@"" target:_oauthEvent.replyTo];
-    [[IAConnection sharedConnection] sendEvent:ev withTag:kOAuthTag];
+    if (!_success) {
+      Event *ev = [ProtoHelper oauthResponseWithCode:@"" query:@"" target:_oauthEvent.replyTo];
+      [[IAConnection sharedConnection] sendEvent:ev withTag:kOAuthTag];
+    }
     _oauthEvent = nil;
   }];
 }
