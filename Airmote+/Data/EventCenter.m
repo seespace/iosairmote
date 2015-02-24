@@ -16,7 +16,7 @@ static const int kServicePort = 8989;
 static const uint8_t kSessionStartTag = 9;
 //static const uint8_t kSessionEndTag = 10;
 
-#define DEBUG YES
+#define DEBUG NO
 
 @implementation EventCenter {
   NSNetService *lastConnectedService;
