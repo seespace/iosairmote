@@ -117,7 +117,7 @@
   [foundServices addObject:aService];
   foundAllServices = !more;
   if (foundAllServices) {
-    DDLogDebug(@"Found %d services", [foundServices count] );
+    DDLogDebug(@"Found %ld services", [foundServices count]);
     isScanning = NO;
     if (foundServices.count > 1) {
       if ([self.delegate respondsToSelector:@selector(didFoundServices:)]) {
@@ -207,9 +207,12 @@
                                                   userInfo:nil
                                                    repeats:NO];
   } else {
-    DDLogDebug(@"Failed to scan because no wifi available");
-    NSError *error = [self errorWithCode:IAConnectionErrorWifiNotAvailable withReason:@"Wifi is not available"];
-    [self notifyError:error];
+    if (![eventCenter isActive]) {
+      // usb not connected
+      DDLogDebug(@"Failed to scan because no wifi available");
+      NSError *error = [self errorWithCode:IAConnectionErrorWifiNotAvailable withReason:@"Wifi is not available"];
+      [self notifyError:error];
+    }
   }
 }
 
@@ -367,6 +370,18 @@
 
 }
 
+- (void)startServer {
+  [eventCenter startServer];
+}
+
+- (void)stopServer {
+  [eventCenter stopServer];
+}
+
+- (BOOL)isUSBConnected {
+  return [eventCenter isUSBConnected];
+}
+
 
 - (void)connectToServiceAtIndex:(NSUInteger)index
 {
@@ -495,6 +510,20 @@
                                       userInfo:[error userInfo]];
   [self notifyError:tmpError];
   [self invalidateCurrentService];
+}
+
+#pragma mark USB Connection
+
+- (void)eventCenterDidStartUSBConnection {
+  if ([self.delegate respondsToSelector:@selector(didStartUSBConnection)]) {
+    [self.delegate didStartUSBConnection];
+  }
+}
+
+- (void)eventCenterDidStopUSBConnectionWithError:(NSError *)error {
+  if ([self.delegate respondsToSelector:@selector(didStopUSBConnection:)]) {
+    [self.delegate didStopUSBConnection:error];
+  }
 }
 
 @end

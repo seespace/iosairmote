@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14D72i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6246"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TrackPadViewController">
@@ -25,16 +25,16 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5pv-oF-CEP" userLabel="Seperator">
-                            <rect key="frame" x="158" y="0.0" width="2" height="611"/>
+                            <rect key="frame" x="158" y="20" width="2" height="592"/>
                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         </view>
                     </subviews>
-                    <color key="backgroundColor" white="0.89967105263157909" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
-                        <constraint firstAttribute="bottom" secondItem="5pv-oF-CEP" secondAttribute="bottom" constant="-43" id="8p6-qO-dLB"/>
+                        <constraint firstAttribute="bottom" secondItem="5pv-oF-CEP" secondAttribute="bottom" constant="-44" id="8p6-qO-dLB"/>
                         <constraint firstAttribute="trailing" secondItem="5pv-oF-CEP" secondAttribute="trailing" constant="160" id="gGa-pu-kCi"/>
                         <constraint firstItem="5pv-oF-CEP" firstAttribute="leading" secondItem="nKI-Hj-0zZ" secondAttribute="leading" constant="158" id="jlj-le-Qkl"/>
-                        <constraint firstItem="5pv-oF-CEP" firstAttribute="top" secondItem="nKI-Hj-0zZ" secondAttribute="top" id="pJT-Cd-ZRn"/>
+                        <constraint firstItem="5pv-oF-CEP" firstAttribute="top" secondItem="nKI-Hj-0zZ" secondAttribute="top" constant="20" id="pJT-Cd-ZRn"/>
                     </constraints>
                 </view>
                 <view alpha="0.90000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rKC-0i-yxh" userLabel="Controls">
@@ -258,7 +258,8 @@
                 <constraint firstAttribute="trailing" secondItem="nKI-Hj-0zZ" secondAttribute="trailing" id="w5d-4o-g6T"/>
                 <constraint firstItem="nKI-Hj-0zZ" firstAttribute="top" secondItem="1" secondAttribute="top" id="wmL-Gc-bca"/>
             </constraints>
-            <nil key="simulatedStatusBarMetrics"/>
+            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
             <point key="canvasLocation" x="44" y="272"/>
         </view>
     </objects>

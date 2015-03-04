@@ -15,26 +15,28 @@
 
 @synthesize viewController = _viewController;
 
-- (BOOL)application:(UIApplication *)application
-    didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+  self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   if ([[NSUserDefaults standardUserDefaults] objectForKey:kRequireWifiSetup] == nil) {
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kRequireWifiSetup];
   }
-  
-    TrackPadViewController *viewController  = [[TrackPadViewController alloc] init];
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+
+  TrackPadViewController *viewController = [[TrackPadViewController alloc] init];
+  UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
   navigationController.navigationBarHidden = YES;
-    self.window.rootViewController = navigationController;
-    
-    [self.window makeKeyAndVisible];
+  self.window.rootViewController = navigationController;
+
+  UIView *view=[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 20)];
+  view.backgroundColor = RGBA(242, 242, 242, 0.9f);
+  [self.window.rootViewController.view addSubview:view];
+
+  [self.window makeKeyAndVisible];
 
   [self setupLogger];
-    return YES;
+  return YES;
 }
 
-- (void)setupLogger
-{
+- (void)setupLogger {
   [DDLog addLogger:[DDASLLogger sharedInstance]];
   [DDLog addLogger:[DDTTYLogger sharedInstance]];
 }
@@ -54,6 +56,7 @@
   // application to its current state in case it is terminated later.
   // If your application supports background execution, this method is called
   // instead of applicationWillTerminate: when the user quits.
+  [[NSNotificationCenter defaultCenter] postNotificationName:@"applicationDidEnterBackground" object:self];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -62,9 +65,7 @@
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-  [[NSNotificationCenter defaultCenter]
-      postNotificationName:@"applicationDidBecomeActive"
-                    object:self];
+  [[NSNotificationCenter defaultCenter] postNotificationName:@"applicationDidBecomeActive" object:self];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {

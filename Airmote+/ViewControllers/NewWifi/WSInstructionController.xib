@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14D72i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6246"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WSInstructionController">
+            <connections>
+                <outlet property="cancelButton" destination="sGl-KV-kJT" id="trd-Ws-BoC"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="remote-guide" translatesAutoresizingMaskIntoConstraints="NO" id="uF8-3S-CWk">
+                    <rect key="frame" x="0.0" y="20" width="320" height="568"/>
+                </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sGl-KV-kJT">
+                    <rect key="frame" x="137" y="520" width="46" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="46" id="jth-al-7d9"/>
+                    </constraints>
+                    <state key="normal" title="cancel">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="cancel:" destination="-1" eventType="touchUpInside" id="Vxf-h3-ttJ"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="uF8-3S-CWk" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="AZO-N7-T13"/>
+                <constraint firstItem="sGl-KV-kJT" firstAttribute="centerX" secondItem="uF8-3S-CWk" secondAttribute="centerX" id="Bvr-H3-ot6"/>
+                <constraint firstItem="sGl-KV-kJT" firstAttribute="bottom" secondItem="i5M-Pr-FkT" secondAttribute="bottomMargin" constant="-10" id="UEW-KE-Oh4"/>
+                <constraint firstAttribute="bottom" secondItem="uF8-3S-CWk" secondAttribute="bottom" constant="-20" id="XZv-mY-A0y"/>
+                <constraint firstItem="uF8-3S-CWk" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="gkS-9b-2j9"/>
+                <constraint firstAttribute="centerX" secondItem="sGl-KV-kJT" secondAttribute="centerX" id="zQY-nu-8fc"/>
+            </constraints>
+            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <point key="canvasLocation" x="450" y="371"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="remote-guide" width="1080" height="1920"/>
+    </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>
