@@ -166,6 +166,11 @@ static const uint8_t kMotionShakeTag = 6;
 
     case EventTypeTextInputRequest:
       [self showInputView];
+      break;
+
+    case EventTypeWebviewRequest:
+      [self processWebViewRequest:event];
+      break;
     default:
       break;
   }
@@ -288,6 +293,29 @@ static const uint8_t kMotionShakeTag = 6;
   }
 }
 
+
+#pragma mark -
+#pragma mark WebView
+
+- (void)processWebViewRequest:(Event *)ev {
+  _oauthEvent = nil;
+
+  WebViewRequestEvent *event = [ev getExtension:[WebViewRequestEvent event]];
+
+  if (self.webViewController == nil) {
+    self.webViewController = [[WebViewController alloc] initWithUrl:[NSURL URLWithString:event.url]];
+    self.webViewController.oauthEvent = nil;
+    self.webViewController.webViewEvent = ev;
+    [self.webViewController showFromController:self];
+  } else if (self.webViewController.presentingViewController == nil) {
+    self.webViewController.oauthEvent = nil;
+    self.webViewController.webViewEvent = ev;
+    [self.webViewController navigateToURL:[NSURL URLWithString:event.url]];
+    [self.webViewController showFromController:self];
+  } else {
+    // busy
+  }
+}
 
 #pragma mark -
 #pragma mark OAuth

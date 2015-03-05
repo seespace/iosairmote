@@ -34,6 +34,10 @@
 @class TextInputResponseEventBuilder;
 @class TouchEvent;
 @class TouchEventBuilder;
+@class WebViewRequestEvent;
+@class WebViewRequestEventBuilder;
+@class WebViewResponseEvent;
+@class WebViewResponseEventBuilder;
 @class WifiNetwork;
 @class WifiNetworkBuilder;
 #ifndef __has_feature
@@ -49,7 +53,7 @@
 #endif
 
 typedef NS_ENUM(SInt32, Version) {
-  VersionCurrent = 2,
+  VersionCurrent = 21,
 };
 
 BOOL VersionIsValidValue(Version value);
@@ -90,6 +94,8 @@ typedef NS_ENUM(SInt32, EventType) {
   EventTypeTextInputRequest = 11,
   EventTypeTextInputResponse = 12,
   EventTypeFunctionEvent = 13,
+  EventTypeWebviewRequest = 14,
+  EventTypeWebviewResponse = 15,
 };
 
 BOOL EventTypeIsValidValue(EventType value);
@@ -1489,6 +1495,106 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 - (FunctionEventKey) key;
 - (FunctionEventBuilder*) setKey:(FunctionEventKey) value;
 - (FunctionEventBuilder*) clearKey;
+@end
+
+@interface WebViewRequestEvent : PBGeneratedMessage {
+@private
+  BOOL hasUrl_:1;
+  NSString* url;
+}
+- (BOOL) hasUrl;
+@property (readonly, strong) NSString* url;
+
++ (WebViewRequestEvent*) defaultInstance;
+- (WebViewRequestEvent*) defaultInstance;
+
++ (id<PBExtensionField>) event;
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (WebViewRequestEventBuilder*) builder;
++ (WebViewRequestEventBuilder*) builder;
++ (WebViewRequestEventBuilder*) builderWithPrototype:(WebViewRequestEvent*) prototype;
+- (WebViewRequestEventBuilder*) toBuilder;
+
++ (WebViewRequestEvent*) parseFromData:(NSData*) data;
++ (WebViewRequestEvent*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (WebViewRequestEvent*) parseFromInputStream:(NSInputStream*) input;
++ (WebViewRequestEvent*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (WebViewRequestEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (WebViewRequestEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface WebViewRequestEventBuilder : PBGeneratedMessageBuilder {
+@private
+  WebViewRequestEvent* result;
+}
+
+- (WebViewRequestEvent*) defaultInstance;
+
+- (WebViewRequestEventBuilder*) clear;
+- (WebViewRequestEventBuilder*) clone;
+
+- (WebViewRequestEvent*) build;
+- (WebViewRequestEvent*) buildPartial;
+
+- (WebViewRequestEventBuilder*) mergeFrom:(WebViewRequestEvent*) other;
+- (WebViewRequestEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (WebViewRequestEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasUrl;
+- (NSString*) url;
+- (WebViewRequestEventBuilder*) setUrl:(NSString*) value;
+- (WebViewRequestEventBuilder*) clearUrl;
+@end
+
+@interface WebViewResponseEvent : PBGeneratedMessage {
+@private
+  BOOL hasData_:1;
+  NSString* data;
+}
+- (BOOL) hasData;
+@property (readonly, strong) NSString* data;
+
++ (WebViewResponseEvent*) defaultInstance;
+- (WebViewResponseEvent*) defaultInstance;
+
++ (id<PBExtensionField>) event;
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (WebViewResponseEventBuilder*) builder;
++ (WebViewResponseEventBuilder*) builder;
++ (WebViewResponseEventBuilder*) builderWithPrototype:(WebViewResponseEvent*) prototype;
+- (WebViewResponseEventBuilder*) toBuilder;
+
++ (WebViewResponseEvent*) parseFromData:(NSData*) data;
++ (WebViewResponseEvent*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (WebViewResponseEvent*) parseFromInputStream:(NSInputStream*) input;
++ (WebViewResponseEvent*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (WebViewResponseEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (WebViewResponseEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface WebViewResponseEventBuilder : PBGeneratedMessageBuilder {
+@private
+  WebViewResponseEvent* result;
+}
+
+- (WebViewResponseEvent*) defaultInstance;
+
+- (WebViewResponseEventBuilder*) clear;
+- (WebViewResponseEventBuilder*) clone;
+
+- (WebViewResponseEvent*) build;
+- (WebViewResponseEvent*) buildPartial;
+
+- (WebViewResponseEventBuilder*) mergeFrom:(WebViewResponseEvent*) other;
+- (WebViewResponseEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (WebViewResponseEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasData;
+- (NSString*) data;
+- (WebViewResponseEventBuilder*) setData:(NSString*) value;
+- (WebViewResponseEventBuilder*) clearData;
 @end
 
 

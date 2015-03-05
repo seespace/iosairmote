@@ -295,20 +295,20 @@ static ProtoHelper *instance;
                                state:(GestureEventState)state
                                scale:(Float32)scale
                             velocity:(Float32)velocity {
-    
+
   [self ensureInitialized];
-  
+
   GestureEventBuilder *eBuilder = [[GestureEventBuilder alloc] init];
   eBuilder.locationX = locationX;
   eBuilder.locationY = locationY;
   eBuilder.state = state;
   eBuilder.type = GestureEventTypePinch;
-  
+
   eBuilder.pinchScale = scale;
   eBuilder.pinchVelocity = velocity;
-  
+
   GestureEvent *event = [eBuilder build];
-  
+
   // Build actual event
   EventBuilder *builder = [[EventBuilder alloc] init];
   builder.version = VersionCurrent;
@@ -318,8 +318,8 @@ static ProtoHelper *instance;
   builder.trackingAreaWidth = width;
   builder.trackingAreaHeight = height;
   [builder setExtension:[GestureEvent event] value:event];
-    
-    return [builder build];
+
+  return [builder build];
 }
 
 + (Event *)swipeGestureWithTimestamp:(SInt64)timestamp
@@ -394,7 +394,7 @@ static ProtoHelper *instance;
   [self ensureInitialized];
 
   OAuthResponseEvent *event = [[[[[OAuthResponseEventBuilder alloc] init] setAuthCode:code] setQueryString:query] build];
-    
+
   NSLog(@"Query %@", query);
 
   // Build actual event
@@ -491,12 +491,12 @@ static ProtoHelper *instance;
 + (Event *)textInputResponseWithState:(TextInputResponseEventState)state
                                  text:(NSString *)text {
   [self ensureInitialized];
-  
+
   TextInputResponseEvent *event = [[[[[TextInputResponseEventBuilder alloc] init]
-       setState:state]
-       setText:text]
-       build];
-  
+      setState:state]
+      setText:text]
+      build];
+
   // Build actual event
   EventBuilder *builder = [[EventBuilder alloc] init];
   builder.version = VersionCurrent;
@@ -506,15 +506,15 @@ static ProtoHelper *instance;
   builder.trackingAreaHeight = 0;
   builder.type = EventTypeTextInputResponse;
   [builder setExtension:[TextInputResponseEvent event] value:event];
-  
+
   return [builder build];
 }
 
-+(Event *) functionEventResponseWithState:(FunctionEventKey) key {
++ (Event *)functionEventResponseWithState:(FunctionEventKey)key {
   [self ensureInitialized];
   FunctionEvent *event = [[[[FunctionEventBuilder alloc] init] setKey:key] build];
 
-    // Build actual event
+  // Build actual event
   EventBuilder *builder = [[EventBuilder alloc] init];
   builder.version = VersionCurrent;
   builder.deviceType = DeviceTypeIos;
@@ -526,4 +526,25 @@ static ProtoHelper *instance;
 
   return [builder build];
 }
+
++ (Event *)webviewResponseWithData:(NSString *)data
+                            target:(NSString *)target {
+  [self ensureInitialized];
+
+  WebViewResponseEvent *event = [[[[WebViewResponseEventBuilder alloc] init] setData:data] build];
+
+  // Build actual event
+  EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.version = VersionCurrent;
+  builder.deviceType = DeviceTypeIos;
+  builder.timestamp = 0;
+  builder.trackingAreaWidth = 0;
+  builder.trackingAreaHeight = 0;
+  builder.target = target;
+  builder.type = EventTypeWebviewResponse;
+  [builder setExtension:[WebViewResponseEvent event] value:event];
+
+  return [builder build];
+}
+
 @end

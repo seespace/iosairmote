@@ -7,11 +7,13 @@
 //
 
 #import "JBWebViewController.h"
+#import "IAConnection.h"
 
 @class OAuthRequestEvent;
 @class Event;
 
-@interface WebViewController : JBWebViewController
+@interface WebViewController : JBWebViewController <IAConnectionDelegate>
 
 @property(nonatomic, strong) Event *oauthEvent;
+@property(nonatomic, strong) Event *webViewEvent;
 @end

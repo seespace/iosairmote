@@ -110,4 +110,6 @@
                                  text:(NSString *)text;
 
 + (Event *)functionEventResponseWithState:(FunctionEventKey)key;
+
++ (Event *)webviewResponseWithData:(NSString *)data target:(NSString *)target;
 @end

@@ -20,6 +20,8 @@
 		01300D371A8F184200C92E71 /* WSEnterPasswordController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01300D351A8F184200C92E71 /* WSEnterPasswordController.m */; };
 		013F057F186983A50029A23E /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 013F057E186983A50029A23E /* CFNetwork.framework */; };
 		013F0581186983AC0029A23E /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 013F0580186983AC0029A23E /* Security.framework */; };
+		0142A69C1AA73EAF00FCC465 /* inair.js in Resources */ = {isa = PBXBuildFile; fileRef = C07A406170D4DAC7423CA365 /* inair.js */; };
+		0142A69D1AA73EB900FCC465 /* inair.js in Resources */ = {isa = PBXBuildFile; fileRef = C07A406170D4DAC7423CA365 /* inair.js */; };
 		01A90210182A3CBE00D85971 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01A9020F182A3CBE00D85971 /* Foundation.framework */; };
 		01A90212182A3CBE00D85971 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01A90211182A3CBE00D85971 /* CoreGraphics.framework */; };
 		01A90214182A3CBE00D85971 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01A90213182A3CBE00D85971 /* UIKit.framework */; };
@@ -91,6 +93,8 @@
 		B4F9934C19A4E925006FC9C2 /* EnterPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4F9934A19A4E925006FC9C2 /* EnterPasswordViewController.xib */; };
 		C07A412AA6D69B0ADA522E88 /* WifiSetupController.m in Sources */ = {isa = PBXBuildFile; fileRef = C07A4B1D324CC7741CD1956B /* WifiSetupController.m */; };
 		C07A41FAB34FCFF310832EC7 /* JDStatusBarNotification+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = C07A4042D59C4B3B2DA2B2CC /* JDStatusBarNotification+Extension.m */; };
+		C07A436BD7B2B59F5ACAB74F /* inair.js in Sources */ = {isa = PBXBuildFile; fileRef = C07A406170D4DAC7423CA365 /* inair.js */; };
+		C07A46C22C4540C45F37BF53 /* inair.js in Sources */ = {isa = PBXBuildFile; fileRef = C07A406170D4DAC7423CA365 /* inair.js */; };
 		C07A4D30FD6FFB2E92D76F18 /* WifiSetupController.m in Sources */ = {isa = PBXBuildFile; fileRef = C07A4B1D324CC7741CD1956B /* WifiSetupController.m */; };
 		C07A4D682E478C4678CC3AFB /* JDStatusBarNotification+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = C07A4042D59C4B3B2DA2B2CC /* JDStatusBarNotification+Extension.m */; };
 		C584401A066D1F1903B6A015 /* TrackPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5844ED89441B78E5ED9D931 /* TrackPadViewController.m */; };
@@ -189,6 +193,7 @@
 		B4F9934919A4E925006FC9C2 /* EnterPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnterPasswordViewController.m; sourceTree = "<group>"; };
 		B4F9934A19A4E925006FC9C2 /* EnterPasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EnterPasswordViewController.xib; sourceTree = "<group>"; };
 		C07A4042D59C4B3B2DA2B2CC /* JDStatusBarNotification+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "JDStatusBarNotification+Extension.m"; sourceTree = "<group>"; };
+		C07A406170D4DAC7423CA365 /* inair.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = inair.js; sourceTree = "<group>"; };
 		C07A416AFB17799A72EDF754 /* WifiSetupController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WifiSetupController.h; sourceTree = "<group>"; };
 		C07A49C90AB18BB29F036484 /* JDStatusBarNotification+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "JDStatusBarNotification+Extension.h"; sourceTree = "<group>"; };
 		C07A4B1D324CC7741CD1956B /* WifiSetupController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WifiSetupController.m; sourceTree = "<group>"; };
@@ -333,6 +338,7 @@
 				01A90218182A3CBE00D85971 /* InfoPlist.strings */,
 				01A9021B182A3CBE00D85971 /* main.m */,
 				01A9021D182A3CBE00D85971 /* Airmote+-Prefix.pch */,
+				C07A406170D4DAC7423CA365 /* inair.js */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -593,6 +599,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0142A69D1AA73EB900FCC465 /* inair.js in Resources */,
 				B4F9934719A4E097006FC9C2 /* ChangeNameViewController.xib in Resources */,
 				01F415611871DA4300029AFE /* Settings.bundle in Resources */,
 				B4F9933D19A498C2006FC9C2 /* WifiCell.xib in Resources */,
@@ -622,6 +629,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0142A69C1AA73EAF00FCC465 /* inair.js in Resources */,
 				01B304031A52C7AC009D7417 /* ChangeNameViewController.xib in Resources */,
 				01B304041A52C7AC009D7417 /* Settings.bundle in Resources */,
 				01B304051A52C7AC009D7417 /* WifiCell.xib in Resources */,
@@ -736,6 +744,7 @@
 				C5844D863B1EFAC244C75EB8 /* IAConnection.m in Sources */,
 				C07A41FAB34FCFF310832EC7 /* JDStatusBarNotification+Extension.m in Sources */,
 				C07A4D30FD6FFB2E92D76F18 /* WifiSetupController.m in Sources */,
+				C07A436BD7B2B59F5ACAB74F /* inair.js in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -777,6 +786,7 @@
 				01B303F91A52C7AC009D7417 /* IAConnection.m in Sources */,
 				C07A4D682E478C4678CC3AFB /* JDStatusBarNotification+Extension.m in Sources */,
 				C07A412AA6D69B0ADA522E88 /* WifiSetupController.m in Sources */,
+				C07A46C22C4540C45F37BF53 /* inair.js in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

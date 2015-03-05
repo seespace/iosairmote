@@ -17,6 +17,8 @@ static id<PBExtensionField> SetupResponseEvent_event = nil;
 static id<PBExtensionField> TextInputRequestEvent_event = nil;
 static id<PBExtensionField> TextInputResponseEvent_event = nil;
 static id<PBExtensionField> FunctionEvent_event = nil;
+static id<PBExtensionField> WebViewRequestEvent_event = nil;
+static id<PBExtensionField> WebViewResponseEvent_event = nil;
 static PBExtensionRegistry* extensionRegistry = nil;
 + (PBExtensionRegistry*) extensionRegistry {
   return extensionRegistry;
@@ -141,6 +143,24 @@ static PBExtensionRegistry* extensionRegistry = nil;
                                         isRepeated:NO
                                           isPacked:NO
                             isMessageSetWireFormat:NO];
+    WebViewRequestEvent_event =
+      [PBConcreteExtensionField extensionWithType:PBExtensionTypeMessage
+                                     extendedClass:[Event class]
+                                       fieldNumber:113
+                                      defaultValue:[WebViewRequestEvent defaultInstance]
+                               messageOrGroupClass:[WebViewRequestEvent class]
+                                        isRepeated:NO
+                                          isPacked:NO
+                            isMessageSetWireFormat:NO];
+    WebViewResponseEvent_event =
+      [PBConcreteExtensionField extensionWithType:PBExtensionTypeMessage
+                                     extendedClass:[Event class]
+                                       fieldNumber:114
+                                      defaultValue:[WebViewResponseEvent defaultInstance]
+                               messageOrGroupClass:[WebViewResponseEvent class]
+                                        isRepeated:NO
+                                          isPacked:NO
+                            isMessageSetWireFormat:NO];
     PBMutableExtensionRegistry* registry = [PBMutableExtensionRegistry registry];
     [self registerAllExtensions:registry];
     extensionRegistry = registry;
@@ -160,6 +180,8 @@ static PBExtensionRegistry* extensionRegistry = nil;
   [registry addExtension:TextInputRequestEvent_event];
   [registry addExtension:TextInputResponseEvent_event];
   [registry addExtension:FunctionEvent_event];
+  [registry addExtension:WebViewRequestEvent_event];
+  [registry addExtension:WebViewResponseEvent_event];
 }
 @end
 
@@ -509,6 +531,8 @@ BOOL EventTypeIsValidValue(EventType value) {
     case EventTypeTextInputRequest:
     case EventTypeTextInputResponse:
     case EventTypeFunctionEvent:
+    case EventTypeWebviewRequest:
+    case EventTypeWebviewResponse:
       return YES;
     default:
       return NO;
@@ -6301,6 +6325,412 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value) {
 - (FunctionEventBuilder*) clearKey {
   result.hasKey = NO;
   result.key = FunctionEventKeyF1;
+  return self;
+}
+@end
+
+@interface WebViewRequestEvent ()
+@property (strong) NSString* url;
+@end
+
+@implementation WebViewRequestEvent
+
+- (BOOL) hasUrl {
+  return !!hasUrl_;
+}
+- (void) setHasUrl:(BOOL) value_ {
+  hasUrl_ = !!value_;
+}
+@synthesize url;
+- (id) init {
+  if ((self = [super init])) {
+    self.url = @"";
+  }
+  return self;
+}
++ (id<PBExtensionField>) event {
+  return WebViewRequestEvent_event;
+}
+static WebViewRequestEvent* defaultWebViewRequestEventInstance = nil;
++ (void) initialize {
+  if (self == [WebViewRequestEvent class]) {
+    defaultWebViewRequestEventInstance = [[WebViewRequestEvent alloc] init];
+  }
+}
++ (WebViewRequestEvent*) defaultInstance {
+  return defaultWebViewRequestEventInstance;
+}
+- (WebViewRequestEvent*) defaultInstance {
+  return defaultWebViewRequestEventInstance;
+}
+- (BOOL) isInitialized {
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasUrl) {
+    [output writeString:1 value:self.url];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (SInt32) serializedSize {
+  __block SInt32 size_ = memoizedSerializedSize;
+  if (size_ != -1) {
+    return size_;
+  }
+
+  size_ = 0;
+  if (self.hasUrl) {
+    size_ += computeStringSize(1, self.url);
+  }
+  size_ += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size_;
+  return size_;
+}
++ (WebViewRequestEvent*) parseFromData:(NSData*) data {
+  return (WebViewRequestEvent*)[[[WebViewRequestEvent builder] mergeFromData:data] build];
+}
++ (WebViewRequestEvent*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (WebViewRequestEvent*)[[[WebViewRequestEvent builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (WebViewRequestEvent*) parseFromInputStream:(NSInputStream*) input {
+  return (WebViewRequestEvent*)[[[WebViewRequestEvent builder] mergeFromInputStream:input] build];
+}
++ (WebViewRequestEvent*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (WebViewRequestEvent*)[[[WebViewRequestEvent builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (WebViewRequestEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (WebViewRequestEvent*)[[[WebViewRequestEvent builder] mergeFromCodedInputStream:input] build];
+}
++ (WebViewRequestEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (WebViewRequestEvent*)[[[WebViewRequestEvent builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (WebViewRequestEventBuilder*) builder {
+  return [[WebViewRequestEventBuilder alloc] init];
+}
++ (WebViewRequestEventBuilder*) builderWithPrototype:(WebViewRequestEvent*) prototype {
+  return [[WebViewRequestEvent builder] mergeFrom:prototype];
+}
+- (WebViewRequestEventBuilder*) builder {
+  return [WebViewRequestEvent builder];
+}
+- (WebViewRequestEventBuilder*) toBuilder {
+  return [WebViewRequestEvent builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasUrl) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"url", self.url];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[WebViewRequestEvent class]]) {
+    return NO;
+  }
+  WebViewRequestEvent *otherMessage = other;
+  return
+      self.hasUrl == otherMessage.hasUrl &&
+      (!self.hasUrl || [self.url isEqual:otherMessage.url]) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  __block NSUInteger hashCode = 7;
+  if (self.hasUrl) {
+    hashCode = hashCode * 31 + [self.url hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+@interface WebViewRequestEventBuilder()
+@property (strong) WebViewRequestEvent* result;
+@end
+
+@implementation WebViewRequestEventBuilder
+@synthesize result;
+- (id) init {
+  if ((self = [super init])) {
+    self.result = [[WebViewRequestEvent alloc] init];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return result;
+}
+- (WebViewRequestEventBuilder*) clear {
+  self.result = [[WebViewRequestEvent alloc] init];
+  return self;
+}
+- (WebViewRequestEventBuilder*) clone {
+  return [WebViewRequestEvent builderWithPrototype:result];
+}
+- (WebViewRequestEvent*) defaultInstance {
+  return [WebViewRequestEvent defaultInstance];
+}
+- (WebViewRequestEvent*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (WebViewRequestEvent*) buildPartial {
+  WebViewRequestEvent* returnMe = result;
+  self.result = nil;
+  return returnMe;
+}
+- (WebViewRequestEventBuilder*) mergeFrom:(WebViewRequestEvent*) other {
+  if (other == [WebViewRequestEvent defaultInstance]) {
+    return self;
+  }
+  if (other.hasUrl) {
+    [self setUrl:other.url];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (WebViewRequestEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (WebViewRequestEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    SInt32 tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 10: {
+        [self setUrl:[input readString]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasUrl {
+  return result.hasUrl;
+}
+- (NSString*) url {
+  return result.url;
+}
+- (WebViewRequestEventBuilder*) setUrl:(NSString*) value {
+  result.hasUrl = YES;
+  result.url = value;
+  return self;
+}
+- (WebViewRequestEventBuilder*) clearUrl {
+  result.hasUrl = NO;
+  result.url = @"";
+  return self;
+}
+@end
+
+@interface WebViewResponseEvent ()
+@property (strong) NSString* data;
+@end
+
+@implementation WebViewResponseEvent
+
+- (BOOL) hasData {
+  return !!hasData_;
+}
+- (void) setHasData:(BOOL) value_ {
+  hasData_ = !!value_;
+}
+@synthesize data;
+- (id) init {
+  if ((self = [super init])) {
+    self.data = @"";
+  }
+  return self;
+}
++ (id<PBExtensionField>) event {
+  return WebViewResponseEvent_event;
+}
+static WebViewResponseEvent* defaultWebViewResponseEventInstance = nil;
++ (void) initialize {
+  if (self == [WebViewResponseEvent class]) {
+    defaultWebViewResponseEventInstance = [[WebViewResponseEvent alloc] init];
+  }
+}
++ (WebViewResponseEvent*) defaultInstance {
+  return defaultWebViewResponseEventInstance;
+}
+- (WebViewResponseEvent*) defaultInstance {
+  return defaultWebViewResponseEventInstance;
+}
+- (BOOL) isInitialized {
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasData) {
+    [output writeString:1 value:self.data];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (SInt32) serializedSize {
+  __block SInt32 size_ = memoizedSerializedSize;
+  if (size_ != -1) {
+    return size_;
+  }
+
+  size_ = 0;
+  if (self.hasData) {
+    size_ += computeStringSize(1, self.data);
+  }
+  size_ += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size_;
+  return size_;
+}
++ (WebViewResponseEvent*) parseFromData:(NSData*) data {
+  return (WebViewResponseEvent*)[[[WebViewResponseEvent builder] mergeFromData:data] build];
+}
++ (WebViewResponseEvent*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (WebViewResponseEvent*)[[[WebViewResponseEvent builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (WebViewResponseEvent*) parseFromInputStream:(NSInputStream*) input {
+  return (WebViewResponseEvent*)[[[WebViewResponseEvent builder] mergeFromInputStream:input] build];
+}
++ (WebViewResponseEvent*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (WebViewResponseEvent*)[[[WebViewResponseEvent builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (WebViewResponseEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (WebViewResponseEvent*)[[[WebViewResponseEvent builder] mergeFromCodedInputStream:input] build];
+}
++ (WebViewResponseEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (WebViewResponseEvent*)[[[WebViewResponseEvent builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (WebViewResponseEventBuilder*) builder {
+  return [[WebViewResponseEventBuilder alloc] init];
+}
++ (WebViewResponseEventBuilder*) builderWithPrototype:(WebViewResponseEvent*) prototype {
+  return [[WebViewResponseEvent builder] mergeFrom:prototype];
+}
+- (WebViewResponseEventBuilder*) builder {
+  return [WebViewResponseEvent builder];
+}
+- (WebViewResponseEventBuilder*) toBuilder {
+  return [WebViewResponseEvent builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasData) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"data", self.data];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[WebViewResponseEvent class]]) {
+    return NO;
+  }
+  WebViewResponseEvent *otherMessage = other;
+  return
+      self.hasData == otherMessage.hasData &&
+      (!self.hasData || [self.data isEqual:otherMessage.data]) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  __block NSUInteger hashCode = 7;
+  if (self.hasData) {
+    hashCode = hashCode * 31 + [self.data hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+@interface WebViewResponseEventBuilder()
+@property (strong) WebViewResponseEvent* result;
+@end
+
+@implementation WebViewResponseEventBuilder
+@synthesize result;
+- (id) init {
+  if ((self = [super init])) {
+    self.result = [[WebViewResponseEvent alloc] init];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return result;
+}
+- (WebViewResponseEventBuilder*) clear {
+  self.result = [[WebViewResponseEvent alloc] init];
+  return self;
+}
+- (WebViewResponseEventBuilder*) clone {
+  return [WebViewResponseEvent builderWithPrototype:result];
+}
+- (WebViewResponseEvent*) defaultInstance {
+  return [WebViewResponseEvent defaultInstance];
+}
+- (WebViewResponseEvent*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (WebViewResponseEvent*) buildPartial {
+  WebViewResponseEvent* returnMe = result;
+  self.result = nil;
+  return returnMe;
+}
+- (WebViewResponseEventBuilder*) mergeFrom:(WebViewResponseEvent*) other {
+  if (other == [WebViewResponseEvent defaultInstance]) {
+    return self;
+  }
+  if (other.hasData) {
+    [self setData:other.data];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (WebViewResponseEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (WebViewResponseEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    SInt32 tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 10: {
+        [self setData:[input readString]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasData {
+  return result.hasData;
+}
+- (NSString*) data {
+  return result.data;
+}
+- (WebViewResponseEventBuilder*) setData:(NSString*) value {
+  result.hasData = YES;
+  result.data = value;
+  return self;
+}
+- (WebViewResponseEventBuilder*) clearData {
+  result.hasData = NO;
+  result.data = @"";
   return self;
 }
 @end
