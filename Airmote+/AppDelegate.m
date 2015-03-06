@@ -10,12 +10,16 @@
 #import "InstructionViewController.h"
 #import "DDTTYLogger.h"
 #import "DDASLLogger.h"
+#import <Fabric/Fabric.h>
+#import <Crashlytics/Crashlytics.h>
 
 @implementation AppDelegate
 
 @synthesize viewController = _viewController;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+  [Fabric with:@[CrashlyticsKit]];
+
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   if ([[NSUserDefaults standardUserDefaults] objectForKey:kRequireWifiSetup] == nil) {
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kRequireWifiSetup];

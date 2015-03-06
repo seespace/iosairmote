@@ -81,6 +81,10 @@
 		B4B87A8119A20A5400E2BDD0 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B4B87A8019A20A5400E2BDD0 /* libz.dylib */; };
 		B4BBD95319A3661500156A92 /* InstructionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BBD95119A3661500156A92 /* InstructionViewController.m */; };
 		B4BBD95419A3661500156A92 /* InstructionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4BBD95219A3661500156A92 /* InstructionViewController.xib */; };
+		B4E715A21AA950A900AAE5FF /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4E715A01AA950A900AAE5FF /* Crashlytics.framework */; };
+		B4E715A31AA950A900AAE5FF /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4E715A01AA950A900AAE5FF /* Crashlytics.framework */; };
+		B4E715A41AA950A900AAE5FF /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4E715A11AA950A900AAE5FF /* Fabric.framework */; };
+		B4E715A51AA950A900AAE5FF /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4E715A11AA950A900AAE5FF /* Fabric.framework */; };
 		B4F9933719A487EA006FC9C2 /* WiFiListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F9933519A487EA006FC9C2 /* WiFiListViewController.m */; };
 		B4F9933819A487EA006FC9C2 /* WiFiListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4F9933619A487EA006FC9C2 /* WiFiListViewController.xib */; };
 		B4F9933B19A497F1006FC9C2 /* WifiCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F9933A19A497F1006FC9C2 /* WifiCell.m */; };
@@ -177,6 +181,8 @@
 		B4BBD95019A3661500156A92 /* InstructionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstructionViewController.h; sourceTree = "<group>"; };
 		B4BBD95119A3661500156A92 /* InstructionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstructionViewController.m; sourceTree = "<group>"; };
 		B4BBD95219A3661500156A92 /* InstructionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InstructionViewController.xib; sourceTree = "<group>"; };
+		B4E715A01AA950A900AAE5FF /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
+		B4E715A11AA950A900AAE5FF /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		B4F9933419A487EA006FC9C2 /* WiFiListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WiFiListViewController.h; sourceTree = "<group>"; };
 		B4F9933519A487EA006FC9C2 /* WiFiListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WiFiListViewController.m; sourceTree = "<group>"; };
 		B4F9933619A487EA006FC9C2 /* WiFiListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WiFiListViewController.xib; sourceTree = "<group>"; };
@@ -233,8 +239,10 @@
 			files = (
 				B4B87A8119A20A5400E2BDD0 /* libz.dylib in Frameworks */,
 				013F0581186983AC0029A23E /* Security.framework in Frameworks */,
+				B4E715A21AA950A900AAE5FF /* Crashlytics.framework in Frameworks */,
 				013F057F186983A50029A23E /* CFNetwork.framework in Frameworks */,
 				01A90212182A3CBE00D85971 /* CoreGraphics.framework in Frameworks */,
+				B4E715A41AA950A900AAE5FF /* Fabric.framework in Frameworks */,
 				01A90214182A3CBE00D85971 /* UIKit.framework in Frameworks */,
 				01A90210182A3CBE00D85971 /* Foundation.framework in Frameworks */,
 				37347075505D4DBDB2B7D0D4 /* libPods.a in Frameworks */,
@@ -256,8 +264,10 @@
 			files = (
 				01B303FB1A52C7AC009D7417 /* libz.dylib in Frameworks */,
 				01B303FC1A52C7AC009D7417 /* Security.framework in Frameworks */,
+				B4E715A31AA950A900AAE5FF /* Crashlytics.framework in Frameworks */,
 				01B303FD1A52C7AC009D7417 /* CFNetwork.framework in Frameworks */,
 				01B303FE1A52C7AC009D7417 /* CoreGraphics.framework in Frameworks */,
+				B4E715A51AA950A900AAE5FF /* Fabric.framework in Frameworks */,
 				01B303FF1A52C7AC009D7417 /* UIKit.framework in Frameworks */,
 				01B304001A52C7AC009D7417 /* Foundation.framework in Frameworks */,
 				01B304011A52C7AC009D7417 /* libPods.a in Frameworks */,
@@ -299,6 +309,8 @@
 		01A9020E182A3CBE00D85971 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B4E715A01AA950A900AAE5FF /* Crashlytics.framework */,
+				B4E715A11AA950A900AAE5FF /* Fabric.framework */,
 				B4B87A8019A20A5400E2BDD0 /* libz.dylib */,
 				013F0580186983AC0029A23E /* Security.framework */,
 				013F057E186983A50029A23E /* CFNetwork.framework */,
@@ -500,6 +512,7 @@
 				01A90209182A3CBE00D85971 /* Frameworks */,
 				01A9020A182A3CBE00D85971 /* Resources */,
 				E47121F87F4743B385FB505E /* Copy Pods Resources */,
+				B4E7159E1AA9506D00AAE5FF /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -539,6 +552,7 @@
 				01B303FA1A52C7AC009D7417 /* Frameworks */,
 				01B304021A52C7AC009D7417 /* Resources */,
 				01B304101A52C7AC009D7417 /* Copy Pods Resources */,
+				B4E7159F1AA9507900AAE5FF /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -694,6 +708,32 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
+		};
+		B4E7159E1AA9506D00AAE5FF /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Fabric.framework/run 63935f84266ab9f5bac9f6f09f05b6f0d72b7717 d515bf1a06363bb18d1896de12c0a9843e8cbd5afdc0702bb49baad1d29db6b0";
+		};
+		B4E7159F1AA9507900AAE5FF /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Fabric.framework/run 63935f84266ab9f5bac9f6f09f05b6f0d72b7717 d515bf1a06363bb18d1896de12c0a9843e8cbd5afdc0702bb49baad1d29db6b0";
 		};
 		E47121F87F4743B385FB505E /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -927,6 +967,7 @@
 					"$(inherited)",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Airmote+-bnterijyewazbxeoxmsfsvinvpuz/Build/Products",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Airmote+-bnterijyewazbxeoxmsfsvinvpuz/Build/Products",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Airmote+/Airmote+-Prefix.pch";
@@ -964,6 +1005,7 @@
 					"$(inherited)",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Airmote+-bnterijyewazbxeoxmsfsvinvpuz/Build/Products",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Airmote+-bnterijyewazbxeoxmsfsvinvpuz/Build/Products",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Airmote+/Airmote+-Prefix.pch";
@@ -1044,6 +1086,7 @@
 					"$(inherited)",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Airmote+-bnterijyewazbxeoxmsfsvinvpuz/Build/Products",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Airmote+-bnterijyewazbxeoxmsfsvinvpuz/Build/Products",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Airmote+/Airmote+-Prefix.pch";
@@ -1081,6 +1124,7 @@
 					"$(inherited)",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Airmote+-bnterijyewazbxeoxmsfsvinvpuz/Build/Products",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Airmote+-bnterijyewazbxeoxmsfsvinvpuz/Build/Products",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Airmote+/Airmote+-Prefix.pch";
