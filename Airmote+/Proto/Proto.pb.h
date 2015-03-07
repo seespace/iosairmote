@@ -226,19 +226,19 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
   BOOL hasTimestamp_:1;
   BOOL hasTrackingAreaWidth_:1;
   BOOL hasTrackingAreaHeight_:1;
+  BOOL hasVersion_:1;
   BOOL hasTarget_:1;
   BOOL hasReplyTo_:1;
   BOOL hasType_:1;
   BOOL hasDeviceType_:1;
-  BOOL hasVersion_:1;
   SInt64 timestamp;
   SInt32 trackingAreaWidth;
   SInt32 trackingAreaHeight;
+  SInt32 version;
   NSString* target;
   NSString* replyTo;
   EventType type;
   DeviceType deviceType;
-  Version version;
 }
 - (BOOL) hasType;
 - (BOOL) hasTimestamp;
@@ -255,7 +255,7 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 @property (readonly, strong) NSString* target;
 @property (readonly, strong) NSString* replyTo;
 @property (readonly) DeviceType deviceType;
-@property (readonly) Version version;
+@property (readonly) SInt32 version;
 
 + (Event*) defaultInstance;
 - (Event*) defaultInstance;
@@ -328,8 +328,8 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 - (EventBuilder*) clearDeviceType;
 
 - (BOOL) hasVersion;
-- (Version) version;
-- (EventBuilder*) setVersion:(Version) value;
+- (SInt32) version;
+- (EventBuilder*) setVersion:(SInt32) value;
 - (EventBuilder*) clearVersion;
 @end
 

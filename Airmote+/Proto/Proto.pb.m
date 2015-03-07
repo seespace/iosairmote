@@ -226,7 +226,7 @@ BOOL SetupPhaseIsValidValue(SetupPhase value) {
 @property (strong) NSString* target;
 @property (strong) NSString* replyTo;
 @property DeviceType deviceType;
-@property Version version;
+@property SInt32 version;
 @end
 
 @implementation Event
@@ -296,7 +296,7 @@ BOOL SetupPhaseIsValidValue(SetupPhase value) {
     self.target = @"";
     self.replyTo = @"";
     self.deviceType = DeviceTypeIos;
-    self.version = VersionCurrent;
+    self.version = 0;
   }
   return self;
 }
@@ -350,7 +350,7 @@ static Event* defaultEventInstance = nil;
     [output writeEnum:7 value:self.deviceType];
   }
   if (self.hasVersion) {
-    [output writeEnum:8 value:self.version];
+    [output writeInt32:8 value:self.version];
   }
   [self writeExtensionsToCodedOutputStream:output
                                       from:100
@@ -386,7 +386,7 @@ static Event* defaultEventInstance = nil;
     size_ += computeEnumSize(7, self.deviceType);
   }
   if (self.hasVersion) {
-    size_ += computeEnumSize(8, self.version);
+    size_ += computeInt32Size(8, self.version);
   }
   size_ += [self extensionsSerializedSize];
   size_ += self.unknownFields.serializedSize;
@@ -507,7 +507,7 @@ static Event* defaultEventInstance = nil;
     hashCode = hashCode * 31 + self.deviceType;
   }
   if (self.hasVersion) {
-    hashCode = hashCode * 31 + self.version;
+    hashCode = hashCode * 31 + [[NSNumber numberWithInteger:self.version] hash];
   }
   hashCode = hashCode * 31 + [self hashExtensionsFrom:100 to:536870912];
   hashCode = hashCode * 31 + [self.unknownFields hash];
@@ -661,12 +661,7 @@ BOOL EventTypeIsValidValue(EventType value) {
         break;
       }
       case 64: {
-        Version value = (Version)[input readEnum];
-        if (VersionIsValidValue(value)) {
-          [self setVersion:value];
-        } else {
-          [unknownFields mergeVarintField:8 value:value];
-        }
+        [self setVersion:[input readInt32]];
         break;
       }
     }
@@ -787,17 +782,17 @@ BOOL EventTypeIsValidValue(EventType value) {
 - (BOOL) hasVersion {
   return result.hasVersion;
 }
-- (Version) version {
+- (SInt32) version {
   return result.version;
 }
-- (EventBuilder*) setVersion:(Version) value {
+- (EventBuilder*) setVersion:(SInt32) value {
   result.hasVersion = YES;
   result.version = value;
   return self;
 }
 - (EventBuilder*) clearVersion {
   result.hasVersion = NO;
-  result.version = VersionCurrent;
+  result.version = 0;
   return self;
 }
 @end

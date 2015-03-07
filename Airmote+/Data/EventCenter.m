@@ -219,9 +219,9 @@ static const uint8_t kSessionStartTag = 9;
 #pragma mark - Handshake
 
 - (void)registerDevice {
-  Event *ev = [ProtoHelper deviceEventWithTimestamp:[ProtoHelper now] type:DeviceEventTypeRegister];
-  NSData *data = [Event dataFromEvent:ev];
-  [_wifiSocket writeData:data withTimeout:0 tag:kSessionStartTag];
+  Event *event = [ProtoHelper deviceEventWithTimestamp:[ProtoHelper now] type:DeviceEventTypeRegister];
+  DDLogDebug(@"Sending Event: %@", event);
+  [self sendEvent:event withTag:kSessionStartTag];
 }
 
 - (void)connectToHost:(NSString *)address {
