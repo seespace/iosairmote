@@ -36,15 +36,13 @@ static const uint8_t kSessionStartTag = 9;
 }
 
 - (void)startServer {
-  if (_serverSocket.isConnected) {
-    return;
-  }
-
-  NSError *error = nil;
-  if (![_serverSocket acceptOnPort:kServicePort error:&error]) {
-    NSLog(@"Could not listen on port %d. Error: %@", kServicePort, error);
-  } else {
-    NSLog(@"Listening on port %d", kServicePort);
+  if (![self isUSBConnected]) {
+    NSError *error = nil;
+    if (![_serverSocket acceptOnPort:kServicePort error:&error]) {
+      NSLog(@"Could not listen on port %d. Error: %@", kServicePort, error);
+    } else {
+      NSLog(@"Listening on port %d", kServicePort);
+    }
   }
 }
 

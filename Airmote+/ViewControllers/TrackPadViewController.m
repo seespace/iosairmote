@@ -59,6 +59,9 @@ static const uint8_t kMotionShakeTag = 6;
                                            selector:@selector(appWillBecomeInactive:) name:UIApplicationWillResignActiveNotification
                                              object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(appDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification
+                                             object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(appDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification
                                              object:nil];
 
@@ -96,6 +99,10 @@ static const uint8_t kMotionShakeTag = 6;
   [[IAConnection sharedConnection] startServer];
 }
 
+- (void)appDidEnterBackground:(NSNotification *)notification {
+  [[IAConnection sharedConnection] stopServer];
+}
+
 - (BOOL)shouldConnectAutomatically {
   return YES;
 }
@@ -121,8 +128,12 @@ static const uint8_t kMotionShakeTag = 6;
 
 
 - (void)didFoundServices:(NSArray *)foundServices {
-  [JDStatusBarNotification dismiss];
-  [self showActionSheetForServices:foundServices];
+  if (foundServices.count > 0) {
+    [JDStatusBarNotification dismiss];
+    [self showActionSheetForServices:foundServices];
+  } else {
+    [JDStatusBarNotification showErrorWithStatus:@"No InAiR devices found"];
+  }
 }
 
 
