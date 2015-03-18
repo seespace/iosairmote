@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 Long Nguyen. All rights reserved.
 //
 
+#import <Build/SetupController/MBSetupPageItem.h>
 #import "WSNetworksController.h"
 #import "MBSetupPageSection.h"
 #import "MBSectionHeader.h"
@@ -97,6 +98,53 @@
 }
 
 #pragma mark TableView
+
+// NOTE: WE ARE OVERRIDING THIS METHOD TO FIX A CRASH BUG ON IOS 7
+- (MBSetupPageItem *)itemAtIndexPath:(NSIndexPath *)indexPath
+{
+  if (indexPath.section < self.sections.count) {
+    MBSetupPageSection *section = self.sections[indexPath.section];
+    if (indexPath.row < section.items.count) {
+      return section.items[indexPath.row];
+    }
+  }
+  
+  return nil;
+}
+
+// NOTE: WE ARE OVERRIDING THIS METHOD TO FIX A CRASH BUG ON IOS 7
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  if (self.useAutosizingCells) {
+    return UITableViewAutomaticDimension;
+  }
+  
+  MBSetupPageItem *item = (MBSetupPageItem *)[self itemAtIndexPath:indexPath];
+  if (item == nil)
+    return 44.0;
+  
+  NSAssert(item.cellIdentifier != nil, @"cellIdentifier != nil not satisfied");
+  
+  MBSetupPageCell *cell = [tableView dequeueReusableCellWithIdentifier:item.cellIdentifier];
+  if (!cell) {
+    cell = item.createCellBlock(item);
+  }
+  
+  item.configureCellBlock(item, cell);
+  
+  CGFloat height = 0;
+  
+  if (cell) {
+    NSAssert(item.cellHeightBlock != nil, @"item.cellHeightBlock != nil not satisfied");
+    height = item.cellHeightBlock(tableView, item, cell);
+  }
+  if (height == 0) {
+    height = 44.0;
+  }
+  
+  return height;
+}
+
 
 - (NSInteger)tableView:(UITableView *)tableView1 numberOfRowsInSection:(NSInteger)section {
   return [_wifiNetworks count];
