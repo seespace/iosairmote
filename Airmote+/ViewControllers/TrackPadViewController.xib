@@ -197,6 +197,15 @@
                         <action selector="moreButtonTapped:" destination="-1" eventType="touchUpInside" id="kAw-cV-g2D"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AK3-PI-VIA">
+                    <rect key="frame" x="285" y="25" width="32" height="32"/>
+                    <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    <inset key="imageEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
+                    <state key="normal" image="help"/>
+                    <connections>
+                        <action selector="infoButtonTapped:" destination="-1" eventType="touchUpInside" id="SZE-En-fNO"/>
+                    </connections>
+                </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sPp-Fi-YfW" userLabel="InputView">
                     <rect key="frame" x="10" y="-240" width="300" height="220"/>
                     <subviews>
@@ -266,6 +275,7 @@
     <resources>
         <image name="3d" width="50" height="50"/>
         <image name="ff" width="32" height="32"/>
+        <image name="help" width="32" height="32"/>
         <image name="more" width="24" height="24"/>
         <image name="play" width="32" height="32"/>
         <image name="rewind" width="32" height="32"/>

@@ -485,6 +485,11 @@ static const uint8_t kMotionShakeTag = 6;
                    } completion:NULL];
 }
 
+- (IBAction)infoButtonTapped:(id)sender {
+  JBWebViewController *infoViewController = [[JBWebViewController alloc] initWithUrl:[NSURL URLWithString:kHelpURL]];
+  [infoViewController showFromController:self];
+}
+
 - (IBAction)fastForwardButtonTapped:(id)sender {
   [[IAConnection sharedConnection] sendEvent:[ProtoHelper functionEventResponseWithState:FunctionEventKeyMediaFastForward] withTag:0];
 
