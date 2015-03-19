@@ -5,4 +5,4 @@
 #define kAnimationFast 1.5f
 #define kDismissMedium 2.0f
 #define kAnimationSlow 3.0f
-#define kHelpURL @"http://static.inair.tv/guide/"
+#define kHelpURL @"https://www.inair.tv/guide"
