@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14D72i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14D87h" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6246"/>
@@ -47,9 +47,9 @@
                                     <rect key="frame" x="0.0" y="-6" width="640" height="60"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dML-Kf-9wT" userLabel="3D">
-                                            <rect key="frame" x="49" y="5" width="55" height="50"/>
+                                            <rect key="frame" x="49" y="5" width="50" height="50"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="55" id="4wX-uw-RLP"/>
+                                                <constraint firstAttribute="width" constant="50" id="4wX-uw-RLP"/>
                                                 <constraint firstAttribute="height" constant="50" id="OYe-vf-Td1"/>
                                             </constraints>
                                             <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -97,50 +97,50 @@
                                                 <action selector="rewindButtonTapped:" destination="-1" eventType="touchUpInside" id="Odp-q4-Ssw"/>
                                             </connections>
                                         </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2IF-Vy-VUL" userLabel="WifiSetup">
+                                            <rect key="frame" x="223" y="5" width="50" height="50"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="50" id="2vd-nT-MRX"/>
+                                                <constraint firstAttribute="width" constant="50" id="gxj-Ff-Evk"/>
+                                            </constraints>
+                                            <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            <inset key="imageEdgeInsets" minX="12" minY="12" maxX="12" maxY="12"/>
+                                            <state key="normal" image="settings"/>
+                                            <connections>
+                                                <action selector="settingsButtonTapped:" destination="-1" eventType="touchUpInside" id="hmY-YK-ZmA"/>
+                                            </connections>
+                                        </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qUX-ej-fLs" userLabel="Refresh">
-                                            <rect key="frame" x="129" y="4" width="60" height="50"/>
+                                            <rect key="frame" x="135" y="5" width="50" height="50"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="50" id="Wk5-v2-L5J"/>
-                                                <constraint firstAttribute="width" constant="60" id="jKE-mc-Rid"/>
+                                                <constraint firstAttribute="width" constant="50" id="jKE-mc-Rid"/>
                                             </constraints>
                                             <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             <inset key="imageEdgeInsets" minX="2" minY="2" maxX="2" maxY="2"/>
-                                            <state key="normal" image="refresh"/>
+                                            <state key="normal" image="scan"/>
                                             <connections>
                                                 <action selector="refreshButtonTapped:" destination="-1" eventType="touchUpInside" id="ysH-Tr-zba"/>
-                                            </connections>
-                                        </button>
-                                        <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2IF-Vy-VUL" userLabel="WifiSetup">
-                                            <rect key="frame" x="214" y="4" width="55" height="50"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="50" id="2vd-nT-MRX"/>
-                                                <constraint firstAttribute="width" constant="55" id="gxj-Ff-Evk"/>
-                                            </constraints>
-                                            <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                            <inset key="imageEdgeInsets" minX="12" minY="11" maxX="13" maxY="11"/>
-                                            <state key="normal" image="wifi"/>
-                                            <connections>
-                                                <action selector="settingsButtonTapped:" destination="-1" eventType="touchUpInside" id="hmY-YK-ZmA"/>
                                             </connections>
                                         </button>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="vL5-aP-9F7" secondAttribute="trailing" constant="216" id="5op-Ix-bTY"/>
-                                        <constraint firstItem="ddF-Xf-VlY" firstAttribute="leading" secondItem="dML-Kf-9wT" secondAttribute="trailing" constant="354" id="91K-rI-bGT"/>
-                                        <constraint firstItem="2IF-Vy-VUL" firstAttribute="leading" secondItem="qUX-ej-fLs" secondAttribute="trailing" constant="25" id="ABh-gf-nqe"/>
+                                        <constraint firstItem="ddF-Xf-VlY" firstAttribute="leading" secondItem="dML-Kf-9wT" secondAttribute="trailing" constant="359" id="91K-rI-bGT"/>
+                                        <constraint firstItem="2IF-Vy-VUL" firstAttribute="leading" secondItem="qUX-ej-fLs" secondAttribute="trailing" constant="38" id="ABh-gf-nqe"/>
                                         <constraint firstAttribute="height" constant="60" id="Chh-1e-1dN"/>
                                         <constraint firstItem="Zo3-ig-OHS" firstAttribute="leading" secondItem="ddF-Xf-VlY" secondAttribute="trailing" constant="34" id="EHd-rs-G6i"/>
-                                        <constraint firstAttribute="bottom" secondItem="2IF-Vy-VUL" secondAttribute="bottom" constant="6" id="Myv-3V-I0Y"/>
+                                        <constraint firstAttribute="bottom" secondItem="2IF-Vy-VUL" secondAttribute="bottom" constant="5" id="Myv-3V-I0Y"/>
                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="640" id="Os5-hc-q7U"/>
                                         <constraint firstAttribute="width" constant="640" id="SJN-WI-nhi"/>
                                         <constraint firstAttribute="bottom" secondItem="dML-Kf-9wT" secondAttribute="bottom" constant="5" id="UxH-nm-BM5"/>
                                         <constraint firstAttribute="bottom" secondItem="ddF-Xf-VlY" secondAttribute="bottom" constant="8" id="X3J-6H-PuN"/>
-                                        <constraint firstItem="qUX-ej-fLs" firstAttribute="leading" secondItem="dML-Kf-9wT" secondAttribute="trailing" constant="25" id="ZnT-8f-CMp"/>
-                                        <constraint firstItem="2IF-Vy-VUL" firstAttribute="leading" secondItem="Ax5-8s-5Me" secondAttribute="leading" constant="214" id="eKL-ek-HqP"/>
+                                        <constraint firstItem="qUX-ej-fLs" firstAttribute="leading" secondItem="dML-Kf-9wT" secondAttribute="trailing" constant="36" id="ZnT-8f-CMp"/>
+                                        <constraint firstItem="2IF-Vy-VUL" firstAttribute="leading" secondItem="Ax5-8s-5Me" secondAttribute="leading" constant="223" id="eKL-ek-HqP"/>
                                         <constraint firstAttribute="bottom" secondItem="Zo3-ig-OHS" secondAttribute="bottom" constant="8" id="ff7-7M-nCG"/>
                                         <constraint firstItem="dML-Kf-9wT" firstAttribute="leading" secondItem="Ax5-8s-5Me" secondAttribute="leading" constant="49" id="gk5-PQ-3yN"/>
-                                        <constraint firstAttribute="bottom" secondItem="qUX-ej-fLs" secondAttribute="bottom" constant="6" id="ofZ-Pm-HQm"/>
+                                        <constraint firstAttribute="bottom" secondItem="qUX-ej-fLs" secondAttribute="bottom" constant="5" id="ofZ-Pm-HQm"/>
                                         <constraint firstAttribute="bottom" secondItem="vL5-aP-9F7" secondAttribute="bottom" constant="8" id="sfc-bS-bmK"/>
                                     </constraints>
                                 </view>
@@ -264,13 +264,13 @@
         </view>
     </objects>
     <resources>
-        <image name="3d" width="28" height="32"/>
+        <image name="3d" width="50" height="50"/>
         <image name="ff" width="32" height="32"/>
         <image name="more" width="24" height="24"/>
         <image name="play" width="32" height="32"/>
-        <image name="refresh" width="32" height="32"/>
         <image name="rewind" width="32" height="32"/>
-        <image name="wifi" width="32" height="32"/>
+        <image name="scan" width="30" height="30"/>
+        <image name="settings" width="50" height="50"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

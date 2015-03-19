@@ -97,8 +97,6 @@
 		B4F9934C19A4E925006FC9C2 /* EnterPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4F9934A19A4E925006FC9C2 /* EnterPasswordViewController.xib */; };
 		C07A412AA6D69B0ADA522E88 /* WifiSetupController.m in Sources */ = {isa = PBXBuildFile; fileRef = C07A4B1D324CC7741CD1956B /* WifiSetupController.m */; };
 		C07A41FAB34FCFF310832EC7 /* JDStatusBarNotification+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = C07A4042D59C4B3B2DA2B2CC /* JDStatusBarNotification+Extension.m */; };
-		C07A436BD7B2B59F5ACAB74F /* inair.js in Sources */ = {isa = PBXBuildFile; fileRef = C07A406170D4DAC7423CA365 /* inair.js */; };
-		C07A46C22C4540C45F37BF53 /* inair.js in Sources */ = {isa = PBXBuildFile; fileRef = C07A406170D4DAC7423CA365 /* inair.js */; };
 		C07A4D30FD6FFB2E92D76F18 /* WifiSetupController.m in Sources */ = {isa = PBXBuildFile; fileRef = C07A4B1D324CC7741CD1956B /* WifiSetupController.m */; };
 		C07A4D682E478C4678CC3AFB /* JDStatusBarNotification+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = C07A4042D59C4B3B2DA2B2CC /* JDStatusBarNotification+Extension.m */; };
 		C584401A066D1F1903B6A015 /* TrackPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5844ED89441B78E5ED9D931 /* TrackPadViewController.m */; };
@@ -784,7 +782,6 @@
 				C5844D863B1EFAC244C75EB8 /* IAConnection.m in Sources */,
 				C07A41FAB34FCFF310832EC7 /* JDStatusBarNotification+Extension.m in Sources */,
 				C07A4D30FD6FFB2E92D76F18 /* WifiSetupController.m in Sources */,
-				C07A436BD7B2B59F5ACAB74F /* inair.js in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -826,7 +823,6 @@
 				01B303F91A52C7AC009D7417 /* IAConnection.m in Sources */,
 				C07A4D682E478C4678CC3AFB /* JDStatusBarNotification+Extension.m in Sources */,
 				C07A412AA6D69B0ADA522E88 /* WifiSetupController.m in Sources */,
-				C07A46C22C4540C45F37BF53 /* inair.js in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
