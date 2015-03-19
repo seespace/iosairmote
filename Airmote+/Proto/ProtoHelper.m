@@ -547,4 +547,43 @@ static ProtoHelper *instance;
   return [builder build];
 }
 
++ (Event *)pingEvent {
+  [self ensureInitialized];
+
+  PingEvent *event = [[[PingEventBuilder alloc] init] build];
+
+  // Build actual event
+  EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.version = VersionCurrent;
+  builder.deviceType = DeviceTypeIos;
+  builder.timestamp = 0;
+  builder.trackingAreaWidth = 0;
+  builder.trackingAreaHeight = 0;
+  builder.target = @"";
+  builder.type = EventTypePing;
+  [builder setExtension:[PingEvent event] value:event];
+
+  return [builder build];
+}
+
++ (Event *)pongEvent {
+  [self ensureInitialized];
+
+  PongEvent *event = [[[PongEventBuilder alloc] init] build];
+
+  // Build actual event
+  EventBuilder *builder = [[EventBuilder alloc] init];
+  builder.version = VersionCurrent;
+  builder.deviceType = DeviceTypeIos;
+  builder.timestamp = 0;
+  builder.trackingAreaWidth = 0;
+  builder.trackingAreaHeight = 0;
+  builder.target = @"";
+  builder.type = EventTypePong;
+  [builder setExtension:[PongEvent event] value:event];
+
+  return [builder build];
+}
+
+
 @end

@@ -30,6 +30,10 @@
   [super viewDidLoad];
   // Do any additional setup after loading the view from its nib.
 
+  if (![[IAConnection sharedConnection] isUSBConnected]) {
+    [self proceedToPreviousPage];
+  }
+
   __weak WSNetworksController *weakSelf = self;
 
   weakSelf.nextButtonItem.enabled = NO;
@@ -62,6 +66,11 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
+  if (![[IAConnection sharedConnection] isUSBConnected]) {
+    [self proceedToPreviousPage];
+    return;
+  }
+
   [IAConnection sharedConnection].delegate = self;
   if (_wifiNetworks.count == 0) {
     [self showActivityViewer];
@@ -204,8 +213,8 @@
 #pragma mark IAConnection
 
 - (void)didStopUSBConnection:(NSError *)error {
-  [JDStatusBarNotification showErrorWithStatus:@"Connection closed by remote peer" dismissAfter:kAnimationSlow];
-  [self dismissViewControllerAnimated:true completion:nil];
+  [JDStatusBarNotification showErrorWithStatus:@"USB connection closed" dismissAfter:kAnimationSlow];
+  [self proceedToPreviousPage];
 }
 
 - (void)didReceiveEvent:(Event *)event {

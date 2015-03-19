@@ -155,8 +155,8 @@
 }
 
 - (void)didStopUSBConnection:(NSError *)error {
-  [JDStatusBarNotification showErrorWithStatus:@"Connection closed by remote peer" dismissAfter:kAnimationSlow];
-  [self dismissViewControllerAnimated:true completion:nil];
+  [JDStatusBarNotification showErrorWithStatus:@"USB connection closed" dismissAfter:kAnimationSlow];
+  [self proceedToPreviousPage];
 }
 
 - (void)didReceiveMemoryWarning {

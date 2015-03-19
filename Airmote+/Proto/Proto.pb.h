@@ -24,6 +24,10 @@
 @class OAuthRequestEventBuilder;
 @class OAuthResponseEvent;
 @class OAuthResponseEventBuilder;
+@class PingEvent;
+@class PingEventBuilder;
+@class PongEvent;
+@class PongEventBuilder;
 @class SetupRequestEvent;
 @class SetupRequestEventBuilder;
 @class SetupResponseEvent;
@@ -53,7 +57,7 @@
 #endif
 
 typedef NS_ENUM(SInt32, Version) {
-  VersionCurrent = 21,
+  VersionCurrent = 22,
 };
 
 BOOL VersionIsValidValue(Version value);
@@ -96,6 +100,8 @@ typedef NS_ENUM(SInt32, EventType) {
   EventTypeFunctionEvent = 13,
   EventTypeWebviewRequest = 14,
   EventTypeWebviewResponse = 15,
+  EventTypePing = 16,
+  EventTypePong = 17,
 };
 
 BOOL EventTypeIsValidValue(EventType value);
@@ -1595,6 +1601,88 @@ BOOL FunctionEventKeyIsValidValue(FunctionEventKey value);
 - (NSString*) data;
 - (WebViewResponseEventBuilder*) setData:(NSString*) value;
 - (WebViewResponseEventBuilder*) clearData;
+@end
+
+@interface PingEvent : PBGeneratedMessage {
+@private
+}
+
++ (PingEvent*) defaultInstance;
+- (PingEvent*) defaultInstance;
+
++ (id<PBExtensionField>) event;
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (PingEventBuilder*) builder;
++ (PingEventBuilder*) builder;
++ (PingEventBuilder*) builderWithPrototype:(PingEvent*) prototype;
+- (PingEventBuilder*) toBuilder;
+
++ (PingEvent*) parseFromData:(NSData*) data;
++ (PingEvent*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (PingEvent*) parseFromInputStream:(NSInputStream*) input;
++ (PingEvent*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (PingEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (PingEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface PingEventBuilder : PBGeneratedMessageBuilder {
+@private
+  PingEvent* result;
+}
+
+- (PingEvent*) defaultInstance;
+
+- (PingEventBuilder*) clear;
+- (PingEventBuilder*) clone;
+
+- (PingEvent*) build;
+- (PingEvent*) buildPartial;
+
+- (PingEventBuilder*) mergeFrom:(PingEvent*) other;
+- (PingEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (PingEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface PongEvent : PBGeneratedMessage {
+@private
+}
+
++ (PongEvent*) defaultInstance;
+- (PongEvent*) defaultInstance;
+
++ (id<PBExtensionField>) event;
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (PongEventBuilder*) builder;
++ (PongEventBuilder*) builder;
++ (PongEventBuilder*) builderWithPrototype:(PongEvent*) prototype;
+- (PongEventBuilder*) toBuilder;
+
++ (PongEvent*) parseFromData:(NSData*) data;
++ (PongEvent*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (PongEvent*) parseFromInputStream:(NSInputStream*) input;
++ (PongEvent*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (PongEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (PongEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface PongEventBuilder : PBGeneratedMessageBuilder {
+@private
+  PongEvent* result;
+}
+
+- (PongEvent*) defaultInstance;
+
+- (PongEventBuilder*) clear;
+- (PongEventBuilder*) clone;
+
+- (PongEvent*) build;
+- (PongEvent*) buildPartial;
+
+- (PongEventBuilder*) mergeFrom:(PongEvent*) other;
+- (PongEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (PongEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
 @end
 
 

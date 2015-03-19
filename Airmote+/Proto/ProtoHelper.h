@@ -112,4 +112,7 @@
 + (Event *)functionEventResponseWithState:(FunctionEventKey)key;
 
 + (Event *)webviewResponseWithData:(NSString *)data target:(NSString *)target;
+
++ (Event *)pingEvent;
++ (Event *)pongEvent;
 @end

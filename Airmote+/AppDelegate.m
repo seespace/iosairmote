@@ -10,6 +10,8 @@
 #import "InstructionViewController.h"
 #import "DDTTYLogger.h"
 #import "DDASLLogger.h"
+#import "Antenna.h"
+#import "DDAntennaLogger.h"
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
 
@@ -43,6 +45,14 @@
 - (void)setupLogger {
   [DDLog addLogger:[DDASLLogger sharedInstance]];
   [DDLog addLogger:[DDTTYLogger sharedInstance]];
+
+#ifdef DEBUG
+  [[Antenna sharedLogger] addChannelWithURL:[NSURL URLWithString:@"http://yosemite.local:3205/log/"] method:@"POST"];
+  [[Antenna sharedLogger] startLoggingApplicationLifecycleNotifications];
+
+  DDAntennaLogger *logger = [[DDAntennaLogger alloc] initWithAntenna:[Antenna sharedLogger]];
+  [DDLog addLogger:logger];
+#endif
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

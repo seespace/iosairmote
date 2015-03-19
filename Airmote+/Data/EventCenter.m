@@ -15,8 +15,7 @@
 static const int kServicePort = 8989;
 static const uint8_t kSessionStartTag = 9;
 //static const uint8_t kSessionEndTag = 10;
-
-#define DEBUG NO
+static const uint8_t kPongTag = 11;
 
 @implementation EventCenter {
   NSNetService *lastConnectedService;
@@ -106,11 +105,8 @@ static const uint8_t kSessionStartTag = 9;
   NSLog(@"Did read data");
 
   if (data.length < 4) {
-    if (DEBUG) {
-      [sock readDataWithTimeout:-1 tag:0];
-    } else {
-      [self disconnect:sock];
-    }
+    [self disconnect:sock];
+    [self socketDidDisconnect:sock withError:nil];
 
     return;
   }
@@ -119,11 +115,7 @@ static const uint8_t kSessionStartTag = 9;
   int length = CFSwapInt32BigToHost(*(int *) ([lengthData bytes]));
   if (length > data.length) {
     NSLog(@"ERROR: Length value is bigger than actual data length");
-    if (DEBUG) {
-      [sock readDataWithTimeout:-1 tag:0];
-    } else {
-      [self disconnect:sock];
-    }
+    [self disconnect:sock];
     return;
   }
 
@@ -131,9 +123,14 @@ static const uint8_t kSessionStartTag = 9;
 
   Event *event = [ProtoHelper parseFromData:msg];
 
-  if (self.delegate && [self.delegate respondsToSelector:@selector(eventCenter:receivedEvent:)]) {
-    [self.delegate eventCenter:self receivedEvent:event];
+  if (event.type == EventTypePing) {
+    [self pong];
+  } else {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(eventCenter:receivedEvent:)]) {
+      [self.delegate eventCenter:self receivedEvent:event];
+    }
   }
+
   [sock readDataWithTimeout:-1 tag:0];
 }
 
@@ -168,11 +165,11 @@ static const uint8_t kSessionStartTag = 9;
 
   // TCP_NO_DELAY
   [_usbSocket performBlock:^{
-      int fd = [_usbSocket socketFD];
-      int on = 1;
-      if (setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, (char *) &on, sizeof(on)) == -1) {
-        DDLogDebug(@"Could not set sock opt TCP_NODELAY: %s", strerror(errno));
-      }
+    int fd = [_usbSocket socketFD];
+    int on = 1;
+    if (setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, (char *) &on, sizeof(on)) == -1) {
+      DDLogDebug(@"Could not set sock opt TCP_NODELAY: %s", strerror(errno));
+    }
   }];
 
   if (self.delegate && [self.delegate respondsToSelector:@selector(eventCenterDidStartUSBConnection)]) {
@@ -193,11 +190,11 @@ static const uint8_t kSessionStartTag = 9;
   NSLog(@"Connected to %@", host);
   // TCP_NO_DELAY
   [_wifiSocket performBlock:^{
-      int fd = [_wifiSocket socketFD];
-      int on = 1;
-      if (setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, (char *) &on, sizeof(on)) == -1) {
-        DDLogDebug(@"Could not set sock opt TCP_NODELAY: %s", strerror(errno));
-      }
+    int fd = [_wifiSocket socketFD];
+    int on = 1;
+    if (setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, (char *) &on, sizeof(on)) == -1) {
+      DDLogDebug(@"Could not set sock opt TCP_NODELAY: %s", strerror(errno));
+    }
   }];
 
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -237,6 +234,14 @@ static const uint8_t kSessionStartTag = 9;
       }
     }
   }
+}
+
+#pragma mark - Pong
+
+- (void)pong {
+  Event *event = [ProtoHelper pongEvent];
+  DDLogDebug(@"PONG");
+  [self sendEvent:event withTag:kPongTag];
 }
 
 - (BOOL)isUSBConnected {

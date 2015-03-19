@@ -19,6 +19,8 @@ static id<PBExtensionField> TextInputResponseEvent_event = nil;
 static id<PBExtensionField> FunctionEvent_event = nil;
 static id<PBExtensionField> WebViewRequestEvent_event = nil;
 static id<PBExtensionField> WebViewResponseEvent_event = nil;
+static id<PBExtensionField> PingEvent_event = nil;
+static id<PBExtensionField> PongEvent_event = nil;
 static PBExtensionRegistry* extensionRegistry = nil;
 + (PBExtensionRegistry*) extensionRegistry {
   return extensionRegistry;
@@ -161,6 +163,24 @@ static PBExtensionRegistry* extensionRegistry = nil;
                                         isRepeated:NO
                                           isPacked:NO
                             isMessageSetWireFormat:NO];
+    PingEvent_event =
+      [PBConcreteExtensionField extensionWithType:PBExtensionTypeMessage
+                                     extendedClass:[Event class]
+                                       fieldNumber:115
+                                      defaultValue:[PingEvent defaultInstance]
+                               messageOrGroupClass:[PingEvent class]
+                                        isRepeated:NO
+                                          isPacked:NO
+                            isMessageSetWireFormat:NO];
+    PongEvent_event =
+      [PBConcreteExtensionField extensionWithType:PBExtensionTypeMessage
+                                     extendedClass:[Event class]
+                                       fieldNumber:116
+                                      defaultValue:[PongEvent defaultInstance]
+                               messageOrGroupClass:[PongEvent class]
+                                        isRepeated:NO
+                                          isPacked:NO
+                            isMessageSetWireFormat:NO];
     PBMutableExtensionRegistry* registry = [PBMutableExtensionRegistry registry];
     [self registerAllExtensions:registry];
     extensionRegistry = registry;
@@ -182,6 +202,8 @@ static PBExtensionRegistry* extensionRegistry = nil;
   [registry addExtension:FunctionEvent_event];
   [registry addExtension:WebViewRequestEvent_event];
   [registry addExtension:WebViewResponseEvent_event];
+  [registry addExtension:PingEvent_event];
+  [registry addExtension:PongEvent_event];
 }
 @end
 
@@ -533,6 +555,8 @@ BOOL EventTypeIsValidValue(EventType value) {
     case EventTypeFunctionEvent:
     case EventTypeWebviewRequest:
     case EventTypeWebviewResponse:
+    case EventTypePing:
+    case EventTypePong:
       return YES;
     default:
       return NO;
@@ -6727,6 +6751,320 @@ static WebViewResponseEvent* defaultWebViewResponseEventInstance = nil;
   result.hasData = NO;
   result.data = @"";
   return self;
+}
+@end
+
+@interface PingEvent ()
+@end
+
+@implementation PingEvent
+
+- (id) init {
+  if ((self = [super init])) {
+  }
+  return self;
+}
++ (id<PBExtensionField>) event {
+  return PingEvent_event;
+}
+static PingEvent* defaultPingEventInstance = nil;
++ (void) initialize {
+  if (self == [PingEvent class]) {
+    defaultPingEventInstance = [[PingEvent alloc] init];
+  }
+}
++ (PingEvent*) defaultInstance {
+  return defaultPingEventInstance;
+}
+- (PingEvent*) defaultInstance {
+  return defaultPingEventInstance;
+}
+- (BOOL) isInitialized {
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (SInt32) serializedSize {
+  __block SInt32 size_ = memoizedSerializedSize;
+  if (size_ != -1) {
+    return size_;
+  }
+
+  size_ = 0;
+  size_ += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size_;
+  return size_;
+}
++ (PingEvent*) parseFromData:(NSData*) data {
+  return (PingEvent*)[[[PingEvent builder] mergeFromData:data] build];
+}
++ (PingEvent*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (PingEvent*)[[[PingEvent builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (PingEvent*) parseFromInputStream:(NSInputStream*) input {
+  return (PingEvent*)[[[PingEvent builder] mergeFromInputStream:input] build];
+}
++ (PingEvent*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (PingEvent*)[[[PingEvent builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (PingEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (PingEvent*)[[[PingEvent builder] mergeFromCodedInputStream:input] build];
+}
++ (PingEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (PingEvent*)[[[PingEvent builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (PingEventBuilder*) builder {
+  return [[PingEventBuilder alloc] init];
+}
++ (PingEventBuilder*) builderWithPrototype:(PingEvent*) prototype {
+  return [[PingEvent builder] mergeFrom:prototype];
+}
+- (PingEventBuilder*) builder {
+  return [PingEvent builder];
+}
+- (PingEventBuilder*) toBuilder {
+  return [PingEvent builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[PingEvent class]]) {
+    return NO;
+  }
+  PingEvent *otherMessage = other;
+  return
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  __block NSUInteger hashCode = 7;
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+@interface PingEventBuilder()
+@property (strong) PingEvent* result;
+@end
+
+@implementation PingEventBuilder
+@synthesize result;
+- (id) init {
+  if ((self = [super init])) {
+    self.result = [[PingEvent alloc] init];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return result;
+}
+- (PingEventBuilder*) clear {
+  self.result = [[PingEvent alloc] init];
+  return self;
+}
+- (PingEventBuilder*) clone {
+  return [PingEvent builderWithPrototype:result];
+}
+- (PingEvent*) defaultInstance {
+  return [PingEvent defaultInstance];
+}
+- (PingEvent*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (PingEvent*) buildPartial {
+  PingEvent* returnMe = result;
+  self.result = nil;
+  return returnMe;
+}
+- (PingEventBuilder*) mergeFrom:(PingEvent*) other {
+  if (other == [PingEvent defaultInstance]) {
+    return self;
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (PingEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (PingEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    SInt32 tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+    }
+  }
+}
+@end
+
+@interface PongEvent ()
+@end
+
+@implementation PongEvent
+
+- (id) init {
+  if ((self = [super init])) {
+  }
+  return self;
+}
++ (id<PBExtensionField>) event {
+  return PongEvent_event;
+}
+static PongEvent* defaultPongEventInstance = nil;
++ (void) initialize {
+  if (self == [PongEvent class]) {
+    defaultPongEventInstance = [[PongEvent alloc] init];
+  }
+}
++ (PongEvent*) defaultInstance {
+  return defaultPongEventInstance;
+}
+- (PongEvent*) defaultInstance {
+  return defaultPongEventInstance;
+}
+- (BOOL) isInitialized {
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (SInt32) serializedSize {
+  __block SInt32 size_ = memoizedSerializedSize;
+  if (size_ != -1) {
+    return size_;
+  }
+
+  size_ = 0;
+  size_ += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size_;
+  return size_;
+}
++ (PongEvent*) parseFromData:(NSData*) data {
+  return (PongEvent*)[[[PongEvent builder] mergeFromData:data] build];
+}
++ (PongEvent*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (PongEvent*)[[[PongEvent builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (PongEvent*) parseFromInputStream:(NSInputStream*) input {
+  return (PongEvent*)[[[PongEvent builder] mergeFromInputStream:input] build];
+}
++ (PongEvent*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (PongEvent*)[[[PongEvent builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (PongEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (PongEvent*)[[[PongEvent builder] mergeFromCodedInputStream:input] build];
+}
++ (PongEvent*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (PongEvent*)[[[PongEvent builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (PongEventBuilder*) builder {
+  return [[PongEventBuilder alloc] init];
+}
++ (PongEventBuilder*) builderWithPrototype:(PongEvent*) prototype {
+  return [[PongEvent builder] mergeFrom:prototype];
+}
+- (PongEventBuilder*) builder {
+  return [PongEvent builder];
+}
+- (PongEventBuilder*) toBuilder {
+  return [PongEvent builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[PongEvent class]]) {
+    return NO;
+  }
+  PongEvent *otherMessage = other;
+  return
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  __block NSUInteger hashCode = 7;
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+@interface PongEventBuilder()
+@property (strong) PongEvent* result;
+@end
+
+@implementation PongEventBuilder
+@synthesize result;
+- (id) init {
+  if ((self = [super init])) {
+    self.result = [[PongEvent alloc] init];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return result;
+}
+- (PongEventBuilder*) clear {
+  self.result = [[PongEvent alloc] init];
+  return self;
+}
+- (PongEventBuilder*) clone {
+  return [PongEvent builderWithPrototype:result];
+}
+- (PongEvent*) defaultInstance {
+  return [PongEvent defaultInstance];
+}
+- (PongEvent*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (PongEvent*) buildPartial {
+  PongEvent* returnMe = result;
+  self.result = nil;
+  return returnMe;
+}
+- (PongEventBuilder*) mergeFrom:(PongEvent*) other {
+  if (other == [PongEvent defaultInstance]) {
+    return self;
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (PongEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (PongEventBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    SInt32 tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+    }
+  }
 }
 @end
 
