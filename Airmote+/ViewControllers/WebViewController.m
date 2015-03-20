@@ -42,7 +42,7 @@ static const uint8_t kWebViewTag = 13;
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-//    [self clearCookies];
+  [self clearCookies];
   // Do any additional setup after loading the view.
 }
 
