@@ -7,136 +7,61 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		010887CD182CCE6E008BDD22 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 010887CC182CCE6E008BDD22 /* Podfile */; };
-		0124BFD51A8D82EC006EB73A /* WSInstructionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0124BFD31A8D82EC006EB73A /* WSInstructionController.m */; };
-		0124BFD61A8D82EC006EB73A /* WSInstructionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0124BFD31A8D82EC006EB73A /* WSInstructionController.m */; };
-		0124BFD71A8D82EC006EB73A /* WSInstructionController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0124BFD41A8D82EC006EB73A /* WSInstructionController.xib */; };
-		0124BFD81A8D82EC006EB73A /* WSInstructionController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0124BFD41A8D82EC006EB73A /* WSInstructionController.xib */; };
-		01300D301A8EAE7800C92E71 /* WSNetworksController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01300D2E1A8EAE7800C92E71 /* WSNetworksController.m */; };
-		01300D311A8EAE7800C92E71 /* WSNetworksController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01300D2E1A8EAE7800C92E71 /* WSNetworksController.m */; };
-		01300D321A8EAE7800C92E71 /* WSNetworksController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01300D2F1A8EAE7800C92E71 /* WSNetworksController.xib */; };
-		01300D331A8EAE7800C92E71 /* WSNetworksController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01300D2F1A8EAE7800C92E71 /* WSNetworksController.xib */; };
-		01300D361A8F184200C92E71 /* WSEnterPasswordController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01300D351A8F184200C92E71 /* WSEnterPasswordController.m */; };
-		01300D371A8F184200C92E71 /* WSEnterPasswordController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01300D351A8F184200C92E71 /* WSEnterPasswordController.m */; };
-		013F057F186983A50029A23E /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 013F057E186983A50029A23E /* CFNetwork.framework */; };
-		013F0581186983AC0029A23E /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 013F0580186983AC0029A23E /* Security.framework */; };
-		0142A69C1AA73EAF00FCC465 /* inair.js in Resources */ = {isa = PBXBuildFile; fileRef = C07A406170D4DAC7423CA365 /* inair.js */; };
-		0142A69D1AA73EB900FCC465 /* inair.js in Resources */ = {isa = PBXBuildFile; fileRef = C07A406170D4DAC7423CA365 /* inair.js */; };
-		01A90210182A3CBE00D85971 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01A9020F182A3CBE00D85971 /* Foundation.framework */; };
-		01A90212182A3CBE00D85971 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01A90211182A3CBE00D85971 /* CoreGraphics.framework */; };
-		01A90214182A3CBE00D85971 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01A90213182A3CBE00D85971 /* UIKit.framework */; };
-		01A9021A182A3CBE00D85971 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 01A90218182A3CBE00D85971 /* InfoPlist.strings */; };
-		01A9021C182A3CBE00D85971 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 01A9021B182A3CBE00D85971 /* main.m */; };
-		01A90228182A3CBE00D85971 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01A90227182A3CBE00D85971 /* Images.xcassets */; };
 		01A90230182A3CBF00D85971 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01A9020F182A3CBE00D85971 /* Foundation.framework */; };
 		01A90231182A3CBF00D85971 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01A90213182A3CBE00D85971 /* UIKit.framework */; };
 		01A90239182A3CBF00D85971 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 01A90237182A3CBF00D85971 /* InfoPlist.strings */; };
 		01A9023B182A3CBF00D85971 /* Airmote_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 01A9023A182A3CBF00D85971 /* Airmote_Tests.m */; };
-		01A90609182A49A100D85971 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 01A90607182A49A100D85971 /* AppDelegate.m */; };
-		01B303E51A52C7AC009D7417 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 01A90607182A49A100D85971 /* AppDelegate.m */; };
-		01B303E61A52C7AC009D7417 /* VerifyInAiRViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F9933F19A4DE77006FC9C2 /* VerifyInAiRViewController.m */; };
-		01B303E71A52C7AC009D7417 /* WiFiListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F9933519A487EA006FC9C2 /* WiFiListViewController.m */; };
-		01B303E81A52C7AC009D7417 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 01A9021B182A3CBE00D85971 /* main.m */; };
-		01B303E91A52C7AC009D7417 /* ChangeNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F9934419A4E097006FC9C2 /* ChangeNameViewController.m */; };
-		01B303EA1A52C7AC009D7417 /* WifiCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F9933A19A497F1006FC9C2 /* WifiCell.m */; };
-		01B303EB1A52C7AC009D7417 /* EnterPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F9934919A4E925006FC9C2 /* EnterPasswordViewController.m */; };
-		01B303EC1A52C7AC009D7417 /* TrackPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5844ED89441B78E5ED9D931 /* TrackPadViewController.m */; };
-		01B303ED1A52C7AC009D7417 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C584485FF4326A8E9B08B3A4 /* WebViewController.m */; };
-		01B303EE1A52C7AC009D7417 /* InstructionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BBD95119A3661500156A92 /* InstructionViewController.m */; };
-		01B303EF1A52C7AC009D7417 /* Event+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = C584418E08FB8FB0F1DDF896 /* Event+Extension.m */; };
-		01B303F01A52C7AC009D7417 /* EventCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = C58442F85EC1ECBA64716687 /* EventCenter.m */; };
-		01B303F11A52C7AC009D7417 /* TrackPadView.m in Sources */ = {isa = PBXBuildFile; fileRef = C58449F556AFB3C52D6C7D28 /* TrackPadView.m */; };
-		01B303F21A52C7AC009D7417 /* NSData+NetService.m in Sources */ = {isa = PBXBuildFile; fileRef = C5844A3ABF93BE55E57B1EB8 /* NSData+NetService.m */; };
-		01B303F31A52C7AC009D7417 /* DDURLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = C58449D8A0EA2DEB85384596 /* DDURLParser.m */; };
-		01B303F41A52C7AC009D7417 /* ProtoHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C58446B8812F646BE82E52DB /* ProtoHelper.m */; };
-		01B303F51A52C7AC009D7417 /* Proto.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = C58449999B7324E698D6643F /* Proto.pb.m */; };
-		01B303F61A52C7AC009D7417 /* WifiHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C5844AEC7D865AC3656EC804 /* WifiHelper.m */; };
-		01B303F71A52C7AC009D7417 /* ConnectedConfirmationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B46889A819AEE5ED0043A8A9 /* ConnectedConfirmationViewController.m */; };
-		01B303F81A52C7AC009D7417 /* WifiNetwork+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = C58448D55F9A1DC3853DD753 /* WifiNetwork+Extension.m */; };
-		01B303F91A52C7AC009D7417 /* IAConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = C5844072E0B87BC74BC615E0 /* IAConnection.m */; };
-		01B303FB1A52C7AC009D7417 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B4B87A8019A20A5400E2BDD0 /* libz.dylib */; };
-		01B303FC1A52C7AC009D7417 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 013F0580186983AC0029A23E /* Security.framework */; };
-		01B303FD1A52C7AC009D7417 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 013F057E186983A50029A23E /* CFNetwork.framework */; };
-		01B303FE1A52C7AC009D7417 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01A90211182A3CBE00D85971 /* CoreGraphics.framework */; };
-		01B303FF1A52C7AC009D7417 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01A90213182A3CBE00D85971 /* UIKit.framework */; };
-		01B304001A52C7AC009D7417 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01A9020F182A3CBE00D85971 /* Foundation.framework */; };
-		01B304011A52C7AC009D7417 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B16347417AEC44FE911F15C2 /* libPods.a */; };
-		01B304031A52C7AC009D7417 /* ChangeNameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4F9934519A4E097006FC9C2 /* ChangeNameViewController.xib */; };
-		01B304041A52C7AC009D7417 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 01F415601871DA4300029AFE /* Settings.bundle */; };
-		01B304051A52C7AC009D7417 /* WifiCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4F9933C19A498C2006FC9C2 /* WifiCell.xib */; };
-		01B304061A52C7AC009D7417 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01A90227182A3CBE00D85971 /* Images.xcassets */; };
-		01B304071A52C7AC009D7417 /* EnterPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4F9934A19A4E925006FC9C2 /* EnterPasswordViewController.xib */; };
-		01B304081A52C7AC009D7417 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 010887CC182CCE6E008BDD22 /* Podfile */; };
-		01B304091A52C7AC009D7417 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 01A90218182A3CBE00D85971 /* InfoPlist.strings */; };
-		01B3040A1A52C7AC009D7417 /* TrackPadViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C584421B3AFAC90EE9EFDA78 /* TrackPadViewController.xib */; };
-		01B3040B1A52C7AC009D7417 /* VerifyInAiRViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4F9934019A4DE77006FC9C2 /* VerifyInAiRViewController.xib */; };
-		01B3040C1A52C7AC009D7417 /* WiFiListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4F9933619A487EA006FC9C2 /* WiFiListViewController.xib */; };
-		01B3040D1A52C7AC009D7417 /* InstructionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4BBD95219A3661500156A92 /* InstructionViewController.xib */; };
-		01B3040E1A52C7AC009D7417 /* ConnectedConfirmationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B46889A919AEE5ED0043A8A9 /* ConnectedConfirmationViewController.xib */; };
-		01F415611871DA4300029AFE /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 01F415601871DA4300029AFE /* Settings.bundle */; };
-		37347075505D4DBDB2B7D0D4 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B16347417AEC44FE911F15C2 /* libPods.a */; };
-		B43A5FCD1A675DB300105F55 /* NSString+IPAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = B43A5FCC1A675DB300105F55 /* NSString+IPAddress.m */; };
-		B46889AA19AEE5ED0043A8A9 /* ConnectedConfirmationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B46889A819AEE5ED0043A8A9 /* ConnectedConfirmationViewController.m */; };
-		B46889AB19AEE5ED0043A8A9 /* ConnectedConfirmationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B46889A919AEE5ED0043A8A9 /* ConnectedConfirmationViewController.xib */; };
-		B4B87A8119A20A5400E2BDD0 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B4B87A8019A20A5400E2BDD0 /* libz.dylib */; };
-		B4BBD95319A3661500156A92 /* InstructionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BBD95119A3661500156A92 /* InstructionViewController.m */; };
-		B4BBD95419A3661500156A92 /* InstructionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4BBD95219A3661500156A92 /* InstructionViewController.xib */; };
-		B4E715A21AA950A900AAE5FF /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4E715A01AA950A900AAE5FF /* Crashlytics.framework */; };
-		B4E715A31AA950A900AAE5FF /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4E715A01AA950A900AAE5FF /* Crashlytics.framework */; };
-		B4E715A41AA950A900AAE5FF /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4E715A11AA950A900AAE5FF /* Fabric.framework */; };
-		B4E715A51AA950A900AAE5FF /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4E715A11AA950A900AAE5FF /* Fabric.framework */; };
-		B4F9933719A487EA006FC9C2 /* WiFiListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F9933519A487EA006FC9C2 /* WiFiListViewController.m */; };
-		B4F9933819A487EA006FC9C2 /* WiFiListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4F9933619A487EA006FC9C2 /* WiFiListViewController.xib */; };
-		B4F9933B19A497F1006FC9C2 /* WifiCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F9933A19A497F1006FC9C2 /* WifiCell.m */; };
-		B4F9933D19A498C2006FC9C2 /* WifiCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4F9933C19A498C2006FC9C2 /* WifiCell.xib */; };
-		B4F9934119A4DE77006FC9C2 /* VerifyInAiRViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F9933F19A4DE77006FC9C2 /* VerifyInAiRViewController.m */; };
-		B4F9934219A4DE77006FC9C2 /* VerifyInAiRViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4F9934019A4DE77006FC9C2 /* VerifyInAiRViewController.xib */; };
-		B4F9934619A4E097006FC9C2 /* ChangeNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F9934419A4E097006FC9C2 /* ChangeNameViewController.m */; };
-		B4F9934719A4E097006FC9C2 /* ChangeNameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4F9934519A4E097006FC9C2 /* ChangeNameViewController.xib */; };
-		B4F9934B19A4E925006FC9C2 /* EnterPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F9934919A4E925006FC9C2 /* EnterPasswordViewController.m */; };
-		B4F9934C19A4E925006FC9C2 /* EnterPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4F9934A19A4E925006FC9C2 /* EnterPasswordViewController.xib */; };
-		C07A412AA6D69B0ADA522E88 /* WifiSetupController.m in Sources */ = {isa = PBXBuildFile; fileRef = C07A4B1D324CC7741CD1956B /* WifiSetupController.m */; };
-		C07A41FAB34FCFF310832EC7 /* JDStatusBarNotification+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = C07A4042D59C4B3B2DA2B2CC /* JDStatusBarNotification+Extension.m */; };
-		C07A4D30FD6FFB2E92D76F18 /* WifiSetupController.m in Sources */ = {isa = PBXBuildFile; fileRef = C07A4B1D324CC7741CD1956B /* WifiSetupController.m */; };
-		C07A4D682E478C4678CC3AFB /* JDStatusBarNotification+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = C07A4042D59C4B3B2DA2B2CC /* JDStatusBarNotification+Extension.m */; };
-		C584401A066D1F1903B6A015 /* TrackPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5844ED89441B78E5ED9D931 /* TrackPadViewController.m */; };
-		C5844045E9501BBBDD32072C /* TrackPadViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C584421B3AFAC90EE9EFDA78 /* TrackPadViewController.xib */; };
-		C58440858C2E4C0D850E5583 /* Proto.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = C58449999B7324E698D6643F /* Proto.pb.m */; };
-		C5844157B336B00A1022EA6A /* ProtoHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C58446B8812F646BE82E52DB /* ProtoHelper.m */; };
-		C5844214A4CD8611C5BC8659 /* WifiHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C5844AEC7D865AC3656EC804 /* WifiHelper.m */; };
-		C5844336C46484FF8281DEA2 /* TrackPadView.m in Sources */ = {isa = PBXBuildFile; fileRef = C58449F556AFB3C52D6C7D28 /* TrackPadView.m */; };
-		C584443CEB09A26106DE0C2E /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C584485FF4326A8E9B08B3A4 /* WebViewController.m */; };
-		C58444AF7A720078B3CB7669 /* DDURLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = C58449D8A0EA2DEB85384596 /* DDURLParser.m */; };
-		C584471B49D0CE130B025D7F /* Event+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = C584418E08FB8FB0F1DDF896 /* Event+Extension.m */; };
-		C5844A0B86EA15AA83BB1977 /* NSData+NetService.m in Sources */ = {isa = PBXBuildFile; fileRef = C5844A3ABF93BE55E57B1EB8 /* NSData+NetService.m */; };
-		C5844B96C4F5A3E00AE2726A /* WifiNetwork+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = C58448D55F9A1DC3853DD753 /* WifiNetwork+Extension.m */; };
-		C5844D863B1EFAC244C75EB8 /* IAConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = C5844072E0B87BC74BC615E0 /* IAConnection.m */; };
-		C5844F87624D1E90C002C719 /* EventCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = C58442F85EC1ECBA64716687 /* EventCenter.m */; };
+		B42B608A1ABC2A0900C9C4F9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 01A90607182A49A100D85971 /* AppDelegate.m */; };
+		B42B608B1ABC2A0900C9C4F9 /* VerifyInAiRViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F9933F19A4DE77006FC9C2 /* VerifyInAiRViewController.m */; };
+		B42B608C1ABC2A0900C9C4F9 /* WSNetworksController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01300D2E1A8EAE7800C92E71 /* WSNetworksController.m */; };
+		B42B608D1ABC2A0900C9C4F9 /* WiFiListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F9933519A487EA006FC9C2 /* WiFiListViewController.m */; };
+		B42B608E1ABC2A0900C9C4F9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 01A9021B182A3CBE00D85971 /* main.m */; };
+		B42B608F1ABC2A0900C9C4F9 /* ChangeNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F9934419A4E097006FC9C2 /* ChangeNameViewController.m */; };
+		B42B60901ABC2A0900C9C4F9 /* WifiCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F9933A19A497F1006FC9C2 /* WifiCell.m */; };
+		B42B60911ABC2A0900C9C4F9 /* EnterPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F9934919A4E925006FC9C2 /* EnterPasswordViewController.m */; };
+		B42B60921ABC2A0900C9C4F9 /* TrackPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5844ED89441B78E5ED9D931 /* TrackPadViewController.m */; };
+		B42B60931ABC2A0900C9C4F9 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C584485FF4326A8E9B08B3A4 /* WebViewController.m */; };
+		B42B60941ABC2A0900C9C4F9 /* InstructionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BBD95119A3661500156A92 /* InstructionViewController.m */; };
+		B42B60951ABC2A0900C9C4F9 /* Event+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = C584418E08FB8FB0F1DDF896 /* Event+Extension.m */; };
+		B42B60961ABC2A0900C9C4F9 /* EventCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = C58442F85EC1ECBA64716687 /* EventCenter.m */; };
+		B42B60971ABC2A0900C9C4F9 /* WSInstructionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0124BFD31A8D82EC006EB73A /* WSInstructionController.m */; };
+		B42B60981ABC2A0900C9C4F9 /* TrackPadView.m in Sources */ = {isa = PBXBuildFile; fileRef = C58449F556AFB3C52D6C7D28 /* TrackPadView.m */; };
+		B42B60991ABC2A0900C9C4F9 /* WSEnterPasswordController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01300D351A8F184200C92E71 /* WSEnterPasswordController.m */; };
+		B42B609A1ABC2A0900C9C4F9 /* NSData+NetService.m in Sources */ = {isa = PBXBuildFile; fileRef = C5844A3ABF93BE55E57B1EB8 /* NSData+NetService.m */; };
+		B42B609B1ABC2A0900C9C4F9 /* DDURLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = C58449D8A0EA2DEB85384596 /* DDURLParser.m */; };
+		B42B609C1ABC2A0900C9C4F9 /* ProtoHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C58446B8812F646BE82E52DB /* ProtoHelper.m */; };
+		B42B609D1ABC2A0900C9C4F9 /* Proto.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = C58449999B7324E698D6643F /* Proto.pb.m */; };
+		B42B609E1ABC2A0900C9C4F9 /* WifiHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C5844AEC7D865AC3656EC804 /* WifiHelper.m */; };
+		B42B609F1ABC2A0900C9C4F9 /* ConnectedConfirmationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B46889A819AEE5ED0043A8A9 /* ConnectedConfirmationViewController.m */; };
+		B42B60A01ABC2A0900C9C4F9 /* WifiNetwork+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = C58448D55F9A1DC3853DD753 /* WifiNetwork+Extension.m */; };
+		B42B60A11ABC2A0900C9C4F9 /* IAConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = C5844072E0B87BC74BC615E0 /* IAConnection.m */; };
+		B42B60A21ABC2A0900C9C4F9 /* JDStatusBarNotification+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = C07A4042D59C4B3B2DA2B2CC /* JDStatusBarNotification+Extension.m */; };
+		B42B60A31ABC2A0900C9C4F9 /* WifiSetupController.m in Sources */ = {isa = PBXBuildFile; fileRef = C07A4B1D324CC7741CD1956B /* WifiSetupController.m */; };
+		B42B60A51ABC2A0900C9C4F9 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B4B87A8019A20A5400E2BDD0 /* libz.dylib */; };
+		B42B60A61ABC2A0900C9C4F9 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 013F0580186983AC0029A23E /* Security.framework */; };
+		B42B60A71ABC2A0900C9C4F9 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4E715A01AA950A900AAE5FF /* Crashlytics.framework */; };
+		B42B60A81ABC2A0900C9C4F9 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 013F057E186983A50029A23E /* CFNetwork.framework */; };
+		B42B60A91ABC2A0900C9C4F9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01A90211182A3CBE00D85971 /* CoreGraphics.framework */; };
+		B42B60AA1ABC2A0900C9C4F9 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4E715A11AA950A900AAE5FF /* Fabric.framework */; };
+		B42B60AB1ABC2A0900C9C4F9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01A90213182A3CBE00D85971 /* UIKit.framework */; };
+		B42B60AC1ABC2A0900C9C4F9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01A9020F182A3CBE00D85971 /* Foundation.framework */; };
+		B42B60AD1ABC2A0900C9C4F9 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B16347417AEC44FE911F15C2 /* libPods.a */; };
+		B42B60AF1ABC2A0900C9C4F9 /* inair.js in Resources */ = {isa = PBXBuildFile; fileRef = C07A406170D4DAC7423CA365 /* inair.js */; };
+		B42B60B01ABC2A0900C9C4F9 /* ChangeNameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4F9934519A4E097006FC9C2 /* ChangeNameViewController.xib */; };
+		B42B60B11ABC2A0900C9C4F9 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 01F415601871DA4300029AFE /* Settings.bundle */; };
+		B42B60B21ABC2A0900C9C4F9 /* WifiCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4F9933C19A498C2006FC9C2 /* WifiCell.xib */; };
+		B42B60B31ABC2A0900C9C4F9 /* WSInstructionController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0124BFD41A8D82EC006EB73A /* WSInstructionController.xib */; };
+		B42B60B41ABC2A0900C9C4F9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01A90227182A3CBE00D85971 /* Images.xcassets */; };
+		B42B60B51ABC2A0900C9C4F9 /* EnterPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4F9934A19A4E925006FC9C2 /* EnterPasswordViewController.xib */; };
+		B42B60B61ABC2A0900C9C4F9 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 010887CC182CCE6E008BDD22 /* Podfile */; };
+		B42B60B71ABC2A0900C9C4F9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 01A90218182A3CBE00D85971 /* InfoPlist.strings */; };
+		B42B60B81ABC2A0900C9C4F9 /* TrackPadViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C584421B3AFAC90EE9EFDA78 /* TrackPadViewController.xib */; };
+		B42B60B91ABC2A0900C9C4F9 /* VerifyInAiRViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4F9934019A4DE77006FC9C2 /* VerifyInAiRViewController.xib */; };
+		B42B60BA1ABC2A0900C9C4F9 /* WiFiListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4F9933619A487EA006FC9C2 /* WiFiListViewController.xib */; };
+		B42B60BB1ABC2A0900C9C4F9 /* InstructionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4BBD95219A3661500156A92 /* InstructionViewController.xib */; };
+		B42B60BC1ABC2A0900C9C4F9 /* WSNetworksController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01300D2F1A8EAE7800C92E71 /* WSNetworksController.xib */; };
+		B42B60BD1ABC2A0900C9C4F9 /* ConnectedConfirmationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B46889A919AEE5ED0043A8A9 /* ConnectedConfirmationViewController.xib */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		01A90232182A3CBF00D85971 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 01A90204182A3CBE00D85971 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 01A9020B182A3CBE00D85971;
-			remoteInfo = "Airmote+";
-		};
-		01CC998D19629CDD006C6AFA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 01A90204182A3CBE00D85971 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 01A9020B182A3CBE00D85971;
-			remoteInfo = "Airmote+";
-		};
-		01CC998F19629CDD006C6AFA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 01A90204182A3CBE00D85971 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 01A9020B182A3CBE00D85971;
-			remoteInfo = "Airmote+";
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		010887CC182CCE6E008BDD22 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -150,11 +75,9 @@
 		01300D351A8F184200C92E71 /* WSEnterPasswordController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSEnterPasswordController.m; sourceTree = "<group>"; };
 		013F057E186983A50029A23E /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		013F0580186983AC0029A23E /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		01A9020C182A3CBE00D85971 /* Airmote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Airmote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01A9020F182A3CBE00D85971 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		01A90211182A3CBE00D85971 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		01A90213182A3CBE00D85971 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		01A90217182A3CBE00D85971 /* Airmote+-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Airmote+-Info.plist"; sourceTree = "<group>"; };
 		01A90219182A3CBE00D85971 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		01A9021B182A3CBE00D85971 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		01A9021D182A3CBE00D85971 /* Airmote+-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Airmote+-Prefix.pch"; sourceTree = "<group>"; };
@@ -165,11 +88,11 @@
 		01A90238182A3CBF00D85971 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		01A9023A182A3CBF00D85971 /* Airmote_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Airmote_Tests.m; sourceTree = "<group>"; };
 		01A90607182A49A100D85971 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		01B304141A52C7AC009D7417 /* AirmoteLK.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AirmoteLK.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		01B304151A52C7AC009D7417 /* Airmote copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Airmote copy-Info.plist"; path = "/Users/mrnhim/SkyDrive/inair/repo/input/iosairmote/Airmote copy-Info.plist"; sourceTree = "<absolute>"; };
 		01F415601871DA4300029AFE /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		4776BA18CF18092B62E2AA53 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		B16347417AEC44FE911F15C2 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		B42B60C31ABC2A0900C9C4F9 /* InAiR Remote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "InAiR Remote.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B42B60C41ABC2A0A00C9C4F9 /* Airmote-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Airmote-Info.plist"; path = "/Users/tuancao/SourceCode/inair/input/iosairmote/Airmote-Info.plist"; sourceTree = "<absolute>"; };
 		B43A5FCB1A675DB300105F55 /* NSString+IPAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+IPAddress.h"; sourceTree = "<group>"; };
 		B43A5FCC1A675DB300105F55 /* NSString+IPAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+IPAddress.m"; sourceTree = "<group>"; };
 		B46889A719AEE5ED0043A8A9 /* ConnectedConfirmationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectedConfirmationViewController.h; sourceTree = "<group>"; };
@@ -231,22 +154,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		01A90209182A3CBE00D85971 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B4B87A8119A20A5400E2BDD0 /* libz.dylib in Frameworks */,
-				013F0581186983AC0029A23E /* Security.framework in Frameworks */,
-				B4E715A21AA950A900AAE5FF /* Crashlytics.framework in Frameworks */,
-				013F057F186983A50029A23E /* CFNetwork.framework in Frameworks */,
-				01A90212182A3CBE00D85971 /* CoreGraphics.framework in Frameworks */,
-				B4E715A41AA950A900AAE5FF /* Fabric.framework in Frameworks */,
-				01A90214182A3CBE00D85971 /* UIKit.framework in Frameworks */,
-				01A90210182A3CBE00D85971 /* Foundation.framework in Frameworks */,
-				37347075505D4DBDB2B7D0D4 /* libPods.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		01A9022A182A3CBF00D85971 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -256,19 +163,19 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		01B303FA1A52C7AC009D7417 /* Frameworks */ = {
+		B42B60A41ABC2A0900C9C4F9 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				01B303FB1A52C7AC009D7417 /* libz.dylib in Frameworks */,
-				01B303FC1A52C7AC009D7417 /* Security.framework in Frameworks */,
-				B4E715A31AA950A900AAE5FF /* Crashlytics.framework in Frameworks */,
-				01B303FD1A52C7AC009D7417 /* CFNetwork.framework in Frameworks */,
-				01B303FE1A52C7AC009D7417 /* CoreGraphics.framework in Frameworks */,
-				B4E715A51AA950A900AAE5FF /* Fabric.framework in Frameworks */,
-				01B303FF1A52C7AC009D7417 /* UIKit.framework in Frameworks */,
-				01B304001A52C7AC009D7417 /* Foundation.framework in Frameworks */,
-				01B304011A52C7AC009D7417 /* libPods.a in Frameworks */,
+				B42B60A51ABC2A0900C9C4F9 /* libz.dylib in Frameworks */,
+				B42B60A61ABC2A0900C9C4F9 /* Security.framework in Frameworks */,
+				B42B60A71ABC2A0900C9C4F9 /* Crashlytics.framework in Frameworks */,
+				B42B60A81ABC2A0900C9C4F9 /* CFNetwork.framework in Frameworks */,
+				B42B60A91ABC2A0900C9C4F9 /* CoreGraphics.framework in Frameworks */,
+				B42B60AA1ABC2A0900C9C4F9 /* Fabric.framework in Frameworks */,
+				B42B60AB1ABC2A0900C9C4F9 /* UIKit.framework in Frameworks */,
+				B42B60AC1ABC2A0900C9C4F9 /* Foundation.framework in Frameworks */,
+				B42B60AD1ABC2A0900C9C4F9 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -290,16 +197,14 @@
 				01A9020E182A3CBE00D85971 /* Frameworks */,
 				01A9020D182A3CBE00D85971 /* Products */,
 				19F041656A298F21DD2C48A1 /* Pods */,
-				01B304151A52C7AC009D7417 /* Airmote copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
 		01A9020D182A3CBE00D85971 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				01A9020C182A3CBE00D85971 /* Airmote.app */,
 				01A9022D182A3CBF00D85971 /* Airmote+Tests.xctest */,
-				01B304141A52C7AC009D7417 /* AirmoteLK.app */,
+				B42B60C31ABC2A0900C9C4F9 /* InAiR Remote.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -341,10 +246,10 @@
 		01A90216182A3CBE00D85971 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				B42B60C41ABC2A0A00C9C4F9 /* Airmote-Info.plist */,
 				01F415601871DA4300029AFE /* Settings.bundle */,
 				010887CC182CCE6E008BDD22 /* Podfile */,
 				01A90227182A3CBE00D85971 /* Images.xcassets */,
-				01A90217182A3CBE00D85971 /* Airmote+-Info.plist */,
 				01A90218182A3CBE00D85971 /* InfoPlist.strings */,
 				01A9021B182A3CBE00D85971 /* main.m */,
 				01A9021D182A3CBE00D85971 /* Airmote+-Prefix.pch */,
@@ -501,26 +406,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		01A9020B182A3CBE00D85971 /* Airmote */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 01A9023E182A3CBF00D85971 /* Build configuration list for PBXNativeTarget "Airmote" */;
-			buildPhases = (
-				6B264A8D268F4E1ABA8E6524 /* Check Pods Manifest.lock */,
-				01A90208182A3CBE00D85971 /* Sources */,
-				01A90209182A3CBE00D85971 /* Frameworks */,
-				01A9020A182A3CBE00D85971 /* Resources */,
-				E47121F87F4743B385FB505E /* Copy Pods Resources */,
-				B4E7159E1AA9506D00AAE5FF /* ShellScript */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = Airmote;
-			productName = "Airmote+";
-			productReference = 01A9020C182A3CBE00D85971 /* Airmote.app */;
-			productType = "com.apple.product-type.application";
-		};
 		01A9022C182A3CBF00D85971 /* Airmote+Tests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 01A90241182A3CBF00D85971 /* Build configuration list for PBXNativeTarget "Airmote+Tests" */;
@@ -532,33 +417,30 @@
 			buildRules = (
 			);
 			dependencies = (
-				01A90233182A3CBF00D85971 /* PBXTargetDependency */,
-				01CC998E19629CDD006C6AFA /* PBXTargetDependency */,
-				01CC999019629CDD006C6AFA /* PBXTargetDependency */,
 			);
 			name = "Airmote+Tests";
 			productName = "Airmote+Tests";
 			productReference = 01A9022D182A3CBF00D85971 /* Airmote+Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		01B303E21A52C7AC009D7417 /* AirmoteLK */ = {
+		B42B60871ABC2A0900C9C4F9 /* Airmote */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 01B304111A52C7AC009D7417 /* Build configuration list for PBXNativeTarget "AirmoteLK" */;
+			buildConfigurationList = B42B60C01ABC2A0900C9C4F9 /* Build configuration list for PBXNativeTarget "Airmote" */;
 			buildPhases = (
-				01B303E31A52C7AC009D7417 /* Check Pods Manifest.lock */,
-				01B303E41A52C7AC009D7417 /* Sources */,
-				01B303FA1A52C7AC009D7417 /* Frameworks */,
-				01B304021A52C7AC009D7417 /* Resources */,
-				01B304101A52C7AC009D7417 /* Copy Pods Resources */,
-				B4E7159F1AA9507900AAE5FF /* ShellScript */,
+				B42B60881ABC2A0900C9C4F9 /* Check Pods Manifest.lock */,
+				B42B60891ABC2A0900C9C4F9 /* Sources */,
+				B42B60A41ABC2A0900C9C4F9 /* Frameworks */,
+				B42B60AE1ABC2A0900C9C4F9 /* Resources */,
+				B42B60BE1ABC2A0900C9C4F9 /* Copy Pods Resources */,
+				B42B60BF1ABC2A0900C9C4F9 /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = AirmoteLK;
+			name = Airmote;
 			productName = "Airmote+";
-			productReference = 01B304141A52C7AC009D7417 /* AirmoteLK.app */;
+			productReference = B42B60C31ABC2A0900C9C4F9 /* InAiR Remote.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -570,19 +452,8 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Long Nguyen";
 				TargetAttributes = {
-					01A9020B182A3CBE00D85971 = {
-						DevelopmentTeam = F9R3B8V384;
-						SystemCapabilities = {
-							com.apple.BackgroundModes = {
-								enabled = 0;
-							};
-						};
-					};
 					01A9022C182A3CBF00D85971 = {
 						TestTargetID = 01A9020B182A3CBE00D85971;
-					};
-					01B303E21A52C7AC009D7417 = {
-						DevelopmentTeam = F9R3B8V384;
 					};
 				};
 			};
@@ -599,36 +470,13 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				01A9020B182A3CBE00D85971 /* Airmote */,
 				01A9022C182A3CBF00D85971 /* Airmote+Tests */,
-				01B303E21A52C7AC009D7417 /* AirmoteLK */,
+				B42B60871ABC2A0900C9C4F9 /* Airmote */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		01A9020A182A3CBE00D85971 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				0142A69D1AA73EB900FCC465 /* inair.js in Resources */,
-				B4F9934719A4E097006FC9C2 /* ChangeNameViewController.xib in Resources */,
-				01F415611871DA4300029AFE /* Settings.bundle in Resources */,
-				B4F9933D19A498C2006FC9C2 /* WifiCell.xib in Resources */,
-				0124BFD71A8D82EC006EB73A /* WSInstructionController.xib in Resources */,
-				01A90228182A3CBE00D85971 /* Images.xcassets in Resources */,
-				B4F9934C19A4E925006FC9C2 /* EnterPasswordViewController.xib in Resources */,
-				010887CD182CCE6E008BDD22 /* Podfile in Resources */,
-				01A9021A182A3CBE00D85971 /* InfoPlist.strings in Resources */,
-				C5844045E9501BBBDD32072C /* TrackPadViewController.xib in Resources */,
-				B4F9934219A4DE77006FC9C2 /* VerifyInAiRViewController.xib in Resources */,
-				B4F9933819A487EA006FC9C2 /* WiFiListViewController.xib in Resources */,
-				B4BBD95419A3661500156A92 /* InstructionViewController.xib in Resources */,
-				01300D321A8EAE7800C92E71 /* WSNetworksController.xib in Resources */,
-				B46889AB19AEE5ED0043A8A9 /* ConnectedConfirmationViewController.xib in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		01A9022B182A3CBF00D85971 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -637,32 +485,32 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		01B304021A52C7AC009D7417 /* Resources */ = {
+		B42B60AE1ABC2A0900C9C4F9 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0142A69C1AA73EAF00FCC465 /* inair.js in Resources */,
-				01B304031A52C7AC009D7417 /* ChangeNameViewController.xib in Resources */,
-				01B304041A52C7AC009D7417 /* Settings.bundle in Resources */,
-				01B304051A52C7AC009D7417 /* WifiCell.xib in Resources */,
-				0124BFD81A8D82EC006EB73A /* WSInstructionController.xib in Resources */,
-				01B304061A52C7AC009D7417 /* Images.xcassets in Resources */,
-				01B304071A52C7AC009D7417 /* EnterPasswordViewController.xib in Resources */,
-				01B304081A52C7AC009D7417 /* Podfile in Resources */,
-				01B304091A52C7AC009D7417 /* InfoPlist.strings in Resources */,
-				01B3040A1A52C7AC009D7417 /* TrackPadViewController.xib in Resources */,
-				01B3040B1A52C7AC009D7417 /* VerifyInAiRViewController.xib in Resources */,
-				01B3040C1A52C7AC009D7417 /* WiFiListViewController.xib in Resources */,
-				01B3040D1A52C7AC009D7417 /* InstructionViewController.xib in Resources */,
-				01300D331A8EAE7800C92E71 /* WSNetworksController.xib in Resources */,
-				01B3040E1A52C7AC009D7417 /* ConnectedConfirmationViewController.xib in Resources */,
+				B42B60AF1ABC2A0900C9C4F9 /* inair.js in Resources */,
+				B42B60B01ABC2A0900C9C4F9 /* ChangeNameViewController.xib in Resources */,
+				B42B60B11ABC2A0900C9C4F9 /* Settings.bundle in Resources */,
+				B42B60B21ABC2A0900C9C4F9 /* WifiCell.xib in Resources */,
+				B42B60B31ABC2A0900C9C4F9 /* WSInstructionController.xib in Resources */,
+				B42B60B41ABC2A0900C9C4F9 /* Images.xcassets in Resources */,
+				B42B60B51ABC2A0900C9C4F9 /* EnterPasswordViewController.xib in Resources */,
+				B42B60B61ABC2A0900C9C4F9 /* Podfile in Resources */,
+				B42B60B71ABC2A0900C9C4F9 /* InfoPlist.strings in Resources */,
+				B42B60B81ABC2A0900C9C4F9 /* TrackPadViewController.xib in Resources */,
+				B42B60B91ABC2A0900C9C4F9 /* VerifyInAiRViewController.xib in Resources */,
+				B42B60BA1ABC2A0900C9C4F9 /* WiFiListViewController.xib in Resources */,
+				B42B60BB1ABC2A0900C9C4F9 /* InstructionViewController.xib in Resources */,
+				B42B60BC1ABC2A0900C9C4F9 /* WSNetworksController.xib in Resources */,
+				B42B60BD1ABC2A0900C9C4F9 /* ConnectedConfirmationViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		01B303E31A52C7AC009D7417 /* Check Pods Manifest.lock */ = {
+		B42B60881ABC2A0900C9C4F9 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -677,7 +525,7 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		01B304101A52C7AC009D7417 /* Copy Pods Resources */ = {
+		B42B60BE1ABC2A0900C9C4F9 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -692,22 +540,7 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		6B264A8D268F4E1ABA8E6524 /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		B4E7159E1AA9506D00AAE5FF /* ShellScript */ = {
+		B42B60BF1ABC2A0900C9C4F9 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -719,72 +552,10 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "./Fabric.framework/run 63935f84266ab9f5bac9f6f09f05b6f0d72b7717 d515bf1a06363bb18d1896de12c0a9843e8cbd5afdc0702bb49baad1d29db6b0";
-		};
-		B4E7159F1AA9507900AAE5FF /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "./Fabric.framework/run 63935f84266ab9f5bac9f6f09f05b6f0d72b7717 d515bf1a06363bb18d1896de12c0a9843e8cbd5afdc0702bb49baad1d29db6b0";
-		};
-		E47121F87F4743B385FB505E /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		01A90208182A3CBE00D85971 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				01A90609182A49A100D85971 /* AppDelegate.m in Sources */,
-				B4F9934119A4DE77006FC9C2 /* VerifyInAiRViewController.m in Sources */,
-				B4F9933719A487EA006FC9C2 /* WiFiListViewController.m in Sources */,
-				01A9021C182A3CBE00D85971 /* main.m in Sources */,
-				B4F9934619A4E097006FC9C2 /* ChangeNameViewController.m in Sources */,
-				B4F9933B19A497F1006FC9C2 /* WifiCell.m in Sources */,
-				B4F9934B19A4E925006FC9C2 /* EnterPasswordViewController.m in Sources */,
-				C584401A066D1F1903B6A015 /* TrackPadViewController.m in Sources */,
-				C584443CEB09A26106DE0C2E /* WebViewController.m in Sources */,
-				B4BBD95319A3661500156A92 /* InstructionViewController.m in Sources */,
-				C584471B49D0CE130B025D7F /* Event+Extension.m in Sources */,
-				C5844F87624D1E90C002C719 /* EventCenter.m in Sources */,
-				01300D301A8EAE7800C92E71 /* WSNetworksController.m in Sources */,
-				01300D361A8F184200C92E71 /* WSEnterPasswordController.m in Sources */,
-				0124BFD51A8D82EC006EB73A /* WSInstructionController.m in Sources */,
-				C5844336C46484FF8281DEA2 /* TrackPadView.m in Sources */,
-				C5844A0B86EA15AA83BB1977 /* NSData+NetService.m in Sources */,
-				C58444AF7A720078B3CB7669 /* DDURLParser.m in Sources */,
-				B43A5FCD1A675DB300105F55 /* NSString+IPAddress.m in Sources */,
-				C5844157B336B00A1022EA6A /* ProtoHelper.m in Sources */,
-				C58440858C2E4C0D850E5583 /* Proto.pb.m in Sources */,
-				C5844214A4CD8611C5BC8659 /* WifiHelper.m in Sources */,
-				B46889AA19AEE5ED0043A8A9 /* ConnectedConfirmationViewController.m in Sources */,
-				C5844B96C4F5A3E00AE2726A /* WifiNetwork+Extension.m in Sources */,
-				C5844D863B1EFAC244C75EB8 /* IAConnection.m in Sources */,
-				C07A41FAB34FCFF310832EC7 /* JDStatusBarNotification+Extension.m in Sources */,
-				C07A4D30FD6FFB2E92D76F18 /* WifiSetupController.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		01A90229182A3CBF00D85971 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -793,58 +564,40 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		01B303E41A52C7AC009D7417 /* Sources */ = {
+		B42B60891ABC2A0900C9C4F9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				01B303E51A52C7AC009D7417 /* AppDelegate.m in Sources */,
-				01B303E61A52C7AC009D7417 /* VerifyInAiRViewController.m in Sources */,
-				01300D311A8EAE7800C92E71 /* WSNetworksController.m in Sources */,
-				01B303E71A52C7AC009D7417 /* WiFiListViewController.m in Sources */,
-				01B303E81A52C7AC009D7417 /* main.m in Sources */,
-				01B303E91A52C7AC009D7417 /* ChangeNameViewController.m in Sources */,
-				01B303EA1A52C7AC009D7417 /* WifiCell.m in Sources */,
-				01B303EB1A52C7AC009D7417 /* EnterPasswordViewController.m in Sources */,
-				01B303EC1A52C7AC009D7417 /* TrackPadViewController.m in Sources */,
-				01B303ED1A52C7AC009D7417 /* WebViewController.m in Sources */,
-				01B303EE1A52C7AC009D7417 /* InstructionViewController.m in Sources */,
-				01B303EF1A52C7AC009D7417 /* Event+Extension.m in Sources */,
-				01B303F01A52C7AC009D7417 /* EventCenter.m in Sources */,
-				0124BFD61A8D82EC006EB73A /* WSInstructionController.m in Sources */,
-				01B303F11A52C7AC009D7417 /* TrackPadView.m in Sources */,
-				01300D371A8F184200C92E71 /* WSEnterPasswordController.m in Sources */,
-				01B303F21A52C7AC009D7417 /* NSData+NetService.m in Sources */,
-				01B303F31A52C7AC009D7417 /* DDURLParser.m in Sources */,
-				01B303F41A52C7AC009D7417 /* ProtoHelper.m in Sources */,
-				01B303F51A52C7AC009D7417 /* Proto.pb.m in Sources */,
-				01B303F61A52C7AC009D7417 /* WifiHelper.m in Sources */,
-				01B303F71A52C7AC009D7417 /* ConnectedConfirmationViewController.m in Sources */,
-				01B303F81A52C7AC009D7417 /* WifiNetwork+Extension.m in Sources */,
-				01B303F91A52C7AC009D7417 /* IAConnection.m in Sources */,
-				C07A4D682E478C4678CC3AFB /* JDStatusBarNotification+Extension.m in Sources */,
-				C07A412AA6D69B0ADA522E88 /* WifiSetupController.m in Sources */,
+				B42B608A1ABC2A0900C9C4F9 /* AppDelegate.m in Sources */,
+				B42B608B1ABC2A0900C9C4F9 /* VerifyInAiRViewController.m in Sources */,
+				B42B608C1ABC2A0900C9C4F9 /* WSNetworksController.m in Sources */,
+				B42B608D1ABC2A0900C9C4F9 /* WiFiListViewController.m in Sources */,
+				B42B608E1ABC2A0900C9C4F9 /* main.m in Sources */,
+				B42B608F1ABC2A0900C9C4F9 /* ChangeNameViewController.m in Sources */,
+				B42B60901ABC2A0900C9C4F9 /* WifiCell.m in Sources */,
+				B42B60911ABC2A0900C9C4F9 /* EnterPasswordViewController.m in Sources */,
+				B42B60921ABC2A0900C9C4F9 /* TrackPadViewController.m in Sources */,
+				B42B60931ABC2A0900C9C4F9 /* WebViewController.m in Sources */,
+				B42B60941ABC2A0900C9C4F9 /* InstructionViewController.m in Sources */,
+				B42B60951ABC2A0900C9C4F9 /* Event+Extension.m in Sources */,
+				B42B60961ABC2A0900C9C4F9 /* EventCenter.m in Sources */,
+				B42B60971ABC2A0900C9C4F9 /* WSInstructionController.m in Sources */,
+				B42B60981ABC2A0900C9C4F9 /* TrackPadView.m in Sources */,
+				B42B60991ABC2A0900C9C4F9 /* WSEnterPasswordController.m in Sources */,
+				B42B609A1ABC2A0900C9C4F9 /* NSData+NetService.m in Sources */,
+				B42B609B1ABC2A0900C9C4F9 /* DDURLParser.m in Sources */,
+				B42B609C1ABC2A0900C9C4F9 /* ProtoHelper.m in Sources */,
+				B42B609D1ABC2A0900C9C4F9 /* Proto.pb.m in Sources */,
+				B42B609E1ABC2A0900C9C4F9 /* WifiHelper.m in Sources */,
+				B42B609F1ABC2A0900C9C4F9 /* ConnectedConfirmationViewController.m in Sources */,
+				B42B60A01ABC2A0900C9C4F9 /* WifiNetwork+Extension.m in Sources */,
+				B42B60A11ABC2A0900C9C4F9 /* IAConnection.m in Sources */,
+				B42B60A21ABC2A0900C9C4F9 /* JDStatusBarNotification+Extension.m in Sources */,
+				B42B60A31ABC2A0900C9C4F9 /* WifiSetupController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		01A90233182A3CBF00D85971 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 01A9020B182A3CBE00D85971 /* Airmote */;
-			targetProxy = 01A90232182A3CBF00D85971 /* PBXContainerItemProxy */;
-		};
-		01CC998E19629CDD006C6AFA /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 01A9020B182A3CBE00D85971 /* Airmote */;
-			targetProxy = 01CC998D19629CDD006C6AFA /* PBXContainerItemProxy */;
-		};
-		01CC999019629CDD006C6AFA /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 01A9020B182A3CBE00D85971 /* Airmote */;
-			targetProxy = 01CC998F19629CDD006C6AFA /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		01A90218182A3CBE00D85971 /* InfoPlist.strings */ = {
@@ -886,8 +639,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Nhan Dang (UF35BNRQU9)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Nhan Dang (UF35BNRQU9)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -905,7 +658,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "397c7a41-4e42-4f0d-ae85-617c899d0a4c";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -930,7 +683,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Nhan Dang (GXWKVZE5L6)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Seespace ltd";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Seespace ltd";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -942,86 +695,9 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				PROVISIONING_PROFILE = "6a6b64d3-1442-4a5e-9a5c-77943de53794";
+				PROVISIONING_PROFILE = "397c7a41-4e42-4f0d-ae85-617c899d0a4c";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		01A9023F182A3CBF00D85971 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = E53AF0483658C1F08E0E9F85 /* Pods.debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = YES;
-				ARCHS = "$(ARCHS_STANDARD)";
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Airmote+-bnterijyewazbxeoxmsfsvinvpuz/Build/Products",
-					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Airmote+-bnterijyewazbxeoxmsfsvinvpuz/Build/Products",
-					"$(PROJECT_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Airmote+/Airmote+-Prefix.pch";
-				HEADER_SEARCH_PATHS = (
-					"\"${PODS_ROOT}/Headers\"",
-					"\"${PODS_ROOT}/Headers/CocoaAsyncSocket\"",
-					"\"${PODS_ROOT}/Headers/PBWebViewController\"",
-					"$(SRCROOT)",
-				);
-				INFOPLIST_FILE = "Airmote+/Airmote+-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Airmote+-bnterijyewazbxeoxmsfsvinvpuz/Build/Products/Debug-iphoneos",
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				SDKROOT = iphoneos;
-				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/Pods\"/**";
-				WRAPPER_EXTENSION = app;
-			};
-			name = Debug;
-		};
-		01A90240182A3CBF00D85971 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4776BA18CF18092B62E2AA53 /* Pods.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = YES;
-				ARCHS = "$(ARCHS_STANDARD)";
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Airmote+-bnterijyewazbxeoxmsfsvinvpuz/Build/Products",
-					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Airmote+-bnterijyewazbxeoxmsfsvinvpuz/Build/Products",
-					"$(PROJECT_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Airmote+/Airmote+-Prefix.pch";
-				HEADER_SEARCH_PATHS = (
-					"\"${PODS_ROOT}/Headers\"",
-					"\"${PODS_ROOT}/Headers/CocoaAsyncSocket\"",
-					"\"${PODS_ROOT}/Headers/PBWebViewController\"",
-					"$(SRCROOT)",
-				);
-				INFOPLIST_FILE = "Airmote+/Airmote+-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Airmote+-bnterijyewazbxeoxmsfsvinvpuz/Build/Products/Debug-iphoneos",
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				SDKROOT = iphoneos;
-				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/Pods\"/**";
-				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
 		};
@@ -1067,7 +743,7 @@
 			};
 			name = Release;
 		};
-		01B304121A52C7AC009D7417 /* Debug */ = {
+		B42B60C11ABC2A0900C9C4F9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E53AF0483658C1F08E0E9F85 /* Pods.debug.xcconfig */;
 			buildSettings = {
@@ -1076,7 +752,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer: Nhan Dang (UF35BNRQU9)";
+				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1092,21 +768,21 @@
 					"\"${PODS_ROOT}/Headers/PBWebViewController\"",
 					"$(SRCROOT)",
 				);
-				INFOPLIST_FILE = "Airmote copy-Info.plist";
+				INFOPLIST_FILE = "Airmote-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Airmote+-bnterijyewazbxeoxmsfsvinvpuz/Build/Products/Debug-iphoneos",
 				);
-				PRODUCT_NAME = AirmoteLK;
-				PROVISIONING_PROFILE = "";
+				PRODUCT_NAME = "InAiR Remote";
+				PROVISIONING_PROFILE = "397c7a41-4e42-4f0d-ae85-617c899d0a4c";
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/Pods\"/**";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
 		};
-		01B304131A52C7AC009D7417 /* Release */ = {
+		B42B60C21ABC2A0900C9C4F9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4776BA18CF18092B62E2AA53 /* Pods.release.xcconfig */;
 			buildSettings = {
@@ -1114,7 +790,7 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Nhan Dang (GXWKVZE5L6)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Seespace ltd";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Seespace ltd";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1130,14 +806,14 @@
 					"\"${PODS_ROOT}/Headers/PBWebViewController\"",
 					"$(SRCROOT)",
 				);
-				INFOPLIST_FILE = "Airmote copy-Info.plist";
+				INFOPLIST_FILE = "Airmote-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Airmote+-bnterijyewazbxeoxmsfsvinvpuz/Build/Products/Debug-iphoneos",
 				);
-				PRODUCT_NAME = AirmoteLK;
-				PROVISIONING_PROFILE = "6a6b64d3-1442-4a5e-9a5c-77943de53794";
+				PRODUCT_NAME = "InAiR Remote";
+				PROVISIONING_PROFILE = "397c7a41-4e42-4f0d-ae85-617c899d0a4c";
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/Pods\"/**";
 				WRAPPER_EXTENSION = app;
@@ -1156,15 +832,6 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		01A9023E182A3CBF00D85971 /* Build configuration list for PBXNativeTarget "Airmote" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				01A9023F182A3CBF00D85971 /* Debug */,
-				01A90240182A3CBF00D85971 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		01A90241182A3CBF00D85971 /* Build configuration list for PBXNativeTarget "Airmote+Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1174,11 +841,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		01B304111A52C7AC009D7417 /* Build configuration list for PBXNativeTarget "AirmoteLK" */ = {
+		B42B60C01ABC2A0900C9C4F9 /* Build configuration list for PBXNativeTarget "Airmote" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				01B304121A52C7AC009D7417 /* Debug */,
-				01B304131A52C7AC009D7417 /* Release */,
+				B42B60C11ABC2A0900C9C4F9 /* Debug */,
+				B42B60C21ABC2A0900C9C4F9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
