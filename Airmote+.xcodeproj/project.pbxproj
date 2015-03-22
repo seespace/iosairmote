@@ -775,7 +775,7 @@
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Airmote+-bnterijyewazbxeoxmsfsvinvpuz/Build/Products/Debug-iphoneos",
 				);
 				PRODUCT_NAME = "InAiR Remote";
-				PROVISIONING_PROFILE = "397c7a41-4e42-4f0d-ae85-617c899d0a4c";
+				PROVISIONING_PROFILE = "6a6b64d3-1442-4a5e-9a5c-77943de53794";
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/Pods\"/**";
 				WRAPPER_EXTENSION = app;
