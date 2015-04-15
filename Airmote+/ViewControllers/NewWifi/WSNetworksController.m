@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Long Nguyen. All rights reserved.
 //
 
-#import <Build/SetupController/MBSetupPageItem.h>
+#import <SetupController/MBSetupPageItem.h>
 #import "WSNetworksController.h"
 #import "MBSetupPageSection.h"
 #import "MBSectionHeader.h"
