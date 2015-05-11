@@ -1,6 +1,12 @@
 # iOS Airmote #
 
+[![Contact @longseespace](https://img.shields.io/badge/contact-%40longseespace-blue.svg)](https://twitter.com/longseespace)
+[![License MIT](https://img.shields.io/apm/l/vim-mode.svg)](#license)
+[![Build Status](https://travis-ci.org/seespace/iosairmote.svg?branch=develop)](https://travis-ci.org/seespace/iosairmote)
+
 Remote Control Application for InAir system (iOS)
+
+![Airmote Screenshot](https://dl.dropboxusercontent.com/u/55864637/imgs/airmote.png)
 
 ### How to build? ###
 
