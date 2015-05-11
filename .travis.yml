@@ -1,2 +1,6 @@
 language: objective-c
+before_install:
+  - sudo gem install cocoapods
+  - brew update
+  - if brew outdated | grep -qx xctool; then brew upgrade xctool; fi
 script: xcodebuild -workspace Airmote+.xcworkspace -scheme Airmote -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
