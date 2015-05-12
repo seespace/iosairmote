@@ -1,23 +1,23 @@
 PODS:
-  - AFNetworking (2.5.2):
-    - AFNetworking/NSURLConnection (= 2.5.2)
-    - AFNetworking/NSURLSession (= 2.5.2)
-    - AFNetworking/Reachability (= 2.5.2)
-    - AFNetworking/Security (= 2.5.2)
-    - AFNetworking/Serialization (= 2.5.2)
-    - AFNetworking/UIKit (= 2.5.2)
-  - AFNetworking/NSURLConnection (2.5.2):
+  - AFNetworking (2.5.3):
+    - AFNetworking/NSURLConnection (= 2.5.3)
+    - AFNetworking/NSURLSession (= 2.5.3)
+    - AFNetworking/Reachability (= 2.5.3)
+    - AFNetworking/Security (= 2.5.3)
+    - AFNetworking/Serialization (= 2.5.3)
+    - AFNetworking/UIKit (= 2.5.3)
+  - AFNetworking/NSURLConnection (2.5.3):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.5.2):
+  - AFNetworking/NSURLSession (2.5.3):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (2.5.2)
-  - AFNetworking/Security (2.5.2)
-  - AFNetworking/Serialization (2.5.2)
-  - AFNetworking/UIKit (2.5.2):
+  - AFNetworking/Reachability (2.5.3)
+  - AFNetworking/Security (2.5.3)
+  - AFNetworking/Serialization (2.5.3)
+  - AFNetworking/UIKit (2.5.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - Antenna (2.0.1):
@@ -36,11 +36,15 @@ PODS:
   - DDAntennaLogger (0.0.1):
     - Antenna (~> 2.0)
     - CocoaLumberjack (= 2.0.0-beta4)
+  - Fabric (1.2.3):
+    - Fabric/Core (= 1.2.3)
+  - Fabric/Core (1.2.3)
+  - Fabric/Crashlytics (1.2.3)
   - JBWebViewController (HEAD based on 1.0.7):
     - ARChromeActivity (= 1.0)
     - ARSafariActivity (= 0.0.1)
     - NJKWebViewProgress (= 0.2.3)
-  - JDStatusBarNotification (1.5.1)
+  - JDStatusBarNotification (1.5.2)
   - NJKWebViewProgress (0.2.3):
     - NJKWebViewProgress/Core (= 0.2.3)
     - NJKWebViewProgress/ProgressView (= 0.2.3)
@@ -54,6 +58,8 @@ PODS:
 DEPENDENCIES:
   - CocoaAsyncSocket (~> 7.3)
   - DDAntennaLogger (from `https://github.com/longseespace/DDAntennaLogger`)
+  - Fabric (~> 1.2)
+  - Fabric/Crashlytics (~> 1.2)
   - JBWebViewController (HEAD)
   - JDStatusBarNotification (~> 1.5)
   - ProtocolBuffers (~> 1.9.2)
@@ -71,15 +77,16 @@ CHECKOUT OPTIONS:
     :git: https://github.com/longseespace/DDAntennaLogger
 
 SPEC CHECKSUMS:
-  AFNetworking: fefbce9660acb17f48ae0011292d4da0f457bf36
+  AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
   Antenna: 3b540bbf07c32ad13c40d355ca19c4c6ea27feb5
   ARChromeActivity: 40d77445498fded9d32cbf4a41e8585766feffd6
   ARSafariActivity: f2d5fb199772bc6dd78fcb2b5ea068d70f040847
   CocoaAsyncSocket: 7cbf214b27f8e7f7574db6a3fd96352ffaed433d
   CocoaLumberjack: 44fc4ab64ee7cb9703df5de6d5012cf917775938
   DDAntennaLogger: 01f2b854a4ac44c3d065aff67a3c1fb92d78d1bd
+  Fabric: 8a5b89c2131962830d92bbc88d482e80665846b2
   JBWebViewController: 55d636542efeb1c8597851f72c8edf3478683652
-  JDStatusBarNotification: 83c7d7a4e1e0d09528bcb98827fe4fc99dbdd6aa
+  JDStatusBarNotification: a36d09ccbb047217572b074a61e7ca10dddc5f0a
   NJKWebViewProgress: f481fd424cb5ecc27eacae11b5397db92fba9a4d
   ProtocolBuffers: 9a4a171c0c7cc8f21dd29aeca4f9ac775d84a880
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96

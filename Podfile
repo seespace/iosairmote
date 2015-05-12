@@ -12,3 +12,5 @@ pod 'JDStatusBarNotification', '~> 1.5'
 pod 'SetupController', '~> 0.1.3'
 pod 'JBWebViewController', :head
 pod 'DDAntennaLogger', :git => 'https://github.com/longseespace/DDAntennaLogger'
+pod 'Fabric', '~> 1.2' # required
+pod 'Fabric/Crashlytics', '~> 1.2'
